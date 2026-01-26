@@ -1,1472 +1,1412 @@
 
+import io
 import json
 import os
+import re
 import sqlite3
 import uuid
-from datetime import datetime
-from pathlib import Path
-from typing import Dict, List, Tuple
+from datetime import datetime, timezone
+from typing import Any, Dict, List, Tuple
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 import streamlit as st
-import io
-import matplotlib.pyplot as plt
-from docx import Document
-from docx.shared import Inches
 
-# =========================================================
-# Configuration générale
-# =========================================================
-APP_TITLE_FR = "Questionnaire STATAFRIC – Statistiques socio-économiques prioritaires"
-APP_TITLE_EN = "STATAFRIC questionnaire – Socio-economic priority statistics"
+# Optional deps (Google Sheets / Dropbox)
+try:
+    import gspread  # type: ignore
+    from google.oauth2.service_account import Credentials  # type: ignore
+except Exception:
+    gspread = None
+    Credentials = None
 
-# --- Admin (hidden route)
-ADMIN_QUERY_PARAM = "admin"
+try:
+    import dropbox  # type: ignore
+except Exception:
+    dropbox = None
 
 
-DATA_DIR = Path(__file__).parent / "data"
-DB_PATH = Path(__file__).parent / "responses.db"
+# =========================
+# Configuration
+# =========================
 
-# Barème de notation : High=3, Med=2, Low=1, UK=0 (unknown) 
-SCORE_MAP_STD = {"High": 3, "Med": 2, "Medium": 2, "Low": 1, "UK": 0}
-# Coût/charge : Low/Med/High/UK (inverse : Low = meilleur) 
-SCORE_MAP_COST = {"Low": 3, "Med": 2, "Medium": 2, "High": 1, "UK": 0}
+APP_TITLE_FR = "Questionnaire de consultation"
+APP_TITLE_EN = "Consultation questionnaire"
 
-# Réponses standardisées (codes internes stables)
-YN_UK = ["Yes", "No", "UK"]
-HML_UK = ["High", "Med", "Low", "UK"]
-INCLUDE_OPT_UK = ["Include", "Optional", "UK"]
+DB_PATH = "responses.db"
+LONG_LIST_CSV = os.path.join("data", "indicator_longlist.csv")
+LONG_LIST_XLSX = os.path.join("data", "longlist.xlsx")
 
-# Liste des pays (déroulante) 
-COUNTRIES_FR = [
-    "Algérie","Angola","Bénin","Botswana","Burkina Faso","Burundi","Cameroun","Cabo Verde","République centrafricaine","Tchad",
-    "Comores","Congo","Côte d'Ivoire","République démocratique du Congo","Djibouti","Egypte","Guinée équatoriale","Érythrée","Ethiopie",
-    "Gabon","Gambie","Ghana","Guinée","Guinée-Bissau","Kenya","Lesotho","Libéria","Libye","Madagascar","Malawi","Mali","Mauritanie",
-    "Île Maurice","Maroc","Mozambique","Namibie","Niger","Nigeria","Rwanda","Sao Tomé-et-Principe","Sénégal","Seychelles","Sierra Leone",
-    "Somalie","Soudan du Sud","Afrique du Sud","Soudan","Eswatini","République-Unie de Tanzanie","Togo","Tunisie","Ouganda","Zambie","Zimbabwe"
+UK_FR = "UK (Inconnu)"
+UK_EN = "UK (Unknown)"
+
+ROLE_OPTIONS_FR = [
+    "DG/DGA/SG",
+    "Directeur",
+    "Conseiller",
+    "Chef de division",
+    "Chef de bureau",
+    "Autre",
+]
+ROLE_OPTIONS_EN = [
+    "DG/DGA/SG",
+    "Director",
+    "Advisor",
+    "Head of division",
+    "Head of office",
+    "Other",
 ]
 
-# Domaines (codes + labels) 
-DOMAIN_CODE_TO_LABEL_FR = {
-    "D01": "Croissance Économique, Transformation Structurelle et Commerce",
-    "D02": "Emploi, Travail Décent et Protection Sociale",
-    "D03": "Agriculture Durable, Sécurité Alimentaire et Nutrition",
-    "D04": "Infrastructures, Industrialisation et Innovation",
-    "D05": "Inclusion, Pauvreté et Inégalités",
-    "D06": "Éducation, Compétences et Capital Humain",
-    "D07": "Santé, Bien-être et Accès Universel",
-    "D08": "Égalité des Genres et Autonomisation",
-    "D09": "Environnement, Résilience Climatique et Villes Durables",
-    "D10": "Gouvernance, Paix et Institutions",
-    "D11": "Économie Bleue et Gestion des Océans",
-    "D12": "Partenariats et Financement du Développement",
-}
 
-DOMAIN_CODE_TO_LABEL_EN = {
-    "D01": "Economic growth, structural transformation and trade",
-    "D02": "Employment, decent work and social protection",
-    "D03": "Sustainable agriculture, food security and nutrition",
-    "D04": "Infrastructure, industrialization and innovation",
-    "D05": "Inclusion, poverty and inequalities",
-    "D06": "Education, skills and human capital",
-    "D07": "Health, well-being and universal access",
-    "D08": "Gender equality and empowerment",
-    "D09": "Environment, climate resilience and sustainable cities",
-    "D10": "Governance, peace and institutions",
-    "D11": "Blue economy and ocean management",
-    "D12": "Partnerships and development financing",
-}
-
-REGIONS_AU = [
-    ("North", {"fr": "Afrique du Nord", "en": "North"}),
-    ("West", {"fr": "Ouest", "en": "West"}),
-    ("Central", {"fr": "Centre", "en": "Central"}),
-    ("East", {"fr": "Est", "en": "East"}),
-    ("Southern", {"fr": "Sud", "en": "Southern"}),
-    ("Diaspora", {"fr": "Diaspora", "en": "Diaspora"}),
-    ("AUC", {"fr": "CUA", "en": "AUC"}),
-    ("Other", {"fr": "Autre", "en": "Other"}),
-]
-
-STAKEHOLDER_TYPES = [
-    ("AUC_STATAFRIC", {"fr": "CUA / STATAFRIC", "en": "AUC / STATAFRIC"}),
-    ("REC", {"fr": "CER", "en": "REC"}),
-    ("NSO", {"fr": "INS", "en": "NSO"}),
-    ("Ministry", {"fr": "Ministère", "en": "Ministry"}),
-    ("DP", {"fr": "PTF", "en": "DP"}),
-    ("CSO", {"fr": "OSC", "en": "CSO"}),
-    ("Academia", {"fr": "Université / Recherche", "en": "Academia"}),
-    ("Other", {"fr": "Autre", "en": "Other"}),
-]
-
-RESPONSE_LANG_OPTIONS = ["Français", "English", "العربية", "Português", "Kiswahili", "Español"]  # 
-
-SCOPE_OPTIONS = [
-    ("institutional", {"fr": "Position institutionnelle", "en": "Institutional position"}),
-    ("expert", {"fr": "Opinion d’expert", "en": "Expert opinion"}),
-    ("synthesis", {"fr": "Synthèse de plusieurs services", "en": "Synthesis across services"}),
-]
-
-SNDS_STATUS = [
-    ("yes", {"fr": "Oui", "en": "Yes"}),
-    ("no", {"fr": "Non", "en": "No"}),
-    ("ongoing", {"fr": "En cours", "en": "Ongoing"}),
-    ("unknown", {"fr": "Ne sait pas", "en": "Unknown"}),
-]
-
-DATA_SOURCES = [
-    ("hh_survey", {"fr": "Enquêtes ménages", "en": "Household surveys"}),
-    ("biz_survey", {"fr": "Enquêtes entreprises", "en": "Business surveys"}),
-    ("census", {"fr": "Recensements", "en": "Censuses"}),
-    ("admin", {"fr": "Données administratives", "en": "Administrative data"}),
-    ("crvs", {"fr": "Registres CRVS (si pertinent)", "en": "CRVS registers (if relevant)"}),
-    ("geospatial", {"fr": "Données géospatiales", "en": "Geospatial data"}),
-    ("private", {"fr": "Données privées / big data (à encadrer)", "en": "Private data & big data (with safeguards)"}),
-]
-
-PROD_LEVEL = [
-    ("national", {"fr": "National", "en": "National"}),
-    ("rec", {"fr": "CER", "en": "REC"}),
-    ("continental", {"fr": "Continental", "en": "Continental"}),
-    ("mixed", {"fr": "Combinaison", "en": "Mixed"}),
-]
-
-QUALITY_APPROACH = [
-    ("standards", {"fr": "Normes et classifications communes", "en": "Common standards and classifications"}),
-    ("metadata", {"fr": "Métadonnées obligatoires et gabarit unique", "en": "Mandatory metadata and common template"}),
-    ("qaf", {"fr": "Cadre d’assurance qualité continental", "en": "Continental quality assurance framework"}),
-    ("audits", {"fr": "Audits qualité ciblés", "en": "Targeted quality audits"}),
-    ("calendar", {"fr": "Calendrier de diffusion et politique de révision", "en": "Release calendar and revision policy"}),
-    ("cop", {"fr": "Formation et communautés de pratique", "en": "Training and communities of practice"}),
-]
-
-DISSEMINATION_PRODUCTS = [
-    ("dashboard", {"fr": "Tableau de bord continental", "en": "Continental dashboard"}),
-    ("portal_api", {"fr": "Portail de données et API", "en": "Data portal and API"}),
-    ("briefs", {"fr": "Notes analytiques thématiques", "en": "Thematic briefs"}),
-    ("release_cal", {"fr": "Calendrier de diffusion", "en": "Release calendar"}),
-    ("microdata", {"fr": "Microdonnées (accès contrôlé)", "en": "Microdata (controlled access)"}),
-]
-
-VALIDATION_MECHANISMS = [
-    ("written_consult", {"fr": "Consultation écrite de tous les pays (questionnaire)", "en": "Written consultation of all countries (questionnaire)"}),
-    ("two_rounds", {"fr": "Itération 2 tours : liste provisoire puis approbation", "en": "Two-round process: provisional list then clearance"}),
-    ("publish_scores", {"fr": "Publication des scores et du consensus (transparence)", "en": "Publish scores and consensus (transparency)"}),
-    ("coverage_quota", {"fr": "Quota de couverture : au moins X indicateurs par domaine", "en": "Coverage rule: at least X indicators per domain"}),
-    ("focal_endorse", {"fr": "Approbation par point focal national (écrit)", "en": "Written endorsement by national focal point"}),
-]
-
-AGREEMENT_LEVEL = [
-    ("majority", {"fr": "Simple majorité", "en": "Simple majority"}),
-    ("broad_consensus", {"fr": "Consensus large", "en": "Broad consensus"}),
-    ("other", {"fr": "Autre", "en": "Other"}),
-]
-
-# Rubrique 5 : critères (ordre et libellés) 
-R5_CRITERIA = [
-    ("policy_demand", {"fr": "Demande politique", "en": "Policy demand"}, "std"),
-    ("harmonization", {"fr": "Harmonisation", "en": "Harmonization"}, "std"),
-    ("availability", {"fr": "Disponibilité actuelle", "en": "Current availability"}, "std"),
-    ("feasibility", {"fr": "Faisabilité (12–24 mois)", "en": "Feasibility (12–24 months)"}, "std"),
-    ("cost_burden", {"fr": "Coût / charge", "en": "Cost / burden"}, "cost"),
-    ("quick_results", {"fr": "Résultats rapides (12–24 mois)", "en": "Quick results (12–24 months)"}, "std"),
-    ("gender_impact", {"fr": "Impact genre", "en": "Gender impact"}, "std"),
-]
-
-# Rubrique 6 (tableau) : exigences genre  (complété par le contenu du questionnaire)
-GENDER_REQ_YESNO = [
-    ("sex_disagg", {"fr": "Désagrégation par sexe", "en": "Sex disaggregation"}),
-    ("age_groups", {"fr": "Désagrégation par âge", "en": "Age groups"}),
-    ("urban_rural", {"fr": "Milieu urbain / rural", "en": "Urban / rural"}),
-    ("disability", {"fr": "Handicap", "en": "Disability"}),
-    ("wealth_quintile", {"fr": "Quintile de richesse", "en": "Wealth quintile"}),
-]
-GENDER_REQ_INCLUDE = [
-    ("gbv", {"fr": "Indicateurs sur VBG", "en": "GBV indicators"}),
-    ("unpaid_care", {"fr": "Temps domestique non rémunéré", "en": "Unpaid care work"}),
-]
-GENDER_MAIN_PRIORITY = [
-    ("eco_emp", {"fr": "Autonomisation économique", "en": "Economic empowerment"}),
-    ("services", {"fr": "Accès aux services", "en": "Access to services"}),
-    ("gbv", {"fr": "VBG", "en": "GBV"}),
-    ("participation", {"fr": "Participation", "en": "Participation"}),
-    ("unpaid_care", {"fr": "Temps domestique", "en": "Unpaid care"}),
-    ("other", {"fr": "Autre", "en": "Other"}),
-]
-
-# Rubrique 8 (tableau) : contraintes capacité/faisabilité (12–24 mois) 
-R8_CONSTRAINTS = [
-    ("skills", {"fr": "Compétences statistiques", "en": "Statistical skills"}),
-    ("admin_access", {"fr": "Accès aux données administratives", "en": "Access to admin data"}),
-    ("funding", {"fr": "Financement", "en": "Funding"}),
-    ("it_tools", {"fr": "Outils numériques", "en": "IT tools"}),
-    ("legal", {"fr": "Cadre juridique (partage de données)", "en": "Legal framework (data sharing)"}),
-    ("coord", {"fr": "Coordination interinstitutionnelle", "en": "Inter-institutional coordination"}),
-]
-
-# =========================================================
-# Helpers
-# =========================================================
-@st.cache_data
-def load_longlist() -> pd.DataFrame:
-    """Load the indicator longlist (domain_code + labels FR/EN).
-
-    Streamlit Cloud will crash at startup if this CSV is missing.
-    We therefore provide a safe fallback to an empty longlist, so the
-    questionnaire remains usable with custom indicators.
-    """
-    path = DATA_DIR / "indicator_longlist.csv"
-    base_cols = ["domain_code", "stat_label_fr", "stat_label_en"]
-
-    if not path.exists():
-        # Safe fallback: empty longlist with expected columns
-        df = pd.DataFrame(columns=base_cols)
-        df["stat_label_display_en"] = ""
-        return df
-
-    df = pd.read_csv(path, dtype=str).fillna("")
-
-    # Ensure expected columns exist even if the CSV schema changed
-    for c in base_cols:
-        if c not in df.columns:
-            df[c] = ""
-
-    # fallback if stat_label_en is empty: use FR label
-    df["stat_label_display_en"] = df["stat_label_en"].where(
-        df["stat_label_en"].astype(str).str.len() > 0,
-        df["stat_label_fr"].astype(str)
-    )
-    return df
+# =========================
+# Helpers : i18n and state
+# =========================
 
 def t(lang: str, fr: str, en: str) -> str:
     return fr if lang == "fr" else en
 
-def label_for_option(lang: str, opt: Dict[str, str]) -> str:
-    return opt["fr"] if lang == "fr" else opt["en"]
 
-def option_list(lang: str, items: List[Tuple[str, Dict[str, str]]]) -> List[Tuple[str, str]]:
-    """Return list of (code, label)"""
-    return [(code, label_for_option(lang, meta)) for code, meta in items]
+def now_utc_iso() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-# =========================================================
-# Admin helpers
-# =========================================================
-def _get_query_params() -> Dict[str, List[str]]:
-    """Compatible query params getter across Streamlit versions."""
+def get_query_params() -> Dict[str, List[str]]:
+    """Compatibility across Streamlit versions."""
     try:
-        qp = st.query_params  # Streamlit >= 1.27
-        out: Dict[str, List[str]] = {}
-        for k, v in qp.items():
-            if isinstance(v, list):
-                out[k] = [str(x) for x in v]
-            else:
-                out[k] = [str(v)]
-        return out
+        # Streamlit >= 1.30
+        qp = st.query_params  # type: ignore
+        return {k: list(v) if isinstance(v, (list, tuple)) else [str(v)] for k, v in qp.items()}
     except Exception:
         try:
             return st.experimental_get_query_params()
         except Exception:
             return {}
 
-def _is_admin_route() -> bool:
-    qp = _get_query_params()
-    v = qp.get(ADMIN_QUERY_PARAM, ["0"])[0].lower()
-    return v in ("1", "true", "yes", "y")
 
-def _admin_password() -> str:
-    """Admin password from Streamlit secrets or env. Empty => not configured."""
+def set_query_params(params: Dict[str, Any]) -> None:
     try:
-        if "ADMIN_PASSWORD" in st.secrets:
-            return str(st.secrets["ADMIN_PASSWORD"]).strip()
+        st.query_params.update(params)  # type: ignore
     except Exception:
-        pass
-    return os.environ.get("ADMIN_PASSWORD", "").strip()
-
-def _load_all_submissions(db_path: str) -> pd.DataFrame:
-    if not Path(db_path).exists():
-        return pd.DataFrame(columns=["response_id", "submitted_at", "lang_ui", "payload_json"])
-    con = sqlite3.connect(db_path)
-    df = pd.read_sql_query("SELECT response_id, submitted_at, lang_ui, payload_json FROM responses", con)
-    con.close()
-    return df
-
-def _parse_payloads(df: pd.DataFrame) -> List[Dict]:
-    payloads = []
-    for _, r in df.iterrows():
         try:
-            payloads.append(json.loads(r["payload_json"]))
+            st.experimental_set_query_params(**params)
         except Exception:
-            continue
-    return payloads
-
-def _flatten_for_export(payloads: List[Dict]) -> pd.DataFrame:
-    rows = []
-    for p in payloads:
-        r2 = p.get("r2_respondent", {})
-        r3 = p.get("r3_scope", {})
-        r4 = p.get("r4_priorities", {})
-        r6 = p.get("r6_gender", {})
-        r7 = p.get("r7_sources", {})
-        r8 = p.get("r8_constraints", {})
-        r9 = p.get("r9_quality", {})
-        r10 = p.get("r10_governance", {})
-        r11 = p.get("r11_final", {})
-        top5 = r4.get("top5") or ["", "", "", "", ""]
-        rows.append({
-            "response_id": p.get("meta", {}).get("response_id"),
-            "submitted_at": p.get("meta", {}).get("submitted_at"),
-            "lang_ui": p.get("meta", {}).get("lang_ui"),
-            "organisation": r2.get("organisation"),
-            "country": r2.get("country"),
-            "au_region": r2.get("au_region"),
-            "stakeholder_type": r2.get("stakeholder_type"),
-            "stakeholder_other": r2.get("stakeholder_other"),
-            "position": r2.get("position"),
-            "email": r2.get("email"),
-            "scope": r3.get("scope"),
-            "consulted_within_org": r3.get("consulted_within_org"),
-            "snds_status": r3.get("snds_status"),
-            "top5_domain_1": top5[0] if len(top5) > 0 else "",
-            "top5_domain_2": top5[1] if len(top5) > 1 else "",
-            "top5_domain_3": top5[2] if len(top5) > 2 else "",
-            "top5_domain_4": top5[3] if len(top5) > 3 else "",
-            "top5_domain_5": top5[4] if len(top5) > 4 else "",
-            "gender_main_priority": r6.get("main_priority"),
-            "gender_main_priority_other": r6.get("main_priority_other"),
-            "data_sources": ", ".join(r7.get("sources", []) or []) if isinstance(r7.get("sources"), list) else r7.get("sources"),
-            "production_level": r7.get("production_level"),
-            "quality_calendar": r9.get("calendar"),
-            "quality_revision_policy": r9.get("revision_policy"),
-            "quality_microdata": r9.get("microdata_access"),
-            "governance_method": r10.get("agreement_method"),
-            "governance_other": r10.get("agreement_other"),
-            "final_comment": r11.get("final_comment"),
-            **{f"constraint_{k}": v for k, v in (r8 or {}).items()},
-        })
-    return pd.DataFrame(rows)
-
-def _r5_rows_df(payloads: List[Dict]) -> pd.DataFrame:
-    rows = []
-    for p in payloads:
-        rid = p.get("meta", {}).get("response_id")
-        for row in p.get("r5_indicators_scoring", []) or []:
-            r = dict(row)
-            r["response_id"] = rid
-            rows.append(r)
-    return pd.DataFrame(rows)
-
-def _value_counts_any(df: pd.DataFrame, cols: List[str]) -> pd.DataFrame:
-    """Counts values across multiple columns (used for top5 domain codes)."""
-    if not cols:
-        return pd.DataFrame(columns=["value", "n"])
-    s = pd.concat([df[c] for c in cols if c in df.columns], ignore_index=True)
-    s = s.dropna()
-    s = s[s != ""]
-    vc = s.value_counts().reset_index()
-    vc.columns = ["value", "n"]
-    return vc
-
-def _plot_barh(df_counts: pd.DataFrame, label_col: str, value_col: str, title: str):
-    if df_counts.empty:
-        st.info("Aucune donnée.")
-        return
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    ax.barh(df_counts[label_col].astype(str).iloc[::-1], df_counts[value_col].iloc[::-1])
-    ax.set_title(title)
-    ax.set_xlabel(value_col)
-    st.pyplot(fig, clear_figure=True)
-
-def _make_excel_export(df_flat: pd.DataFrame, df_r5: pd.DataFrame, payloads: List[Dict]) -> bytes:
-    bio = io.BytesIO()
-    with pd.ExcelWriter(bio, engine="openpyxl") as xl:
-        df_flat.to_excel(xl, index=False, sheet_name="submissions")
-        if not df_r5.empty:
-            df_r5.to_excel(xl, index=False, sheet_name="r5_scoring")
-        # JSONL
-        jsonl = "\n".join([json.dumps(p, ensure_ascii=False) for p in payloads])
-        pd.DataFrame({"payload_jsonl": [jsonl]}).to_excel(xl, index=False, sheet_name="payloads_jsonl")
-    return bio.getvalue()
-
-def _build_word_report_bytes(lang: str, payloads: List[Dict], df_flat: pd.DataFrame, df_r5: pd.DataFrame) -> bytes:
-    doc = Document()
-    title = "Rapport de synthèse – Consultation statistiques prioritaires (STATAFRIC)" if lang == "fr" else             "Summary report – Priority statistics consultation (STATAFRIC)"
-    doc.add_heading(title, 0)
-    doc.add_paragraph(("Généré le : " if lang == "fr" else "Generated on: ") + datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"))
-
-    n = len(payloads)
-    doc.add_heading("1. Vue d’ensemble" if lang == "fr" else "1. Overview", level=1)
-    doc.add_paragraph((f"Nombre total de réponses : {n}" if lang == "fr" else f"Total submissions: {n}"))
-    if n == 0:
-        bio = io.BytesIO()
-        doc.save(bio)
-        return bio.getvalue()
-
-    # Profil des répondants
-    doc.add_heading("2. Profil des répondants" if lang == "fr" else "2. Respondent profile", level=1)
-    countries = df_flat.get("country", pd.Series([], dtype=str)).dropna()
-    countries = countries[countries != ""]
-    if len(countries) > 0:
-        doc.add_paragraph((f"Pays couverts : {countries.nunique()}" if lang == "fr" else f"Countries covered: {countries.nunique()}"))
-
-    stypes = df_flat.get("stakeholder_type", pd.Series([], dtype=str)).dropna()
-    stypes = stypes[stypes != ""]
-    if len(stypes) > 0:
-        vc = stypes.value_counts().head(15)
-        table = doc.add_table(rows=1, cols=2)
-        hdr = table.rows[0].cells
-        hdr[0].text = "Type d’acteur" if lang == "fr" else "Stakeholder type"
-        hdr[1].text = "N"
-        for k, v in vc.items():
-            row = table.add_row().cells
-            row[0].text = str(k)
-            row[1].text = str(int(v))
-
-    # Domaines prioritaires
-    doc.add_heading("3. Domaines prioritaires (Top 5)" if lang == "fr" else "3. Priority domains (Top 5)", level=1)
-    top_cols = [c for c in df_flat.columns if c.startswith("top5_domain_")]
-    if top_cols:
-        vc = _value_counts_any(df_flat, top_cols).head(20)
-        table = doc.add_table(rows=1, cols=2)
-        hdr = table.rows[0].cells
-        hdr[0].text = "Code domaine" if lang == "fr" else "Domain code"
-        hdr[1].text = "N"
-        for _, r in vc.iterrows():
-            row = table.add_row().cells
-            row[0].text = str(r["value"])
-            row[1].text = str(int(r["n"]))
-
-    # Statistiques proposées
-    doc.add_heading("4. Statistiques proposées et notation" if lang == "fr" else "4. Proposed statistics and scoring", level=1)
-    if not df_r5.empty and "stat_label" in df_r5.columns:
-        vc = df_r5["stat_label"].fillna("").replace("", np.nan).dropna().value_counts().head(20)
-        doc.add_paragraph("Top statistiques (fréquence)" if lang == "fr" else "Top statistics (frequency)")
-        table = doc.add_table(rows=1, cols=2)
-        hdr = table.rows[0].cells
-        hdr[0].text = "Statistique" if lang == "fr" else "Statistic"
-        hdr[1].text = "N"
-        for k, v in vc.items():
-            row = table.add_row().cells
-            row[0].text = str(k)[:160]
-            row[1].text = str(int(v))
-
-    # Perspective de genre
-    doc.add_heading("5. Perspective de genre" if lang == "fr" else "5. Gender perspective", level=1)
-    # requirements yes/no distribution
-    g_yesno = {}
-    for p in payloads:
-        rr = p.get("r6_gender", {}).get("requirements_yesno", {}) or {}
-        for k, v in rr.items():
-            g_yesno.setdefault(k, []).append(v or "UK")
-    if g_yesno:
-        table = doc.add_table(rows=1, cols=4)
-        hdr = table.rows[0].cells
-        hdr[0].text = "Élément" if lang == "fr" else "Item"
-        hdr[1].text = "Oui" if lang == "fr" else "Yes"
-        hdr[2].text = "Non" if lang == "fr" else "No"
-        hdr[3].text = "UK"
-        for k, vals in g_yesno.items():
-            ser = pd.Series(vals).fillna("UK")
-            yes = int((ser == "Yes").sum())
-            no = int((ser == "No").sum())
-            uk = int((ser == "UK").sum())
-            row = table.add_row().cells
-            row[0].text = str(k)
-            row[1].text = str(yes)
-            row[2].text = str(no)
-            row[3].text = str(uk)
-
-    # Capacité & faisabilité
-    doc.add_heading("6. Capacité et faisabilité (12–24 mois)" if lang == "fr" else "6. Capacity & feasibility (12–24 months)", level=1)
-    constraint_cols = [c for c in df_flat.columns if c.startswith("constraint_")]
-    if constraint_cols:
-        for c in constraint_cols[:12]:
-            ser = df_flat[c].fillna("UK")
-            vc = ser.value_counts()
-            doc.add_paragraph(f"{c} : " + ", ".join([f"{k}={int(v)}" for k, v in vc.items()]))
-
-    bio = io.BytesIO()
-    doc.save(bio)
-    return bio.getvalue()
+            pass
 
 
-def init_state():
-    if "step" not in st.session_state:
-        st.session_state.step = 1
+def init_session() -> None:
+    if "lang" not in st.session_state:
+        st.session_state.lang = "fr"
+    if "nav_idx" not in st.session_state:
+        st.session_state.nav_idx = 0
+    if "responses" not in st.session_state:
+        st.session_state.responses = {}
+    if "submission_id" not in st.session_state:
+        st.session_state.submission_id = None
+    if "admin_authed" not in st.session_state:
+        st.session_state.admin_authed = False
 
-    # ---- Identité répondant
-    st.session_state.setdefault("org", "")
-    st.session_state.setdefault("country", "")
-    st.session_state.setdefault("region", "West")
-    st.session_state.setdefault("stakeholder_type", "NSO")
-    st.session_state.setdefault("stakeholder_other", "")
-    st.session_state.setdefault("position", "")
-    st.session_state.setdefault("email", "")
-    st.session_state.setdefault("phone", "")
-    st.session_state.setdefault("response_language", "Français")
 
-    # ---- Portée
-    st.session_state.setdefault("scope", "institutional")
-    st.session_state.setdefault("consulted", "Yes")
-    st.session_state.setdefault("snds", "yes")
+def resp_get(key: str, default=None):
+    return st.session_state.responses.get(key, default)
 
-    # ---- Rubrique 4
-    st.session_state.setdefault("r4_preselect", [])
-    st.session_state.setdefault("r4_top5", ["", "", "", "", ""])  # codes domaines
 
-    # ---- Rubrique 5 : 5 domaines x 3 stats = 15 slots
-    for di in range(5):
-        for si in range(3):
-            st.session_state.setdefault(f"r5_stat_{di}_{si}", "")
-            st.session_state.setdefault(f"r5_stat_custom_{di}_{si}", "")
-            for crit_key, _, _ in R5_CRITERIA:
-                st.session_state.setdefault(f"r5_{crit_key}_{di}_{si}", "UK")
-            st.session_state.setdefault(f"r5_comment_{di}_{si}", "")
+def resp_set(key: str, value) -> None:
+    st.session_state.responses[key] = value
 
-    # ---- Rubrique 6
-    for key, _ in GENDER_REQ_YESNO:
-        st.session_state.setdefault(f"r6_{key}", "UK")
-    for key, _ in GENDER_REQ_INCLUDE:
-        st.session_state.setdefault(f"r6_{key}", "UK")
-    st.session_state.setdefault("r6_main_priority", "eco_emp")
-    st.session_state.setdefault("r6_main_priority_other", "")
 
-    # ---- Rubrique 7
-    st.session_state.setdefault("r7_sources", [])
-    st.session_state.setdefault("r7_prod_level", "national")
+# =========================
+# Data : longlist loader
+# =========================
 
-    # ---- Rubrique 8
-    for key, _ in R8_CONSTRAINTS:
-        st.session_state.setdefault(f"r8_{key}", "UK")
+@st.cache_data(show_spinner=False)
+def load_longlist() -> pd.DataFrame:
+    """
+    Load indicator longlist from CSV (preferred) or XLSX.
+    The app still runs if the file is missing, but selection lists will be empty.
+    """
+    if os.path.exists(LONG_LIST_CSV):
+        df = pd.read_csv(LONG_LIST_CSV, dtype=str).fillna("")
+        return df
+    if os.path.exists(LONG_LIST_XLSX):
+        df = pd.read_excel(LONG_LIST_XLSX, dtype=str).fillna("")
+        # Expected columns in user file:
+        # Domain_code, Domain_label_fr, Stat_label_fr
+        if set(["Domain_code", "Domain_label_fr", "Stat_label_fr"]).issubset(df.columns):
+            df["domain_code"] = df["Domain_code"].astype(str).str.strip()
+            df["domain_label_fr"] = df["Domain_label_fr"].astype(str).str.split("|", n=1).str[-1].str.strip()
+            df["domain_label_en"] = df["domain_label_fr"]
+            df["stat_code"] = df["Stat_label_fr"].astype(str).str.split("|", n=1).str[0].str.strip()
+            df["stat_label_fr"] = df["Stat_label_fr"].astype(str).str.split("|", n=1).str[-1].str.strip()
+            df["stat_label_en"] = df["stat_label_fr"]
+            return df[["domain_code", "domain_label_fr", "domain_label_en", "stat_code", "stat_label_fr", "stat_label_en"]]
+    return pd.DataFrame(columns=["domain_code", "domain_label_fr", "domain_label_en", "stat_code", "stat_label_fr", "stat_label_en"])
 
-    # ---- Rubrique 9,10,11
-    st.session_state.setdefault("r9_quality", [])
-    st.session_state.setdefault("r10_products", [])
-    for key, _ in VALIDATION_MECHANISMS:
-        st.session_state.setdefault(f"r11_{key}", "UK")
-    st.session_state.setdefault("r11_agreement", "majority")
-    st.session_state.setdefault("r11_agreement_other", "")
 
-    # ---- Rubrique 12
-    st.session_state.setdefault("r12_rec", "")
-    st.session_state.setdefault("r12_missing", "")
-
-def get_top5_domains() -> List[str]:
-    top5 = [d for d in st.session_state.r4_top5 if d]
-    # si l’utilisateur n’a pas encore rempli, renvoyer []
-    return top5 if len(top5) == 5 and len(set(top5)) == 5 else []
-
-def get_stats_options_for_domain(df_long: pd.DataFrame, domain_code: str, lang: str) -> List[str]:
-    # If longlist is missing/empty, allow only custom input later
-    if df_long is None or df_long.empty or "domain_code" not in df_long.columns:
+def domains_from_longlist(df_long: pd.DataFrame, lang: str) -> List[Tuple[str, str]]:
+    if df_long.empty:
         return []
+    col = "domain_label_fr" if lang == "fr" else "domain_label_en"
+    tmp = df_long[["domain_code", col]].drop_duplicates().sort_values(["domain_code", col])
+    return [(r["domain_code"], r[col]) for _, r in tmp.iterrows()]
 
-    if lang == "fr":
-        col = "stat_label_fr"
-    else:
-        col = "stat_label_display_en" if "stat_label_display_en" in df_long.columns else "stat_label_en"
 
-    if col not in df_long.columns:
+def stats_for_domain(df_long: pd.DataFrame, domain_code: str, lang: str) -> List[Tuple[str, str]]:
+    if df_long.empty or not domain_code:
         return []
+    col = "stat_label_fr" if lang == "fr" else "stat_label_en"
+    tmp = df_long[df_long["domain_code"] == domain_code][["stat_code", col]].drop_duplicates()
+    tmp = tmp.sort_values(["stat_code", col])
+    return [(r["stat_code"], r[col]) for _, r in tmp.iterrows()]
 
-    stats = df_long[df_long["domain_code"] == domain_code][col].tolist()
-    stats = [s for s in stats if isinstance(s, str) and s.strip()]
-    stats = sorted(list(dict.fromkeys(stats)))
-    return stats
 
-def compute_r5_selected(lang: str, df_long: pd.DataFrame) -> List[Dict]:
-    """Compile toutes les stats réellement sélectionnées, avec critères."""
-    top5 = get_top5_domains()
-    if not top5:
-        return []
+# =========================
+# Storage : SQLite + optional Google Sheets + Dropbox
+# =========================
 
-    compiled = []
-    for di, dcode in enumerate(top5):
-        for si in range(3):
-            stat = st.session_state.get(f"r5_stat_{di}_{si}", "").strip()
-            custom = st.session_state.get(f"r5_stat_custom_{di}_{si}", "").strip()
-            if stat == "__CUSTOM__":
-                stat_label = custom
-            else:
-                stat_label = stat
-
-            if not stat_label:
-                continue
-
-            # critères
-            row = {
-                "domain_code": dcode,
-                "domain_label_fr": DOMAIN_CODE_TO_LABEL_FR.get(dcode, dcode),
-                "domain_label_en": DOMAIN_CODE_TO_LABEL_EN.get(dcode, dcode),
-                "stat_label": stat_label,
-                "slot": f"{di+1}.{si+1}"
-            }
-            for crit_key, _, crit_kind in R5_CRITERIA:
-                row[crit_key] = st.session_state.get(f"r5_{crit_key}_{di}_{si}", "UK")
-                if crit_kind == "cost":
-                    row[f"{crit_key}_score"] = SCORE_MAP_COST.get(row[crit_key], 0)
-                else:
-                    row[f"{crit_key}_score"] = SCORE_MAP_STD.get(row[crit_key], 0)
-            row["comment"] = st.session_state.get(f"r5_comment_{di}_{si}", "").strip()
-            row["total_score"] = sum(row[f"{k}_score"] for k,_,_ in R5_CRITERIA)
-            compiled.append(row)
-    return compiled
-
-# =========================================================
-# Validations (contrôles qualité)
-# =========================================================
-def validate_r4() -> List[str]:
-    errors = []
-    pre = st.session_state.r4_preselect
-    top5 = st.session_state.r4_top5
-
-    # R4_Q1 : 5 à 10 domaines préselectionnés sans doublon 
-    if len(pre) < 5:
-        errors.append("R4_Q1 : minimum 5 domaines à présélectionner.")
-    if len(pre) > 10:
-        errors.append("R4_Q1 : maximum 10 domaines à présélectionner.")
-    if len(set(pre)) != len(pre):
-        errors.append("R4_Q1 : doublons détectés dans la présélection.")
-
-    # Top5 : 5 domaines uniques, inclus dans la présélection et sans doublon 
-    top5_filled = [d for d in top5 if d]
-    if len(top5_filled) != 5:
-        errors.append("R4_Q2 : vous devez renseigner exactement 5 domaines (Top 5).")
-    if len(set(top5_filled)) != len(top5_filled):
-        errors.append("R4_Q2 : doublons détectés dans le Top 5.")
-    if any(d not in pre for d in top5_filled):
-        errors.append("R4_Q2 : tous les domaines du Top 5 doivent appartenir à la présélection (R4_Q1).")
-    return errors
-
-def validate_r5(lang: str, df_long: pd.DataFrame) -> List[str]:
-    errors = []
-    top5 = get_top5_domains()
-    if not top5:
-        errors.append("R5 : le Top 5 de la Rubrique 4 doit être finalisé avant la notation.")
-        return errors
-
-    selected = compute_r5_selected(lang, df_long)
-
-    # Total stats : min 5, max 15  + 
-    if len(selected) < 5:
-        errors.append("R5 : vous devez proposer au moins 5 statistiques au total.")
-    if len(selected) > 15:
-        errors.append("R5 : vous ne pouvez pas dépasser 15 statistiques au total.")
-
-    # Max 3 stats par domaine et min 1 par domaine Top5 
-    by_domain = {}
-    for row in selected:
-        by_domain.setdefault(row["domain_code"], []).append(row)
-
-    for dcode in top5:
-        n = len(by_domain.get(dcode, []))
-        if n == 0:
-            errors.append(f"R5 : au moins 1 statistique est requise pour le domaine {dcode}.")
-        if n > 3:
-            errors.append(f"R5 : maximum 3 statistiques pour le domaine {dcode}.")
-
-    # Pas de duplication de statistique 
-    labels = [r["stat_label"].strip().casefold() for r in selected]
-    if len(set(labels)) != len(labels):
-        errors.append("R5 : doublons détectés dans les statistiques proposées (Stat_label).")
-
-    # Notation doit couvrir toutes les stats préselectionnées 
-    for row in selected:
-        for crit_key, _, _ in R5_CRITERIA:
-            if row.get(crit_key, "UK") not in ("High","Med","Low","UK","Medium"):
-                errors.append("R5 : une ou plusieurs notations sont invalides (valeurs attendues : High/Med/Low/UK).")
-                break
-
-    return errors
-
-def validate_r6() -> List[str]:
-    errors = []
-    for key, meta in GENDER_REQ_YESNO:
-        if st.session_state.get(f"r6_{key}", "UK") not in YN_UK:
-            errors.append("R6 : valeur invalide dans le tableau (Oui/Non/UK).")
-            break
-    for key, meta in GENDER_REQ_INCLUDE:
-        if st.session_state.get(f"r6_{key}", "UK") not in INCLUDE_OPT_UK:
-            errors.append("R6 : valeur invalide dans le tableau (Inclure/Optionnel/UK).")
-            break
-    if st.session_state.get("r6_main_priority") == "other" and not st.session_state.get("r6_main_priority_other", "").strip():
-        errors.append("R6 : précisez votre priorité genre principale (Autre).")
-    return errors
-
-def validate_r8() -> List[str]:
-    errors = []
-    for key, meta in R8_CONSTRAINTS:
-        if st.session_state.get(f"r8_{key}", "UK") not in HML_UK:
-            errors.append("R8 : toutes les contraintes doivent être notées (High/Med/Low/UK).")
-            break
-    return errors
-
-def validate_r9() -> List[str]:
-    errors = []
-    sel = st.session_state.get("r9_quality", [])
-    if len(sel) == 0:
-        errors.append("R9 : cochez au moins 1 option.")
-    if len(sel) > 3:
-        errors.append("R9 : maximum 3 options.")
-    return errors
-
-def validate_r10() -> List[str]:
-    errors = []
-    if len(st.session_state.get("r10_products", [])) == 0:
-        errors.append("R10 : cochez au moins 1 produit de diffusion.")
-    return errors
-
-def validate_r11() -> List[str]:
-    errors = []
-    for key, meta in VALIDATION_MECHANISMS:
-        if st.session_state.get(f"r11_{key}", "UK") not in YN_UK:
-            errors.append("R11 : toutes les modalités doivent être renseignées (Oui/Non/UK).")
-            break
-    if st.session_state.get("r11_agreement") == "other" and not st.session_state.get("r11_agreement_other", "").strip():
-        errors.append("R11 : précisez le niveau d’accord (Autre).")
-    return errors
-
-def current_step_errors(lang: str, df_long: pd.DataFrame) -> List[str]:
-    step = st.session_state.step
-    if step == 4:
-        return validate_r4()
-    if step == 5:
-        return validate_r5(lang, df_long)
-    if step == 6:
-        return validate_r6()
-    if step == 8:
-        return validate_r8()
-    if step == 9:
-        return validate_r9()
-    if step == 10:
-        return validate_r10()
-    if step == 11:
-        return validate_r11()
-    return []
-
-# =========================================================
-# Stockage
-# =========================================================
-def init_db():
+def db_init() -> None:
     con = sqlite3.connect(DB_PATH)
     cur = con.cursor()
     cur.execute("""
-        CREATE TABLE IF NOT EXISTS responses (
-            response_id TEXT PRIMARY KEY,
-            submitted_at TEXT,
-            lang_ui TEXT,
+        CREATE TABLE IF NOT EXISTS submissions(
+            submission_id TEXT PRIMARY KEY,
+            submitted_at_utc TEXT,
+            lang TEXT,
             payload_json TEXT
         )
     """)
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS r5_scoring (
-            response_id TEXT,
-            domain_code TEXT,
-            stat_label TEXT,
-            policy_demand TEXT,
-            harmonization TEXT,
-            availability TEXT,
-            feasibility TEXT,
-            cost_burden TEXT,
-            quick_results TEXT,
-            gender_impact TEXT,
-            total_score INTEGER,
-            comment TEXT
-        )
-    """)
     con.commit()
     con.close()
 
-def save_response(payload: Dict, r5_rows: List[Dict]):
-    init_db()
+
+def db_save_submission(submission_id: str, lang: str, payload: Dict[str, Any]) -> None:
+    db_init()
     con = sqlite3.connect(DB_PATH)
     cur = con.cursor()
-    rid = payload["meta"]["response_id"]
-    cur.execute(
-        "INSERT OR REPLACE INTO responses(response_id, submitted_at, lang_ui, payload_json) VALUES (?, ?, ?, ?)",
-        (rid, payload["meta"]["submitted_at"], payload["meta"]["lang_ui"], json.dumps(payload, ensure_ascii=False))
-    )
-    # vider et réinsérer R5 (simple)
-    cur.execute("DELETE FROM r5_scoring WHERE response_id = ?", (rid,))
-    for row in r5_rows:
-        cur.execute("""
-            INSERT INTO r5_scoring(
-              response_id, domain_code, stat_label, policy_demand, harmonization, availability, feasibility,
-              cost_burden, quick_results, gender_impact, total_score, comment
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (
-            rid,
-            row["domain_code"],
-            row["stat_label"],
-            row["policy_demand"],
-            row["harmonization"],
-            row["availability"],
-            row["feasibility"],
-            row["cost_burden"],
-            row["quick_results"],
-            row["gender_impact"],
-            int(row["total_score"]),
-            row.get("comment","")
-        ))
+    cur.execute("""
+        INSERT OR REPLACE INTO submissions(submission_id, submitted_at_utc, lang, payload_json)
+        VALUES(?, ?, ?, ?)
+    """, (submission_id, now_utc_iso(), lang, json.dumps(payload, ensure_ascii=False)))
     con.commit()
     con.close()
 
-# =========================================================
-# UI – Rubriques
-# =========================================================
-def ui_header(lang: str):
-    st.title(APP_TITLE_FR if lang == "fr" else APP_TITLE_EN)
-    st.caption(
-        t(
-            lang,
-            "Temps estimé : 20–25 minutes. UK = Inconnu (0).",
-            "Estimated time: 20–25 minutes. UK = Unknown (0)."
-        )
-    )
-    st.divider()
 
-def ui_sidebar(lang: str):
-    st.sidebar.header(t(lang, "Navigation", "Navigation"))
-    steps = [
-        (1, t(lang, "Rubrique 1 : Instructions", "Section 1: Instructions")),
-        (2, t(lang, "Rubrique 2 : Identification du répondant", "Section 2: Respondent identification")),
-        (3, t(lang, "Rubrique 3 : Portée de la réponse", "Section 3: Scope of response")),
-        (4, t(lang, "Rubrique 4 : Domaines prioritaires", "Section 4: Priority domains")),
-        (5, t(lang, "Rubrique 5 : Statistiques et notation", "Section 5: Indicators and scoring")),
-        (6, t(lang, "Rubrique 6 : Perspective de genre", "Section 6: Gender perspective")),
-        (7, t(lang, "Rubrique 7 : Sources et niveau de production", "Section 7: Data sources and production level")),
-        (8, t(lang, "Rubrique 8 : Capacité et faisabilité", "Section 8: Capacity and feasibility")),
-        (9, t(lang, "Rubrique 9 : Harmonisation et qualité", "Section 9: Harmonization and quality")),
-        (10, t(lang, "Rubrique 10 : Diffusion", "Section 10: Dissemination")),
-        (11, t(lang, "Rubrique 11 : Validation", "Section 11: Validation")),
-        (12, t(lang, "Rubrique 12 : Questions ouvertes", "Section 12: Open questions")),
-        (13, t(lang, "Relecture et soumission", "Review and submit")),
+def db_read_submissions(limit: int = 2000) -> pd.DataFrame:
+    if not os.path.exists(DB_PATH):
+        return pd.DataFrame(columns=["submission_id", "submitted_at_utc", "lang", "payload_json"])
+    con = sqlite3.connect(DB_PATH)
+    df = pd.read_sql_query(
+        "SELECT submission_id, submitted_at_utc, lang, payload_json FROM submissions ORDER BY submitted_at_utc DESC LIMIT ?",
+        con,
+        params=(limit,),
+    )
+    con.close()
+    return df
+
+
+def flatten_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
+    """Create a 'flat' row for exports / Google Sheets."""
+    out: Dict[str, Any] = {}
+    # Identification
+    out["organisation"] = payload.get("organisation", "")
+    out["pays"] = payload.get("pays", "")
+    out["type_acteur"] = payload.get("type_acteur", "")
+    out["fonction"] = payload.get("fonction", "")
+    out["email"] = payload.get("email", "")
+    out["lang"] = payload.get("lang", "")
+    # Domains
+    top5 = payload.get("top5_domains", [])
+    for i in range(5):
+        out[f"top_domain_{i+1}"] = top5[i] if i < len(top5) else ""
+    # Stats count
+    selected_stats = payload.get("selected_stats", [])
+    out["nb_stats"] = len(selected_stats) if isinstance(selected_stats, list) else 0
+    out["stats_list"] = "; ".join(selected_stats) if isinstance(selected_stats, list) else ""
+    # Optional open questions
+    out["comment_1"] = payload.get("open_q1", "")
+    out["comment_2"] = payload.get("open_q2", "")
+    return out
+
+
+def google_sheets_append(payload: Dict[str, Any]) -> Tuple[bool, str]:
+    """
+    Append a row into a Google Sheet if configured.
+    Requires secrets:
+      GOOGLE_SHEET_ID
+      GOOGLE_SERVICE_ACCOUNT (dict)
+    """
+    if gspread is None or Credentials is None:
+        return False, "Bibliothèques Google Sheets non disponibles (gspread/google-auth)."
+    try:
+        sheet_id = st.secrets.get("GOOGLE_SHEET_ID", None)
+        sa_info = st.secrets.get("GOOGLE_SERVICE_ACCOUNT", None)
+        if not sheet_id or not sa_info:
+            return False, "Google Sheets non configuré (secrets manquants)."
+        scopes = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
+        creds = Credentials.from_service_account_info(sa_info, scopes=scopes)
+        gc = gspread.authorize(creds)
+        sh = gc.open_by_key(sheet_id)
+        try:
+            ws = sh.worksheet("responses")
+        except Exception:
+            ws = sh.add_worksheet(title="responses", rows=2000, cols=80)
+
+        row = flatten_payload(payload)
+        # Ensure header
+        existing = ws.get_all_values()
+        if not existing:
+            ws.append_row(list(row.keys()), value_input_option="RAW")
+        else:
+            header = existing[0]
+            # Add any missing columns at end
+            for k in row.keys():
+                if k not in header:
+                    header.append(k)
+            # If header grew, update first row
+            ws.update("A1", [header])
+        # Align order with header
+        header = ws.row_values(1)
+        values = [row.get(h, "") for h in header]
+        ws.append_row(values, value_input_option="RAW")
+        return True, "OK"
+    except Exception as e:
+        return False, f"Erreur Google Sheets : {e}"
+
+
+def dropbox_upload_json(submission_id: str, payload: Dict[str, Any]) -> Tuple[bool, str]:
+    """
+    Upload the JSON submission to Dropbox if configured.
+    Requires secret: DROPBOX_ACCESS_TOKEN
+    Optional: DROPBOX_FOLDER (default /consultation_stat_niang)
+    """
+    if dropbox is None:
+        return False, "Bibliothèque Dropbox non disponible."
+    try:
+        token = st.secrets.get("DROPBOX_ACCESS_TOKEN", None)
+        if not token:
+            return False, "Dropbox non configuré (DROPBOX_ACCESS_TOKEN manquant)."
+        folder = st.secrets.get("DROPBOX_FOLDER", "/consultation_stat_niang")
+        folder = folder if folder.startswith("/") else "/" + folder
+        path = f"{folder}/submissions/{submission_id}.json"
+        dbx = dropbox.Dropbox(token)
+        content = json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8")
+        dbx.files_upload(content, path, mode=dropbox.files.WriteMode.overwrite)
+        return True, "OK"
+    except Exception as e:
+        return False, f"Erreur Dropbox : {e}"
+
+
+# =========================
+# Validation logic (quality controls)
+# =========================
+
+EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
+
+def validate_r2(lang: str) -> List[str]:
+    errs: List[str] = []
+    organisation = resp_get("organisation", "").strip()
+    pays = resp_get("pays", "").strip()
+    type_acteur = resp_get("type_acteur", "").strip()
+    fonction = resp_get("fonction", "").strip()
+    fonction_autre = resp_get("fonction_autre", "").strip()
+    email = resp_get("email", "").strip()
+
+    if not organisation:
+        errs.append(t(lang, "Organisation : champ obligatoire.", "Organization: required field."))
+    if not pays:
+        errs.append(t(lang, "Pays : champ obligatoire.", "Country: required field."))
+    if not type_acteur:
+        errs.append(t(lang, "Type d’acteur : champ obligatoire.", "Stakeholder type: required field."))
+    if not fonction:
+        errs.append(t(lang, "Fonction : champ obligatoire.", "Role/Function: required field."))
+    if fonction == "Autre" or fonction == "Other":
+        if not fonction_autre:
+            errs.append(t(lang, "Fonction (Autre) : précisez.", "Role (Other): please specify."))
+    if not email:
+        errs.append(t(lang, "Email : champ obligatoire.", "Email: required field."))
+    elif not EMAIL_RE.match(email):
+        errs.append(t(lang, "Email : format invalide.", "Email: invalid format."))
+    return errs
+
+
+def validate_r4(lang: str) -> List[str]:
+    errs: List[str] = []
+    pre = resp_get("preselected_domains", [])
+    top5 = resp_get("top5_domains", [])
+    if not isinstance(pre, list):
+        pre = []
+    if not isinstance(top5, list):
+        top5 = []
+    if len(pre) < 5 or len(pre) > 10:
+        errs.append(t(lang, "Rubrique 4 : pré-sélectionnez entre 5 et 10 domaines.", "Section 4: pre-select 5 to 10 domains."))
+    if len(set(pre)) != len(pre):
+        errs.append(t(lang, "Rubrique 4 : la pré-sélection contient des doublons.", "Section 4: duplicates found in pre-selection."))
+    if len(top5) != 5:
+        errs.append(t(lang, "Rubrique 4 : le TOP 5 doit contenir exactement 5 domaines.", "Section 4: TOP 5 must contain exactly 5 domains."))
+    else:
+        if len(set(top5)) != 5:
+            errs.append(t(lang, "Rubrique 4 : le TOP 5 contient des doublons.", "Section 4: TOP 5 contains duplicates."))
+        missing = [d for d in top5 if d not in pre]
+        if missing:
+            errs.append(t(lang, "Rubrique 4 : chaque domaine du TOP 5 doit provenir de la pré-sélection.", "Section 4: TOP 5 must be selected from pre-selection."))
+    return errs
+
+
+def validate_r5(lang: str) -> List[str]:
+    errs: List[str] = []
+    top5 = resp_get("top5_domains", [])
+    selected_by_domain: Dict[str, List[str]] = resp_get("selected_by_domain", {})
+    if not isinstance(selected_by_domain, dict):
+        selected_by_domain = {}
+
+    all_stats: List[str] = []
+    for d in top5:
+        stats = selected_by_domain.get(d, [])
+        if not isinstance(stats, list):
+            stats = []
+        if len(stats) < 1:
+            errs.append(t(lang, f"Rubrique 5 : choisissez au moins 1 statistique pour {d}.",
+                          f"Section 5: select at least 1 indicator for {d}."))
+        if len(stats) > 3:
+            errs.append(t(lang, f"Rubrique 5 : maximum 3 statistiques pour {d}.",
+                          f"Section 5: maximum 3 indicators for {d}."))
+        all_stats.extend(stats)
+
+    if len(all_stats) < 5 or len(all_stats) > 15:
+        errs.append(t(lang, "Rubrique 5 : le total des statistiques doit être entre 5 et 15.",
+                      "Section 5: total number of indicators must be between 5 and 15."))
+
+    if len(set(all_stats)) != len(all_stats):
+        errs.append(t(lang, "Rubrique 5 : une même statistique ne doit pas être sélectionnée plusieurs fois.",
+                      "Section 5: the same indicator must not be selected more than once."))
+
+    # scoring
+    scoring: Dict[str, Dict[str, Any]] = resp_get("scoring", {})
+    if not isinstance(scoring, dict):
+        scoring = {}
+
+    for s in all_stats:
+        if s not in scoring:
+            errs.append(t(lang, f"Rubrique 5 : vous devez noter la statistique {s}.",
+                          f"Section 5: you must score indicator {s}."))
+            continue
+        for k in ["gap", "demand", "feasibility"]:
+            if k not in scoring[s]:
+                errs.append(t(lang, f"Rubrique 5 : la note '{k}' manque pour {s}.",
+                              f"Section 5: missing score '{k}' for {s}."))
+            else:
+                try:
+                    v = int(scoring[s][k])
+                    if v < 0 or v > 3:
+                        errs.append(t(lang, f"Rubrique 5 : note invalide pour {s} ({k}).",
+                                      f"Section 5: invalid score for {s} ({k})."))
+                except Exception:
+                    errs.append(t(lang, f"Rubrique 5 : note invalide pour {s} ({k}).",
+                                  f"Section 5: invalid score for {s} ({k})."))
+    return errs
+
+
+def validate_r6(lang: str) -> List[str]:
+    errs: List[str] = []
+    tbl = resp_get("gender_table", {})
+    if not isinstance(tbl, dict) or not tbl:
+        errs.append(t(lang, "Rubrique 6 : veuillez renseigner le tableau.", "Section 6: please complete the table."))
+        return errs
+    for k, v in tbl.items():
+        if not v:
+            errs.append(t(lang, f"Rubrique 6 : ligne non renseignée : {k}.", f"Section 6: missing answer for: {k}."))
+    return errs
+
+
+def validate_r8(lang: str) -> List[str]:
+    errs: List[str] = []
+    tbl = resp_get("capacity_table", {})
+    if not isinstance(tbl, dict) or not tbl:
+        errs.append(t(lang, "Rubrique 8 : veuillez renseigner le tableau.", "Section 8: please complete the table."))
+        return errs
+    for k, v in tbl.items():
+        if not v:
+            errs.append(t(lang, f"Rubrique 8 : ligne non renseignée : {k}.", f"Section 8: missing answer for: {k}."))
+    return errs
+
+
+def validate_all(lang: str) -> List[str]:
+    errs = []
+    errs.extend(validate_r2(lang))
+    errs.extend(validate_r4(lang))
+    errs.extend(validate_r5(lang))
+    errs.extend(validate_r6(lang))
+    errs.extend(validate_r8(lang))
+    # Open questions optional: handled in send step as warnings
+    return errs
+
+
+# =========================
+# Navigation
+# =========================
+
+def get_steps(lang: str) -> List[Tuple[str, str]]:
+    # Rubrics 7 and 11 removed, plus final SEND tab
+    return [
+        ("R1", t(lang, "Rubrique 1 : Instructions", "Section 1: Instructions")),
+        ("R2", t(lang, "Rubrique 2 : Identification du répondant", "Section 2: Respondent identification")),
+        ("R3", t(lang, "Rubrique 3 : Portée de la réponse", "Section 3: Scope of response")),
+        ("R4", t(lang, "Rubrique 4 : Domaines prioritaires", "Section 4: Priority domains")),
+        ("R5", t(lang, "Rubrique 5 : Statistiques prioritaires et notation", "Section 5: Priority indicators and scoring")),
+        ("R6", t(lang, "Rubrique 6 : Perspective de genre", "Section 6: Gender perspective")),
+        ("R8", t(lang, "Rubrique 8 : Capacité et faisabilité (12–24 mois)", "Section 8: Capacity and feasibility (12–24 months)")),
+        ("R9", t(lang, "Rubrique 9 : Harmonisation et qualité", "Section 9: Harmonization and quality")),
+        ("R10", t(lang, "Rubrique 10 : Diffusion", "Section 10: Dissemination")),
+        ("R12", t(lang, "Rubrique 12 : Questions ouvertes", "Section 12: Open questions")),
+        ("SEND", t(lang, "ENVOYER", "SUBMIT")),
     ]
+
+
+def render_sidebar(lang: str, steps: List[Tuple[str, str]]) -> None:
+    st.sidebar.header(t(lang, "Navigation", "Navigation"))
     labels = [s[1] for s in steps]
-    current_idx = [s[0] for s in steps].index(st.session_state.step)
-    new_idx = st.sidebar.radio(
-        t(lang, "Aller à :", "Go to:"),
+
+    # Keep radio in sync with nav_idx (fixes "Next/Prev not working")
+    if "nav_radio" not in st.session_state:
+        st.session_state.nav_radio = st.session_state.nav_idx
+
+    chosen = st.sidebar.radio(
+        t(lang, "Aller à", "Go to"),
         options=list(range(len(labels))),
-        index=current_idx,
+        index=int(st.session_state.nav_idx),
         format_func=lambda i: labels[i],
         key="nav_radio"
     )
-    st.session_state.step = steps[new_idx][0]
+
+    # User clicked in sidebar
+    if int(chosen) != int(st.session_state.nav_idx):
+        st.session_state.nav_idx = int(chosen)
 
     st.sidebar.divider()
     st.sidebar.caption(
-        t(lang,
-          "Note : les contrôles qualité bloquent la progression si une contrainte n’est pas respectée.",
-          "Note: quality checks prevent moving forward when constraints are not met.")
+        t(
+            lang,
+            "Note : les contrôles qualité peuvent bloquer la progression si une contrainte n’est pas respectée.",
+            "Note: quality checks may prevent moving forward when constraints are not met."
+        )
     )
 
-def nav_buttons(lang: str, df_long: pd.DataFrame):
-    errors = current_step_errors(lang, df_long)
-    col1, col2, col3 = st.columns([1,1,3])
+    st.sidebar.markdown("---")
+    st.sidebar.caption(
+        t(
+            lang,
+            "UK : Inconnu (score 0). Utilisez UK uniquement si l’information est indisponible.",
+            "UK: Unknown (score 0). Use UK only when information is unavailable."
+        )
+    )
+
+
+def nav_buttons(lang: str, steps: List[Tuple[str, str]], df_long: pd.DataFrame) -> None:
+    """Bottom nav buttons, with blocking based on current step validations."""
+    step_key = steps[st.session_state.nav_idx][0]
+    errors: List[str] = []
+
+    # Blocking rules per step
+    if step_key == "R2":
+        errors = validate_r2(lang)
+    elif step_key == "R4":
+        errors = validate_r4(lang)
+    elif step_key == "R5":
+        errors = validate_r5(lang)
+    elif step_key == "R6":
+        errors = validate_r6(lang)
+    elif step_key == "R8":
+        errors = validate_r8(lang)
+
+    col1, col2, col3 = st.columns([1, 1, 3])
     with col1:
-        if st.session_state.step > 1 and st.button(t(lang, "⬅ Précédent", "⬅ Previous")):
-            st.session_state.step -= 1
+        prev_disabled = st.session_state.nav_idx <= 0
+        if st.button(t(lang, "⬅ Précédent", "⬅ Previous"), disabled=prev_disabled):
+            st.session_state.nav_idx = max(0, st.session_state.nav_idx - 1)
+            st.session_state.nav_radio = st.session_state.nav_idx
             st.rerun()
     with col2:
-        # autoriser Next si pas d’erreurs
-        next_label = t(lang, "Suivant ➡", "Next ➡")
-        disabled = bool(errors) or st.session_state.step >= 13
-        if st.button(next_label, disabled=disabled):
-            st.session_state.step += 1
+        next_disabled = (st.session_state.nav_idx >= len(steps) - 1) or bool(errors)
+        if st.button(t(lang, "Suivant ➡", "Next ➡"), disabled=next_disabled):
+            st.session_state.nav_idx = min(len(steps) - 1, st.session_state.nav_idx + 1)
+            st.session_state.nav_radio = st.session_state.nav_idx
             st.rerun()
     with col3:
         if errors:
             st.error("\n".join(errors))
 
-def rubric_1(lang: str):
+
+# =========================
+# UI : Rubrics
+# =========================
+
+def rubric_1(lang: str) -> None:
     st.subheader(t(lang, "Rubrique 1 : Instructions", "Section 1: Instructions"))
     st.markdown(
         t(
             lang,
-            "- Objectif : construire une liste de statistiques prioritaires validable au niveau continental.\n"
-            "- Étapes : (i) domaines prioritaires, (ii) statistiques par domaine, (iii) notation multicritères, (iv) exigences genre et modalités de production/diffusion.\n"
-            "- Barème : High = 3, Med = 2, Low = 1, UK = 0 (inconnu).\n",
-            "- Goal: build a continentally validable list of priority statistics.\n"
-            "- Steps: (i) priority domains, (ii) indicators per domain, (iii) multi-criteria scoring, (iv) gender requirements and production/dissemination modalities.\n"
-            "- Scoring: High = 3, Med = 2, Low = 1, UK = 0 (unknown).\n"
+            """
+### Objectif
+Ce questionnaire vise à recueillir votre avis sur **les statistiques socio-économiques prioritaires** à produire et diffuser au niveau continental.
+
+### Comment répondre
+1. **Identifiez** votre organisation (Rubrique 2).
+2. **Pré-sélectionnez 5 à 10 domaines** et classez un **TOP 5** (Rubrique 4).
+3. Pour chaque domaine du TOP 5 : choisissez **1 à 3 statistiques** et attribuez des **notes** (Rubrique 5).
+4. Complétez les rubriques transversales : **genre** et **capacité/faisabilité**.
+
+### Barème de notation (Rubrique 5)
+- **3** : élevé / très important  
+- **2** : moyen  
+- **1** : faible  
+- **0** : UK (Inconnu)
+
+> Conseil : privilégiez les statistiques réellement **utilisables, demandées et faisables** à horizon 12–24 mois.
+            """,
+            """
+### Purpose
+This questionnaire collects your views on **priority socio-economic statistics** to be produced and disseminated at continental level.
+
+### How to answer
+1. **Identify** your organization (Section 2).
+2. **Pre-select 5–10 domains** and rank a **TOP 5** (Section 4).
+3. For each TOP 5 domain: select **1–3 indicators** and provide **scores** (Section 5).
+4. Complete cross-cutting sections: **gender** and **capacity/feasibility**.
+
+### Scoring scale (Section 5)
+- **3**: high  
+- **2**: medium  
+- **1**: low  
+- **0**: UK (Unknown)
+
+> Tip: prioritize indicators that are **useful, demanded and feasible** within 12–24 months.
+            """
         )
     )
-    st.info(t(lang, "NB : UK = Inconnu (0).", "Note: UK = Unknown (0)."))
 
-def rubric_2(lang: str):
+
+def rubric_2(lang: str) -> None:
     st.subheader(t(lang, "Rubrique 2 : Identification du répondant", "Section 2: Respondent identification"))
-    c1, c2 = st.columns(2)
-
-    with c1:
-        st.text_input(t(lang, "Organisation", "Organization"), key="org")
-        st.selectbox(t(lang, "Pays", "Country"), options=[""] + COUNTRIES_FR, key="country")
-        region_opts = option_list(lang, REGIONS_AU)
-        st.selectbox(
-            t(lang, "Région UA", "AU region"),
-            options=[c for c,_ in region_opts],
-            format_func=lambda x: dict(region_opts).get(x, x),
-            key="region"
+    st.info(
+        t(
+            lang,
+            "Merci de renseigner ces informations. Elles servent uniquement à l’analyse et ne seront pas publiées nominativement.",
+            "Please provide these details. They are used for analysis and will not be published in a personally identifiable way."
         )
-    with c2:
-        st.selectbox(
-            t(lang, "Type d’acteur", "Stakeholder type"),
-            options=[c for c,_ in option_list(lang, STAKEHOLDER_TYPES)],
-            format_func=lambda x: dict(option_list(lang, STAKEHOLDER_TYPES)).get(x, x),
-            key="stakeholder_type"
-        )
-        if st.session_state.stakeholder_type == "Other":
-            st.text_input(t(lang, "Précisez (autre)", "Specify (other)"), key="stakeholder_other")
-        st.text_input(t(lang, "Fonction", "Position"), key="position")
-        st.text_input("Email", key="email")
-        st.text_input(t(lang, "Téléphone", "Phone"), key="phone")
-        st.selectbox(t(lang, "Langue de réponse", "Response language"), options=RESPONSE_LANG_OPTIONS, key="response_language")
-
-def rubric_3(lang: str):
-    st.subheader(t(lang, "Rubrique 3 : Portée de votre réponse", "Section 3: Scope of your response"))
-    scope_opts = option_list(lang, SCOPE_OPTIONS)
-    st.radio(
-        t(lang, "Votre réponse reflète principalement :", "Your response mainly reflects:"),
-        options=[c for c,_ in scope_opts],
-        format_func=lambda x: dict(scope_opts)[x],
-        key="scope",
-        horizontal=False
-    )
-    st.radio(
-        t(lang, "Avez-vous consulté d’autres collègues avant de répondre ?", "Did you consult colleagues before answering?"),
-        options=YN_UK[:2],
-        format_func=lambda x: t(lang, "Oui" if x=="Yes" else "Non", "Yes" if x=="Yes" else "No"),
-        key="consulted",
-        horizontal=True
-    )
-    snds_opts = option_list(lang, SNDS_STATUS)
-    st.radio(
-        t(lang, "Votre pays dispose-t-il d’une SNDS/plan statistique actif ?", "Does your country have an active NSDS/statistical plan?"),
-        options=[c for c,_ in snds_opts],
-        format_func=lambda x: dict(snds_opts)[x],
-        key="snds",
-        horizontal=False
     )
 
-def rubric_4(lang: str):
-    st.subheader(t(lang, "Rubrique 4 : Sélection des domaines prioritaires", "Section 4: Priority domains selection"))
+    resp_set("lang", lang)
 
+    st.text_input(t(lang, "Organisation", "Organization"), key="org_input", value=resp_get("organisation", ""))
+    resp_set("organisation", st.session_state.get("org_input", "").strip())
+
+    col1, col2 = st.columns(2)
+    with col1:
+        st.text_input(t(lang, "Pays", "Country"), key="country_input", value=resp_get("pays", ""))
+        resp_set("pays", st.session_state.get("country_input", "").strip())
+    with col2:
+        st.text_input(t(lang, "Email", "Email"), key="email_input", value=resp_get("email", ""))
+        resp_set("email", st.session_state.get("email_input", "").strip())
+
+    type_options = [
+        ("NSO", {"fr": "Institut national de statistique", "en": "National Statistical Office"}),
+        ("Ministry", {"fr": "Ministère / Service statistique sectoriel", "en": "Ministry / Sector statistical unit"}),
+        ("REC", {"fr": "Communauté économique régionale", "en": "Regional Economic Community"}),
+        ("CivilSoc", {"fr": "Société civile", "en": "Civil society"}),
+        ("DevPartner", {"fr": "Partenaire technique et financier", "en": "Development partner"}),
+        ("Academia", {"fr": "Université / Recherche", "en": "Academia / Research"}),
+        ("Other", {"fr": "Autre", "en": "Other"}),
+    ]
+    type_labels = [t(lang, x[1]["fr"], x[1]["en"]) for x in type_options]
+    type_keys = [x[0] for x in type_options]
+
+    selected_idx = 0
+    if resp_get("type_acteur"):
+        try:
+            selected_idx = type_keys.index(resp_get("type_acteur"))
+        except Exception:
+            selected_idx = 0
+
+    chosen = st.selectbox(t(lang, "Type d’acteur", "Stakeholder type"), options=list(range(len(type_keys))),
+                          index=selected_idx, format_func=lambda i: type_labels[i])
+    resp_set("type_acteur", type_keys[int(chosen)])
+
+    # Fonction dropdown
+    role_opts = ROLE_OPTIONS_FR if lang == "fr" else ROLE_OPTIONS_EN
+    role_default = resp_get("fonction", role_opts[0] if role_opts else "")
+    try:
+        role_idx = role_opts.index(role_default)
+    except Exception:
+        role_idx = 0
+
+    chosen_role = st.selectbox(t(lang, "Fonction", "Role/Function"), options=role_opts, index=role_idx)
+    resp_set("fonction", chosen_role)
+
+    if chosen_role in ["Autre", "Other"]:
+        st.text_input(t(lang, "Préciser (fonction)", "Specify (role)"),
+                      key="fonction_autre_input", value=resp_get("fonction_autre", ""))
+        resp_set("fonction_autre", st.session_state.get("fonction_autre_input", "").strip())
+    else:
+        resp_set("fonction_autre", "")
+
+    # Live errors
+    errs = validate_r2(lang)
+    if errs:
+        st.warning(t(lang, "Veuillez corriger les éléments ci-dessous :", "Please fix the following:"))
+        st.write("\n".join([f"- {e}" for e in errs]))
+
+
+def rubric_3(lang: str) -> None:
+    st.subheader(t(lang, "Rubrique 3 : Portée de la réponse", "Section 3: Scope of response"))
     st.markdown(
         t(
             lang,
-            "**R4_Q1** – Présélectionnez jusqu’à 10 domaines (minimum 5) *sans doublon*.",
-            "**Q4_Q1** – Preselect up to 10 domains (minimum 5) *without duplicates*."
+            "Indiquez le périmètre principal de votre réponse. Cela aide à interpréter vos priorités.",
+            "Indicate the main scope of your response. This helps interpret your priorities."
         )
     )
 
-    domains = list(DOMAIN_CODE_TO_LABEL_FR.keys())
-    domain_labels = {d: f"{d} | {DOMAIN_CODE_TO_LABEL_FR[d]}" if lang=="fr" else f"{d} | {DOMAIN_CODE_TO_LABEL_EN[d]}" for d in domains}
+    scope_opts = [
+        ("National", {"fr": "National", "en": "National"}),
+        ("Regional", {"fr": "Régional (CER)", "en": "Regional (REC)"}),
+        ("Continental", {"fr": "Continental (UA)", "en": "Continental (AU)"}),
+        ("Global", {"fr": "International", "en": "International"}),
+        ("Other", {"fr": "Autre", "en": "Other"}),
+    ]
+    labels = [t(lang, x[1]["fr"], x[1]["en"]) for x in scope_opts]
+    keys = [x[0] for x in scope_opts]
+    default = resp_get("scope", "National")
+    idx = keys.index(default) if default in keys else 0
+    chosen = st.radio(t(lang, "Portée", "Scope"), options=list(range(len(keys))), index=idx, format_func=lambda i: labels[i])
+    resp_set("scope", keys[int(chosen)])
 
-    st.multiselect(
-        t(lang, "Domaines (max 10)", "Domains (max 10)"),
-        options=domains,
-        format_func=lambda x: domain_labels.get(x, x),
-        key="r4_preselect",
-        max_selections=10
-    )
+    if resp_get("scope") == "Other":
+        st.text_input(t(lang, "Préciser", "Specify"), key="scope_other_input", value=resp_get("scope_other", ""))
+        resp_set("scope_other", st.session_state.get("scope_other_input", "").strip())
+    else:
+        resp_set("scope_other", "")
 
-    st.divider()
 
-    st.markdown(
-        t(
-            lang,
-            "**R4_Q2** – Parmi les domaines présélectionnés, choisissez **5** domaines par ordre de priorité (Top 5).",
-            "**Q4_Q2** – From preselected domains, choose **5** domains by order of priority (Top 5)."
-        )
-    )
 
-    pre = st.session_state.r4_preselect
-    if len(pre) == 0:
-        st.warning(t(lang, "Veuillez d’abord présélectionner des domaines.", "Please preselect domains first."))
+def rubric_4(lang: str, df_long: pd.DataFrame) -> None:
+    st.subheader(t(lang, "Rubrique 4 : Domaines prioritaires", "Section 4: Priority domains"))
+
+    domains = domains_from_longlist(df_long, lang)
+    if not domains:
+        st.error(t(lang, "La liste des domaines n’est pas disponible (fichier longlist manquant).",
+                   "Domain list is not available (missing longlist file)."))
         return
 
-    # Top 5 (sélecteurs en cascade pour empêcher les doublons)
-    chosen = []
-    for i in range(5):
-        available = [d for d in pre if d not in chosen]
-        current = st.session_state.r4_top5[i] if st.session_state.r4_top5[i] in available else ""
-        opts = [""] + available
-        val = st.selectbox(
-            t(lang, f"Rang {i+1}", f"Rank {i+1}"),
-            options=opts,
-            index=opts.index(current) if current in opts else 0,
-            format_func=lambda x: domain_labels.get(x, x) if x else t(lang, "(sélectionner)", "(select)"),
-            key=f"r4_top5_{i}"
-        )
-        st.session_state.r4_top5[i] = val
-        if val:
-            chosen.append(val)
+    code_to_label = {c: lbl for c, lbl in domains}
 
-def rubric_5(lang: str, df_long: pd.DataFrame):
-    st.subheader(t(lang, "Rubrique 5 : Notation multicritères des statistiques proposées", "Section 5: Multi-criteria scoring of proposed indicators"))
+    # Build display labels without showing codes (codes are stored internally)
+    labels = [code_to_label[c] for c, _ in domains]
+    # Disambiguate duplicates if any (rare)
+    seen = {}
+    for i, (c, _) in enumerate(domains):
+        lbl = code_to_label[c]
+        seen[lbl] = seen.get(lbl, 0) + 1
+    display_labels = []
+    label_to_code = {}
+    for c, _ in domains:
+        lbl = code_to_label[c]
+        disp = lbl if seen[lbl] == 1 else f"{lbl} ({c})"
+        display_labels.append(disp)
+        label_to_code[disp] = c
+
+    st.markdown(
+        t(
+            lang,
+            """
+### Étape 1 : Pré-sélection
+Sélectionnez **entre 5 et 10 domaines** (sans doublons).
+            """,
+            """
+### Step 1: Pre-selection
+Select **5 to 10 domains** (no duplicates).
+            """
+        )
+    )
+
+    pre_default_codes = resp_get("preselected_domains", [])
+    pre_default_disp = []
+    for c in pre_default_codes:
+        lbl = code_to_label.get(c, "")
+        if not lbl:
+            continue
+        disp = lbl if seen.get(lbl, 1) == 1 else f"{lbl} ({c})"
+        if disp in label_to_code:
+            pre_default_disp.append(disp)
+
+    pre_disp = st.multiselect(
+        t(lang, "Pré-sélection (5–10 domaines)", "Pre-selection (5–10 domains)"),
+        options=display_labels,
+        default=pre_default_disp
+    )
+    pre_codes = [label_to_code[x] for x in pre_disp]
+    resp_set("preselected_domains", pre_codes)
+
+    st.divider()
+    st.markdown(
+        t(
+            lang,
+            """
+### Étape 2 : Classement TOP 5
+Classez exactement **5 domaines** parmi votre pré-sélection.
+            """,
+            """
+### Step 2: Rank TOP 5
+Rank exactly **5 domains** from your pre-selection.
+            """
+        )
+    )
+
+    if len(pre_codes) < 5:
+        st.warning(t(lang, "Sélectionnez d’abord au moins 5 domaines dans la pré-sélection.",
+                     "Please pre-select at least 5 domains first."))
+        resp_set("top5_domains", [])
+        return
+
+    top5: List[str] = []
+    pre_option_codes = pre_codes.copy()
+
+    # Ranking with 5 selectboxes (codes hidden via format_func)
+    for i in range(5):
+        key = f"top5_rank_{i+1}"
+        prev = resp_get(key, pre_option_codes[0] if pre_option_codes else "")
+        if prev not in pre_option_codes and pre_option_codes:
+            prev = pre_option_codes[0]
+        choice = st.selectbox(
+            t(lang, f"Rang {i+1}", f"Rank {i+1}"),
+            options=pre_option_codes,
+            index=pre_option_codes.index(prev) if prev in pre_option_codes else 0,
+            format_func=lambda c: code_to_label.get(c, c),
+            key=key
+        )
+        top5.append(choice)
+
+    resp_set("top5_domains", top5)
+
+    errs = validate_r4(lang)
+    if errs:
+        st.warning(t(lang, "Contrôles qualité :", "Quality checks:"))
+        st.write("
+".join([f"- {e}" for e in errs]))
+
+
+def rubric_5(lang: str, df_long: pd.DataFrame) -> None:
+    st.subheader(t(lang, "Rubrique 5 : Statistiques prioritaires et notation", "Section 5: Priority indicators and scoring"))
+
+    top5 = resp_get("top5_domains", [])
+    if not top5 or len(top5) != 5:
+        st.warning(t(lang, "Veuillez d’abord finaliser le TOP 5 des domaines (Rubrique 4).",
+                     "Please complete TOP 5 domains first (Section 4)."))
+        return
+
+    # mapping for domain display
+    dom_map = {c: lbl for c, lbl in domains_from_longlist(df_long, lang)}
+
+    st.markdown(
+        t(
+            lang,
+            """
+### Étape A : Sélection des statistiques
+Pour chaque domaine du TOP 5 : choisissez **1 à 3 statistiques**.
+- Total attendu : **entre 5 et 15** statistiques.
+- Une statistique ne doit pas apparaître dans deux domaines.
+
+### Étape B : Notation multicritères
+Pour chaque statistique sélectionnée, attribuez une note (0–3) sur :
+- **Écart de données** : manque actuel / insuffisance
+- **Demande politique** : intérêt politique / stratégique
+- **Faisabilité** : capacité de production à 12–24 mois
+            """,
+            """
+### Step A: Select indicators
+For each TOP 5 domain: select **1 to 3 indicators**.
+- Expected total: **5 to 15** indicators.
+- The same indicator must not be selected under two domains.
+
+### Step B: Multi-criteria scoring
+For each selected indicator, provide a score (0–3) for:
+- **Data gap**
+- **Political demand**
+- **Feasibility (12–24 months)**
+            """
+        )
+    )
+
+    selected_by_domain: Dict[str, List[str]] = resp_get("selected_by_domain", {})
+    if not isinstance(selected_by_domain, dict):
+        selected_by_domain = {}
+
+    scoring: Dict[str, Dict[str, Any]] = resp_get("scoring", {})
+    if not isinstance(scoring, dict):
+        scoring = {}
+
+    # Ensure dict keys exist
+    for d in top5:
+        if d not in selected_by_domain:
+            selected_by_domain[d] = []
+
+    # UI selection per domain (codes hidden)
+    for d in top5:
+        st.markdown(f"#### {dom_map.get(d, d)}")
+
+        stats_opts = stats_for_domain(df_long, d, lang)
+        stat_code_to_label = {c: lbl for c, lbl in stats_opts}
+
+        # build display labels without showing stat codes
+        labels = [stat_code_to_label[c] for c, _ in stats_opts]
+        seen = {}
+        for c, _ in stats_opts:
+            lbl = stat_code_to_label[c]
+            seen[lbl] = seen.get(lbl, 0) + 1
+        display_labels = []
+        label_to_code = {}
+        for c, _ in stats_opts:
+            lbl = stat_code_to_label[c]
+            disp = lbl if seen[lbl] == 1 else f"{lbl} ({c})"
+            display_labels.append(disp)
+            label_to_code[disp] = c
+
+        default_codes = selected_by_domain.get(d, [])
+        default_disp = []
+        for c in default_codes:
+            lbl = stat_code_to_label.get(c, "")
+            if not lbl:
+                continue
+            disp = lbl if seen.get(lbl, 1) == 1 else f"{lbl} ({c})"
+            if disp in label_to_code:
+                default_disp.append(disp)
+
+        picked_disp = st.multiselect(
+            t(lang, "Choisir 1 à 3 statistiques", "Select 1 to 3 indicators"),
+            options=display_labels,
+            default=default_disp,
+            key=f"stats_ms_{d}"
+        )
+        picked_codes = [label_to_code[x] for x in picked_disp]
+
+        if len(picked_codes) > 3:
+            st.warning(t(lang, "Maximum 3 statistiques : seules les 3 premières sont retenues.",
+                         "Maximum 3 indicators: only the first 3 are kept."))
+            picked_codes = picked_codes[:3]
+
+        selected_by_domain[d] = picked_codes
+
+    # Uniqueness check
+    flattened = []
+    for d in top5:
+        flattened.extend(selected_by_domain.get(d, []))
+    duplicates = [x for x in set(flattened) if flattened.count(x) > 1]
+    if duplicates:
+        st.error(
+            t(
+                lang,
+                "Une ou plusieurs statistiques sont sélectionnées dans plusieurs domaines. Veuillez corriger.",
+                "One or more indicators are selected under multiple domains. Please correct."
+            )
+        )
+
+    resp_set("selected_by_domain", selected_by_domain)
+    resp_set("selected_stats", flattened)
+
+    # Map codes to labels for display in scoring
+    global_map = {}
+    for d in top5:
+        for c, lbl in stats_for_domain(df_long, d, lang):
+            global_map[c] = lbl
+
+    st.divider()
+    st.markdown("### " + t(lang, "Notation multicritères (0–3)", "Multi-criteria scoring (0–3)"))
+
+    for s in flattened:
+        if s not in scoring:
+            scoring[s] = {"gap": 0, "demand": 0, "feasibility": 0}
+
+        st.markdown(f"**{global_map.get(s, s)}**")
+
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            scoring[s]["gap"] = st.selectbox(
+                t(lang, "Écart de données", "Data gap"),
+                options=[0, 1, 2, 3],
+                index=int(scoring[s].get("gap", 0)),
+                help=t(lang, f"0 = {UK_FR}, 3 = Élevé", f"0 = {UK_EN}, 3 = High"),
+                key=f"sc_gap_{s}"
+            )
+        with c2:
+            scoring[s]["demand"] = st.selectbox(
+                t(lang, "Demande politique", "Political demand"),
+                options=[0, 1, 2, 3],
+                index=int(scoring[s].get("demand", 0)),
+                help=t(lang, f"0 = {UK_FR}, 3 = Élevé", f"0 = {UK_EN}, 3 = High"),
+                key=f"sc_dem_{s}"
+            )
+        with c3:
+            scoring[s]["feasibility"] = st.selectbox(
+                t(lang, "Faisabilité 12–24 mois", "Feasibility 12–24 months"),
+                options=[0, 1, 2, 3],
+                index=int(scoring[s].get("feasibility", 0)),
+                help=t(lang, f"0 = {UK_FR}, 3 = Élevé", f"0 = {UK_EN}, 3 = High"),
+                key=f"sc_fea_{s}"
+            )
+
+    resp_set("scoring", scoring)
+
+    errs = validate_r5(lang)
+    if errs:
+        st.warning(t(lang, "Contrôles qualité :", "Quality checks:"))
+        st.write("
+".join([f"- {e}" for e in errs]))
+
+def rubric_6(lang: str) -> None:
+    st.subheader(t(lang, "Rubrique 6 : Perspective de genre", "Section 6: Gender perspective"))
+    st.markdown(
+        t(
+            lang,
+            "Indiquez si les statistiques prioritaires doivent intégrer ces dimensions (Oui/Non/Selon indicateur/UK).",
+            "Indicate whether priority indicators should integrate these dimensions (Yes/No/Indicator-specific/UK)."
+        )
+    )
+
+    options = [
+        (t(lang, "Oui", "Yes"), "YES"),
+        (t(lang, "Non", "No"), "NO"),
+        (t(lang, "Selon indicateur", "Indicator-specific"), "SPEC"),
+        (UK_FR if lang == "fr" else UK_EN, "UK"),
+    ]
+    labels = [x[0] for x in options]
+    code_map = {x[0]: x[1] for x in options}
+
+    items_fr = [
+        "Désagrégation par sexe",
+        "Désagrégation par âge",
+        "Milieu urbain / rural",
+        "Handicap",
+        "Quintile de richesse",
+    ]
+    items_en = [
+        "Disaggregation by sex",
+        "Disaggregation by age",
+        "Urban / rural",
+        "Disability",
+        "Wealth quintile",
+    ]
+    items = items_fr if lang == "fr" else items_en
+
+    tbl = resp_get("gender_table", {})
+    if not isinstance(tbl, dict):
+        tbl = {}
+
+    for it in items:
+        prev = tbl.get(it, "UK")
+        prev_label = next((lab for lab, code in code_map.items() if code == prev), labels[-1])
+        chosen = st.radio(it, options=labels, index=labels.index(prev_label), horizontal=True, key=f"gender_{it}")
+        tbl[it] = code_map[chosen]
+
+    resp_set("gender_table", tbl)
+
+    errs = validate_r6(lang)
+    if errs:
+        st.warning(t(lang, "Contrôles qualité :", "Quality checks:"))
+        st.write("\n".join([f"- {e}" for e in errs]))
+
+
+def rubric_8(lang: str) -> None:
+    st.subheader(t(lang, "Rubrique 8 : Capacité et faisabilité (12–24 mois)", "Section 8: Capacity and feasibility (12–24 months)"))
+    st.markdown(
+        t(
+            lang,
+            "Évaluez le niveau de capacité pour produire les statistiques prioritaires dans les 12–24 mois à venir.",
+            "Assess your capacity to produce priority statistics in the coming 12–24 months."
+        )
+    )
+
+    scale = [
+        (t(lang, "Élevé", "High"), "HIGH"),
+        (t(lang, "Moyen", "Medium"), "MED"),
+        (t(lang, "Faible", "Low"), "LOW"),
+        (UK_FR if lang == "fr" else UK_EN, "UK"),
+    ]
+    labels = [x[0] for x in scale]
+    code_map = {x[0]: x[1] for x in scale}
+
+    items_fr = [
+        "Compétences statistiques disponibles",
+        "Accès aux données administratives",
+        "Financement disponible",
+        "Outils numériques (collecte, traitement, diffusion)",
+        "Cadre juridique pour le partage de données",
+        "Coordination interinstitutionnelle",
+    ]
+    items_en = [
+        "Available statistical skills",
+        "Access to administrative data",
+        "Available funding",
+        "Digital tools (collection, processing, dissemination)",
+        "Legal framework for data sharing",
+        "Inter-institutional coordination",
+    ]
+    items = items_fr if lang == "fr" else items_en
+
+    tbl = resp_get("capacity_table", {})
+    if not isinstance(tbl, dict):
+        tbl = {}
+
+    for it in items:
+        prev = tbl.get(it, "UK")
+        prev_label = next((lab for lab, code in code_map.items() if code == prev), labels[-1])
+        chosen = st.radio(it, options=labels, index=labels.index(prev_label), horizontal=True, key=f"cap_{it}")
+        tbl[it] = code_map[chosen]
+
+    resp_set("capacity_table", tbl)
+
+    errs = validate_r8(lang)
+    if errs:
+        st.warning(t(lang, "Contrôles qualité :", "Quality checks:"))
+        st.write("\n".join([f"- {e}" for e in errs]))
+
+
+def rubric_9(lang: str) -> None:
+    st.subheader(t(lang, "Rubrique 9 : Harmonisation et qualité", "Section 9: Harmonization and quality"))
+    st.markdown(
+        t(
+            lang,
+            "Indiquez les exigences clés attendues en matière d’harmonisation et d’assurance qualité.",
+            "Indicate key expectations regarding harmonization and quality assurance."
+        )
+    )
+
+    opts_fr = [
+        "Normes internationales (ONU, FMI, UA, etc.)",
+        "Méthodologies harmonisées au niveau continental",
+        "Calendrier de diffusion et révisions documentées",
+        "Accès aux métadonnées",
+        "Autre",
+    ]
+    opts_en = [
+        "International standards (UN, IMF, AU, etc.)",
+        "Continental harmonized methodologies",
+        "Release calendar and documented revisions",
+        "Access to metadata",
+        "Other",
+    ]
+    opts = opts_fr if lang == "fr" else opts_en
+    default = resp_get("quality_expectations", [])
+    sel = st.multiselect(t(lang, "Sélectionnez", "Select"), options=opts, default=default)
+    resp_set("quality_expectations", sel)
+    if ("Autre" in sel) or ("Other" in sel):
+        st.text_input(t(lang, "Préciser (Autre)", "Specify (Other)"),
+                      key="q9_other_input", value=resp_get("quality_other", ""))
+        resp_set("quality_other", st.session_state.get("q9_other_input", "").strip())
+    else:
+        resp_set("quality_other", "")
+
+
+def rubric_10(lang: str) -> None:
+    st.subheader(t(lang, "Rubrique 10 : Diffusion", "Section 10: Dissemination"))
+    st.markdown(
+        t(
+            lang,
+            "Indiquez les canaux de diffusion jugés les plus utiles pour les statistiques prioritaires.",
+            "Indicate the dissemination channels you find most useful for priority statistics."
+        )
+    )
+    opts_fr = [
+        "Portail web / tableaux de bord",
+        "Communiqués / notes de conjoncture",
+        "Microdonnées anonymisées (accès sécurisé)",
+        "API / Open data",
+        "Ateliers et webinaires",
+        "Autre",
+    ]
+    opts_en = [
+        "Web portal / dashboards",
+        "Press releases / bulletins",
+        "Anonymized microdata (secure access)",
+        "API / Open data",
+        "Workshops and webinars",
+        "Other",
+    ]
+    opts = opts_fr if lang == "fr" else opts_en
+    default = resp_get("dissemination_channels", [])
+    sel = st.multiselect(t(lang, "Sélectionnez", "Select"), options=opts, default=default)
+    resp_set("dissemination_channels", sel)
+    if ("Autre" in sel) or ("Other" in sel):
+        st.text_input(t(lang, "Préciser (Autre)", "Specify (Other)"),
+                      key="q10_other_input", value=resp_get("dissemination_other", ""))
+        resp_set("dissemination_other", st.session_state.get("q10_other_input", "").strip())
+    else:
+        resp_set("dissemination_other", "")
+
+
+def rubric_12(lang: str) -> None:
+    st.subheader(t(lang, "Rubrique 12 : Questions ouvertes", "Section 12: Open questions"))
+    st.markdown(
+        t(
+            lang,
+            "Ces questions sont **optionnelles**, mais une alerte apparaîtra si vous laissez le champ vide.",
+            "These questions are **optional**, but you will see a warning if left empty."
+        )
+    )
+
+    q1 = st.text_area(
+        t(lang, "1) Commentaires / recommandations clés", "1) Key comments / recommendations"),
+        value=resp_get("open_q1", ""),
+        height=120,
+        key="open_q1_input"
+    )
+    resp_set("open_q1", q1.strip())
+
+    q2 = st.text_area(
+        t(lang, "2) Besoins de soutien (technique, financier, etc.)", "2) Support needs (technical, financial, etc.)"),
+        value=resp_get("open_q2", ""),
+        height=120,
+        key="open_q2_input"
+    )
+    resp_set("open_q2", q2.strip())
+
+    if not resp_get("open_q1", ""):
+        st.warning(t(lang, "Alerte : la question 1 est vide (vous pouvez tout de même continuer).",
+                     "Warning: question 1 is empty (you can still proceed)."))
+    if not resp_get("open_q2", ""):
+        st.warning(t(lang, "Alerte : la question 2 est vide (vous pouvez tout de même continuer).",
+                     "Warning: question 2 is empty (you can still proceed)."))
+
+
+def rubric_send(lang: str, df_long: pd.DataFrame) -> None:
+    st.subheader(t(lang, "ENVOYER le questionnaire", "SUBMIT questionnaire"))
+
+    errors = validate_all(lang)
+    if errors:
+        st.error(t(lang, "Le questionnaire contient des erreurs bloquantes :", "There are blocking errors:"))
+        st.write("\n".join([f"- {e}" for e in errors]))
+        st.info(t(lang, "Retournez aux rubriques concernées via la navigation.", "Go back to the relevant sections using navigation."))
+        return
+
+    # Optional warnings
+    if not resp_get("open_q1", "") or not resp_get("open_q2", ""):
+        st.warning(t(lang, "Certaines questions ouvertes sont vides (optionnel).", "Some open questions are empty (optional)."))
+
+    st.markdown(t(lang, "### Résumé", "### Summary"))
+    st.write({
+        t(lang, "Organisation", "Organization"): resp_get("organisation", ""),
+        t(lang, "Pays", "Country"): resp_get("pays", ""),
+        t(lang, "Type d’acteur", "Stakeholder type"): resp_get("type_acteur", ""),
+        t(lang, "Fonction", "Role"): resp_get("fonction", ""),
+        t(lang, "Email", "Email"): resp_get("email", ""),
+        t(lang, "TOP 5 domaines", "TOP 5 domains"): [domains_from_longlist(df_long, lang) and dict(domains_from_longlist(df_long, lang)).get(c, c) for c in resp_get("top5_domains", [])],
+        t(lang, "Nb statistiques", "No. of indicators"): len(resp_get("selected_stats", [])),
+    })
+
+    if st.button(t(lang, "✅ ENVOYER et enregistrer", "✅ SUBMIT and save")):
+        submission_id = str(uuid.uuid4())
+        payload = st.session_state.responses.copy()
+        payload["submission_id"] = submission_id
+        payload["submitted_at_utc"] = now_utc_iso()
+
+        # Save locally (SQLite)
+        db_save_submission(submission_id, lang, payload)
+
+        # Optional storage integrations
+        gs_ok, gs_msg = google_sheets_append(payload)
+        dbx_ok, dbx_msg = dropbox_upload_json(submission_id, payload)
+
+        st.success(t(lang, "Merci ! Votre questionnaire a été enregistré.", "Thank you! Your submission has been saved."))
+        st.caption(f"ID : {submission_id}")
+
+        # Provide downloads
+        st.download_button(
+            t(lang, "Télécharger une copie (JSON)", "Download a copy (JSON)"),
+            data=json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8"),
+            file_name=f"submission_{submission_id}.json",
+            mime="application/json",
+        )
+
+        # Inform integrations
+        with st.expander(t(lang, "Détails du stockage", "Storage details"), expanded=False):
+            st.write(t(lang, "SQLite : OK (responses.db)", "SQLite: OK (responses.db)"))
+            st.write(f"Google Sheets : {'OK' if gs_ok else 'NON'} — {gs_msg}")
+            st.write(f"Dropbox : {'OK' if dbx_ok else 'NON'} — {dbx_msg}")
+
+        # Reset session for new response (optional)
+        st.session_state.submission_id = submission_id
+
+
+# =========================
+# Admin dashboard
+# =========================
+
+def admin_login(lang: str) -> None:
+    st.subheader(t(lang, "Administration", "Administration"))
+    pw = st.text_input(t(lang, "Mot de passe admin", "Admin password"), type="password")
+    if st.button(t(lang, "Se connecter", "Login")):
+        expected = st.secrets.get("ADMIN_PASSWORD", None)
+        if expected and pw == expected:
+            st.session_state.admin_authed = True
+            st.success(t(lang, "Connexion réussie.", "Logged in."))
+            st.rerun()
+        else:
+            st.error(t(lang, "Mot de passe incorrect ou secret ADMIN_PASSWORD manquant.", "Incorrect password or missing ADMIN_PASSWORD secret."))
+
+
+def admin_dashboard(lang: str) -> None:
+    st.subheader(t(lang, "Tableau de bord admin", "Admin dashboard"))
+
+    df = db_read_submissions(limit=5000)
+    st.metric(t(lang, "Nombre de réponses", "Number of responses"), len(df))
+
+    if df.empty:
+        st.info(t(lang, "Aucune réponse pour le moment.", "No responses yet."))
+        return
+
+    # Parse payload
+    payloads = []
+    for _, r in df.iterrows():
+        try:
+            payloads.append(json.loads(r["payload_json"]))
+        except Exception:
+            payloads.append({})
+    flat = pd.DataFrame([flatten_payload(p) for p in payloads])
+    flat.insert(0, "submission_id", df["submission_id"].values)
+    flat.insert(1, "submitted_at_utc", df["submitted_at_utc"].values)
+
+    st.dataframe(flat, use_container_width=True)
+
+    # Export Excel
+    out = io.BytesIO()
+    with pd.ExcelWriter(out, engine="openpyxl") as writer:
+        flat.to_excel(writer, sheet_name="submissions", index=False)
+        df.to_excel(writer, sheet_name="raw_json", index=False)
+    out.seek(0)
+
+    st.download_button(
+        t(lang, "Exporter en Excel", "Export to Excel"),
+        data=out.getvalue(),
+        file_name="consultation_stat_niang_export.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
+
+    # Download DB file
+    if os.path.exists(DB_PATH):
+        with open(DB_PATH, "rb") as f:
+            st.download_button(
+                t(lang, "Télécharger responses.db", "Download responses.db"),
+                data=f.read(),
+                file_name="responses.db",
+                mime="application/octet-stream",
+            )
+
+    # Push last export to Dropbox (optional)
+    if dropbox is not None and st.secrets.get("DROPBOX_ACCESS_TOKEN", None):
+        if st.button(t(lang, "Uploader l’export Excel sur Dropbox", "Upload Excel export to Dropbox")):
+            try:
+                token = st.secrets["DROPBOX_ACCESS_TOKEN"]
+                folder = st.secrets.get("DROPBOX_FOLDER", "/consultation_stat_niang")
+                folder = folder if folder.startswith("/") else "/" + folder
+                path = f"{folder}/exports/export_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.xlsx"
+                dbx = dropbox.Dropbox(token)
+                dbx.files_upload(out.getvalue(), path, mode=dropbox.files.WriteMode.overwrite)
+                st.success(t(lang, "Export envoyé sur Dropbox.", "Export uploaded to Dropbox."))
+            except Exception as e:
+                st.error(f"Dropbox : {e}")
+
+
+    # Push DB to Dropbox (optional)
+    if dropbox is not None and st.secrets.get("DROPBOX_ACCESS_TOKEN", None) and os.path.exists(DB_PATH):
+        if st.button(t(lang, "Uploader responses.db sur Dropbox", "Upload responses.db to Dropbox")):
+            try:
+                token = st.secrets["DROPBOX_ACCESS_TOKEN"]
+                folder = st.secrets.get("DROPBOX_FOLDER", "/consultation_stat_niang")
+                folder = folder if folder.startswith("/") else "/" + folder
+                path = f"{folder}/exports/responses_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.db"
+                dbx = dropbox.Dropbox(token)
+                with open(DB_PATH, "rb") as fdb:
+                    dbx.files_upload(fdb.read(), path, mode=dropbox.files.WriteMode.overwrite)
+                st.success(t(lang, "Base envoyée sur Dropbox.", "Database uploaded to Dropbox."))
+            except Exception as e:
+                st.error(f"Dropbox : {e}")
 
     st.info(
         t(
             lang,
-            "Rappel : 3 statistiques maximum par domaine du Top 5 ; au moins 1 par domaine ; total entre 5 et 15 ; pas de doublons ; toutes les stats doivent être notées.",
-            "Reminder: max 3 indicators per Top 5 domain; at least 1 per domain; total 5–15; no duplicates; all indicators must be scored."
+            "Astuce : utilisez ?admin=1 dans l’URL pour afficher l’espace admin.",
+            "Tip: use ?admin=1 in the URL to access the admin space."
         )
-    )  # 
-
-    top5 = get_top5_domains()
-    if not top5:
-        st.warning(t(lang, "Finalisez le Top 5 (Rubrique 4) avant de poursuivre.", "Please finalize Top 5 (Section 4) before proceeding."))
-        return
-
-    domain_title = lambda d: f"{d} | {DOMAIN_CODE_TO_LABEL_FR[d]}" if lang=="fr" else f"{d} | {DOMAIN_CODE_TO_LABEL_EN[d]}"
-
-    for di, dcode in enumerate(top5):
-        st.markdown(f"### {domain_title(dcode)}")
-
-        # stats possibles filtrées par domaine
-        stats = get_stats_options_for_domain(df_long, dcode, lang)
-        stats_opts = [""] + stats + ["__CUSTOM__"]
-
-        for si in range(3):
-            cols = st.columns([2, 1, 1, 1, 1, 1, 1, 1])
-            with cols[0]:
-                stat_key = f"r5_stat_{di}_{si}"
-                current = st.session_state.get(stat_key, "")
-                if current not in stats_opts:
-                    current = ""
-                st.selectbox(
-                    t(lang, f"Statistique #{si+1}", f"Indicator #{si+1}"),
-                    options=stats_opts,
-                    index=stats_opts.index(current) if current in stats_opts else 0,
-                    format_func=lambda x: t(lang, "(vide)", "(empty)") if x=="" else (t(lang, "Autre (préciser)", "Other (specify)") if x=="__CUSTOM__" else x),
-                    key=stat_key
-                )
-                if st.session_state[stat_key] == "__CUSTOM__":
-                    st.text_input(
-                        t(lang, "Libellé de la statistique", "Indicator label"),
-                        key=f"r5_stat_custom_{di}_{si}",
-                        placeholder=t(lang, "Ex : Taux de pauvreté monétaire (nouvelle mesure)", "e.g., Monetary poverty rate (new measure)")
-                    )
-
-            # Critères (1 colonne chacun)
-            for ci, (crit_key, crit_meta, crit_kind) in enumerate(R5_CRITERIA, start=1):
-                with cols[ci]:
-                    st.selectbox(
-                        crit_meta["fr"] if lang=="fr" else crit_meta["en"],
-                        options=HML_UK if crit_kind!="cost" else ["Low","Med","High","UK"],
-                        key=f"r5_{crit_key}_{di}_{si}"
-                    )
-
-            # commentaire sur une ligne séparée pour lisibilité
-            if st.session_state.get(stat_key, ""):
-                st.text_input(
-                    t(lang, "Commentaire bref (optionnel)", "Brief comment (optional)"),
-                    key=f"r5_comment_{di}_{si}",
-                    placeholder=t(lang, "Justification courte (1–2 phrases).", "Short justification (1–2 sentences).")
-                )
-        st.divider()
-
-    # Résumé
-    selected = compute_r5_selected(lang, df_long)
-    if selected:
-        st.markdown("#### " + t(lang, "Résumé des statistiques sélectionnées", "Summary of selected indicators"))
-        df = pd.DataFrame(selected)[["domain_code","stat_label","total_score"]]
-        st.dataframe(df, use_container_width=True)
-
-def rubric_6(lang: str):
-    st.subheader(t(lang, "Rubrique 6 : Perspective de genre (exigences minimales)", "Section 6: Gender perspective (minimum requirements)"))
-    st.caption(t(lang, "UK = Inconnu.", "UK = Unknown."))
-
-    st.markdown(t(lang, "**Tableau 1 : Désagrégations minimales**", "**Table 1: Minimum disaggregations**"))
-    c1, c2 = st.columns([2,2])
-    with c1:
-        for key, meta in GENDER_REQ_YESNO:
-            st.selectbox(
-                meta["fr"] if lang=="fr" else meta["en"],
-                options=YN_UK,
-                format_func=lambda x: ({"Yes": t(lang,"Oui","Yes"), "No": t(lang,"Non","No"), "UK": "UK"})[x],
-                key=f"r6_{key}"
-            )
-    with c2:
-        st.markdown(t(lang, "**Tableau 2 : Thématiques à inclure**", "**Table 2: Topics to include**"))
-        for key, meta in GENDER_REQ_INCLUDE:
-            st.selectbox(
-                meta["fr"] if lang=="fr" else meta["en"],
-                options=INCLUDE_OPT_UK,
-                format_func=lambda x: ({"Include": t(lang,"À inclure","Include"), "Optional": t(lang,"Optionnel","Optional"), "UK": "UK"})[x],
-                key=f"r6_{key}"
-            )
-
-    st.divider()
-    st.markdown(t(lang, "**Votre priorité genre principale**", "**Your main gender priority**"))
-    mp_opts = option_list(lang, GENDER_MAIN_PRIORITY)
-    st.radio(
-        t(lang, "Choix", "Choice"),
-        options=[c for c,_ in mp_opts],
-        format_func=lambda x: dict(mp_opts)[x],
-        key="r6_main_priority",
-        horizontal=False
-    )
-    if st.session_state.r6_main_priority == "other":
-        st.text_input(t(lang, "Précisez", "Please specify"), key="r6_main_priority_other")
-
-def rubric_7(lang: str):
-    st.subheader(t(lang, "Rubrique 7 : Sources de données et niveau de production", "Section 7: Data sources and production level"))
-    src_opts = option_list(lang, DATA_SOURCES)
-    st.multiselect(
-        t(lang, "Sources de données pertinentes", "Relevant data sources"),
-        options=[c for c,_ in src_opts],
-        format_func=lambda x: dict(src_opts)[x],
-        key="r7_sources",
-    )
-    prod_opts = option_list(lang, PROD_LEVEL)
-    st.radio(
-        t(lang, "Niveau de production souhaité", "Preferred production level"),
-        options=[c for c,_ in prod_opts],
-        format_func=lambda x: dict(prod_opts)[x],
-        key="r7_prod_level",
-        horizontal=False
     )
 
-def rubric_8(lang: str):
-    st.subheader(t(lang, "Rubrique 8 : Capacité et faisabilité (12–24 mois)", "Section 8: Capacity and feasibility (12–24 months)"))
-    st.caption(t(lang, "UK = Inconnu.", "UK = Unknown."))
 
-    df = pd.DataFrame([{
-        t(lang,"Contrainte","Constraint"): (meta["fr"] if lang=="fr" else meta["en"]),
-        t(lang,"Niveau","Level"): st.session_state.get(f"r8_{key}", "UK")
-    } for key, meta in R8_CONSTRAINTS])
-
-    edited = st.data_editor(
-        df,
-        use_container_width=True,
-        hide_index=True,
-        column_config={
-            t(lang,"Niveau","Level"): st.column_config.SelectboxColumn(options=HML_UK)
-        },
-        key="r8_editor"
-    )
-
-    # réinjecter dans le state
-    for i, (key, meta) in enumerate(R8_CONSTRAINTS):
-        st.session_state[f"r8_{key}"] = edited.iloc[i][t(lang,"Niveau","Level")]
-
-def rubric_9(lang: str):
-    st.subheader(t(lang, "Rubrique 9 : Harmonisation, qualité et métadonnées", "Section 9: Harmonization, quality and metadata"))
-    qa_opts = option_list(lang, QUALITY_APPROACH)
-    st.multiselect(
-        t(lang, "Cochez jusqu’à 3 options", "Tick up to 3 options"),
-        options=[c for c,_ in qa_opts],
-        format_func=lambda x: dict(qa_opts)[x],
-        key="r9_quality",
-        max_selections=3
-    )
-
-def rubric_10(lang: str):
-    st.subheader(t(lang, "Rubrique 10 : Diffusion et usage", "Section 10: Dissemination and use"))
-    prod_opts = option_list(lang, DISSEMINATION_PRODUCTS)
-    st.multiselect(
-        t(lang, "Produits de diffusion à accompagner", "Dissemination products to accompany"),
-        options=[c for c,_ in prod_opts],
-        format_func=lambda x: dict(prod_opts)[x],
-        key="r10_products",
-    )
-
-def rubric_11(lang: str):
-    st.subheader(t(lang, "Rubrique 11 : Validation et appropriation", "Section 11: Validation and ownership"))
-    st.caption("UK = Unknown")
-
-    for key, meta in VALIDATION_MECHANISMS:
-        st.selectbox(
-            meta["fr"] if lang=="fr" else meta["en"],
-            options=YN_UK,
-            format_func=lambda x: ({"Yes": t(lang,"Oui","Yes"), "No": t(lang,"Non","No"), "UK": "UK"})[x],
-            key=f"r11_{key}"
-        )
-
-    st.divider()
-    agree_opts = option_list(lang, AGREEMENT_LEVEL)
-    st.radio(
-        t(lang, "Niveau d’accord souhaité", "Preferred agreement level"),
-        options=[c for c,_ in agree_opts],
-        format_func=lambda x: dict(agree_opts)[x],
-        key="r11_agreement",
-        horizontal=False
-    )
-    if st.session_state.r11_agreement == "other":
-        st.text_input(t(lang, "Précisez", "Please specify"), key="r11_agreement_other")
-
-def rubric_12(lang: str):
-    st.subheader(t(lang, "Rubrique 12 : Questions ouvertes", "Section 12: Open questions"))
-    st.text_area(
-        t(lang, "(1) Votre recommandation prioritaire (une seule) pour réussir en 12–24 mois :", "(1) Your single top recommendation to succeed within 12–24 months:"),
-        key="r12_rec",
-        height=110
-    )
-    st.text_area(
-        t(lang, "(2) Un indicateur essentiel manquant (si applicable) et justification :", "(2) One essential missing indicator (if any) and justification:"),
-        key="r12_missing",
-        height=110
-    )
-
-def review_submit(lang: str, df_long: pd.DataFrame):
-    st.subheader(t(lang, "Relecture et soumission", "Review and submit"))
-
-    # validations globales
-    errors = []
-    errors += validate_r4()
-    errors += validate_r5(lang, df_long)
-    errors += validate_r6()
-    errors += validate_r8()
-    errors += validate_r9()
-    errors += validate_r10()
-    errors += validate_r11()
-
-    if errors:
-        st.error(t(lang, "Des erreurs doivent être corrigées avant soumission :", "Please fix the following errors before submitting:"))
-        st.write("\n".join(errors))
-        return
-
-    r5_rows = compute_r5_selected(lang, df_long)
-
-    payload = {
-        "meta": {
-            "response_id": str(uuid.uuid4()),
-            "submitted_at": datetime.utcnow().isoformat() + "Z",
-            "lang_ui": lang,
-            "app_version": "v1.0-streamlit",
-        },
-        "r2_respondent": {
-            "organisation": st.session_state.org,
-            "country": st.session_state.country,
-            "au_region": st.session_state.region,
-            "stakeholder_type": st.session_state.stakeholder_type,
-            "stakeholder_other": st.session_state.stakeholder_other,
-            "position": st.session_state.position,
-            "email": st.session_state.email,
-            "phone": st.session_state.phone,
-            "response_language": st.session_state.response_language,
-        },
-        "r3_scope": {
-            "scope": st.session_state.scope,
-            "consulted_colleagues": st.session_state.consulted,
-            "snds_status": st.session_state.snds,
-        },
-        "r4_domains": {
-            "preselected": st.session_state.r4_preselect,
-            "top5": st.session_state.r4_top5,
-        },
-        "r5_indicators_scoring": r5_rows,
-        "r6_gender": {
-            "requirements_yesno": {k: st.session_state.get(f"r6_{k}") for k,_ in GENDER_REQ_YESNO},
-            "requirements_include": {k: st.session_state.get(f"r6_{k}") for k,_ in GENDER_REQ_INCLUDE},
-            "main_priority": st.session_state.r6_main_priority,
-            "main_priority_other": st.session_state.r6_main_priority_other,
-        },
-        "r7_sources": {
-            "sources": st.session_state.r7_sources,
-            "production_level": st.session_state.r7_prod_level,
-        },
-        "r8_constraints": {k: st.session_state.get(f"r8_{k}") for k,_ in R8_CONSTRAINTS},
-        "r9_quality": st.session_state.r9_quality,
-        "r10_dissemination": st.session_state.r10_products,
-        "r11_validation": {
-            "mechanisms": {k: st.session_state.get(f"r11_{k}") for k,_ in VALIDATION_MECHANISMS},
-            "agreement_level": st.session_state.r11_agreement,
-            "agreement_level_other": st.session_state.r11_agreement_other,
-        },
-        "r12_open": {
-            "recommendation": st.session_state.r12_rec,
-            "missing_indicator": st.session_state.r12_missing,
-        },
-    }
-
-    col1, col2 = st.columns([1,1])
-    with col1:
-        if st.button(t(lang, "✅ Soumettre et enregistrer", "✅ Submit and save")):
-            save_response(payload, r5_rows)
-            st.success(t(lang, "Soumission enregistrée. Merci !", "Submission saved. Thank you!"))
-
-    # Téléchargements
-    payload_json = json.dumps(payload, ensure_ascii=False, indent=2)
-    with col2:
-        st.download_button(
-            t(lang, "Télécharger la réponse (JSON)", "Download response (JSON)"),
-            data=payload_json.encode("utf-8"),
-            file_name=f"statafric_response_{payload['meta']['response_id']}.json",
-            mime="application/json"
-        )
-
-    # Export CSV (R5)
-    if r5_rows:
-        df_r5 = pd.DataFrame(r5_rows)
-        st.download_button(
-            t(lang, "Télécharger la table R5 (CSV)", "Download R5 table (CSV)"),
-            data=df_r5.to_csv(index=False).encode("utf-8"),
-            file_name=f"statafric_r5_{payload['meta']['response_id']}.csv",
-            mime="text/csv"
-        )
-
-# =========================================================
+# =========================
 # Main
-# =========================================================
+# =========================
 
-def admin_ui(lang: str, df_long: pd.DataFrame):
-    st.title("Admin – " + ("Questionnaire STATAFRIC" if lang=="fr" else "STATAFRIC questionnaire"))
-    st.caption(t(lang,
-                 "Accès réservé. Utilisez ?admin=1 et un mot de passe admin.",
-                 "Restricted access. Use ?admin=1 and an admin password."))
+def main() -> None:
+    st.set_page_config(page_title=APP_TITLE_FR, layout="wide")
+    init_session()
 
-    pwd_required = _admin_password()
-    st.session_state.setdefault("admin_ok", False)
-
-    if not pwd_required:
-        st.error(t(lang,
-                   "ADMIN_PASSWORD n’est pas configuré. Définissez-le via Streamlit secrets ou variable d’environnement.",
-                   "ADMIN_PASSWORD is not configured. Set it via Streamlit secrets or environment variable."))
-        return
-
-    if not st.session_state.admin_ok:
-        with st.sidebar:
-            st.subheader("Admin login")
-            pwd = st.text_input("Password", type="password")
-            if st.button("Login"):
-                if pwd == pwd_required:
-                    st.session_state.admin_ok = True
-                    st.rerun()
-                else:
-                    st.error("Mot de passe incorrect." if lang=="fr" else "Incorrect password.")
-        st.stop()
-
-    # Load data
-    df_raw = _load_all_submissions(str(DB_PATH))
-    payloads = _parse_payloads(df_raw)
-    df_flat = _flatten_for_export(payloads)
-    df_r5 = _r5_rows_df(payloads)
-
-    tab1, tab2, tab3 = st.tabs([
-        t(lang, "Tableau de bord", "Dashboard"),
-        t(lang, "Exports", "Exports"),
-        t(lang, "Rapport Word", "Word report"),
-    ])
-
-    with tab1:
-        col1, col2, col3 = st.columns(3)
-        col1.metric(t(lang, "Nombre de réponses", "Submissions"), len(payloads))
-        if "country" in df_flat.columns:
-            col2.metric(t(lang, "Pays couverts", "Countries"), int(df_flat["country"].replace("", np.nan).dropna().nunique()))
-        if "stakeholder_type" in df_flat.columns:
-            col3.metric(t(lang, "Types d’acteurs", "Stakeholder types"), int(df_flat["stakeholder_type"].replace("", np.nan).dropna().nunique()))
-
-        st.subheader(t(lang, "Domaines prioritaires (Top 5)", "Priority domains (Top 5)"))
-        top_cols=[c for c in df_flat.columns if c.startswith("top5_domain_")]
-        vc=_value_counts_any(df_flat, top_cols).head(25)
-        if not vc.empty:
-            st.dataframe(vc, use_container_width=True)
-            _plot_barh(vc.head(15), "value", "n", t(lang, "Top domaines (fréquence)", "Top domains (frequency)"))
-
-        st.subheader(t(lang, "Statistiques proposées (fréquence)", "Proposed statistics (frequency)"))
-        if not df_r5.empty and "stat_label" in df_r5.columns:
-            vc2=df_r5["stat_label"].fillna("").replace("", np.nan).dropna().value_counts().head(25).reset_index()
-            vc2.columns=["stat_label","n"]
-            st.dataframe(vc2, use_container_width=True)
-            _plot_barh(vc2.head(15), "stat_label", "n", t(lang, "Top statistiques", "Top statistics"))
-
-    with tab2:
-        st.subheader(t(lang, "Téléchargements", "Downloads"))
-        # CSV exports
-        csv1 = df_flat.to_csv(index=False).encode("utf-8")
-        st.download_button(t(lang, "Télécharger les réponses (CSV)", "Download submissions (CSV)"),
-                           data=csv1, file_name="submissions.csv", mime="text/csv")
-
-        if not df_r5.empty:
-            csv2 = df_r5.to_csv(index=False).encode("utf-8")
-            st.download_button(t(lang, "Télécharger la notation R5 (CSV)", "Download R5 scoring (CSV)"),
-                               data=csv2, file_name="r5_scoring.csv", mime="text/csv")
-
-        # Excel export
-        xlsx_bytes = _make_excel_export(df_flat, df_r5, payloads)
-        st.download_button(t(lang, "Télécharger l’export complet (Excel)", "Download full export (Excel)"),
-                           data=xlsx_bytes, file_name="export_full.xlsx",
-                           mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-
-        # JSONL export
-        jsonl="\n".join([json.dumps(p, ensure_ascii=False) for p in payloads]).encode("utf-8")
-        st.download_button(t(lang, "Télécharger les payloads (JSONL)", "Download payloads (JSONL)"),
-                           data=jsonl, file_name="payloads.jsonl", mime="application/json")
-
-        # SQLite
-        if Path(DB_PATH).exists():
-            with open(DB_PATH, "rb") as f:
-                st.download_button(t(lang, "Télécharger la base SQLite", "Download SQLite database"),
-                                   data=f.read(), file_name="responses.db", mime="application/octet-stream")
-
-    with tab3:
-        st.subheader(t(lang, "Génération du rapport", "Report generation"))
-        st.write(t(lang,
-                   "Le rapport .docx contient une synthèse, des tableaux de fréquences et des éléments d’analyse.",
-                   "The .docx report includes a synthesis, frequency tables and analysis elements."))
-        if st.button(t(lang, "Générer le rapport Word", "Generate Word report")):
-            report_bytes = _build_word_report_bytes(lang, payloads, df_flat, df_r5)
-            st.download_button(t(lang, "Télécharger le rapport (.docx)", "Download report (.docx)"),
-                               data=report_bytes, file_name="report_summary.docx",
-                               mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-
-def main():
-    # Must be the first Streamlit command
-    st.set_page_config(page_title="STATAFRIC questionnaire", layout="wide")
-
-    # Langue UI (FR/EN) = bascule globale
-    lang_ui = st.sidebar.selectbox(
-        "Language / Langue",
+    # Language toggle
+    st.sidebar.title("🌐")
+    lang = st.sidebar.selectbox(
+        "Langue / Language",
         options=["fr", "en"],
-        format_func=lambda x: "Français" if x == "fr" else "English",
+        index=0 if st.session_state.lang == "fr" else 1
     )
+    st.session_state.lang = lang
+
+    # Admin access
+    qp = get_query_params()
+    is_admin = "admin" in qp and qp["admin"] and qp["admin"][0] in ["1", "true", "yes"]
 
     df_long = load_longlist()
 
-    # Hidden admin route (use ?admin=1)
-    if _is_admin_route():
-        admin_ui(lang_ui, df_long)
+    # Header
+    st.title(t(lang, APP_TITLE_FR, APP_TITLE_EN))
+    st.caption(t(lang, "Application unifiée (FR/EN) – codes masqués – contrôles qualité intégrés.",
+                 "Unified app (FR/EN) – hidden codes – built-in quality controls."))
+
+    # Sidebar navigation
+    steps = get_steps(lang)
+    render_sidebar(lang, steps)
+
+    # Admin view
+    if is_admin:
+        if not st.session_state.admin_authed:
+            admin_login(lang)
+            return
+        admin_dashboard(lang)
         return
 
-    init_state()
+    # Normal flow
+    step_key = steps[st.session_state.nav_idx][0]
 
-    ui_header(lang_ui)
-    ui_sidebar(lang_ui)
-
-    # Contenu par rubrique
-    step = st.session_state.step
-    if step == 1:
-        rubric_1(lang_ui)
-    elif step == 2:
-        rubric_2(lang_ui)
-    elif step == 3:
-        rubric_3(lang_ui)
-    elif step == 4:
-        rubric_4(lang_ui)
-    elif step == 5:
-        rubric_5(lang_ui, df_long)
-    elif step == 6:
-        rubric_6(lang_ui)
-    elif step == 7:
-        rubric_7(lang_ui)
-    elif step == 8:
-        rubric_8(lang_ui)
-    elif step == 9:
-        rubric_9(lang_ui)
-    elif step == 10:
-        rubric_10(lang_ui)
-    elif step == 11:
-        rubric_11(lang_ui)
-    elif step == 12:
-        rubric_12(lang_ui)
-    else:
-        review_submit(lang_ui, df_long)
+    if step_key == "R1":
+        rubric_1(lang)
+    elif step_key == "R2":
+        rubric_2(lang)
+    elif step_key == "R3":
+        rubric_3(lang)
+    elif step_key == "R4":
+        rubric_4(lang, df_long)
+    elif step_key == "R5":
+        rubric_5(lang, df_long)
+    elif step_key == "R6":
+        rubric_6(lang)
+    elif step_key == "R8":
+        rubric_8(lang)
+    elif step_key == "R9":
+        rubric_9(lang)
+    elif step_key == "R10":
+        rubric_10(lang)
+    elif step_key == "R12":
+        rubric_12(lang)
+    elif step_key == "SEND":
+        rubric_send(lang, df_long)
 
     st.divider()
-    nav_buttons(lang_ui, df_long)
+    nav_buttons(lang, steps, df_long)
+
 
 if __name__ == "__main__":
     main()
