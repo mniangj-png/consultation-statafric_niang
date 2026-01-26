@@ -121,25 +121,75 @@ def resp_set(key: str, value) -> None:
 @st.cache_data(show_spinner=False)
 def load_longlist() -> pd.DataFrame:
     """
-    Load indicator longlist from CSV (preferred) or XLSX.
-    The app still runs if the file is missing, but selection lists will be empty.
+    Charge la longlist (statistiques par domaine) depuis :
+    - CSV : data/indicator_longlist.csv (prioritaire)
+    - XLSX : data/longlist.xlsx (fallback)
+    Tolère aussi les fichiers placés à la racine du dépôt.
+
+    Si aucun fichier n'est trouvé, l'application démarre quand même,
+    mais les listes déroulantes de la Rubrique 4/5 seront vides.
     """
-    if os.path.exists(LONG_LIST_CSV):
-        df = pd.read_csv(LONG_LIST_CSV, dtype=str).fillna("")
-        return df
-    if os.path.exists(LONG_LIST_XLSX):
-        df = pd.read_excel(LONG_LIST_XLSX, dtype=str).fillna("")
-        # Expected columns in user file:
-        # Domain_code, Domain_label_fr, Stat_label_fr
-        if set(["Domain_code", "Domain_label_fr", "Stat_label_fr"]).issubset(df.columns):
-            df["domain_code"] = df["Domain_code"].astype(str).str.strip()
-            df["domain_label_fr"] = df["Domain_label_fr"].astype(str).str.split("|", n=1).str[-1].str.strip()
-            df["domain_label_en"] = df["domain_label_fr"]
-            df["stat_code"] = df["Stat_label_fr"].astype(str).str.split("|", n=1).str[0].str.strip()
-            df["stat_label_fr"] = df["Stat_label_fr"].astype(str).str.split("|", n=1).str[-1].str.strip()
-            df["stat_label_en"] = df["stat_label_fr"]
-            return df[["domain_code", "domain_label_fr", "domain_label_en", "stat_code", "stat_label_fr", "stat_label_en"]]
-    return pd.DataFrame(columns=["domain_code", "domain_label_fr", "domain_label_en", "stat_code", "stat_label_fr", "stat_label_en"])
+    csv_candidates = [
+        LONG_LIST_CSV,
+        "indicator_longlist.csv",
+        os.path.join(".", "indicator_longlist.csv"),
+        os.path.join(".", "data", "indicator_longlist.csv"),
+    ]
+    xlsx_candidates = [
+        LONG_LIST_XLSX,
+        "longlist.xlsx",
+        os.path.join(".", "longlist.xlsx"),
+        os.path.join(".", "data", "longlist.xlsx"),
+    ]
+
+    # 1) CSV
+    for p in csv_candidates:
+        if os.path.exists(p):
+            df = pd.read_csv(p, dtype=str).fillna("")
+            df.attrs["source_path"] = p
+            return df
+
+    # 2) XLSX (format utilisateur)
+    for p in xlsx_candidates:
+        if os.path.exists(p):
+            df = pd.read_excel(p, dtype=str).fillna("")
+            df.attrs["source_path"] = p
+            # Colonnes attendues : Domain_code, Domain_label_fr, Stat_label_fr
+            if set(["Domain_code", "Domain_label_fr", "Stat_label_fr"]).issubset(df.columns):
+                out = pd.DataFrame()
+                out["domain_code"] = df["Domain_code"].astype(str).str.strip()
+                out["domain_label_fr"] = (
+                    df["Domain_label_fr"].astype(str).str.split("|", n=1).str[-1].str.strip()
+                )
+                out["domain_label_en"] = out["domain_label_fr"]
+                out["stat_code"] = (
+                    df["Stat_label_fr"].astype(str).str.split("|", n=1).str[0].str.strip()
+                )
+                out["stat_label_fr"] = (
+                    df["Stat_label_fr"].astype(str).str.split("|", n=1).str[-1].str.strip()
+                )
+                out["stat_label_en"] = out["stat_label_fr"]
+                out.attrs["source_path"] = p
+                return out[[
+                    "domain_code",
+                    "domain_label_fr",
+                    "domain_label_en",
+                    "stat_code",
+                    "stat_label_fr",
+                    "stat_label_en",
+                ]]
+
+    # Aucun fichier trouvé : dataframe vide
+    empty = pd.DataFrame(columns=[
+        "domain_code",
+        "domain_label_fr",
+        "domain_label_en",
+        "stat_code",
+        "stat_label_fr",
+        "stat_label_en",
+    ])
+    empty.attrs["source_path"] = ""
+    return empty
 
 
 def domains_from_longlist(df_long: pd.DataFrame, lang: str) -> List[Tuple[str, str]]:
@@ -466,10 +516,8 @@ def render_sidebar(lang: str, steps: List[Tuple[str, str]]) -> None:
     st.sidebar.header(t(lang, "Navigation", "Navigation"))
     labels = [s[1] for s in steps]
 
-    # Keep radio in sync with nav_idx (fixes "Next/Prev not working")
-    if "nav_radio" not in st.session_state:
-        st.session_state.nav_radio = st.session_state.nav_idx
-
+    # Keep sidebar selection in sync with nav_idx
+    st.session_state.nav_radio = int(st.session_state.nav_idx)
     chosen = st.sidebar.radio(
         t(lang, "Aller à", "Go to"),
         options=list(range(len(labels))),
@@ -523,13 +571,11 @@ def nav_buttons(lang: str, steps: List[Tuple[str, str]], df_long: pd.DataFrame) 
         prev_disabled = st.session_state.nav_idx <= 0
         if st.button(t(lang, "⬅ Précédent", "⬅ Previous"), disabled=prev_disabled):
             st.session_state.nav_idx = max(0, st.session_state.nav_idx - 1)
-            st.session_state.nav_radio = st.session_state.nav_idx
             st.rerun()
     with col2:
         next_disabled = (st.session_state.nav_idx >= len(steps) - 1) or bool(errors)
         if st.button(t(lang, "Suivant ➡", "Next ➡"), disabled=next_disabled):
             st.session_state.nav_idx = min(len(steps) - 1, st.session_state.nav_idx + 1)
-            st.session_state.nav_radio = st.session_state.nav_idx
             st.rerun()
     with col3:
         if errors:
@@ -693,8 +739,20 @@ def rubric_4(lang: str, df_long: pd.DataFrame) -> None:
 
     domains = domains_from_longlist(df_long, lang)
     if not domains:
-        st.error(t(lang, "La liste des domaines n’est pas disponible (fichier longlist manquant).",
-                   "Domain list is not available (missing longlist file)."))
+        st.error(
+            t(
+                lang,
+                "La liste des domaines n’est pas disponible (longlist introuvable ou vide).",
+                "Domain list is not available (longlist not found or empty).",
+            )
+        )
+        st.caption(
+            t(
+                lang,
+                "Vérifiez que le dépôt contient : data/indicator_longlist.csv (prioritaire) ou data/longlist.xlsx (ou ces fichiers à la racine).",
+                "Check that the repository contains: data/indicator_longlist.csv (preferred) or data/longlist.xlsx (or these files at repo root).",
+            )
+        )
         return
 
     code_to_label = {c: lbl for c, lbl in domains}
