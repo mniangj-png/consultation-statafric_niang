@@ -1,81 +1,81 @@
 domain_code,domain_label_fr,domain_label_en,stat_code,stat_label_fr,stat_label_en
-D01,"Croissance Économique, Transformation Structurelle et Commerce","Croissance Économique, Transformation Structurelle et Commerce",D01S01,Taux de croissance du PIB réel,Taux de croissance du PIB réel
-D01,"Croissance Économique, Transformation Structurelle et Commerce","Croissance Économique, Transformation Structurelle et Commerce",D01S02,PIB par habitant (USD constant),PIB par habitant (USD constant)
-D01,"Croissance Économique, Transformation Structurelle et Commerce","Croissance Économique, Transformation Structurelle et Commerce",D01S03,Part de la Valeur Ajoutée Manufacturière (VAM) dans le PIB,Part de la Valeur Ajoutée Manufacturière (VAM) dans le PIB
-D01,"Croissance Économique, Transformation Structurelle et Commerce","Croissance Économique, Transformation Structurelle et Commerce",D01S04,Part des produits de haute technologie dans les exportations manufacturées,Part des produits de haute technologie dans les exportations manufacturées
-D01,"Croissance Économique, Transformation Structurelle et Commerce","Croissance Économique, Transformation Structurelle et Commerce",D01S05,Part de l'Afrique dans la valeur ajoutée manufacturière mondiale,Part de l'Afrique dans la valeur ajoutée manufacturière mondiale
-D01,"Croissance Économique, Transformation Structurelle et Commerce","Croissance Économique, Transformation Structurelle et Commerce",D01S06,Part du commerce intra-africain dans le commerce total,Part du commerce intra-africain dans le commerce total
-D01,"Croissance Économique, Transformation Structurelle et Commerce","Croissance Économique, Transformation Structurelle et Commerce",D01S07,Indice de diversification économique,Indice de diversification économique
-D01,"Croissance Économique, Transformation Structurelle et Commerce","Croissance Économique, Transformation Structurelle et Commerce",D01S08,Contribution directe du tourisme au PIB,Contribution directe du tourisme au PIB
-D01,"Croissance Économique, Transformation Structurelle et Commerce","Croissance Économique, Transformation Structurelle et Commerce",D01S09,Formation brute de capital fixe (% PIB),Formation brute de capital fixe (% PIB)
-D01,"Croissance Économique, Transformation Structurelle et Commerce","Croissance Économique, Transformation Structurelle et Commerce",D01S10,Pays commerçant sous le régime ZLECA,Pays commerçant sous le régime ZLECA
-D02,"Emploi, Travail Décent et Protection Sociale","Emploi, Travail Décent et Protection Sociale",D02S11,"Taux de chômage (total, jeunes, femmes)","Taux de chômage (total, jeunes, femmes)"
-D02,"Emploi, Travail Décent et Protection Sociale","Emploi, Travail Décent et Protection Sociale",D02S12,Nombre d'emplois créés (dont jeunes),Nombre d'emplois créés (dont jeunes)
-D02,"Emploi, Travail Décent et Protection Sociale","Emploi, Travail Décent et Protection Sociale",D02S13,"Taux de jeunes NEET (Ni emploi, éducation ou travail) (15-24 ans)","Taux de jeunes NEET (Ni emploi, éducation ou travail) (15-24 ans)"
-D02,"Emploi, Travail Décent et Protection Sociale","Emploi, Travail Décent et Protection Sociale",D02S14,Taux de couverture de la protection sociale,Taux de couverture de la protection sociale
-D02,"Emploi, Travail Décent et Protection Sociale","Emploi, Travail Décent et Protection Sociale",D02S15,Pourcentage d'enfants (5-17 ans) au travail,Pourcentage d'enfants (5-17 ans) au travail
-D02,"Emploi, Travail Décent et Protection Sociale","Emploi, Travail Décent et Protection Sociale",D02S16,Part de l'emploi informel dans l'emploi total,Part de l'emploi informel dans l'emploi total
-D02,"Emploi, Travail Décent et Protection Sociale","Emploi, Travail Décent et Protection Sociale",D02S17,Écart de rémunération horaire hommes-femmes,Écart de rémunération horaire hommes-femmes
-D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Agriculture durable, Sécurité alimentaire et Nutrition",D03S18,Prévalence de la sous-alimentation (Faim),Prévalence de la sous-alimentation (Faim)
-D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Agriculture durable, Sécurité alimentaire et Nutrition",D03S19,Prévalence du retard de croissance (enfants <5 ans),Prévalence du retard de croissance (enfants <5 ans)
-D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Agriculture durable, Sécurité alimentaire et Nutrition",D03S20,Taux de croissance des rendements agricoles,Taux de croissance des rendements agricoles
-D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Agriculture durable, Sécurité alimentaire et Nutrition",D03S21,Réduction des pertes post-récolte,Réduction des pertes post-récolte
-D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Agriculture durable, Sécurité alimentaire et Nutrition",D03S22,Part des importations alimentaires / importations totales,Part des importations alimentaires / importations totales
-D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Agriculture durable, Sécurité alimentaire et Nutrition",D03S23,Terres sous gestion durable,Terres sous gestion durable
-D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Agriculture durable, Sécurité alimentaire et Nutrition",D03S24,Résilience climatique des ménages agricoles,Résilience climatique des ménages agricoles
-D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Agriculture durable, Sécurité alimentaire et Nutrition",D03S25,Zones de Transformation Agro-industrielle (SAPZ) créées,Zones de Transformation Agro-industrielle (SAPZ) créées
-D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Agriculture durable, Sécurité alimentaire et Nutrition",D03S26,Utilisation d'engrais (kg/ha),Utilisation d'engrais (kg/ha)
-D04,"Infrastructures, Industrialisation et Innovation","Infrastructures, Industrialisation et Innovation",D04S27,Taux d’accès à l'électricité (Ménages),Taux d’accès à l'électricité (Ménages)
-D04,"Infrastructures, Industrialisation et Innovation","Infrastructures, Industrialisation et Innovation",D04S28,Accès Internet haut débit (Qualité),Accès Internet haut débit (Qualité)
-D04,"Infrastructures, Industrialisation et Innovation","Infrastructures, Industrialisation et Innovation",D04S29,Connectivité routière interafricaine,Connectivité routière interafricaine
-D04,"Infrastructures, Industrialisation et Innovation","Infrastructures, Industrialisation et Innovation",D04S30,Connectivité ferroviaire interafricaine,Connectivité ferroviaire interafricaine
-D04,"Infrastructures, Industrialisation et Innovation","Infrastructures, Industrialisation et Innovation",D04S31,Dépenses de R&D (% PIB),Dépenses de R&D (% PIB)
-D04,"Infrastructures, Industrialisation et Innovation","Infrastructures, Industrialisation et Innovation",D04S32,Capacité de production électrique installée,Capacité de production électrique installée
-D04,"Infrastructures, Industrialisation et Innovation","Infrastructures, Industrialisation et Innovation",D04S33,Contribution des services numériques au PIB,Contribution des services numériques au PIB
-D04,"Infrastructures, Industrialisation et Innovation","Infrastructures, Industrialisation et Innovation",D04S34,Part des énergies renouvelables,Part des énergies renouvelables
-D05,"Inclusion, Pauvreté et Inégalités","Inclusion, Pauvreté et Inégalités",D05S35,Taux de pauvreté (seuil national),Taux de pauvreté (seuil national)
-D05,"Inclusion, Pauvreté et Inégalités","Inclusion, Pauvreté et Inégalités",D05S36,Indice de Gini (Inégalités de revenus),Indice de Gini (Inégalités de revenus)
-D05,"Inclusion, Pauvreté et Inégalités","Inclusion, Pauvreté et Inégalités",D05S37,Accès à l'eau potable salubre,Accès à l'eau potable salubre
-D05,"Inclusion, Pauvreté et Inégalités","Inclusion, Pauvreté et Inégalités",D05S38,Accès à l'assainissement amélioré,Accès à l'assainissement amélioré
-D05,"Inclusion, Pauvreté et Inégalités","Inclusion, Pauvreté et Inégalités",D05S39,Population urbaine vivant dans des taudis,Population urbaine vivant dans des taudis
-D05,"Inclusion, Pauvreté et Inégalités","Inclusion, Pauvreté et Inégalités",D05S40,Accès à un logement décent,Accès à un logement décent
-D05,"Inclusion, Pauvreté et Inégalités","Inclusion, Pauvreté et Inégalités",D05S41,Accès à l'eau (Pays en transition/fragiles),Accès à l'eau (Pays en transition/fragiles)
-D06,"Éducation, Compétences et Capital Humain","Éducation, Compétences et Capital Humain",D06S42,Taux net de scolarisation (Primaire),Taux net de scolarisation (Primaire)
-D06,"Éducation, Compétences et Capital Humain","Éducation, Compétences et Capital Humain",D06S43,Taux net de scolarisation (Secondaire),Taux net de scolarisation (Secondaire)
-D06,"Éducation, Compétences et Capital Humain","Éducation, Compétences et Capital Humain",D06S44,Taux de scolarisation pré-primaire,Taux de scolarisation pré-primaire
-D06,"Éducation, Compétences et Capital Humain","Éducation, Compétences et Capital Humain",D06S45,Proportion de diplômés en STEM,Proportion de diplômés en STEM
-D06,"Éducation, Compétences et Capital Humain","Éducation, Compétences et Capital Humain",D06S46,Taux de compétence minimale (Lecture/Maths),Taux de compétence minimale (Lecture/Maths)
-D06,"Éducation, Compétences et Capital Humain","Éducation, Compétences et Capital Humain",D06S47,Ratio Élèves / Enseignant qualifié,Ratio Élèves / Enseignant qualifié
-D06,"Éducation, Compétences et Capital Humain","Éducation, Compétences et Capital Humain",D06S48,Taux brut de scolarisation (Supérieur),Taux brut de scolarisation (Supérieur)
-D07,"Santé, Bien-être et Accès Universel","Santé, Bien-être et Accès Universel",D07S49,Accès aux soins de santé primaires,Accès aux soins de santé primaires
-D07,"Santé, Bien-être et Accès Universel","Santé, Bien-être et Accès Universel",D07S50,Taux de mortalité maternelle,Taux de mortalité maternelle
-D07,"Santé, Bien-être et Accès Universel","Santé, Bien-être et Accès Universel",D07S51,Taux de mortalité infantile (<5 ans),Taux de mortalité infantile (<5 ans)
-D07,"Santé, Bien-être et Accès Universel","Santé, Bien-être et Accès Universel",D07S52,Incidence VIH / Couverture ARV,Incidence VIH / Couverture ARV
-D07,"Santé, Bien-être et Accès Universel","Santé, Bien-être et Accès Universel",D07S53,Incidence Paludisme,Incidence Paludisme
-D07,"Santé, Bien-être et Accès Universel","Santé, Bien-être et Accès Universel",D07S54,Indice de Couverture Sanitaire Universelle,Indice de Couverture Sanitaire Universelle
-D08,Égalité des Genres et Autonomisation,Égalité des Genres et Autonomisation,D08S55,Femmes dans les instances décisionnelles,Femmes dans les instances décisionnelles
-D08,Égalité des Genres et Autonomisation,Égalité des Genres et Autonomisation,D08S56,Droits fonciers et propriété des femmes,Droits fonciers et propriété des femmes
-D08,Égalité des Genres et Autonomisation,Égalité des Genres et Autonomisation,D08S57,Accès au financement (Femmes entrepreneurs),Accès au financement (Femmes entrepreneurs)
-D08,Égalité des Genres et Autonomisation,Égalité des Genres et Autonomisation,D08S58,Prévalence des Violences Basées sur le Genre,Prévalence des Violences Basées sur le Genre
-D08,Égalité des Genres et Autonomisation,Égalité des Genres et Autonomisation,D08S59,Mutilations Génitales Féminines (MGF),Mutilations Génitales Féminines (MGF)
-D08,Égalité des Genres et Autonomisation,Égalité des Genres et Autonomisation,D08S60,Temps de travail domestique non rémunéré,Temps de travail domestique non rémunéré
-D09,"Environnement, Résilience Climatique et Villes Durables","Environnement, Résilience Climatique et Villes Durables",D09S61,Pertes économiques dues aux catastrophes,Pertes économiques dues aux catastrophes
-D09,"Environnement, Résilience Climatique et Villes Durables","Environnement, Résilience Climatique et Villes Durables",D09S62,Couverture forestière,Couverture forestière
-D09,"Environnement, Résilience Climatique et Villes Durables","Environnement, Résilience Climatique et Villes Durables",D09S63,Ménages avec résilience climatique renforcée,Ménages avec résilience climatique renforcée
-D09,"Environnement, Résilience Climatique et Villes Durables","Environnement, Résilience Climatique et Villes Durables",D09S64,Finance Climatique mobilisée,Finance Climatique mobilisée
-D09,"Environnement, Résilience Climatique et Villes Durables","Environnement, Résilience Climatique et Villes Durables",D09S65,Pollution marine (Plastiques/Eutrophisation),Pollution marine (Plastiques/Eutrophisation)
-D10,"Gouvernance, Paix et Institutions","Gouvernance, Paix et Institutions",D10S66,Score de Perception de la Corruption (IPC),Score de Perception de la Corruption (IPC)
-D10,"Gouvernance, Paix et Institutions","Gouvernance, Paix et Institutions",D10S67,Flux Financiers Illicites (% PIB),Flux Financiers Illicites (% PIB)
-D10,"Gouvernance, Paix et Institutions","Gouvernance, Paix et Institutions",D10S68,Perception d'indépendance de la justice,Perception d'indépendance de la justice
-D10,"Gouvernance, Paix et Institutions","Gouvernance, Paix et Institutions",D10S69,Ratio recettes fiscales / PIB,Ratio recettes fiscales / PIB
-D10,"Gouvernance, Paix et Institutions","Gouvernance, Paix et Institutions",D10S70,Taux d'homicide volontaire,Taux d'homicide volontaire
-D11,Économie Bleue et Gestion des Océans,Économie Bleue et Gestion des Océans,D11S71,Valeur ajoutée de l'économie bleue (VAB),Valeur ajoutée de l'économie bleue (VAB)
-D11,Économie Bleue et Gestion des Océans,Économie Bleue et Gestion des Océans,D11S72,Emplois liés à l'économie bleue,Emplois liés à l'économie bleue
-D11,Économie Bleue et Gestion des Océans,Économie Bleue et Gestion des Océans,D11S73,Aires marines protégées (% zones territoriales),Aires marines protégées (% zones territoriales)
-D11,Économie Bleue et Gestion des Océans,Économie Bleue et Gestion des Océans,D11S74,Pénétration de l'énergie bleue,Pénétration de l'énergie bleue
-D11,Économie Bleue et Gestion des Océans,Économie Bleue et Gestion des Océans,D11S75,Stocks de poissons durables,Stocks de poissons durables
-D12,Partenariats et Financement du Développement,Partenariats et Financement du Développement,D12S76,Ratio recettes fiscales / PIB,Ratio recettes fiscales / PIB
-D12,Partenariats et Financement du Développement,Partenariats et Financement du Développement,D12S77,Flux financiers illicites (% PIB),Flux financiers illicites (% PIB)
-D12,Partenariats et Financement du Développement,Partenariats et Financement du Développement,D12S78,Part du budget financé par impôts nationaux,Part du budget financé par impôts nationaux
-D12,Partenariats et Financement du Développement,Partenariats et Financement du Développement,D12S79,Envois de fonds migrants (% PIB),Envois de fonds migrants (% PIB)
-D12,Partenariats et Financement du Développement,Partenariats et Financement du Développement,D12S80,Service de la dette (% exportations),Service de la dette (% exportations)
+D01,"Croissance Économique, Transformation Structurelle et Commerce","Economic Growth, Structural Transformation and Trade",D01S01,Taux de croissance du PIB réel,Real GDP growth rate
+D01,"Croissance Économique, Transformation Structurelle et Commerce","Economic Growth, Structural Transformation and Trade",D01S02,PIB par habitant (USD constant),GDP per capita (constant USD)
+D01,"Croissance Économique, Transformation Structurelle et Commerce","Economic Growth, Structural Transformation and Trade",D01S03,Part de la Valeur Ajoutée Manufacturière (VAM) dans le PIB,Manufacturing Value Added (MVA) share in GDP
+D01,"Croissance Économique, Transformation Structurelle et Commerce","Economic Growth, Structural Transformation and Trade",D01S04,Part des produits de haute technologie dans les exportations manufacturées,Share of high-tech products in manufactured exports
+D01,"Croissance Économique, Transformation Structurelle et Commerce","Economic Growth, Structural Transformation and Trade",D01S05,Part de l'Afrique dans la valeur ajoutée manufacturière mondiale,Africa's share in global manufacturing value added
+D01,"Croissance Économique, Transformation Structurelle et Commerce","Economic Growth, Structural Transformation and Trade",D01S06,Part du commerce intra-africain dans le commerce total,Intra-African trade share in total trade
+D01,"Croissance Économique, Transformation Structurelle et Commerce","Economic Growth, Structural Transformation and Trade",D01S07,Indice de diversification économique,Economic diversification index
+D01,"Croissance Économique, Transformation Structurelle et Commerce","Economic Growth, Structural Transformation and Trade",D01S08,Contribution directe du tourisme au PIB,
+D01,"Croissance Économique, Transformation Structurelle et Commerce","Economic Growth, Structural Transformation and Trade",D01S09,Formation brute de capital fixe (% PIB),
+D01,"Croissance Économique, Transformation Structurelle et Commerce","Economic Growth, Structural Transformation and Trade",D01S10,Pays commerçant sous le régime ZLECA,
+D02,"Emploi, Travail Décent et Protection Sociale","Employment, Decent Work and Social Protection",D02S11,"Taux de chômage (total, jeunes, femmes)",
+D02,"Emploi, Travail Décent et Protection Sociale","Employment, Decent Work and Social Protection",D02S12,Nombre d'emplois créés (dont jeunes),
+D02,"Emploi, Travail Décent et Protection Sociale","Employment, Decent Work and Social Protection",D02S13,"Taux de jeunes NEET (Ni emploi, éducation ou formation) (15-24 ans)",
+D02,"Emploi, Travail Décent et Protection Sociale","Employment, Decent Work and Social Protection",D02S14,Taux de couverture de la protection sociale,
+D02,"Emploi, Travail Décent et Protection Sociale","Employment, Decent Work and Social Protection",D02S15,Pourcentage d'enfants (5-17 ans) au travail,
+D02,"Emploi, Travail Décent et Protection Sociale","Employment, Decent Work and Social Protection",D02S16,Part de l'emploi informel dans l'emploi total,
+D02,"Emploi, Travail Décent et Protection Sociale","Employment, Decent Work and Social Protection",D02S17,Écart de rémunération horaire hommes-femmes,
+D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Sustainable Agriculture, Food Security and Nutrition",D03S18,Prévalence de la sous-alimentation (Faim),
+D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Sustainable Agriculture, Food Security and Nutrition",D03S19,Prévalence du retard de croissance (enfants <5 ans),
+D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Sustainable Agriculture, Food Security and Nutrition",D03S20,Taux de croissance des rendements agricoles,
+D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Sustainable Agriculture, Food Security and Nutrition",D03S21,Réduction des pertes post-récolte,
+D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Sustainable Agriculture, Food Security and Nutrition",D03S22,Part des importations alimentaires / importations totales,
+D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Sustainable Agriculture, Food Security and Nutrition",D03S23,Terres sous gestion durable,
+D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Sustainable Agriculture, Food Security and Nutrition",D03S24,Résilience climatique des ménages agricoles,
+D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Sustainable Agriculture, Food Security and Nutrition",D03S25,Zones de Transformation Agro-industrielle (SAPZ) créées,
+D03,"Agriculture durable, Sécurité alimentaire et Nutrition","Sustainable Agriculture, Food Security and Nutrition",D03S26,Utilisation d'engrais (kg/ha),
+D04,"Infrastructures, Industrialisation et Innovation","Infrastructure, Industrialization and Innovation",D04S27,Taux d’accès à l'électricité (Ménages),
+D04,"Infrastructures, Industrialisation et Innovation","Infrastructure, Industrialization and Innovation",D04S28,Accès Internet haut débit (Qualité),
+D04,"Infrastructures, Industrialisation et Innovation","Infrastructure, Industrialization and Innovation",D04S29,Connectivité routière interafricaine,
+D04,"Infrastructures, Industrialisation et Innovation","Infrastructure, Industrialization and Innovation",D04S30,Connectivité ferroviaire interafricaine,
+D04,"Infrastructures, Industrialisation et Innovation","Infrastructure, Industrialization and Innovation",D04S31,Dépenses de R&D (% PIB),
+D04,"Infrastructures, Industrialisation et Innovation","Infrastructure, Industrialization and Innovation",D04S32,Capacité de production électrique installée,
+D04,"Infrastructures, Industrialisation et Innovation","Infrastructure, Industrialization and Innovation",D04S33,Contribution des services numériques au PIB,
+D04,"Infrastructures, Industrialisation et Innovation","Infrastructure, Industrialization and Innovation",D04S34,Part des énergies renouvelables,
+D05,"Inclusion, Pauvreté et Inégalités","Inclusion, Poverty and Inequalities",D05S35,Taux de pauvreté (seuil national),
+D05,"Inclusion, Pauvreté et Inégalités","Inclusion, Poverty and Inequalities",D05S36,Indice de Gini (Inégalités de revenus),
+D05,"Inclusion, Pauvreté et Inégalités","Inclusion, Poverty and Inequalities",D05S37,Accès à l'eau potable salubre,
+D05,"Inclusion, Pauvreté et Inégalités","Inclusion, Poverty and Inequalities",D05S38,Accès à l'assainissement amélioré,
+D05,"Inclusion, Pauvreté et Inégalités","Inclusion, Poverty and Inequalities",D05S39,Population urbaine vivant dans des taudis,
+D05,"Inclusion, Pauvreté et Inégalités","Inclusion, Poverty and Inequalities",D05S40,Accès à un logement décent,
+D05,"Inclusion, Pauvreté et Inégalités","Inclusion, Poverty and Inequalities",D05S41,Accès à l'eau (Pays en transition/fragiles),
+D06,"Éducation, Compétences et Capital Humain","Education, Skills and Human Capital",D06S42,Taux net de scolarisation (Primaire),
+D06,"Éducation, Compétences et Capital Humain","Education, Skills and Human Capital",D06S43,Taux net de scolarisation (Secondaire),
+D06,"Éducation, Compétences et Capital Humain","Education, Skills and Human Capital",D06S44,Taux de scolarisation pré-primaire,
+D06,"Éducation, Compétences et Capital Humain","Education, Skills and Human Capital",D06S45,Proportion de diplômés en STEM,
+D06,"Éducation, Compétences et Capital Humain","Education, Skills and Human Capital",D06S46,Taux de compétence minimale (Lecture/Maths),
+D06,"Éducation, Compétences et Capital Humain","Education, Skills and Human Capital",D06S47,Ratio Élèves / Enseignant qualifié,
+D06,"Éducation, Compétences et Capital Humain","Education, Skills and Human Capital",D06S48,Taux brut de scolarisation (Supérieur),
+D07,"Santé, Bien-être et Accès Universel","Health, Well-being and Universal Access",D07S49,Accès aux soins de santé primaires,
+D07,"Santé, Bien-être et Accès Universel","Health, Well-being and Universal Access",D07S50,Taux de mortalité maternelle,
+D07,"Santé, Bien-être et Accès Universel","Health, Well-being and Universal Access",D07S51,Taux de mortalité infantile (<5 ans),
+D07,"Santé, Bien-être et Accès Universel","Health, Well-being and Universal Access",D07S52,Incidence VIH / Couverture ARV,
+D07,"Santé, Bien-être et Accès Universel","Health, Well-being and Universal Access",D07S53,Incidence Paludisme,
+D07,"Santé, Bien-être et Accès Universel","Health, Well-being and Universal Access",D07S54,Indice de Couverture Sanitaire Universelle,
+D08,Égalité des Genres et Autonomisation,Gender Equality and Empowerment,D08S55,Femmes dans les instances décisionnelles,
+D08,Égalité des Genres et Autonomisation,Gender Equality and Empowerment,D08S56,Droits fonciers et propriété des femmes,
+D08,Égalité des Genres et Autonomisation,Gender Equality and Empowerment,D08S57,Accès au financement (Femmes entrepreneurs),
+D08,Égalité des Genres et Autonomisation,Gender Equality and Empowerment,D08S58,Prévalence des Violences Basées sur le Genre,
+D08,Égalité des Genres et Autonomisation,Gender Equality and Empowerment,D08S59,Mutilations Génitales Féminines (MGF),
+D08,Égalité des Genres et Autonomisation,Gender Equality and Empowerment,D08S60,Temps de travail domestique non rémunéré,
+D09,"Environnement, Résilience Climatique et Villes Durables","Environment, Climate Resilience and Sustainable Cities",D09S61,Pertes économiques dues aux catastrophes,
+D09,"Environnement, Résilience Climatique et Villes Durables","Environment, Climate Resilience and Sustainable Cities",D09S62,Couverture forestière,
+D09,"Environnement, Résilience Climatique et Villes Durables","Environment, Climate Resilience and Sustainable Cities",D09S63,Ménages avec résilience climatique renforcée,
+D09,"Environnement, Résilience Climatique et Villes Durables","Environment, Climate Resilience and Sustainable Cities",D09S64,Finance Climatique mobilisée,
+D09,"Environnement, Résilience Climatique et Villes Durables","Environment, Climate Resilience and Sustainable Cities",D09S65,Pollution marine (Plastiques/Eutrophisation),
+D10,"Gouvernance, Paix et Institutions","Governance, Peace and Institutions",D10S66,Score de Perception de la Corruption (IPC),
+D10,"Gouvernance, Paix et Institutions","Governance, Peace and Institutions",D10S67,Flux Financiers Illicites (% PIB),
+D10,"Gouvernance, Paix et Institutions","Governance, Peace and Institutions",D10S68,Perception d'indépendance de la justice,
+D10,"Gouvernance, Paix et Institutions","Governance, Peace and Institutions",D10S69,Ratio recettes fiscales / PIB,
+D10,"Gouvernance, Paix et Institutions","Governance, Peace and Institutions",D10S70,Taux d'homicide volontaire,
+D11,Économie Bleue et Gestion des Océans,Blue Economy and Ocean Management,D11S71,Valeur ajoutée de l'économie bleue (VAB),
+D11,Économie Bleue et Gestion des Océans,Blue Economy and Ocean Management,D11S72,Emplois liés à l'économie bleue,
+D11,Économie Bleue et Gestion des Océans,Blue Economy and Ocean Management,D11S73,Aires marines protégées (% zones territoriales),
+D11,Économie Bleue et Gestion des Océans,Blue Economy and Ocean Management,D11S74,Pénétration de l'énergie bleue,
+D11,Économie Bleue et Gestion des Océans,Blue Economy and Ocean Management,D11S75,Stocks de poissons durables,
+D12,Partenariats et Financement du Développement,Partnerships and Development Financing,D12S76,Ratio recettes fiscales / PIB,
+D12,Partenariats et Financement du Développement,Partnerships and Development Financing,D12S77,Flux financiers illicites (% PIB),
+D12,Partenariats et Financement du Développement,Partnerships and Development Financing,D12S78,Part du budget financé par impôts nationaux,
+D12,Partenariats et Financement du Développement,Partnerships and Development Financing,D12S79,Envois de fonds migrants (% PIB),
+D12,Partenariats et Financement du Développement,Partnerships and Development Financing,D12S80,Service de la dette (% exportations),

@@ -37,8 +37,16 @@ DB_PATH = "responses.db"
 LONG_LIST_CSV = os.path.join("data", "indicator_longlist.csv")
 LONG_LIST_XLSX = os.path.join("data", "longlist.xlsx")
 
-UK_FR = "UK (Inconnu)"
-UK_EN = "UK (Unknown)"
+UK_FR = "NSP (Ne sais pas)"
+UK_EN = "DK (Don’t know)"
+
+
+# Scores affichés (notation multicritères)
+SCORE_LABELS_FR = {0: "NSP", 1: "Faible", 2: "Moyen", 3: "Élevé"}
+SCORE_LABELS_EN = {0: "DK", 1: "Low", 2: "Medium", 3: "High"}
+
+def score_format(lang: str):
+    return (lambda v: SCORE_LABELS_FR.get(int(v), str(v))) if lang == "fr" else (lambda v: SCORE_LABELS_EN.get(int(v), str(v)))
 
 ROLE_OPTIONS_FR = [
     "DG/DGA/SG",
@@ -212,6 +220,184 @@ def stats_for_domain(df_long: pd.DataFrame, domain_code: str, lang: str) -> List
 # =========================
 # Storage : SQLite + optional Google Sheets + Dropbox
 # =========================
+
+
+def domain_label_map(df_long: pd.DataFrame, lang: str) -> Dict[str, str]:
+    """Map domain_code -> label in selected language."""
+    if df_long is None or df_long.empty:
+        return {}
+    col = "domain_label_fr" if lang == "fr" else "domain_label_en"
+    m = {}
+    for _, r in df_long.drop_duplicates("domain_code").iterrows():
+        m[str(r["domain_code"])] = str(r.get(col, r.get("domain_label_fr", r["domain_code"])))
+    return m
+
+def stat_label_map(df_long: pd.DataFrame, lang: str) -> Dict[str, str]:
+    """Map stat_code -> label in selected language."""
+    if df_long is None or df_long.empty:
+        return {}
+    col = "stat_label_fr" if lang == "fr" else "stat_label_en"
+    m = {}
+    for _, r in df_long.drop_duplicates("stat_code").iterrows():
+        m[str(r["stat_code"])] = str(r.get(col, r.get("stat_label_fr", r["stat_code"])))
+    return m
+
+def build_publication_report_docx(lang: str, filtered_payloads: pd.DataFrame, by_domain: pd.DataFrame, by_stat: pd.DataFrame, scored_rows: pd.DataFrame) -> bytes:
+    """
+    Génère un rapport Word 'publication' enrichi :
+    - profil des répondants
+    - domaines TOP 5 (fréquences)
+    - tableau agrégé des statistiques et scores moyens
+    - graphiques (bar charts)
+    - annexes
+    """
+    from docx import Document
+    from docx.shared import Inches
+    import matplotlib.pyplot as plt
+
+    doc = Document()
+    title = t(lang, "Rapport de synthèse – Consultation sur les statistiques prioritaires", "Summary report – Consultation on priority statistics")
+    doc.add_heading(title, level=0)
+    doc.add_paragraph(t(lang, f"Date : {datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}", f"Date: {datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}"))
+    doc.add_paragraph("")
+
+    # Sample profile
+    doc.add_heading(t(lang, "Profil des répondants", "Respondent profile"), level=1)
+    n = len(filtered_payloads)
+    doc.add_paragraph(t(lang, f"Nombre de réponses analysées : {n}", f"Number of responses analyzed: {n}"))
+
+    # Countries
+    if "pays" in filtered_payloads.columns:
+        vc = filtered_payloads["pays"].fillna("").astype(str)
+        vc = vc[vc.str.strip() != ""].value_counts().head(10)
+        if len(vc) > 0:
+            doc.add_paragraph(t(lang, "Top pays (10 premiers) :", "Top countries (top 10):"))
+            for k, v in vc.items():
+                doc.add_paragraph(f"- {k} : {v}", style=None)
+
+    # Actor types
+    if "type_acteur" in filtered_payloads.columns:
+        vc = filtered_payloads["type_acteur"].fillna("").astype(str)
+        vc = vc[vc.str.strip() != ""].value_counts()
+        if len(vc) > 0:
+            doc.add_paragraph(t(lang, "Répartition par type d’acteur :", "Distribution by stakeholder type:"))
+            for k, v in vc.items():
+                doc.add_paragraph(f"- {k} : {v}", style=None)
+
+    # Domain aggregation
+    doc.add_heading(t(lang, "Domaines prioritaires (scores moyens)", "Priority domains (mean scores)"), level=1)
+    top_dom = by_domain.head(15).copy()
+    # Table
+    table = doc.add_table(rows=1, cols=4)
+    hdr = table.rows[0].cells
+    hdr[0].text = t(lang, "Domaine", "Domain")
+    hdr[1].text = t(lang, "Nb. soumissions", "Submissions")
+    hdr[2].text = t(lang, "Nb. stats notées", "Scored indicators")
+    hdr[3].text = t(lang, "Score moyen", "Mean score")
+    for _, r in top_dom.iterrows():
+        row = table.add_row().cells
+        row[0].text = str(r["domain_label"])
+        row[1].text = str(int(r["n_submissions"]))
+        row[2].text = str(int(r["n_stats"]))
+        row[3].text = f"{float(r['mean_overall']):.2f}"
+
+    # Chart domain
+    try:
+        fig = plt.figure()
+        plt.bar(top_dom["domain_label"], top_dom["mean_overall"])
+        plt.xticks(rotation=75, ha="right")
+        plt.ylabel(t(lang, "Score moyen", "Mean score"))
+        plt.tight_layout()
+        img_stream = io.BytesIO()
+        plt.savefig(img_stream, format="png", dpi=150)
+        plt.close(fig)
+        img_stream.seek(0)
+        doc.add_paragraph(t(lang, "Graphique : score moyen par domaine (top 15).", "Chart: mean score by domain (top 15)."))
+        doc.add_picture(img_stream, width=Inches(6.5))
+    except Exception:
+        pass
+
+    # Statistic aggregation
+    doc.add_heading(t(lang, "Statistiques prioritaires (scores moyens)", "Priority indicators (mean scores)"), level=1)
+    top_stat = by_stat.sort_values(["mean_overall", "n"], ascending=[False, False]).head(30).copy()
+    table2 = doc.add_table(rows=1, cols=6)
+    h = table2.rows[0].cells
+    h[0].text = t(lang, "Domaine", "Domain")
+    h[1].text = t(lang, "Statistique", "Indicator")
+    h[2].text = t(lang, "N", "N")
+    h[3].text = t(lang, "Écart", "Gap")
+    h[4].text = t(lang, "Demande", "Demand")
+    h[5].text = t(lang, "Faisabilité", "Feasibility")
+    for _, r in top_stat.iterrows():
+        row = table2.add_row().cells
+        row[0].text = str(r["domain_label"])
+        row[1].text = str(r["stat_label"])
+        row[2].text = str(int(r["n"]))
+        row[3].text = f"{float(r['mean_gap']):.2f}"
+        row[4].text = f"{float(r['mean_demand']):.2f}"
+        row[5].text = f"{float(r['mean_feasibility']):.2f}"
+
+    # Chart top overall indicators
+    try:
+        fig = plt.figure()
+        plt.barh(top_stat["stat_label"].iloc[::-1], top_stat["mean_overall"].iloc[::-1])
+        plt.xlabel(t(lang, "Score moyen", "Mean score"))
+        plt.tight_layout()
+        img2 = io.BytesIO()
+        plt.savefig(img2, format="png", dpi=150)
+        plt.close(fig)
+        img2.seek(0)
+        doc.add_paragraph(t(lang, "Graphique : score moyen par statistique (top 30).", "Chart: mean score by indicator (top 30)."))
+        doc.add_picture(img2, width=Inches(6.5))
+    except Exception:
+        pass
+
+    # Interpretation auto
+    doc.add_heading(t(lang, "Interprétations automatiques", "Automatic interpretations"), level=1)
+    # Simple rules
+    best_dom = top_dom.iloc[0]
+    doc.add_paragraph(
+        t(
+            lang,
+            f"Le domaine le mieux noté est « {best_dom['domain_label']} » avec un score moyen de {best_dom['mean_overall']:.2f} (sur 3).",
+            f"The highest-rated domain is “{best_dom['domain_label']}” with a mean score of {best_dom['mean_overall']:.2f} (out of 3)."
+        )
+    )
+    best_stat = top_stat.iloc[0]
+    doc.add_paragraph(
+        t(
+            lang,
+            f"La statistique la mieux notée est « {best_stat['stat_label']} » (domaine : {best_stat['domain_label']}) avec un score moyen de {best_stat['mean_overall']:.2f}.",
+            f"The highest-rated indicator is “{best_stat['stat_label']}” (domain: {best_stat['domain_label']}) with a mean score of {best_stat['mean_overall']:.2f}."
+        )
+    )
+
+    # Annexes
+    doc.add_heading(t(lang, "Annexes", "Annexes"), level=1)
+    doc.add_paragraph(t(lang, "A1. Tableau détaillé (statistiques agrégées) – extrait", "A1. Detailed table (aggregated indicators) – excerpt"))
+    annex = by_stat.head(50).copy()
+    tab3 = doc.add_table(rows=1, cols=5)
+    hh = tab3.rows[0].cells
+    hh[0].text = t(lang, "Domaine", "Domain")
+    hh[1].text = t(lang, "Statistique", "Indicator")
+    hh[2].text = t(lang, "N", "N")
+    hh[3].text = t(lang, "Score moyen", "Mean score")
+    hh[4].text = t(lang, "Détail", "Detail")
+    for _, r in annex.iterrows():
+        rr = tab3.add_row().cells
+        rr[0].text = str(r["domain_label"])
+        rr[1].text = str(r["stat_label"])
+        rr[2].text = str(int(r["n"]))
+        rr[3].text = f"{float(r['mean_overall']):.2f}"
+        rr[4].text = f"Gap={float(r['mean_gap']):.2f}, Demand={float(r['mean_demand']):.2f}, Feas={float(r['mean_feasibility']):.2f}"
+
+    buf = io.BytesIO()
+    doc.save(buf)
+    buf.seek(0)
+    return buf.getvalue()
+
+
+
 
 def db_init() -> None:
     con = sqlite3.connect(DB_PATH)
@@ -605,7 +791,7 @@ Ce questionnaire vise à recueillir votre avis sur **les statistiques socio-éco
 - **3** : élevé / très important  
 - **2** : moyen  
 - **1** : faible  
-- **0** : UK (Inconnu)
+- **0** : NSP (Ne sais pas)
 
 > Conseil : privilégiez les statistiques réellement **utilisables, demandées et faisables** à horizon 12–24 mois.
             """,
@@ -623,7 +809,7 @@ This questionnaire collects your views on **priority socio-economic statistics**
 - **3**: high  
 - **2**: medium  
 - **1**: low  
-- **0**: UK (Unknown)
+- **0**: DK (Don’t know)
 
 > Tip: prioritize indicators that are **useful, demanded and feasible** within 12–24 months.
             """
@@ -737,6 +923,14 @@ def rubric_3(lang: str) -> None:
 def rubric_4(lang: str, df_long: pd.DataFrame) -> None:
     st.subheader(t(lang, "Rubrique 4 : Domaines prioritaires", "Section 4: Priority domains"))
 
+    st.info(
+        t(
+            lang,
+            "Veuillez d’abord choisir 5 à 10 domaines (pré-sélection). Ensuite, choisissez exactement 5 domaines dans ce sous-ensemble (TOP 5).\n\nConseil : choisissez les domaines où la demande politique est forte et où les lacunes de données sont importantes.",
+            "First select 5 to 10 domains (pre-selection). Then choose exactly 5 domains within that subset (TOP 5).\n\nTip: select domains with strong policy demand and significant data gaps."
+        )
+    )
+
     domains = domains_from_longlist(df_long, lang)
     if not domains:
         st.error(
@@ -799,7 +993,8 @@ Select **5 to 10 domains** (no duplicates).
     pre_disp = st.multiselect(
         t(lang, "Pré-sélection (5–10 domaines)", "Pre-selection (5–10 domains)"),
         options=display_labels,
-        default=pre_default_disp
+        default=pre_default_disp,
+        key="r4_preselection_ms"
     )
     pre_codes = [label_to_code[x] for x in pre_disp]
     resp_set("preselected_domains", pre_codes)
@@ -977,7 +1172,7 @@ For each selected indicator, provide a score (0–3) for:
             global_map[c] = lbl
 
     st.divider()
-    st.markdown("### " + t(lang, "Notation multicritères (0–3)", "Multi-criteria scoring (0–3)"))
+    st.markdown("### " + t(lang, "Notation multicritères", "Multi-criteria scoring"))
 
     for s in flattened:
         if s not in scoring:
@@ -991,6 +1186,7 @@ For each selected indicator, provide a score (0–3) for:
                 t(lang, "Écart de données", "Data gap"),
                 options=[0, 1, 2, 3],
                 index=int(scoring[s].get("gap", 0)),
+                format_func=score_format(lang),
                 help=t(lang, f"0 = {UK_FR}, 3 = Élevé", f"0 = {UK_EN}, 3 = High"),
                 key=f"sc_gap_{s}"
             )
@@ -999,6 +1195,7 @@ For each selected indicator, provide a score (0–3) for:
                 t(lang, "Demande politique", "Political demand"),
                 options=[0, 1, 2, 3],
                 index=int(scoring[s].get("demand", 0)),
+                format_func=score_format(lang),
                 help=t(lang, f"0 = {UK_FR}, 3 = Élevé", f"0 = {UK_EN}, 3 = High"),
                 key=f"sc_dem_{s}"
             )
@@ -1007,6 +1204,7 @@ For each selected indicator, provide a score (0–3) for:
                 t(lang, "Faisabilité 12–24 mois", "Feasibility 12–24 months"),
                 options=[0, 1, 2, 3],
                 index=int(scoring[s].get("feasibility", 0)),
+                format_func=score_format(lang),
                 help=t(lang, f"0 = {UK_FR}, 3 = Élevé", f"0 = {UK_EN}, 3 = High"),
                 key=f"sc_fea_{s}"
             )
@@ -1153,7 +1351,7 @@ def rubric_9(lang: str) -> None:
     ]
     opts = opts_fr if lang == "fr" else opts_en
     default = resp_get("quality_expectations", [])
-    sel = st.multiselect(t(lang, "Sélectionnez", "Select"), options=opts, default=default)
+    sel = st.multiselect(t(lang, "Sélectionnez", "Select"), options=opts, default=default, key="r9_multiselect")
     resp_set("quality_expectations", sel)
     if ("Autre" in sel) or ("Other" in sel):
         st.text_input(t(lang, "Préciser (Autre)", "Specify (Other)"),
@@ -1190,7 +1388,7 @@ def rubric_10(lang: str) -> None:
     ]
     opts = opts_fr if lang == "fr" else opts_en
     default = resp_get("dissemination_channels", [])
-    sel = st.multiselect(t(lang, "Sélectionnez", "Select"), options=opts, default=default)
+    sel = st.multiselect(t(lang, "Sélectionnez", "Select"), options=opts, default=default, key="r10_multiselect")
     resp_set("dissemination_channels", sel)
     if ("Autre" in sel) or ("Other" in sel):
         st.text_input(t(lang, "Préciser (Autre)", "Specify (Other)"),
@@ -1310,56 +1508,66 @@ def admin_login(lang: str) -> None:
             st.error(t(lang, "Mot de passe incorrect ou secret ADMIN_PASSWORD manquant.", "Incorrect password or missing ADMIN_PASSWORD secret."))
 
 
+
 def admin_dashboard(lang: str) -> None:
     st.subheader(t(lang, "Tableau de bord admin", "Admin dashboard"))
 
-    df = db_read_submissions(limit=5000)
+    # Load data from SQLite
+    df = db_read_submissions(limit=20000)
     st.metric(t(lang, "Nombre de réponses", "Number of responses"), len(df))
 
     if df.empty:
         st.info(t(lang, "Aucune réponse pour le moment.", "No responses yet."))
         return
 
-    # Parse payload
+    # Parse payloads
     payloads = []
     for _, r in df.iterrows():
         try:
             payloads.append(json.loads(r["payload_json"]))
         except Exception:
             payloads.append({})
+
+    # Flat view for quick export
     flat = pd.DataFrame([flatten_payload(p) for p in payloads])
     flat.insert(0, "submission_id", df["submission_id"].values)
     flat.insert(1, "submitted_at_utc", df["submitted_at_utc"].values)
 
-    st.dataframe(flat, use_container_width=True)
+    tab_quick, tab_super = st.tabs([
+        t(lang, "Vue rapide", "Quick view"),
+        t(lang, "Super admin", "Super admin")
+    ])
 
-    # Export Excel
-    out = io.BytesIO()
-    with pd.ExcelWriter(out, engine="openpyxl") as writer:
-        flat.to_excel(writer, sheet_name="submissions", index=False)
-        df.to_excel(writer, sheet_name="raw_json", index=False)
-    out.seek(0)
+    with tab_quick:
+        st.dataframe(flat, use_container_width=True)
 
-    st.download_button(
-        t(lang, "Exporter en Excel", "Export to Excel"),
-        data=out.getvalue(),
-        file_name="consultation_stat_niang_export.xlsx",
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    )
+        # Export Excel (flat + raw)
+        out = io.BytesIO()
+        with pd.ExcelWriter(out, engine="openpyxl") as writer:
+            flat.to_excel(writer, sheet_name="submissions", index=False)
+            df.to_excel(writer, sheet_name="raw_json", index=False)
+        out.seek(0)
 
-    # Download DB file
-    if os.path.exists(DB_PATH):
-        with open(DB_PATH, "rb") as f:
-            st.download_button(
-                t(lang, "Télécharger responses.db", "Download responses.db"),
-                data=f.read(),
-                file_name="responses.db",
-                mime="application/octet-stream",
-            )
+        st.download_button(
+            t(lang, "Exporter en Excel", "Export to Excel"),
+            data=out.getvalue(),
+            file_name="consultation_stat_niang_export.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
 
-    # Push last export to Dropbox (optional)
-    if dropbox is not None and st.secrets.get("DROPBOX_ACCESS_TOKEN", None):
-        if st.button(t(lang, "Uploader l’export Excel sur Dropbox", "Upload Excel export to Dropbox")):
+        # Download DB file
+        if os.path.exists(DB_PATH):
+            with open(DB_PATH, "rb") as f:
+                st.download_button(
+                    t(lang, "Télécharger la base SQLite (.db)", "Download SQLite database (.db)"),
+                    data=f.read(),
+                    file_name="responses.db",
+                    mime="application/octet-stream",
+                )
+
+        # Upload exports to Dropbox (optional)
+        st.markdown("#### Dropbox")
+        if st.button(t(lang, "Envoyer l’Excel sur Dropbox", "Upload Excel to Dropbox"), key="dbx_excel_btn"):
             try:
                 token = st.secrets["DROPBOX_ACCESS_TOKEN"]
                 folder = st.secrets.get("DROPBOX_FOLDER", "/consultation_stat_niang")
@@ -1367,14 +1575,11 @@ def admin_dashboard(lang: str) -> None:
                 path = f"{folder}/exports/export_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.xlsx"
                 dbx = dropbox.Dropbox(token)
                 dbx.files_upload(out.getvalue(), path, mode=dropbox.files.WriteMode.overwrite)
-                st.success(t(lang, "Export envoyé sur Dropbox.", "Export uploaded to Dropbox."))
+                st.success(t(lang, "Excel envoyé sur Dropbox.", "Excel uploaded to Dropbox."))
             except Exception as e:
                 st.error(f"Dropbox : {e}")
 
-
-    # Push DB to Dropbox (optional)
-    if dropbox is not None and st.secrets.get("DROPBOX_ACCESS_TOKEN", None) and os.path.exists(DB_PATH):
-        if st.button(t(lang, "Uploader responses.db sur Dropbox", "Upload responses.db to Dropbox")):
+        if st.button(t(lang, "Envoyer la base .db sur Dropbox", "Upload database to Dropbox"), key="dbx_db_btn"):
             try:
                 token = st.secrets["DROPBOX_ACCESS_TOKEN"]
                 folder = st.secrets.get("DROPBOX_FOLDER", "/consultation_stat_niang")
@@ -1387,13 +1592,145 @@ def admin_dashboard(lang: str) -> None:
             except Exception as e:
                 st.error(f"Dropbox : {e}")
 
-    st.info(
-        t(
-            lang,
-            "Astuce : utilisez ?admin=1 dans l’URL pour afficher l’espace admin.",
-            "Tip: use ?admin=1 in the URL to access the admin space."
+        st.info(
+            t(
+                lang,
+                "Astuce : utilisez ?admin=1 dans l’URL pour afficher l’espace admin.",
+                "Tip: use ?admin=1 in the URL to access the admin space."
+            )
         )
-    )
+
+    with tab_super:
+        # --- Build a richer dataset for analysis
+        df_super = pd.DataFrame(payloads)
+        df_super["submission_id"] = df["submission_id"].values
+        df_super["submitted_at_utc"] = pd.to_datetime(df["submitted_at_utc"], errors="coerce", utc=True)
+
+        # Filters
+        st.markdown("### " + t(lang, "Filtres", "Filters"))
+
+        colf1, colf2, colf3 = st.columns(3)
+        with colf1:
+            countries = sorted([c for c in df_super.get("pays", pd.Series(dtype=str)).dropna().unique().tolist() if str(c).strip() != ""])
+            sel_countries = st.multiselect(t(lang, "Pays", "Country"), options=countries, default=[], key="f_country")
+        with colf2:
+            actors = sorted([a for a in df_super.get("type_acteur", pd.Series(dtype=str)).dropna().unique().tolist() if str(a).strip() != ""])
+            sel_actors = st.multiselect(t(lang, "Type d’acteur", "Stakeholder type"), options=actors, default=[], key="f_actor")
+        with colf3:
+            # Period filter
+            min_dt = df_super["submitted_at_utc"].min()
+            max_dt = df_super["submitted_at_utc"].max()
+            if pd.isna(min_dt) or pd.isna(max_dt):
+                min_dt = pd.Timestamp.utcnow() - pd.Timedelta(days=30)
+                max_dt = pd.Timestamp.utcnow()
+            date_range = st.date_input(
+                t(lang, "Période", "Period"),
+                value=(min_dt.date(), max_dt.date()),
+                key="f_period"
+            )
+
+        filtered = df_super.copy()
+        if sel_countries:
+            filtered = filtered[filtered["pays"].isin(sel_countries)]
+        if sel_actors:
+            filtered = filtered[filtered["type_acteur"].isin(sel_actors)]
+        if isinstance(date_range, (list, tuple)) and len(date_range) == 2:
+            start_d = pd.to_datetime(date_range[0])
+            end_d = pd.to_datetime(date_range[1]) + pd.Timedelta(days=1) - pd.Timedelta(seconds=1)
+            filtered = filtered[(filtered["submitted_at_utc"] >= start_d) & (filtered["submitted_at_utc"] <= end_d)]
+
+        st.caption(t(lang, f"Réponses filtrées : {len(filtered)}", f"Filtered responses: {len(filtered)}"))
+
+        if filtered.empty:
+            st.warning(t(lang, "Aucune réponse dans ce filtre.", "No responses match these filters."))
+            return
+
+        # Longlist for labels (domain/stat)
+        df_long = load_longlist()
+        dom_lbl = domain_label_map(df_long, lang)
+        stat_lbl = stat_label_map(df_long, lang)
+
+        # --- Build aggregated prioritization table
+        rows = []
+        for _, p in filtered.iterrows():
+            top5 = p.get("top5_domains", []) or []
+            sel_by_dom = p.get("selected_by_domain", {}) or {}
+            scoring = p.get("scoring", {}) or {}
+            sid = p.get("submission_id", "")
+            for d, stats in (sel_by_dom.items() if isinstance(sel_by_dom, dict) else []):
+                if not isinstance(stats, list):
+                    continue
+                for s in stats:
+                    sc = scoring.get(s, {})
+                    gap = int(sc.get("gap", 0) or 0)
+                    dem = int(sc.get("demand", 0) or 0)
+                    fea = int(sc.get("feasibility", 0) or 0)
+                    overall = (gap + dem + fea) / 3.0
+                    rows.append({
+                        "submission_id": sid,
+                        "pays": p.get("pays", ""),
+                        "type_acteur": p.get("type_acteur", ""),
+                        "domain_code": d,
+                        "domain_label": dom_lbl.get(d, d),
+                        "stat_code": s,
+                        "stat_label": stat_lbl.get(s, s),
+                        "gap": gap, "demand": dem, "feasibility": fea, "overall": overall
+                    })
+
+        df_rows = pd.DataFrame(rows)
+        if df_rows.empty:
+            st.warning(t(lang, "Aucune statistique notée dans ces réponses.", "No scored indicators in these responses."))
+            return
+
+        # Aggregation
+        by_stat = df_rows.groupby(["domain_code", "domain_label", "stat_code", "stat_label"], as_index=False).agg(
+            n=("submission_id", "nunique"),
+            mean_gap=("gap", "mean"),
+            mean_demand=("demand", "mean"),
+            mean_feasibility=("feasibility", "mean"),
+            mean_overall=("overall", "mean"),
+        ).sort_values(["domain_code", "mean_overall", "n"], ascending=[True, False, False])
+
+        by_domain = df_rows.groupby(["domain_code", "domain_label"], as_index=False).agg(
+            n_stats=("stat_code", "count"),
+            n_submissions=("submission_id", "nunique"),
+            mean_overall=("overall", "mean"),
+        ).sort_values(["mean_overall", "n_submissions"], ascending=[False, False])
+
+        st.markdown("### " + t(lang, "Tableau de priorisation agrégé", "Aggregated prioritization table"))
+        st.dataframe(by_stat, use_container_width=True, height=420)
+
+        # Export aggregated Excel
+        out2 = io.BytesIO()
+        with pd.ExcelWriter(out2, engine="openpyxl") as writer:
+            by_domain.to_excel(writer, sheet_name="by_domain", index=False)
+            by_stat.to_excel(writer, sheet_name="by_statistic", index=False)
+            df_rows.to_excel(writer, sheet_name="scored_rows", index=False)
+        out2.seek(0)
+
+        st.download_button(
+            t(lang, "Télécharger l’agrégé (Excel)", "Download aggregated (Excel)"),
+            data=out2.getvalue(),
+            file_name="prioritization_aggregated.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
+
+        # Rich Word report
+        st.markdown("### " + t(lang, "Rapport Word (publication)", "Word report (publication)"))
+        st.caption(t(lang, "Génère un rapport enrichi avec graphiques et annexes.", "Generates an enriched report with charts and annexes."))
+
+        if st.button(t(lang, "Générer le rapport Word", "Generate Word report"), key="btn_word_publication"):
+            try:
+                doc_bytes = build_publication_report_docx(lang, filtered, by_domain, by_stat, df_rows)
+                st.download_button(
+                    t(lang, "Télécharger le rapport (.docx)", "Download report (.docx)"),
+                    data=doc_bytes,
+                    file_name="rapport_publication_priorisation.docx",
+                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                )
+                st.success(t(lang, "Rapport généré.", "Report generated."))
+            except Exception as e:
+                st.error(f"Word : {e}")
 
 
 # =========================
