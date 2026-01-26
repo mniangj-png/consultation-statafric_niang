@@ -1436,5 +1436,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-            st.error("Veuillez remplir intégralement le TOP 5 avant de soumettre.")
