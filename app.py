@@ -790,8 +790,8 @@ Rank exactly **5 domains** from your pre-selection.
     errs = validate_r4(lang)
     if errs:
         st.warning(t(lang, "Contrôles qualité :", "Quality checks:"))
-        st.write("
-".join([f"- {e}" for e in errs]))
+        st.write("\n".join([f"- {e}" for e in errs]))
+
 
 
 def rubric_5(lang: str, df_long: pd.DataFrame) -> None:
@@ -958,8 +958,8 @@ For each selected indicator, provide a score (0–3) for:
     errs = validate_r5(lang)
     if errs:
         st.warning(t(lang, "Contrôles qualité :", "Quality checks:"))
-        st.write("
-".join([f"- {e}" for e in errs]))
+        st.write("\n".join([f"- {e}" for e in errs]))
+
 
 def rubric_6(lang: str) -> None:
     st.subheader(t(lang, "Rubrique 6 : Perspective de genre", "Section 6: Gender perspective"))
