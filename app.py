@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 import pandas as pd
+import numpy as np
 import streamlit as st
 import io
 import matplotlib.pyplot as plt
@@ -209,10 +210,33 @@ R8_CONSTRAINTS = [
 # =========================================================
 @st.cache_data
 def load_longlist() -> pd.DataFrame:
+    """Load the indicator longlist (domain_code + labels FR/EN).
+
+    Streamlit Cloud will crash at startup if this CSV is missing.
+    We therefore provide a safe fallback to an empty longlist, so the
+    questionnaire remains usable with custom indicators.
+    """
     path = DATA_DIR / "indicator_longlist.csv"
+    base_cols = ["domain_code", "stat_label_fr", "stat_label_en"]
+
+    if not path.exists():
+        # Safe fallback: empty longlist with expected columns
+        df = pd.DataFrame(columns=base_cols)
+        df["stat_label_display_en"] = ""
+        return df
+
     df = pd.read_csv(path, dtype=str).fillna("")
-    # fallback si stat_label_en vide : utiliser le français
-    df["stat_label_display_en"] = df["stat_label_en"].where(df["stat_label_en"].str.len() > 0, df["stat_label_fr"])
+
+    # Ensure expected columns exist even if the CSV schema changed
+    for c in base_cols:
+        if c not in df.columns:
+            df[c] = ""
+
+    # fallback if stat_label_en is empty: use FR label
+    df["stat_label_display_en"] = df["stat_label_en"].where(
+        df["stat_label_en"].astype(str).str.len() > 0,
+        df["stat_label_fr"].astype(str)
+    )
     return df
 
 def t(lang: str, fr: str, en: str) -> str:
@@ -535,10 +559,20 @@ def get_top5_domains() -> List[str]:
     return top5 if len(top5) == 5 and len(set(top5)) == 5 else []
 
 def get_stats_options_for_domain(df_long: pd.DataFrame, domain_code: str, lang: str) -> List[str]:
+    # If longlist is missing/empty, allow only custom input later
+    if df_long is None or df_long.empty or "domain_code" not in df_long.columns:
+        return []
+
     if lang == "fr":
-        stats = df_long[df_long["domain_code"] == domain_code]["stat_label_fr"].tolist()
+        col = "stat_label_fr"
     else:
-        stats = df_long[df_long["domain_code"] == domain_code]["stat_label_display_en"].tolist()
+        col = "stat_label_display_en" if "stat_label_display_en" in df_long.columns else "stat_label_en"
+
+    if col not in df_long.columns:
+        return []
+
+    stats = df_long[df_long["domain_code"] == domain_code][col].tolist()
+    stats = [s for s in stats if isinstance(s, str) and s.strip()]
     stats = sorted(list(dict.fromkeys(stats)))
     return stats
 
