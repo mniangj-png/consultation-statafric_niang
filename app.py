@@ -6,7 +6,7 @@ import re
 import sqlite3
 import uuid
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Optional
 
 import numpy as np
 import pandas as pd
@@ -558,6 +558,65 @@ def google_sheets_append(payload: Dict[str, Any]) -> Tuple[bool, str]:
         return False, f"Erreur Google Sheets : {e}"
 
 
+def google_sheets_write_df(df: pd.DataFrame, worksheet_title: str, sheet_id: Optional[str] = None) -> Tuple[bool, str]:
+    """
+    Write a dataframe to a worksheet (overwrite), if configured.
+    Uses secrets:
+      GOOGLE_SHEET_ID (or provided sheet_id)
+      GOOGLE_SERVICE_ACCOUNT (dict)
+    """
+    if gspread is None or Credentials is None:
+        return False, "Bibliothèques Google Sheets non disponibles (gspread/google-auth)."
+    try:
+        sid = sheet_id or st.secrets.get("GOOGLE_SHEET_ID", None)
+        sa_info = st.secrets.get("GOOGLE_SERVICE_ACCOUNT", None)
+        if not sid or not sa_info:
+            return False, "Google Sheets non configuré (secrets manquants)."
+
+        scopes = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
+        creds = Credentials.from_service_account_info(sa_info, scopes=scopes)
+        gc = gspread.authorize(creds)
+        sh = gc.open_by_key(sid)
+
+        try:
+            ws = sh.worksheet(worksheet_title)
+        except Exception:
+            ws = sh.add_worksheet(title=worksheet_title, rows=max(200, len(df) + 20), cols=max(20, len(df.columns) + 10))
+
+        # Prepare values (header + rows), keep everything as string to avoid type surprises
+        values = [list(df.columns)]
+        if not df.empty:
+            values += df.astype(object).where(pd.notnull(df), "").astype(str).values.tolist()
+
+        ws.clear()
+        ws.update("A1", values, value_input_option="RAW")
+        return True, "OK"
+    except Exception as e:
+        return False, f"Erreur Google Sheets : {e}"
+
+
+def dropbox_upload_bytes(content: bytes, filename: str, subfolder: str = "exports") -> Tuple[bool, str]:
+    """
+    Upload arbitrary bytes to Dropbox, if configured.
+    Requires secret: DROPBOX_ACCESS_TOKEN
+    Optional: DROPBOX_FOLDER (default /consultation_stat_niang)
+    """
+    if dropbox is None:
+        return False, "Bibliothèque Dropbox non disponible."
+    try:
+        token = st.secrets.get("DROPBOX_ACCESS_TOKEN", None)
+        if not token:
+            return False, "Dropbox non configuré (DROPBOX_ACCESS_TOKEN manquant)."
+        folder = st.secrets.get("DROPBOX_FOLDER", "/consultation_stat_niang")
+        folder = folder if folder.startswith("/") else "/" + folder
+        ts = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        path = f"{folder}/{subfolder}/{ts}_{filename}"
+        dbx = dropbox.Dropbox(token)
+        dbx.files_upload(content, path, mode=dropbox.files.WriteMode.overwrite)
+        return True, "OK"
+    except Exception as e:
+        return False, f"Erreur Dropbox : {e}"
+
 def dropbox_upload_json(submission_id: str, payload: Dict[str, Any]) -> Tuple[bool, str]:
     """
     Upload the JSON submission to Dropbox if configured.
@@ -954,19 +1013,32 @@ def rubric_3(lang: str) -> None:
         )
     )
 
-    scope_opts = [
+    scope_opts_raw = [
         ("National", {"fr": "National", "en": "National"}),
         ("Regional", {"fr": "Régional (CER)", "en": "Regional (REC)"}),
         ("Continental", {"fr": "Continental (UA)", "en": "Continental (AU)"}),
         ("Global", {"fr": "International", "en": "International"}),
         ("Other", {"fr": "Autre", "en": "Other"}),
     ]
-    labels = [t(lang, x[1]["fr"], x[1]["en"]) for x in scope_opts]
-    keys = [x[0] for x in scope_opts]
-    default = resp_get("scope", "National")
-    idx = keys.index(default) if default in keys else 0
-    chosen = st.radio(t(lang, "Portée", "Scope"), options=list(range(len(keys))), index=idx, format_func=lambda i: labels[i])
-    resp_set("scope", keys[int(chosen)])
+    scope_labels = {k: t(lang, v["fr"], v["en"]) for k, v in scope_opts_raw}
+    scope_keys = [k for k, _ in scope_opts_raw]
+    scope_options = [""] + scope_keys
+
+    prev_scope = resp_get("scope", "")
+    scope_idx = scope_options.index(prev_scope) if prev_scope in scope_options else 0
+
+    chosen_scope = st.selectbox(
+        t(lang, "Portée", "Scope"),
+        options=scope_options,
+        index=scope_idx,
+        format_func=lambda k: (t(lang, "— Sélectionner —", "— Select —") if k == "" else scope_labels.get(k, k)),
+        help=t(
+            lang,
+            "Indiquez le périmètre principal de votre réponse : national, régional (CER), continental (UA) ou international.",
+            "Indicate the main scope of your response: national, regional (REC), continental (AU), or international."
+        )
+    )
+    resp_set("scope", chosen_scope)
 
     if resp_get("scope") == "Other":
         st.text_input(t(lang, "Préciser", "Specify"), key="scope_other_input", value=resp_get("scope_other", ""))
@@ -1049,25 +1121,15 @@ Select **5 to 10 domains** (no duplicates).
     # Avoid "first click not kept" by initializing widget state once (no default on every rerun)
     if "r4_preselection_ms" not in st.session_state:
         st.session_state["r4_preselection_ms"] = pre_default_disp
-    if "_r4_pre_prev" not in st.session_state:
-        st.session_state["_r4_pre_prev"] = st.session_state["r4_preselection_ms"]
 
     pre_disp = st.multiselect(
         t(lang, "Pré-sélection (5–10 domaines)", "Pre-selection (5–10 domains)"),
         options=display_labels,
+        max_selections=10,
         key="r4_preselection_ms",
         help=t(lang, "Choisissez au maximum 10 domaines. Une fois 10 domaines sélectionnés, les nouveaux clics seront ignorés.", 
                "Select up to 10 domains. Once 10 domains are selected, additional clicks are ignored.")
     )
-
-    # Cap at 10 selections (hard stop)
-    if len(pre_disp) > 10:
-        st.session_state["r4_preselection_ms"] = st.session_state.get("_r4_pre_prev", pre_disp[:10])
-        st.warning(t(lang, "Vous avez déjà sélectionné 10 domaines. Retirez-en un avant d’en ajouter un autre.",
-                     "You already selected 10 domains. Remove one before adding another."))
-        st.rerun()
-    else:
-        st.session_state["_r4_pre_prev"] = pre_disp
 
     pre_codes = [label_to_code[x] for x in pre_disp]
     resp_set("preselected_domains", pre_codes)
@@ -1224,30 +1286,19 @@ For each selected indicator, provide a score (0–3) for:
                 default_disp.append(disp)
 
         key_ms = f"stats_ms_{d}"
-        key_prev = f"_prev_stats_ms_{d}"
 
         # Init widget state once (avoid "first click" issues)
         if key_ms not in st.session_state:
             st.session_state[key_ms] = default_disp
-        if key_prev not in st.session_state:
-            st.session_state[key_prev] = st.session_state[key_ms]
 
         picked_disp = st.multiselect(
             t(lang, "Choisir 1 à 3 statistiques", "Select 1 to 3 indicators"),
             options=display_labels,
+            max_selections=3,
             key=key_ms,
             help=t(lang, "Sélectionnez au minimum 1 et au maximum 3 statistiques pour ce domaine.",
                    "Select at least 1 and at most 3 indicators for this domain.")
         )
-
-        # Hard stop at 3
-        if len(picked_disp) > 3:
-            st.session_state[key_ms] = st.session_state.get(key_prev, picked_disp[:3])
-            st.warning(t(lang, "Maximum 3 statistiques : retirez-en une avant d’en ajouter une autre.",
-                         "Maximum 3 indicators: remove one before adding another."))
-            st.rerun()
-        else:
-            st.session_state[key_prev] = picked_disp
 
         picked_codes = [label_to_code[x] for x in picked_disp]
         selected_by_domain[d] = picked_codes
@@ -1398,10 +1449,11 @@ def rubric_6(lang: str) -> None:
         tbl = {}
 
     for it in items:
-        prev = tbl.get(it, "UK")
-        prev_label = next((lab for lab, code in code_map.items() if code == prev), labels[-1])
-        chosen = st.radio(it, options=labels, index=labels.index(prev_label), horizontal=True, key=f"gender_{it}")
-        tbl[it] = code_map[chosen]
+        rev_map = {v: k for k, v in code_map.items()}
+        prev_code = tbl.get(it, None)
+        idx = labels.index(rev_map[prev_code]) if prev_code in rev_map else None
+        chosen = st.radio(it, options=labels, index=idx, horizontal=True, key=f"gender_{it}")
+        tbl[it] = code_map.get(chosen, None)
 
     resp_set("gender_table", tbl)
 
@@ -1453,10 +1505,11 @@ def rubric_8(lang: str) -> None:
         tbl = {}
 
     for it in items:
-        prev = tbl.get(it, "UK")
-        prev_label = next((lab for lab, code in code_map.items() if code == prev), labels[-1])
-        chosen = st.radio(it, options=labels, index=labels.index(prev_label), horizontal=True, key=f"cap_{it}")
-        tbl[it] = code_map[chosen]
+        rev_map = {v: k for k, v in code_map.items()}
+        prev_code = tbl.get(it, None)
+        idx = labels.index(rev_map[prev_code]) if prev_code in rev_map else None
+        chosen = st.radio(it, options=labels, index=idx, horizontal=True, key=f"cap_{it}")
+        tbl[it] = code_map.get(chosen, None)
 
     resp_set("capacity_table", tbl)
 
@@ -1881,6 +1934,24 @@ def admin_dashboard(lang: str) -> None:
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         )
 
+        colpub1, colpub2 = st.columns(2)
+        with colpub1:
+            if st.button(t(lang, "Publier l’agrégé sur Google Sheets", "Publish aggregates to Google Sheets"), key="btn_publish_gsheets"):
+                ok1, msg1 = google_sheets_write_df(by_domain, "agg_by_domain")
+                ok2, msg2 = google_sheets_write_df(by_stat, "agg_by_statistic")
+                if ok1 and ok2:
+                    st.success(t(lang, "Agrégats publiés sur Google Sheets (onglets : agg_by_domain, agg_by_statistic).",
+                                 "Aggregates published to Google Sheets (tabs: agg_by_domain, agg_by_statistic)."))
+                else:
+                    st.error(f"Google Sheets : {msg1} / {msg2}")
+        with colpub2:
+            if st.button(t(lang, "Envoyer l’agrégé sur Dropbox", "Upload aggregates to Dropbox"), key="btn_publish_dropbox_agg"):
+                ok, msg = dropbox_upload_bytes(out2.getvalue(), "prioritization_aggregated.xlsx", subfolder="aggregates")
+                if ok:
+                    st.success(t(lang, "Agrégé envoyé sur Dropbox.", "Aggregates uploaded to Dropbox."))
+                else:
+                    st.error(f"Dropbox : {msg}")
+
         # Rich Word report
         st.markdown("### " + t(lang, "Rapport Word (publication)", "Word report (publication)"))
         st.caption(t(lang, "Génère un rapport enrichi avec graphiques et annexes.", "Generates an enriched report with charts and annexes."))
@@ -1895,6 +1966,17 @@ def admin_dashboard(lang: str) -> None:
                     mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 )
                 st.success(t(lang, "Rapport généré.", "Report generated."))
+
+                # Auto-upload to Dropbox (if configured)
+                ok_dbx, msg_dbx = dropbox_upload_bytes(doc_bytes, "rapport_publication_priorisation.docx", subfolder="reports")
+                if ok_dbx:
+                    st.info(t(lang, "Rapport aussi envoyé sur Dropbox.", "Report also uploaded to Dropbox."))
+                else:
+                    # Not an error if Dropbox is not configured
+                    if "manquant" in str(msg_dbx).lower() or "non configur" in str(msg_dbx).lower():
+                        st.caption(t(lang, "Dropbox non configuré : le rapport n’a pas été envoyé.", "Dropbox not configured: report not uploaded."))
+                    else:
+                        st.warning(f"Dropbox : {msg_dbx}")
             except Exception as e:
                 st.error(f"Word : {e}")
 
