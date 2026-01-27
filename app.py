@@ -38,15 +38,29 @@ LONG_LIST_CSV = os.path.join("data", "indicator_longlist.csv")
 LONG_LIST_XLSX = os.path.join("data", "longlist.xlsx")
 
 UK_FR = "NSP (Ne sais pas)"
-UK_EN = "DK (Don’t know)"
+UK_EN = "NSP (Don’t know)"
 
 
 # Scores affichés (notation multicritères)
 SCORE_LABELS_FR = {0: "NSP", 1: "Faible", 2: "Moyen", 3: "Élevé"}
-SCORE_LABELS_EN = {0: "DK", 1: "Low", 2: "Medium", 3: "High"}
+SCORE_LABELS_EN = {0: "NSP", 1: "Low", 2: "Medium", 3: "High"}
 
 def score_format(lang: str):
-    return (lambda v: SCORE_LABELS_FR.get(int(v), str(v))) if lang == "fr" else (lambda v: SCORE_LABELS_EN.get(int(v), str(v)))
+    """Formatter for score selectboxes.
+    We include a None option (placeholder) so we don't prefill answers.
+    """
+    placeholder_fr = "— Sélectionner —"
+    placeholder_en = "— Select —"
+    def _fmt(v):
+        if v is None or v == "":
+            return placeholder_fr if lang == "fr" else placeholder_en
+        try:
+            iv = int(v)
+        except Exception:
+            return str(v)
+        return SCORE_LABELS_FR.get(iv, str(v)) if lang == "fr" else SCORE_LABELS_EN.get(iv, str(v))
+    return _fmt
+
 
 ROLE_OPTIONS_FR = [
     "DG/DGA/SG",
@@ -162,21 +176,28 @@ def load_longlist() -> pd.DataFrame:
         if os.path.exists(p):
             df = pd.read_excel(p, dtype=str).fillna("")
             df.attrs["source_path"] = p
-            # Colonnes attendues : Domain_code, Domain_label_fr, Stat_label_fr
+
+            # Colonnes attendues (minimum) : Domain_code, Domain_label_fr, Stat_label_fr
             if set(["Domain_code", "Domain_label_fr", "Stat_label_fr"]).issubset(df.columns):
                 out = pd.DataFrame()
                 out["domain_code"] = df["Domain_code"].astype(str).str.strip()
-                out["domain_label_fr"] = (
-                    df["Domain_label_fr"].astype(str).str.split("|", n=1).str[-1].str.strip()
-                )
-                out["domain_label_en"] = out["domain_label_fr"]
-                out["stat_code"] = (
-                    df["Stat_label_fr"].astype(str).str.split("|", n=1).str[0].str.strip()
-                )
-                out["stat_label_fr"] = (
-                    df["Stat_label_fr"].astype(str).str.split("|", n=1).str[-1].str.strip()
-                )
-                out["stat_label_en"] = out["stat_label_fr"]
+
+                # Labels FR (on retire le préfixe code "D01|...")
+                out["domain_label_fr"] = df["Domain_label_fr"].astype(str).str.split("|", n=1).str[-1].str.strip()
+                out["stat_code"] = df["Stat_label_fr"].astype(str).str.split("|", n=1).str[0].str.strip()
+                out["stat_label_fr"] = df["Stat_label_fr"].astype(str).str.split("|", n=1).str[-1].str.strip()
+
+                # Labels EN si disponibles, sinon fallback FR
+                if "Domain_label_en" in df.columns:
+                    out["domain_label_en"] = df["Domain_label_en"].astype(str).str.split("|", n=1).str[-1].str.strip()
+                else:
+                    out["domain_label_en"] = out["domain_label_fr"]
+
+                if "Stat_label_en" in df.columns:
+                    out["stat_label_en"] = df["Stat_label_en"].astype(str).str.split("|", n=1).str[-1].str.strip()
+                else:
+                    out["stat_label_en"] = out["stat_label_fr"]
+
                 out.attrs["source_path"] = p
                 return out[[
                     "domain_code",
@@ -187,7 +208,7 @@ def load_longlist() -> pd.DataFrame:
                     "stat_label_en",
                 ]]
 
-    # Aucun fichier trouvé : dataframe vide
+# Aucun fichier trouvé : dataframe vide
     empty = pd.DataFrame(columns=[
         "domain_code",
         "domain_label_fr",
@@ -407,31 +428,60 @@ def db_init() -> None:
             submission_id TEXT PRIMARY KEY,
             submitted_at_utc TEXT,
             lang TEXT,
+            email TEXT,
             payload_json TEXT
         )
     """)
+
+    # Backward compatibility : add email column if existing DB was created with older schema
+    try:
+        cur.execute("PRAGMA table_info(submissions)")
+        cols = [r[1] for r in cur.fetchall()]
+        if "email" not in cols:
+            cur.execute("ALTER TABLE submissions ADD COLUMN email TEXT")
+    except Exception:
+        pass
+
+    # Helpful index (non-unique) for email lookups
+    try:
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_submissions_email ON submissions(email)")
+    except Exception:
+        pass
+
     con.commit()
     con.close()
 
 
-def db_save_submission(submission_id: str, lang: str, payload: Dict[str, Any]) -> None:
+def db_email_exists(email: str) -> bool:
+    email = (email or "").strip().lower()
+    if not email or not os.path.exists(DB_PATH):
+        return False
+    db_init()
+    con = sqlite3.connect(DB_PATH)
+    cur = con.cursor()
+    cur.execute("SELECT 1 FROM submissions WHERE lower(email)=? LIMIT 1", (email,))
+    row = cur.fetchone()
+    con.close()
+    return row is not None
+
+
+def db_save_submission(submission_id: str, lang: str, email: str, payload: Dict[str, Any]) -> None:
     db_init()
     con = sqlite3.connect(DB_PATH)
     cur = con.cursor()
     cur.execute("""
-        INSERT OR REPLACE INTO submissions(submission_id, submitted_at_utc, lang, payload_json)
-        VALUES(?, ?, ?, ?)
-    """, (submission_id, now_utc_iso(), lang, json.dumps(payload, ensure_ascii=False)))
+        INSERT OR REPLACE INTO submissions(submission_id, submitted_at_utc, lang, email, payload_json)
+        VALUES(?, ?, ?, ?, ?)
+    """, (submission_id, now_utc_iso(), lang, (email or "").strip().lower(), json.dumps(payload, ensure_ascii=False)))
     con.commit()
     con.close()
 
-
 def db_read_submissions(limit: int = 2000) -> pd.DataFrame:
     if not os.path.exists(DB_PATH):
-        return pd.DataFrame(columns=["submission_id", "submitted_at_utc", "lang", "payload_json"])
+        return pd.DataFrame(columns=["submission_id", "submitted_at_utc", "lang", "email", "payload_json"])
     con = sqlite3.connect(DB_PATH)
     df = pd.read_sql_query(
-        "SELECT submission_id, submitted_at_utc, lang, payload_json FROM submissions ORDER BY submitted_at_utc DESC LIMIT ?",
+        "SELECT submission_id, submitted_at_utc, lang, email, payload_json FROM submissions ORDER BY submitted_at_utc DESC LIMIT ?",
         con,
         params=(limit,),
     )
@@ -806,10 +856,10 @@ This questionnaire collects your views on **priority socio-economic statistics**
 4. Complete cross-cutting sections: **gender** and **capacity/feasibility**.
 
 ### Scoring scale (Section 5)
-- **3**: high  
-- **2**: medium  
-- **1**: low  
-- **0**: DK (Don’t know)
+- **High** (3)
+- **Medium** (2)
+- **Low** (1)
+- **NSP (Don’t know)** (0)
 
 > Tip: prioritize indicators that are **useful, demanded and feasible** within 12–24 months.
             """
@@ -852,28 +902,34 @@ def rubric_2(lang: str) -> None:
     type_labels = [t(lang, x[1]["fr"], x[1]["en"]) for x in type_options]
     type_keys = [x[0] for x in type_options]
 
-    selected_idx = 0
-    if resp_get("type_acteur"):
-        try:
-            selected_idx = type_keys.index(resp_get("type_acteur"))
-        except Exception:
-            selected_idx = 0
+    # Type d’acteur : pas de pré-remplissage (placeholder)
+    type_opts = [""] + type_keys
+    prev_type = resp_get("type_acteur", "")
+    idx = type_opts.index(prev_type) if prev_type in type_opts else 0
 
-    chosen = st.selectbox(t(lang, "Type d’acteur", "Stakeholder type"), options=list(range(len(type_keys))),
-                          index=selected_idx, format_func=lambda i: type_labels[i])
-    resp_set("type_acteur", type_keys[int(chosen)])
-
-    # Fonction dropdown
+    chosen_type = st.selectbox(
+        t(lang, "Type d’acteur", "Stakeholder type"),
+        options=type_opts,
+        index=idx,
+        format_func=lambda k: (t(lang, "— Sélectionner —", "— Select —") if k == "" else type_labels[type_keys.index(k)]),
+        help=t(lang, "Choisissez la catégorie correspondant le mieux à votre organisation.", 
+               "Choose the category that best matches your organization.")
+    )
+    resp_set("type_acteur", chosen_type)
+# Fonction dropdown : pas de pré-remplissage (placeholder)
     role_opts = ROLE_OPTIONS_FR if lang == "fr" else ROLE_OPTIONS_EN
-    role_default = resp_get("fonction", role_opts[0] if role_opts else "")
-    try:
-        role_idx = role_opts.index(role_default)
-    except Exception:
-        role_idx = 0
+    role_options = [""] + role_opts
+    prev_role = resp_get("fonction", "")
+    role_idx = role_options.index(prev_role) if prev_role in role_options else 0
 
-    chosen_role = st.selectbox(t(lang, "Fonction", "Role/Function"), options=role_opts, index=role_idx)
+    chosen_role = st.selectbox(
+        t(lang, "Fonction", "Role/Function"),
+        options=role_options,
+        index=role_idx,
+        format_func=lambda x: (t(lang, "— Sélectionner —", "— Select —") if x == "" else x),
+        help=t(lang, "Indiquez votre fonction principale dans l’organisation.", "Indicate your main role in the organization."),
+    )
     resp_set("fonction", chosen_role)
-
     if chosen_role in ["Autre", "Other"]:
         st.text_input(t(lang, "Préciser (fonction)", "Specify (role)"),
                       key="fonction_autre_input", value=resp_get("fonction_autre", ""))
@@ -990,12 +1046,29 @@ Select **5 to 10 domains** (no duplicates).
         if disp in label_to_code:
             pre_default_disp.append(disp)
 
+    # Avoid "first click not kept" by initializing widget state once (no default on every rerun)
+    if "r4_preselection_ms" not in st.session_state:
+        st.session_state["r4_preselection_ms"] = pre_default_disp
+    if "_r4_pre_prev" not in st.session_state:
+        st.session_state["_r4_pre_prev"] = st.session_state["r4_preselection_ms"]
+
     pre_disp = st.multiselect(
         t(lang, "Pré-sélection (5–10 domaines)", "Pre-selection (5–10 domains)"),
         options=display_labels,
-        default=pre_default_disp,
-        key="r4_preselection_ms"
+        key="r4_preselection_ms",
+        help=t(lang, "Choisissez au maximum 10 domaines. Une fois 10 domaines sélectionnés, les nouveaux clics seront ignorés.", 
+               "Select up to 10 domains. Once 10 domains are selected, additional clicks are ignored.")
     )
+
+    # Cap at 10 selections (hard stop)
+    if len(pre_disp) > 10:
+        st.session_state["r4_preselection_ms"] = st.session_state.get("_r4_pre_prev", pre_disp[:10])
+        st.warning(t(lang, "Vous avez déjà sélectionné 10 domaines. Retirez-en un avant d’en ajouter un autre.",
+                     "You already selected 10 domains. Remove one before adding another."))
+        st.rerun()
+    else:
+        st.session_state["_r4_pre_prev"] = pre_disp
+
     pre_codes = [label_to_code[x] for x in pre_disp]
     resp_set("preselected_domains", pre_codes)
 
@@ -1021,24 +1094,41 @@ Rank exactly **5 domains** from your pre-selection.
         return
 
     top5: List[str] = []
-    pre_option_codes = pre_codes.copy()
 
-    # Ranking with 5 selectboxes (codes hidden via format_func)
+    # Ranking with 5 selectboxes (no prefill + no duplicates)
+    chosen_prev: List[str] = []
     for i in range(5):
         key = f"top5_rank_{i+1}"
-        prev = resp_get(key, pre_option_codes[0] if pre_option_codes else "")
-        if prev not in pre_option_codes and pre_option_codes:
-            prev = pre_option_codes[0]
+
+        # Options for this rank = preselection minus already chosen
+        remaining = [c for c in pre_codes if c not in chosen_prev]
+        options = [""] + remaining  # "" placeholder (no prefill)
+
+        prev = resp_get(key, "")
+        if prev and prev in remaining:
+            idx = options.index(prev)
+        else:
+            idx = 0
+
         choice = st.selectbox(
             t(lang, f"Rang {i+1}", f"Rank {i+1}"),
-            options=pre_option_codes,
-            index=pre_option_codes.index(prev) if prev in pre_option_codes else 0,
-            format_func=lambda c: code_to_label.get(c, c),
-            key=key
+            options=options,
+            index=idx,
+            format_func=lambda c: (t(lang, "— Sélectionner —", "— Select —") if c == "" else code_to_label.get(c, c)),
+            help=t(
+                lang,
+                "Choisissez un domaine unique pour chaque rang. Les domaines déjà choisis ne sont plus proposés aux rangs suivants.",
+                "Choose a unique domain for each rank. Already selected domains are removed from the next ranks.",
+            ),
+            key=key,
         )
-        top5.append(choice)
+
+        if choice != "":
+            top5.append(choice)
+            chosen_prev.append(choice)
 
     resp_set("top5_domains", top5)
+
 
     errs = validate_r4(lang)
     if errs:
@@ -1133,20 +1223,35 @@ For each selected indicator, provide a score (0–3) for:
             if disp in label_to_code:
                 default_disp.append(disp)
 
+        key_ms = f"stats_ms_{d}"
+        key_prev = f"_prev_stats_ms_{d}"
+
+        # Init widget state once (avoid "first click" issues)
+        if key_ms not in st.session_state:
+            st.session_state[key_ms] = default_disp
+        if key_prev not in st.session_state:
+            st.session_state[key_prev] = st.session_state[key_ms]
+
         picked_disp = st.multiselect(
             t(lang, "Choisir 1 à 3 statistiques", "Select 1 to 3 indicators"),
             options=display_labels,
-            default=default_disp,
-            key=f"stats_ms_{d}"
+            key=key_ms,
+            help=t(lang, "Sélectionnez au minimum 1 et au maximum 3 statistiques pour ce domaine.",
+                   "Select at least 1 and at most 3 indicators for this domain.")
         )
+
+        # Hard stop at 3
+        if len(picked_disp) > 3:
+            st.session_state[key_ms] = st.session_state.get(key_prev, picked_disp[:3])
+            st.warning(t(lang, "Maximum 3 statistiques : retirez-en une avant d’en ajouter une autre.",
+                         "Maximum 3 indicators: remove one before adding another."))
+            st.rerun()
+        else:
+            st.session_state[key_prev] = picked_disp
+
         picked_codes = [label_to_code[x] for x in picked_disp]
-
-        if len(picked_codes) > 3:
-            st.warning(t(lang, "Maximum 3 statistiques : seules les 3 premières sont retenues.",
-                         "Maximum 3 indicators: only the first 3 are kept."))
-            picked_codes = picked_codes[:3]
-
         selected_by_domain[d] = picked_codes
+
 
     # Uniqueness check
     flattened = []
@@ -1182,31 +1287,67 @@ For each selected indicator, provide a score (0–3) for:
 
         c1, c2, c3 = st.columns(3)
         with c1:
+            opts = [None, 1, 2, 3, 0]  # None = placeholder (no prefill). 0 = NSP
+            prev = scoring[s].get("gap", None)
+            idx = 0
+            try:
+                if prev is not None and prev != "":
+                    idx = opts.index(int(prev))
+            except Exception:
+                idx = 0
             scoring[s]["gap"] = st.selectbox(
                 t(lang, "Écart de données", "Data gap"),
-                options=[0, 1, 2, 3],
-                index=int(scoring[s].get("gap", 0)),
+                options=opts,
+                index=idx,
                 format_func=score_format(lang),
-                help=t(lang, f"0 = {UK_FR}, 3 = Élevé", f"0 = {UK_EN}, 3 = High"),
-                key=f"sc_gap_{s}"
+                help=t(
+                    lang,
+                    "Définition : Écart actuel entre les besoins et les données disponibles.",
+                    "Definition: current gap between needs and available data.",
+                ),
+                key=f"sc_gap_{s}",
             )
         with c2:
+            opts = [None, 1, 2, 3, 0]
+            prev = scoring[s].get("demand", None)
+            idx = 0
+            try:
+                if prev is not None and prev != "":
+                    idx = opts.index(int(prev))
+            except Exception:
+                idx = 0
             scoring[s]["demand"] = st.selectbox(
                 t(lang, "Demande politique", "Political demand"),
-                options=[0, 1, 2, 3],
-                index=int(scoring[s].get("demand", 0)),
+                options=opts,
+                index=idx,
                 format_func=score_format(lang),
-                help=t(lang, f"0 = {UK_FR}, 3 = Élevé", f"0 = {UK_EN}, 3 = High"),
-                key=f"sc_dem_{s}"
+                help=t(
+                    lang,
+                    "Définition : importance stratégique / demande des décideurs.",
+                    "Definition: strategic importance / demand from decision-makers.",
+                ),
+                key=f"sc_dem_{s}",
             )
         with c3:
+            opts = [None, 1, 2, 3, 0]
+            prev = scoring[s].get("feasibility", None)
+            idx = 0
+            try:
+                if prev is not None and prev != "":
+                    idx = opts.index(int(prev))
+            except Exception:
+                idx = 0
             scoring[s]["feasibility"] = st.selectbox(
                 t(lang, "Faisabilité 12–24 mois", "Feasibility 12–24 months"),
-                options=[0, 1, 2, 3],
-                index=int(scoring[s].get("feasibility", 0)),
+                options=opts,
+                index=idx,
                 format_func=score_format(lang),
-                help=t(lang, f"0 = {UK_FR}, 3 = Élevé", f"0 = {UK_EN}, 3 = High"),
-                key=f"sc_fea_{s}"
+                help=t(
+                    lang,
+                    "Définition : capacité réaliste à produire la statistique d’ici 12–24 mois.",
+                    "Definition: realistic ability to produce within 12–24 months.",
+                ),
+                key=f"sc_fea_{s}",
             )
 
     resp_set("scoring", scoring)
@@ -1387,8 +1528,15 @@ def rubric_10(lang: str) -> None:
         "Other",
     ]
     opts = opts_fr if lang == "fr" else opts_en
-    default = resp_get("dissemination_channels", [])
-    sel = st.multiselect(t(lang, "Sélectionnez", "Select"), options=opts, default=default, key="r10_multiselect")
+    # Éviter les problèmes de clic (init du widget une seule fois)
+    if "r10_multiselect" not in st.session_state:
+        st.session_state["r10_multiselect"] = resp_get("dissemination_channels", [])
+    sel = st.multiselect(
+        t(lang, "Sélectionnez", "Select"),
+        options=opts,
+        key="r10_multiselect",
+        help=t(lang, "Choisissez les canaux de diffusion les plus utiles.", "Select the most useful dissemination channels.")
+    )
     resp_set("dissemination_channels", sel)
     if ("Autre" in sel) or ("Other" in sel):
         st.text_input(t(lang, "Préciser (Autre)", "Specify (Other)"),
@@ -1457,20 +1605,38 @@ def rubric_send(lang: str, df_long: pd.DataFrame) -> None:
         t(lang, "Nb statistiques", "No. of indicators"): len(resp_get("selected_stats", [])),
     })
 
-    if st.button(t(lang, "✅ ENVOYER et enregistrer", "✅ SUBMIT and save")):
+    # Empêcher les envois multiples (par email + par session)
+    email = (resp_get("email", "") or "").strip()
+    already_in_db = db_email_exists(email) if email else False
+    already_in_session = bool(st.session_state.get("submitted_once", False))
+
+    if already_in_db:
+        st.error(t(lang, "Ce questionnaire a déjà été envoyé avec cet email. Un seul envoi est autorisé.",
+                   "This questionnaire has already been submitted with this email. Only one submission is allowed."))
+
+    if already_in_session and not already_in_db:
+        st.info(t(lang, "Ce navigateur a déjà effectué un envoi. Pour un nouvel envoi, utilisez un autre email / session.",
+                  "This browser session already submitted once. For a new submission, use another email / session."))
+
+    disable_submit = already_in_db or already_in_session
+
+    if st.button(t(lang, "✅ ENVOYER et enregistrer", "✅ SUBMIT and save"), disabled=disable_submit):
         submission_id = str(uuid.uuid4())
         payload = st.session_state.responses.copy()
         payload["submission_id"] = submission_id
         payload["submitted_at_utc"] = now_utc_iso()
 
         # Save locally (SQLite)
-        db_save_submission(submission_id, lang, payload)
+        db_save_submission(submission_id, lang, email, payload)
 
         # Optional storage integrations
         gs_ok, gs_msg = google_sheets_append(payload)
         dbx_ok, dbx_msg = dropbox_upload_json(submission_id, payload)
 
         st.success(t(lang, "Merci ! Votre questionnaire a été enregistré.", "Thank you! Your submission has been saved."))
+
+        # Block multiple sends for this session
+        st.session_state.submitted_once = True
         st.caption(f"ID : {submission_id}")
 
         # Provide downloads
