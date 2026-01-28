@@ -164,14 +164,27 @@ def load_longlist() -> pd.DataFrame:
         os.path.join(".", "data", "longlist.xlsx"),
     ]
 
-    # 1) CSV
+    # 1) CSV (prioritaire si la traduction EN est suffisamment complète)
+    df_csv = None
+    df_csv_path = None
     for p in csv_candidates:
         if os.path.exists(p):
-            df = pd.read_csv(p, dtype=str).fillna("")
-            df.attrs["source_path"] = p
-            return df
+            df_csv = pd.read_csv(p, dtype=str).fillna("")
+            df_csv_path = p
+            break
 
-    # 2) XLSX (format utilisateur)
+    if df_csv is not None:
+        # Sanity check : si beaucoup de libellés EN sont vides, on préfère l'XLSX (souvent plus à jour)
+        if "stat_label_en" in df_csv.columns:
+            miss_ratio = (df_csv["stat_label_en"].astype(str).str.strip() == "").mean()
+        else:
+            miss_ratio = 1.0
+
+        if miss_ratio <= 0.20:
+            df_csv.attrs["source_path"] = df_csv_path
+            return df_csv
+
+    # 2) XLSX (format utilisateur) (format utilisateur)
     for p in xlsx_candidates:
         if os.path.exists(p):
             df = pd.read_excel(p, dtype=str).fillna("")
@@ -208,6 +221,11 @@ def load_longlist() -> pd.DataFrame:
                     "stat_label_en",
                 ]]
 
+
+    # Fallback final : si un CSV a été trouvé (même avec traduction EN incomplète), on le renvoie
+    if df_csv is not None:
+        df_csv.attrs["source_path"] = df_csv_path or ""
+        return df_csv
 # Aucun fichier trouvé : dataframe vide
     empty = pd.DataFrame(columns=[
         "domain_code",
@@ -235,7 +253,7 @@ def stats_for_domain(df_long: pd.DataFrame, domain_code: str, lang: str) -> List
     col = "stat_label_fr" if lang == "fr" else "stat_label_en"
     tmp = df_long[df_long["domain_code"] == domain_code][["stat_code", col]].drop_duplicates()
     tmp = tmp.sort_values(["stat_code", col])
-    return [(r["stat_code"], r[col]) for _, r in tmp.iterrows()]
+    return [(r["stat_code"], (str(r[col]).strip() if str(r[col]).strip() else r["stat_code"])) for _, r in tmp.iterrows()]
 
 
 # =========================
@@ -250,7 +268,11 @@ def domain_label_map(df_long: pd.DataFrame, lang: str) -> Dict[str, str]:
     col = "domain_label_fr" if lang == "fr" else "domain_label_en"
     m = {}
     for _, r in df_long.drop_duplicates("domain_code").iterrows():
-        m[str(r["domain_code"])] = str(r.get(col, r.get("domain_label_fr", r["domain_code"])))
+        code = str(r["domain_code"])
+        lbl = str(r.get(col, "")).strip()
+        if not lbl:
+            lbl = str(r.get("domain_label_fr", "")).strip() or code
+        m[code] = lbl
     return m
 
 def stat_label_map(df_long: pd.DataFrame, lang: str) -> Dict[str, str]:
@@ -260,7 +282,11 @@ def stat_label_map(df_long: pd.DataFrame, lang: str) -> Dict[str, str]:
     col = "stat_label_fr" if lang == "fr" else "stat_label_en"
     m = {}
     for _, r in df_long.drop_duplicates("stat_code").iterrows():
-        m[str(r["stat_code"])] = str(r.get(col, r.get("stat_label_fr", r["stat_code"])))
+        code = str(r["stat_code"])
+        lbl = str(r.get(col, "")).strip()
+        if not lbl:
+            lbl = str(r.get("stat_label_fr", "")).strip() or code
+        m[code] = lbl
     return m
 
 def build_publication_report_docx(lang: str, filtered_payloads: pd.DataFrame, by_domain: pd.DataFrame, by_stat: pd.DataFrame, scored_rows: pd.DataFrame) -> bytes:
