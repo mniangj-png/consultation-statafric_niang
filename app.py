@@ -509,7 +509,8 @@ def flatten_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
     out["stats_list"] = "; ".join(selected_stats) if isinstance(selected_stats, list) else ""
     # Optional open questions
     out["comment_1"] = payload.get("open_q1", "")
-    out["comment_2"] = payload.get("open_q2", "")
+    out["missing_indicators"] = payload.get("open_q2", "")
+    out["support_needs"] = payload.get("open_q3", "")
     return out
 
 
@@ -838,7 +839,7 @@ def render_sidebar(lang: str, steps: List[Tuple[str, str]]) -> None:
     st.sidebar.caption(
         t(
             lang,
-            "UK : Inconnu (score 0). Utilisez UK uniquement si l’information est indisponible.",
+            "NSP : Ne sait pas (score 0). Utilisez NSP uniquement si l’information est indisponible.",
             "UK: Unknown (score 0). Use UK only when information is unavailable."
         )
     )
@@ -938,7 +939,7 @@ def rubric_2(lang: str) -> None:
 
     resp_set("lang", lang)
 
-    st.text_input(t(lang, "Organisation", "Organization"), key="org_input", value=resp_get("organisation", ""))
+    st.text_input(t(lang, "Nom de l'organisation", "Organization Name"), key="org_input", value=resp_get("organisation", ""))
     resp_set("organisation", st.session_state.get("org_input", "").strip())
 
     col1, col2 = st.columns(2)
@@ -1054,8 +1055,8 @@ def rubric_4(lang: str, df_long: pd.DataFrame) -> None:
     st.info(
         t(
             lang,
-            "Veuillez d’abord choisir 5 à 10 domaines (pré-sélection). Ensuite, choisissez exactement 5 domaines dans ce sous-ensemble (TOP 5).\n\nConseil : choisissez les domaines où la demande politique est forte et où les lacunes de données sont importantes.",
-            "First select 5 to 10 domains (pre-selection). Then choose exactly 5 domains within that subset (TOP 5).\n\nTip: select domains with strong policy demand and significant data gaps."
+            "Veuillez d’abord choisir 5 à 10 domaines (pré-sélection). Ensuite, choisissez exactement 5 domaines dans ce sous-ensemble (TOP 5).\n\nConseil : choisissez les domaines où la demande politique est forte.",
+            "First select 5 to 10 domains (pre-selection). Then choose exactly 5 domains within that subset (TOP 5).\n\nTip: choose domains where policy demand is strong."
         )
     )
 
@@ -1414,7 +1415,7 @@ def rubric_6(lang: str) -> None:
     st.markdown(
         t(
             lang,
-            "Indiquez si les statistiques prioritaires doivent intégrer ces dimensions (Oui/Non/Selon indicateur/UK).",
+            "Indiquez si les statistiques prioritaires doivent intégrer ces dimensions (Oui/Non/Selon indicateur/NSP).",
             "Indicate whether priority indicators should integrate these dimensions (Yes/No/Indicator-specific/UK)."
         )
     )
@@ -1468,8 +1469,8 @@ def rubric_8(lang: str) -> None:
     st.markdown(
         t(
             lang,
-            "Évaluez le niveau de capacité pour produire les statistiques prioritaires dans les 12–24 mois à venir.",
-            "Assess your capacity to produce priority statistics in the coming 12–24 months."
+            "Évaluez le niveau de disponibilité et d’adéquation des moyens pour produire les statistiques prioritaires dans les 12–24 mois à venir.",
+            "Assess the availability and adequacy of resources to produce priority statistics in the coming 12–24 months."
         )
     )
 
@@ -1481,6 +1482,9 @@ def rubric_8(lang: str) -> None:
     ]
     labels = [x[0] for x in scale]
     code_map = {x[0]: x[1] for x in scale}
+
+    st.caption(t(lang, "Échelle : Élevé = capacité suffisante et opérationnelle ; Moyen = partiellement disponible ; Faible = insuffisant ; NSP = ne sait pas.",
+                   "Scale: High = sufficient and operational; Medium = partially available; Low = insufficient; DK = does not know."))
 
     items_fr = [
         "Compétences statistiques disponibles",
@@ -1500,15 +1504,33 @@ def rubric_8(lang: str) -> None:
     ]
     items = items_fr if lang == "fr" else items_en
 
+    helps_fr = [
+        "Ressources humaines : disponibilité de statisticiens/analystes qualifiés et expérience pertinente.",
+        "Accès aux données administratives : disponibilité, qualité, régularité et conditions d’accès pour usage statistique.",
+        "Financement : budget disponible et soutenable pour la production, y compris opérations de collecte/traitement.",
+        "Outils numériques : disponibilité et adéquation des outils pour collecte, traitement, stockage, diffusion, interopérabilité (logiciels, matériel, connectivité, sécurité).",
+        "Cadre juridique : existence et applicabilité des textes/accords permettant le partage de données à des fins statistiques (lois, décrets, protocoles, MoU, clauses de confidentialité).",
+        "Coordination : mécanismes de coordination interinstitutionnelle (comités, conventions, échanges réguliers, standards communs).",
+    ]
+    helps_en = [
+        "Human resources: availability of qualified statisticians/analysts and relevant experience.",
+        "Access to administrative data: availability, quality, timeliness and conditions of access for statistical use.",
+        "Funding: available and sustainable budget for production, including collection/processing operations.",
+        "Digital tools: availability and adequacy of tools for collection, processing, storage, dissemination, interoperability (software, hardware, connectivity, security).",
+        "Legal framework: existence and enforceability of texts/agreements enabling data sharing for statistical purposes (laws, decrees, protocols, MoUs, confidentiality clauses).",
+        "Coordination: inter-institutional coordination mechanisms (committees, agreements, regular exchanges, shared standards).",
+    ]
+    helps = helps_fr if lang == "fr" else helps_en
+
     tbl = resp_get("capacity_table", {})
     if not isinstance(tbl, dict):
         tbl = {}
 
-    for it in items:
-        rev_map = {v: k for k, v in code_map.items()}
+    rev_map = {v: k for k, v in code_map.items()}
+    for it, hp in zip(items, helps):
         prev_code = tbl.get(it, None)
         idx = labels.index(rev_map[prev_code]) if prev_code in rev_map else None
-        chosen = st.radio(it, options=labels, index=idx, horizontal=True, key=f"cap_{it}")
+        chosen = st.radio(it, options=labels, index=idx, horizontal=True, key=f"cap_{it}", help=hp)
         tbl[it] = code_map.get(chosen, None)
 
     resp_set("capacity_table", tbl)
@@ -1618,12 +1640,24 @@ def rubric_12(lang: str) -> None:
     resp_set("open_q1", q1.strip())
 
     q2 = st.text_area(
-        t(lang, "2) Besoins de soutien (technique, financier, etc.)", "2) Support needs (technical, financial, etc.)"),
+        t(
+            lang,
+            "2) Un ou des indicateur(s) statistique(s) socio-économique(s) essentiel(s) manquant(s) et justification(s)",
+            "2) One or more missing essential socio-economic statistical indicator(s) and justification(s)"
+        ),
         value=resp_get("open_q2", ""),
         height=120,
         key="open_q2_input"
     )
     resp_set("open_q2", q2.strip())
+
+    q3 = st.text_area(
+        t(lang, "3) Besoins de soutien (technique, financier, etc.)", "3) Support needs (technical, financial, etc.)"),
+        value=resp_get("open_q3", ""),
+        height=120,
+        key="open_q3_input"
+    )
+    resp_set("open_q3", q3.strip())
 
     if not resp_get("open_q1", ""):
         st.warning(t(lang, "Alerte : la question 1 est vide (vous pouvez tout de même continuer).",
@@ -1631,6 +1665,9 @@ def rubric_12(lang: str) -> None:
     if not resp_get("open_q2", ""):
         st.warning(t(lang, "Alerte : la question 2 est vide (vous pouvez tout de même continuer).",
                      "Warning: question 2 is empty (you can still proceed)."))
+    if not resp_get("open_q3", ""):
+        st.warning(t(lang, "Alerte : la question 3 est vide (vous pouvez tout de même continuer).",
+                     "Warning: question 3 is empty (you can still proceed)."))
 
 
 def rubric_send(lang: str, df_long: pd.DataFrame) -> None:
@@ -1644,19 +1681,11 @@ def rubric_send(lang: str, df_long: pd.DataFrame) -> None:
         return
 
     # Optional warnings
-    if not resp_get("open_q1", "") or not resp_get("open_q2", ""):
+    if not resp_get("open_q1", "") or not resp_get("open_q2", "") or not resp_get("open_q3", ""):
         st.warning(t(lang, "Certaines questions ouvertes sont vides (optionnel).", "Some open questions are empty (optional)."))
 
-    st.markdown(t(lang, "### Résumé", "### Summary"))
-    st.write({
-        t(lang, "Organisation", "Organization"): resp_get("organisation", ""),
-        t(lang, "Pays", "Country"): resp_get("pays", ""),
-        t(lang, "Type d’acteur", "Stakeholder type"): resp_get("type_acteur", ""),
-        t(lang, "Fonction", "Role"): resp_get("fonction", ""),
-        t(lang, "Email", "Email"): resp_get("email", ""),
-        t(lang, "TOP 5 domaines", "TOP 5 domains"): [domains_from_longlist(df_long, lang) and dict(domains_from_longlist(df_long, lang)).get(c, c) for c in resp_get("top5_domains", [])],
-        t(lang, "Nb statistiques", "No. of indicators"): len(resp_get("selected_stats", [])),
-    })
+    st.info(t(lang, "Tout est prêt. Cliquez sur **ENVOYER** pour soumettre votre questionnaire.",
+              "Everything is ready. Click **SUBMIT** to send your questionnaire."))
 
     # Empêcher les envois multiples (par email + par session)
     email = (resp_get("email", "") or "").strip()
