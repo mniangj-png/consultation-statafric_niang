@@ -523,27 +523,114 @@ def db_dump_csv_bytes(limit: int = 2000000) -> bytes:
 
 
 def flatten_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
-    """Create a 'flat' row for exports / Google Sheets."""
+    """Create a 'flat' row for exports / Google Sheets (comprehensive).
+    - Keeps keys stable across FR/EN by mapping table items to canonical ids.
+    - Serializes list/dict fields into '; ' / JSON strings as needed.
+    """
+    def _join_list(v: Any) -> str:
+        if isinstance(v, list):
+            return "; ".join([str(x) for x in v if x is not None and str(x).strip() != ""])
+        return ""
+
+    def _json(v: Any) -> str:
+        try:
+            return json.dumps(v, ensure_ascii=False)
+        except Exception:
+            return ""
+
+    # Canonical mappings for table questions (FR/EN)
+    GENDER_ITEM_MAP = {
+        "Sexe": "sex",
+        "Sex": "sex",
+        "Âge": "age",
+        "Age": "age",
+        "Milieu urbain/rural": "urban_rural",
+        "Urban/rural residence": "urban_rural",
+        "Handicap": "disability",
+        "Disability": "disability",
+        "Quintile de richesse": "wealth_quintile",
+        "Wealth quintile": "wealth_quintile",
+    }
+    CAPACITY_ITEM_MAP = {
+        "Compétences (RH)": "skills_hr",
+        "Human resources skills": "skills_hr",
+        "Accès aux données administratives": "access_admin_data",
+        "Access to administrative data": "access_admin_data",
+        "Financement": "funding",
+        "Funding": "funding",
+        "Outils numériques": "digital_tools",
+        "Digital tools": "digital_tools",
+        "Cadre juridique": "legal_framework",
+        "Legal framework": "legal_framework",
+        "Coordination institutionnelle": "institutional_coordination",
+        "Institutional coordination": "institutional_coordination",
+    }
+
+    def _extract_table(table_obj: Any, mapping: Dict[str, str], prefix: str) -> Dict[str, Any]:
+        out_tbl: Dict[str, Any] = {}
+        # Ensure stable columns even when a respondent skips the section
+        canons = sorted(set(mapping.values()))
+        for canon in canons:
+            out_tbl[f"{prefix}_{canon}"] = ""
+            out_tbl[f"{prefix}_{canon}_spec"] = ""
+        if not isinstance(table_obj, dict):
+            return out_tbl
+        for label, canon in mapping.items():
+            cell = table_obj.get(label, None)
+            if isinstance(cell, dict):
+                out_tbl[f"{prefix}_{canon}"] = cell.get("code", "")
+                out_tbl[f"{prefix}_{canon}_spec"] = cell.get("spec", "")
+        return out_tbl
+
     out: Dict[str, Any] = {}
-    # Identification
+
+    # Identification (Rubrique 2)
     out["organisation"] = payload.get("organisation", "")
     out["pays"] = payload.get("pays", "")
     out["type_acteur"] = payload.get("type_acteur", "")
     out["fonction"] = payload.get("fonction", "")
     out["email"] = payload.get("email", "")
     out["lang"] = payload.get("lang", "")
-    # Domains
+
+    # Rubrique 3 : portée
+    out["scope"] = payload.get("scope", "")
+    out["scope_other"] = payload.get("scope_other", "")
+
+    # Rubrique 4 : domaines
+    pre = payload.get("preselection_domains", [])
+    out["preselection_domains"] = _join_list(pre)
+    out["nb_preselection_domains"] = len(pre) if isinstance(pre, list) else 0
+
     top5 = payload.get("top5_domains", [])
     for i in range(5):
         out[f"top_domain_{i+1}"] = top5[i] if i < len(top5) else ""
-    # Stats count
+
+    # Rubrique 5 : stats et notation
     selected_stats = payload.get("selected_stats", [])
     out["nb_stats"] = len(selected_stats) if isinstance(selected_stats, list) else 0
-    out["stats_list"] = "; ".join(selected_stats) if isinstance(selected_stats, list) else ""
-    # Optional open questions
+    out["stats_list"] = _join_list(selected_stats)
+    out["selected_by_domain_json"] = _json(payload.get("selected_by_domain", {}))
+    out["scoring_json"] = _json(payload.get("scoring", {}))
+
+    # Rubrique 6 : perspective de genre (table)
+    out.update(_extract_table(payload.get("gender_table", {}), GENDER_ITEM_MAP, "gender"))
+
+    # Rubrique 8 : capacité & faisabilité (table)
+    out.update(_extract_table(payload.get("capacity_table", {}), CAPACITY_ITEM_MAP, "capacity"))
+
+    # Rubrique 9 : harmonisation & qualité
+    out["quality_expectations"] = _join_list(payload.get("quality_expectations", []))
+    out["quality_other"] = payload.get("quality_other", "")
+
+    # Rubrique 10 : diffusion
+    out["dissemination_channels"] = _join_list(payload.get("dissemination_channels", []))
+    out["dissemination_other"] = payload.get("dissemination_other", "")
+
+    # Rubrique 12 : questions ouvertes
     out["comment_1"] = payload.get("open_q1", "")
     out["missing_indicators"] = payload.get("open_q2", "")
     out["support_needs"] = payload.get("open_q3", "")
+
     return out
 
 
@@ -1928,9 +2015,23 @@ def admin_dashboard(lang: str) -> None:
         if sel_actors:
             filtered = filtered[filtered["type_acteur"].isin(sel_actors)]
         if isinstance(date_range, (list, tuple)) and len(date_range) == 2:
-            start_d = pd.to_datetime(date_range[0])
-            end_d = pd.to_datetime(date_range[1]) + pd.Timedelta(days=1) - pd.Timedelta(seconds=1)
-            filtered = filtered[(filtered["submitted_at_utc"] >= start_d) & (filtered["submitted_at_utc"] <= end_d)]
+            # Streamlit date_input returns datetime.date; our column may be tz-aware (UTC).
+            col = pd.to_datetime(filtered["submitted_at_utc"], utc=True, errors="coerce")
+
+            start_d = pd.Timestamp(date_range[0])
+            end_d = pd.Timestamp(date_range[1]) + pd.Timedelta(days=1) - pd.Timedelta(seconds=1)
+
+            if start_d.tz is None:
+                start_d = start_d.tz_localize("UTC")
+            else:
+                start_d = start_d.tz_convert("UTC")
+
+            if end_d.tz is None:
+                end_d = end_d.tz_localize("UTC")
+            else:
+                end_d = end_d.tz_convert("UTC")
+
+            filtered = filtered[(col >= start_d) & (col <= end_d)]
 
         st.caption(t(lang, f"Réponses filtrées : {len(filtered)}", f"Filtered responses: {len(filtered)}"))
 
