@@ -4,6 +4,7 @@ import json
 import os
 import re
 import sqlite3
+import zipfile
 import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Tuple, Optional
@@ -515,6 +516,12 @@ def db_read_submissions(limit: int = 2000) -> pd.DataFrame:
     return df
 
 
+def db_dump_csv_bytes(limit: int = 2000000) -> bytes:
+    """Export the SQLite submissions table to CSV bytes."""
+    df = db_read_submissions(limit=limit)
+    return df.to_csv(index=False).encode("utf-8-sig")
+
+
 def flatten_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
     """Create a 'flat' row for exports / Google Sheets."""
     out: Dict[str, Any] = {}
@@ -763,7 +770,8 @@ def validate_r5(lang: str) -> List[str]:
                           f"Section 5: you must score indicator {s}."))
             continue
         for k in ["gap", "demand", "feasibility"]:
-            if k not in scoring[s]:
+            v_raw = scoring.get(s, {}).get(k, None)
+            if v_raw is None or str(v_raw).strip() == "":
                 errs.append(t(lang, f"Rubrique 5 : la note '{k}' manque pour {s}.",
                               f"Section 5: missing score '{k}' for {s}."))
             else:
@@ -929,7 +937,6 @@ Ce questionnaire vise à recueillir votre avis sur **les statistiques socio-éco
 - **1** : faible  
 - **0** : NSP (Ne sais pas)
 
-> Conseil : privilégiez les statistiques réellement **utilisables, demandées et faisables** à horizon 12–24 mois.
             """,
             """
 ### Purpose
@@ -947,7 +954,6 @@ This questionnaire collects your views on **priority socio-economic statistics**
 - **Low** (1)
 - **NSP (Don’t know)** (0)
 
-> Tip: prioritize indicators that are **useful, demanded and feasible** within 12–24 months.
             """
         )
     )
@@ -1359,7 +1365,7 @@ For each selected indicator, provide a score (0–3) for:
 
     for s in flattened:
         if s not in scoring:
-            scoring[s] = {"gap": 0, "demand": 0, "feasibility": 0}
+            scoring[s] = {"gap": None, "demand": None, "feasibility": None}
 
         st.markdown(f"**{global_map.get(s, s)}**")
 
@@ -1747,21 +1753,10 @@ def rubric_send(lang: str, df_long: pd.DataFrame) -> None:
         st.session_state.submitted_once = True
         st.caption(f"ID : {submission_id}")
 
-        # Provide downloads
-        st.download_button(
-            t(lang, "Télécharger une copie (JSON)", "Download a copy (JSON)"),
-            data=json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8"),
-            file_name=f"submission_{submission_id}.json",
-            mime="application/json",
-        )
+        # (No respondent-side download or storage details)
+        st.info(t(lang, "Envoi terminé. Vous pouvez fermer cette page.", "Submission complete. You can close this page."))
 
-        # Inform integrations
-        with st.expander(t(lang, "Détails du stockage", "Storage details"), expanded=False):
-            st.write(t(lang, "SQLite : OK (responses.db)", "SQLite: OK (responses.db)"))
-            st.write(f"Google Sheets : {'OK' if gs_ok else 'NON'} — {gs_msg}")
-            st.write(f"Dropbox : {'OK' if dbx_ok else 'NON'} — {dbx_msg}")
-
-        # Reset session for new response (optional)
+        # Reset session marker (optional)
         st.session_state.submission_id = submission_id
 
 
@@ -1838,6 +1833,30 @@ def admin_dashboard(lang: str) -> None:
                     file_name="responses.db",
                     mime="application/octet-stream",
                 )
+
+            # CSV export of the SQLite table (for easier sharing/analysis)
+            csv_db = db_dump_csv_bytes(limit=2000000)
+            st.download_button(
+                t(lang, "Télécharger la base SQLite convertie en CSV", "Download SQLite exported as CSV"),
+                data=csv_db,
+                file_name="responses.csv",
+                mime="text/csv",
+            )
+
+            # Full consolidated base (ZIP) for admin
+            zip_buf = io.BytesIO()
+            with zipfile.ZipFile(zip_buf, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+                zf.writestr("responses.csv", csv_db)
+                zf.writestr("consultation_stat_niang_export.xlsx", out.getvalue())
+                zf.writestr("submissions_flat.csv", flat.to_csv(index=False))
+                zf.writestr("responses_raw_json.csv", df.to_csv(index=False))
+            zip_buf.seek(0)
+            st.download_button(
+                t(lang, "Télécharger la base consolidée complète (ZIP)", "Download full consolidated base (ZIP)"),
+                data=zip_buf.getvalue(),
+                file_name="consultation_stat_niang_full_base.zip",
+                mime="application/zip",
+            )
 
         # Upload exports to Dropbox (optional)
         st.markdown("#### Dropbox")
