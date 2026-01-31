@@ -1073,6 +1073,7 @@ def rubric_2(lang: str) -> None:
         ("NSO", {"fr": "Institut national de statistique", "en": "National Statistical Office"}),
         ("Ministry", {"fr": "Ministère / Service statistique sectoriel", "en": "Ministry / Sector statistical unit"}),
         ("REC", {"fr": "Communauté économique régionale", "en": "Regional Economic Community"}),
+        ("AU", {"fr": "Union Africaine", "en": "African Union"}),
         ("CivilSoc", {"fr": "Société civile", "en": "Civil society"}),
         ("DevPartner", {"fr": "Partenaire technique et financier", "en": "Development partner"}),
         ("Academia", {"fr": "Université / Recherche", "en": "Academia / Research"}),
