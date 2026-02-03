@@ -43,7 +43,7 @@ LONG_LIST_CSV = os.path.join("data", "indicator_longlist.csv")
 LONG_LIST_XLSX = os.path.join("data", "longlist.xlsx")
 
 UK_FR = "NSP (Ne sais pas)"
-UK_EN = "NSP (Don’t know)"
+UK_EN = "DNK (Don’t know)"
 
 # Version du scoring (pour compatibilité ascendante)
 # v1 : ancien critère "gap" (écart) ; v2 : disponibilité inversée (Bonne=1) ; v3 : disponibilité directe (Bonne=3)
@@ -56,15 +56,15 @@ SCORING_VERSION = 3
 SCORE_SCALES = {
     "demand": {
         "fr": {0: "NSP", 1: "Faible", 2: "Moyenne", 3: "Élevée"},
-        "en": {0: "DK", 1: "Low", 2: "Medium", 3: "High"},
+        "en": {0: "DNK", 1: "Low", 2: "Medium", 3: "High"},
     },
     "availability": {
         "fr": {0: "NSP", 1: "Faible ou inexistante", 2: "Partielle", 3: "Bonne"},
-        "en": {0: "DK", 1: "Low or none", 2: "Partial", 3: "Good"},
+        "en": {0: "DNK", 1: "Low or none", 2: "Partial", 3: "Good"},
     },
     "feasibility": {
         "fr": {0: "NSP", 1: "Difficile", 2: "Modérée", 3: "Facile"},
-        "en": {0: "DK", 1: "Difficult", 2: "Moderate", 3: "Easy"},
+        "en": {0: "DNK", 1: "Difficult", 2: "Moderate", 3: "Easy"},
     },
 }
 
