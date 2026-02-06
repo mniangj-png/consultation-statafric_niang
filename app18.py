@@ -42,6 +42,8 @@ DB_PATH = "responses.db"
 LONG_LIST_CSV = os.path.join("data", "indicator_longlist.csv")
 LONG_LIST_XLSX = os.path.join("data", "longlist.xlsx")
 
+COUNTRY_XLSX = os.path.join("data", "COUNTRY_ISO3_with_EN.xlsx")
+
 UK_FR = "NSP (Ne sais pas)"
 UK_EN = "DNK (Don’t know)"
 
@@ -334,6 +336,56 @@ def load_longlist() -> pd.DataFrame:
             df_csv.attrs["source_path"] = df_csv_path
             return df_csv
 
+# =========================
+# Countries : ISO3 + labels loader (for dropdown)
+# =========================
+
+@st.cache_data(show_spinner=False)
+def countries_catalog() -> Tuple[List[str], Dict[str, str], Dict[str, str]]:
+    """Retourne (iso3_list, iso3_to_fr, iso3_to_en)."""
+    base_dir = os.path.dirname(__file__)
+    candidates = [
+        COUNTRY_XLSX,
+        os.path.join(base_dir, "COUNTRY_ISO3_with_EN.xlsx"),
+        "COUNTRY_ISO3_with_EN.xlsx",
+        os.path.join(".", "COUNTRY_ISO3_with_EN.xlsx"),
+        os.path.join(".", "data", "COUNTRY_ISO3_with_EN.xlsx"),
+        os.path.join(base_dir, "COUNTRY_ISO3.xlsx"),
+        "COUNTRY_ISO3.xlsx",
+        os.path.join(".", "COUNTRY_ISO3.xlsx"),
+        os.path.join(".", "data", "COUNTRY_ISO3.xlsx"),
+    ]
+
+    df = None
+    for p in candidates:
+        if os.path.exists(p):
+            try:
+                df = pd.read_excel(p, dtype=str).fillna("")
+                break
+            except Exception:
+                continue
+
+    if df is None or len(df) == 0:
+        return [], {}, {}
+
+    iso3_to_fr: Dict[str, str] = {}
+    iso3_to_en: Dict[str, str] = {}
+
+    cols = {c.strip(): c for c in df.columns}
+    iso_col = cols.get("COUNTRY_ISO3", "COUNTRY_ISO3")
+    fr_col = cols.get("COUNTRY_NAME_FR", "COUNTRY_NAME_FR")
+    en_col = cols.get("COUNTRY_NAME_EN") if "COUNTRY_NAME_EN" in cols else None
+
+    for _, r in df.iterrows():
+        iso3 = str(r.get(iso_col, "")).strip().upper()
+        if not iso3 or iso3.lower() == "nan":
+            continue
+        iso3_to_fr[iso3] = str(r.get(fr_col, "")).strip()
+        iso3_to_en[iso3] = str(r.get(en_col, "")).strip() if en_col else ""
+
+    iso3_list = sorted(set(list(iso3_to_fr.keys()) + list(iso3_to_en.keys())))
+    return iso3_list, iso3_to_fr, iso3_to_en
+    
     # 2) XLSX (format utilisateur) (format utilisateur)
     for p in xlsx_candidates:
         if os.path.exists(p):
@@ -1522,8 +1574,30 @@ def rubric_2(lang: str) -> None:
 
     col1, col2 = st.columns(2)
     with col1:
-        st.text_input(t(lang, "Pays", "Country"), key="country_input", value=resp_get("pays", ""))
-        resp_set("pays", st.session_state.get("country_input", "").strip())
+        iso3_list, iso3_to_fr, iso3_to_en = countries_catalog()
+
+current = (resp_get("pays", "") or "").strip()
+current_iso3 = (current.split("|", 1)[0].strip().upper() if "|" in current else current.strip().upper())
+if current_iso3 not in iso3_list:
+    current_iso3 = ""
+
+def _country_name(iso3: str) -> str:
+    if lang == "en":
+        return (iso3_to_en.get(iso3) or iso3_to_fr.get(iso3) or iso3).strip()
+    return (iso3_to_fr.get(iso3) or iso3_to_en.get(iso3) or iso3).strip()
+
+options = [""] + sorted(iso3_list, key=lambda x: _country_name(x).lower())
+
+chosen_iso3 = st.selectbox(
+    t(lang, "Pays", "Country"),
+    options=options,
+    index=options.index(current_iso3) if current_iso3 in options else 0,
+    format_func=lambda x: (t(lang, "— Sélectionner —", "— Select —") if x == "" else f"{x} | {_country_name(x)}"),
+    help=t(lang, "Choisissez votre pays (code ISO3).", "Select your country (ISO3 code)."),
+    key="country_iso3_select",
+)
+resp_set("pays", chosen_iso3)
+
     with col2:
         st.text_input(t(lang, "Email", "Email"), key="email_input", value=resp_get("email", ""))
         resp_set("email", st.session_state.get("email_input", "").strip())
