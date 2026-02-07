@@ -1598,7 +1598,7 @@ chosen_iso3 = st.selectbox(
 )
 resp_set("pays", chosen_iso3)
 
-    with col2:
+with col2:
         st.text_input(t(lang, "Email", "Email"), key="email_input", value=resp_get("email", ""))
         resp_set("email", st.session_state.get("email_input", "").strip())
 
