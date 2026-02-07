@@ -183,10 +183,11 @@ def resp_set(key: str, value) -> None:
 
 
 def normalize_availability(v_raw: Any, scoring_version: Any) -> int:
-    """Normalise la disponibilité sur l'échelle 'Bonne=3' (SCORING_VERSION=3)."""
+    """
+    Normalise la disponibilité sur l'échelle 'Bonne=3' (SCORING_VERSION=3).
 
-    - v3+ : on conserve la valeur telle quelle (0–3).
-    - v1/v2 ou absence de version : on inverse (1<->3) car l'ancien codage correspondait à un "écart" / ou à une disponibilité inversée.
+    - v3+ : on conserve la valeur telle quelle (0-3).
+    - v1/v2 ou absence de version : on inverse (1 <-> 3) car l'ancien codage correspondait à une disponibilité inversée.
     """
     try:
         iv = int(v_raw)
