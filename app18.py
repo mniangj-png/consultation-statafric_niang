@@ -166,17 +166,24 @@ def init_session() -> None:
         st.session_state.last_draft_save_ts = 0.0
 
 
+def ensure_responses() -> None:
+    """Garantit l’existence de st.session_state['responses'] (dict)."""
+    if "responses" not in st.session_state or not isinstance(st.session_state.get("responses"), dict):
+        st.session_state["responses"] = {}
+
+
 def resp_get(key: str, default=None):
-    return st.session_state.responses.get(key, default)
+    ensure_responses()
+    return st.session_state["responses"].get(key, default)
 
 
 def resp_set(key: str, value) -> None:
-    st.session_state.responses[key] = value
-
+    ensure_responses()
+    st.session_state["responses"][key] = value
 
 
 def normalize_availability(v_raw: Any, scoring_version: Any) -> int:
-    """Normalise la disponibilité sur l'échelle 'Bonne=3' (SCORING_VERSION=3).
+    """Normalise la disponibilité sur l'échelle 'Bonne=3' (SCORING_VERSION=3)."""
 
     - v3+ : on conserve la valeur telle quelle (0–3).
     - v1/v2 ou absence de version : on inverse (1<->3) car l'ancien codage correspondait à un "écart" / ou à une disponibilité inversée.
