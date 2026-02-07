@@ -1572,35 +1572,44 @@ def rubric_2(lang: str) -> None:
     st.text_input(t(lang, "Nom de l'organisation", "Organization Name"), key="org_input", value=resp_get("organisation", ""))
     resp_set("organisation", st.session_state.get("org_input", "").strip())
 
-    col1, col2 = st.columns(2)
-    with col1:
-        iso3_list, iso3_to_fr, iso3_to_en = countries_catalog()
+col1, col2 = st.columns(2)
 
-current = (resp_get("pays", "") or "").strip()
-current_iso3 = (current.split("|", 1)[0].strip().upper() if "|" in current else current.strip().upper())
-if current_iso3 not in iso3_list:
-    current_iso3 = ""
+with col1:
+    iso3_list, iso3_to_fr, iso3_to_en = countries_catalog()
 
-def _country_name(iso3: str) -> str:
-    if lang == "en":
-        return (iso3_to_en.get(iso3) or iso3_to_fr.get(iso3) or iso3).strip()
-    return (iso3_to_fr.get(iso3) or iso3_to_en.get(iso3) or iso3).strip()
+    current = (resp_get("pays", "") or "").strip()
+    current_iso3 = (
+        current.split("|", 1)[0].strip().upper()
+        if "|" in current
+        else current.strip().upper()
+    )
+    if current_iso3 not in iso3_list:
+        current_iso3 = ""
 
-options = [""] + sorted(iso3_list, key=lambda x: _country_name(x).lower())
+    def _country_name(iso3: str) -> str:
+        if lang == "en":
+            return (iso3_to_en.get(iso3) or iso3_to_fr.get(iso3) or iso3).strip()
+        return (iso3_to_fr.get(iso3) or iso3_to_en.get(iso3) or iso3).strip()
 
-chosen_iso3 = st.selectbox(
-    t(lang, "Pays", "Country"),
-    options=options,
-    index=options.index(current_iso3) if current_iso3 in options else 0,
-    format_func=lambda x: (t(lang, "— Sélectionner —", "— Select —") if x == "" else f"{x} | {_country_name(x)}"),
-    help=t(lang, "Choisissez votre pays (code ISO3).", "Select your country (ISO3 code)."),
-    key="country_iso3_select",
-)
-resp_set("pays", chosen_iso3)
+    options = [""] + sorted(iso3_list, key=lambda x: _country_name(x).lower())
+
+    chosen_iso3 = st.selectbox(
+        t(lang, "Pays", "Country"),
+        options=options,
+        index=options.index(current_iso3) if current_iso3 in options else 0,
+        format_func=lambda x: (
+            t(lang, "— Sélectionner —", "— Select —")
+            if x == ""
+            else f"{x} | {_country_name(x)}"
+        ),
+        help=t(lang, "Choisissez votre pays (code ISO3).", "Select your country (ISO3 code)."),
+        key="country_iso3_select",
+    )
+    resp_set("pays", chosen_iso3)
 
 with col2:
-        st.text_input(t(lang, "Email", "Email"), key="email_input", value=resp_get("email", ""))
-        resp_set("email", st.session_state.get("email_input", "").strip())
+    st.text_input(t(lang, "Email", "Email"), key="email_input", value=resp_get("email", ""))
+    resp_set("email", st.session_state.get("email_input", "").strip())
 
     # Brouillon : crée un identifiant de reprise dès que l’email est renseigné
     ensure_draft_id()
