@@ -1,9 +1,3 @@
-try:
-    import gspread
-    from google.oauth2.service_account import Credentials
-except Exception:
-    gspread = None
-    Credentials = None
 from __future__ import annotations
 
 import os
@@ -11,13 +5,18 @@ import re
 import json
 import time
 import uuid
-import sqlite3
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import pandas as pd
 import streamlit as st
+
+try:
+    import gspread
+    from google.oauth2.service_account import Credentials
+except Exception:
+    gspread = None
+    Credentials = None
 
 # =========================
 # Configuration
