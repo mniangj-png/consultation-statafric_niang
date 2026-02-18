@@ -30,14 +30,15 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
 
-for p in [LONG_LIST_CSV, LONG_LIST_XLSX, COUNTRY_XLSX]:
-    if not p.exists():
-        st.error(f"Fichier introuvable : {p}. Vérifiez qu’il est bien commité dans le dépôt (dossier data/).")
-        st.stop()
 
 LONG_LIST_CSV = DATA_DIR / "indicator_longlist.csv"
 LONG_LIST_XLSX = DATA_DIR / "longlist.xlsx"
 COUNTRY_XLSX = DATA_DIR / "COUNTRY_ISO3_with_EN.xlsx"
+
+for p in [LONG_LIST_CSV, LONG_LIST_XLSX, COUNTRY_XLSX]:
+    if not p.exists():
+        st.error(f"Fichier introuvable : {p}. Vérifiez qu’il est bien commité dans le dépôt (dossier data/).")
+        st.stop()
 
 UK_FR = "NSP (Ne sais pas)"
 UK_EN = "DNK (Do not know)"
