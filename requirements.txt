@@ -7,3 +7,7 @@ matplotlib>=3.8.0
 gspread>=6.0.0
 google-auth>=2.25.0
 dropbox>=11.36.0
+streamlit
+pandas
+streamlit-gsheets
+st-gsheets-connection
