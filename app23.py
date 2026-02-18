@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+try:
+    import gspread
+    from google.oauth2.service_account import Credentials
+except Exception:
+    gspread = None
+    Credentials = None
+    
 import os
 import re
 import json
@@ -11,12 +18,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import pandas as pd
 import streamlit as st
 
-try:
-    import gspread
-    from google.oauth2.service_account import Credentials
-except Exception:
-    gspread = None
-    Credentials = None
+
 
 # =========================
 # Configuration
