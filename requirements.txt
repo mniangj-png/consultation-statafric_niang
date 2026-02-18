@@ -1,6 +1,10 @@
-streamlit>=1.32
-pandas>=2.2
+# Dépendances minimales pour app22 (Streamlit Cloud / GitHub)
+# Recommandé : Python 3.12 ou 3.13 (à choisir lors du déploiement Streamlit)
+
+streamlit>=1.31
+pandas>=2.2.3
+gspread>=6.1.2
+google-auth>=2.28.0
 openpyxl>=3.1.2
-gspread>=6.1.0
-google-auth>=2.30.0
-setuptools>=70
+python-docx>=1.1.0
+matplotlib>=3.8.0
