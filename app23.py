@@ -3249,7 +3249,10 @@ def rubric_send(lang: str, df_long: pd.DataFrame) -> None:
         st.info(t(lang, "Ce navigateur a déjà effectué un envoi. Pour un nouvel envoi, utilisez un autre email / session.",
                   "This browser session already submitted once. For a new submission, use another email / session."))
 
-    disable_submit = already_in_db or already_in_session
+   already_in_db = False
+already_in_session = st.session_state.get("submitted_successfully", False)
+
+disable_submit = already_in_db or already_in_session
 
     if st.button(t(lang, "✅ ENVOYER et enregistrer", "✅ SUBMIT and save"), disabled=disable_submit):
         submission_id = str(uuid.uuid4())
