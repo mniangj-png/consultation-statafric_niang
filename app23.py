@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import pandas as pd
 
@@ -24,11 +25,20 @@ ENABLE_SQLITE_FALLBACK_DEFAULT = False
 # If False (recommended), multiple submissions can occur; analysis keeps the most recent per email.
 ENFORCE_UNIQUE_EMAIL_DEFAULT = False
 
-LONG_LIST_CSV = os.path.join("data", "indicator_longlist.csv")
-LONG_LIST_XLSX = os.path.join("data", "longlist.xlsx")
+from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR / "data"
 
-COUNTRY_XLSX = os.path.join("data", "COUNTRY_ISO3_with_EN.xlsx")
+for p in [LONG_LIST_CSV, LONG_LIST_XLSX, COUNTRY_XLSX]:
+    if not p.exists():
+        st.error(f"Fichier introuvable : {p}. Vérifiez qu’il est bien commité dans le dépôt (dossier data/).")
+        st.stop()
+
+LONG_LIST_CSV = DATA_DIR / "indicator_longlist.csv"
+LONG_LIST_XLSX = DATA_DIR / "longlist.xlsx"
+COUNTRY_XLSX = DATA_DIR / "COUNTRY_ISO3_with_EN.xlsx"
+
 UK_FR = "NSP (Ne sais pas)"
 UK_EN = "DNK (Do not know)"
 
