@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: statafric-app22
+    env: python
+    plan: starter # always-on (payant)
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app22_supabase.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
+    autoDeploy: true
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_SUBMISSIONS_TABLE
+        value: submissions
+      - key: SUPABASE_DRAFTS_TABLE
+        value: drafts
+      - key: SUPABASE_CONFIG_TABLE
+        value: app_config
+      - key: SUPABASE_STORAGE_BUCKET
+        value: submissions-json
+      - key: DATA_RETENTION_DAYS
+        value: "60"
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: SUPERADMIN_PASSWORD
+        sync: false
