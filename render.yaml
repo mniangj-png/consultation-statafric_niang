@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: app22-supabase
+    env: python
+    plan: standard  # pour "always-on" (évite le sleep)
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app22_supabase_v2.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+      - key: DATA_RETENTION_DAYS
+        value: "60"
+      # À renseigner dans Render (Environment) :
+      # - SUPABASE_URL
+      # - SUPABASE_SERVICE_ROLE_KEY
+      # - SUPABASE_STORAGE_BUCKET   (optionnel, ex. "app22-json")
+      # - ADMIN_PASSWORD            (optionnel)
+      # - SUPERADMIN_PASSWORD       (optionnel)
