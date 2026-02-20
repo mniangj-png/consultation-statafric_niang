@@ -1,18 +1,23 @@
-name: Ping Streamlit app
+name: Keep Streamlit app awake
 
 on:
-  schedule:
-    - cron: "*/10 * * * *"
   workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"  # toutes les 6 heures (UTC)
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping app (homepage)
+      - name: Ping Streamlit app
         run: |
-          curl -fsS "https://consultation-statafricniang-hipi9oy2r5cxmqjpefudjn.streamlit.app/" > /dev/null
-
-      - name: Ping app (health-style lightweight)
-        run: |
-          curl -fsS "https://consultation-statafricniang-hipi9oy2r5cxmqjpefudjn.streamlit.app/?ping=1" > /dev/null
+          URL="https://consultation-statafricniang-zhtyvdtppaxvnd6ykkdlm2.streamlit.app/"
+          for i in 1 2 3; do
+            code=$(curl -L -s -o /dev/null -w "%{http_code}" --max-time 60 "$URL") || code="000"
+            echo "HTTP $code"
+            if [ "$code" = "200" ] || [ "$code" = "302" ] || [ "$code" = "304" ]; then
+              exit 0
+            fi
+            sleep 20
+          done
+          exit 1
