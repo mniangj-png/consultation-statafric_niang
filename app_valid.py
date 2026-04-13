@@ -13,9 +13,14 @@ from typing import Dict, List, Tuple
 import requests
 import streamlit as st
 
-APP_VERSION = "2026-04-13b"
+APP_VERSION = "2026-04-13c"
 RESPONSE_PATH_ROOT = "validation_doc"
-DEFAULT_NOTE_URL = os.getenv("NOTE_URL", "")
+DEFAULT_NOTE_URLS = {
+    "en": os.getenv("NOTE_URL_EN", "https://1drv.ms/b/c/2afbae9640d93d5e/IQABX4McavudQZo7C7gOura-AdHesAay0yPW9kdPebcdl-k?e=gk6CIQ"),
+    "fr": os.getenv("NOTE_URL_FR", "https://1drv.ms/b/c/2afbae9640d93d5e/IQCdAkqSoWp5Rr3QHGynDGoUAbasanwpp15xPR244J5qZzw?e=UNMnVs"),
+    "pt": os.getenv("NOTE_URL_PT", "https://1drv.ms/b/c/2afbae9640d93d5e/IQDG4lcj85_2SIROmCoQgjhyAXEYfR5tZ92-G1MJjOHx2oI?e=oT297K"),
+    "ar": os.getenv("NOTE_URL_AR", "https://1drv.ms/b/c/2afbae9640d93d5e/IQA6r00xFx6STI32n52sltbpAQw0AttwRuou4oaOe667b4M?e=7l5ocZ"),
+}
 DEFAULT_DOC_URL_EN = os.getenv(
     "FULL_DOC_URL_EN",
     "https://onedrive.live.com/personal/11cdb27337d4c5b5/_layouts/15/Doc.aspx?sourcedoc=%7Bbed3dcb8-d08f-45b8-9bba-17a454341159%7D&action=edit&redeem=aHR0cHM6Ly8xZHJ2Lm1zL3cvYy8xMWNkYjI3MzM3ZDRjNWI1L0lRQzQzTk8tajlDNFJadTZGNlJVTkJGWkFVTVpXMXUxWmozVjJQU2d4TUhvSTFFP2U9QUlyajJE"
@@ -24,6 +29,9 @@ DEFAULT_DOC_URL_FR = os.getenv(
     "FULL_DOC_URL_FR",
     "https://onedrive.live.com/personal/11cdb27337d4c5b5/_layouts/15/Doc.aspx?sourcedoc=%7Bbed3dcb8-d08f-45b8-9bba-17a454341159%7D&action=edit&redeem=aHR0cHM6Ly8xZHJ2Lm1zL3cvYy8xMWNkYjI3MzM3ZDRjNWI1L0lRQzQzTk8tajlDNFJadTZGNlJVTkJGWkFVTVpXMXUxWmozVjJQU2d4TUhvSTFFP2U9QUlyajJE"
 )
+DEFAULT_GITHUB_OWNER = os.getenv("GITHUB_OWNER", "mniangj-png")
+DEFAULT_GITHUB_REPO = os.getenv("GITHUB_REPO", "consultation-statafric_niang")
+DEFAULT_GITHUB_BRANCH = os.getenv("GITHUB_BRANCH", "data")
 
 LANGUAGE_OPTIONS = {
     "en": "English",
@@ -152,6 +160,12 @@ TRANSLATIONS: Dict[str, Dict] = {
     "en": {
         "title": "Strategic validation of the draft document on priority socio-economic statistics in Africa",
         "subtitle": "Multilingual institutional questionnaire built from the decision-oriented summary note.",
+        "doc_links": "Full draft document",
+        "note_downloads": "Decision-oriented summary note",
+        "note_en": "Summary note - English",
+        "note_fr": "Summary note - French",
+        "note_pt": "Summary note - Portuguese (Portugal)",
+        "note_ar": "Summary note - Arabic",
         "lang": "Language",
         "intro": "Please complete this questionnaire on behalf of your institution.",
         "intro2": "It collects a structured institutional position on the main strategic choices of the draft document on priority socio-economic statistics in Africa, with due consideration of the gender dimension.",
@@ -289,6 +303,12 @@ TRANSLATIONS: Dict[str, Dict] = {
     "fr": {
         "title": "Validation stratégique du projet de document sur les statistiques socio-économiques prioritaires en Afrique",
         "subtitle": "Questionnaire institutionnel multilingue construit à partir de la note de synthèse décisionnelle.",
+        "doc_links": "Document complet",
+        "note_downloads": "Note de synthèse décisionnelle",
+        "note_en": "Note - version anglaise",
+        "note_fr": "Note - version française",
+        "note_pt": "Note - version portugaise (Portugal)",
+        "note_ar": "Note - version arabe",
         "lang": "Langue",
         "intro": "Merci de renseigner ce questionnaire au nom de votre institution.",
         "intro2": "Il vise à recueillir une position institutionnelle structurée sur les principaux choix stratégiques du projet de document relatif à l’identification des statistiques socio-économiques prioritaires en Afrique, avec prise en compte de la dimension genre.",
@@ -563,6 +583,12 @@ TRANSLATIONS: Dict[str, Dict] = {
     "ar": {
         "title": "التحقق الاستراتيجي من مشروع الوثيقة الخاصة بالإحصاءات الاجتماعية والاقتصادية ذات الأولوية في أفريقيا",
         "subtitle": "استبيان مؤسسي متعدد اللغات مبني على المذكرة التركيبية التقريرية.",
+        "doc_links": "الوثيقة الكاملة",
+        "note_downloads": "المذكرة التركيبية التقريرية",
+        "note_en": "المذكرة - النسخة الإنجليزية",
+        "note_fr": "المذكرة - النسخة الفرنسية",
+        "note_pt": "المذكرة - النسخة البرتغالية (البرتغال)",
+        "note_ar": "المذكرة - النسخة العربية",
         "lang": "اللغة",
         "intro": "يرجى ملء هذا الاستبيان باسم مؤسستكم.",
         "intro2": "يهدف إلى جمع موقف مؤسسي منظم بشأن الخيارات الاستراتيجية الرئيسية في مشروع الوثيقة المتعلقة بتحديد الإحصاءات الاجتماعية والاقتصادية ذات الأولوية في أفريقيا، مع مراعاة بُعد النوع الاجتماعي.",
@@ -784,10 +810,10 @@ def valid_email(value: str) -> bool:
 
 
 def github_settings() -> Dict[str, str]:
-    owner = ""
-    repo = ""
+    owner = DEFAULT_GITHUB_OWNER
+    repo = DEFAULT_GITHUB_REPO
     token = ""
-    branch = "main"
+    branch = DEFAULT_GITHUB_BRANCH
     try:
         gh = st.secrets.get("github", {})
         owner = gh.get("owner", "")
@@ -796,10 +822,10 @@ def github_settings() -> Dict[str, str]:
         branch = gh.get("branch", "main")
     except Exception:
         pass
-    owner = owner or os.getenv("GITHUB_OWNER", "")
-    repo = repo or os.getenv("GITHUB_REPO", "")
+    owner = owner or DEFAULT_GITHUB_OWNER
+    repo = repo or DEFAULT_GITHUB_REPO
     token = token or os.getenv("GITHUB_TOKEN", "")
-    branch = branch or os.getenv("GITHUB_BRANCH", "main")
+    branch = branch or DEFAULT_GITHUB_BRANCH
     return {"owner": owner, "repo": repo, "token": token, "branch": branch}
 
 
@@ -1005,11 +1031,17 @@ def choice_index(options: List[str], value: str | None) -> int | None:
 
 def render_reference_links(txt: Dict) -> None:
     st.markdown(f"**{txt['ref_docs']}**")
-    cols = st.columns(3)
-    if DEFAULT_NOTE_URL:
-        cols[0].link_button(txt["note_link"], DEFAULT_NOTE_URL)
-    cols[1].link_button(txt["doc_en"], DEFAULT_DOC_URL_EN)
-    cols[2].link_button(txt["doc_fr"], DEFAULT_DOC_URL_FR)
+    st.caption(txt["doc_links"])
+    doc_cols = st.columns(2)
+    doc_cols[0].link_button(txt["doc_en"], DEFAULT_DOC_URL_EN)
+    doc_cols[1].link_button(txt["doc_fr"], DEFAULT_DOC_URL_FR)
+    st.caption(txt["note_downloads"])
+    note_cols = st.columns(4)
+    note_keys = [("en", "note_en"), ("fr", "note_fr"), ("pt", "note_pt"), ("ar", "note_ar")]
+    for idx, (lang_code, label_key) in enumerate(note_keys):
+        note_url = DEFAULT_NOTE_URLS.get(lang_code, "")
+        if note_url:
+            note_cols[idx].link_button(txt[label_key], note_url)
 
 
 def render_sidebar(txt: Dict) -> None:
@@ -1120,25 +1152,28 @@ def render_step_1(txt: Dict) -> None:
     st.text_input(q["institution_acronym"], key="institution_acronym", placeholder=txt["placeholders"]["institution_acronym"])
     st.selectbox(
         q["institution_type"],
-        options=[None] + INSTITUTION_TYPES,
-        index=choice_index([None] + INSTITUTION_TYPES, st.session_state.institution_type) or 0,
-        format_func=lambda x: "—" if x is None else txt["institution_types"][x],
+        options=INSTITUTION_TYPES,
+        index=choice_index(INSTITUTION_TYPES, st.session_state.institution_type),
+        placeholder="—",
+        format_func=lambda x: txt["institution_types"][x],
         key="institution_type",
     )
     st.selectbox(
         q["country_or_rec"],
-        options=[None] + COUNTRY_OR_REC_OPTIONS,
-        index=choice_index([None] + COUNTRY_OR_REC_OPTIONS, st.session_state.country_or_rec) or 0,
-        format_func=lambda x: "—" if x is None else x,
+        options=COUNTRY_OR_REC_OPTIONS,
+        index=choice_index(COUNTRY_OR_REC_OPTIONS, st.session_state.country_or_rec),
+        placeholder="—",
+        format_func=lambda x: x,
         key="country_or_rec",
     )
     if st.session_state.country_or_rec == "Other":
         st.text_input(txt["other_country"], key="country_or_rec_other")
     st.selectbox(
         q["respondent_title"],
-        options=[None] + RESPONDENT_TITLES,
-        index=choice_index([None] + RESPONDENT_TITLES, st.session_state.respondent_title) or 0,
-        format_func=lambda x: "—" if x is None else txt["titles"][x],
+        options=RESPONDENT_TITLES,
+        index=choice_index(RESPONDENT_TITLES, st.session_state.respondent_title),
+        placeholder="—",
+        format_func=lambda x: txt["titles"][x],
         key="respondent_title",
     )
     if st.session_state.respondent_title == "other":
