@@ -777,6 +777,8 @@ def get_text(lang: str) -> Dict:
 def init_state() -> None:
     if "lang" not in st.session_state:
         st.session_state.lang = "en"
+    if "lang_selector" not in st.session_state:
+        st.session_state.lang_selector = st.session_state.lang
     if "current_step" not in st.session_state:
         st.session_state.current_step = 1
     if "draft_token" not in st.session_state:
@@ -801,6 +803,7 @@ def reset_form() -> None:
     st.session_state.last_submit_payload = None
     st.session_state.github_message = ""
     st.session_state.lang = lang
+    st.session_state.lang_selector = lang
     st.query_params.clear()
     st.rerun()
 
@@ -974,6 +977,7 @@ def apply_payload_to_state(payload: Dict) -> None:
         if why_key in payload:
             st.session_state[why_key] = payload[why_key]
     st.session_state.lang = payload.get("language", st.session_state.lang)
+    st.session_state.lang_selector = st.session_state.lang
     st.session_state.current_step = int(payload.get("current_step", 1))
     st.session_state.draft_token = payload.get("draft_token", st.session_state.draft_token)
 
@@ -1046,12 +1050,16 @@ def render_reference_links(txt: Dict) -> None:
 
 def render_sidebar(txt: Dict) -> None:
     st.sidebar.markdown(f"### {txt['lang']}")
-    st.session_state.lang = st.sidebar.selectbox(
+    selected_lang = st.sidebar.selectbox(
         txt["lang"],
         options=list(LANGUAGE_OPTIONS.keys()),
         index=list(LANGUAGE_OPTIONS.keys()).index(st.session_state.lang),
         format_func=lambda x: LANGUAGE_OPTIONS[x],
+        key="lang_selector",
     )
+    if selected_lang != st.session_state.lang:
+        st.session_state.lang = selected_lang
+        st.rerun()
     st.sidebar.progress(st.session_state.current_step / STEP_COUNT, text=f"{txt['step_label']} : {st.session_state.current_step}/{STEP_COUNT}")
     st.sidebar.caption(txt["sidebar_help"])
     if not github_ready():
@@ -1234,41 +1242,59 @@ def render_step_5(txt: Dict) -> None:
     )
 
 
-def render_navigation(txt: Dict) -> None:
-    cols = st.columns([1, 1, 2])
-    if st.session_state.current_step > 1:
-        if cols[0].button(txt["back"], use_container_width=True):
+def render_step_form(txt: Dict) -> None:
+    step = st.session_state.current_step
+    with st.form(key=f"step_form_{step}", clear_on_submit=False):
+        if step == 1:
+            render_step_1(txt)
+        elif step == 2:
+            render_step_2(txt)
+        elif step == 3:
+            render_step_3(txt)
+        elif step == 4:
+            render_step_4(txt)
+        elif step == 5:
+            render_step_5(txt)
+
+        cols = st.columns([1, 1, 2])
+        back_clicked = False
+        if step > 1:
+            back_clicked = cols[0].form_submit_button(txt["back"], use_container_width=True)
+        if step < STEP_COUNT:
+            continue_clicked = cols[1].form_submit_button(txt["continue"], use_container_width=True)
+            if continue_clicked:
+                errors = validate_step(step, txt)
+                if errors:
+                    st.error(txt["validation_title"])
+                    for err in errors:
+                        st.write(f"- {err}")
+                else:
+                    st.session_state.current_step += 1
+                    st.rerun()
+        else:
+            submit_clicked = cols[1].form_submit_button(txt["submit"], use_container_width=True)
+            if submit_clicked:
+                all_errors: List[str] = []
+                for step_num in range(1, STEP_COUNT + 1):
+                    all_errors.extend(validate_step(step_num, txt))
+                if all_errors:
+                    st.error(txt["validation_title"])
+                    for err in all_errors:
+                        st.write(f"- {err}")
+                else:
+                    with st.spinner(txt["save_label"]):
+                        ok, msg, payload = submit_final()
+                    st.session_state.last_submit_payload = payload
+                    if ok:
+                        st.success(txt["submit_success"])
+                        st.session_state.github_message = msg
+                    else:
+                        st.warning(txt["submit_warning"])
+                        st.session_state.github_message = msg
+
+        if back_clicked:
             st.session_state.current_step -= 1
             st.rerun()
-    if st.session_state.current_step < STEP_COUNT:
-        if cols[1].button(txt["continue"], use_container_width=True):
-            errors = validate_step(st.session_state.current_step, txt)
-            if errors:
-                st.error(txt["validation_title"])
-                for err in errors:
-                    st.write(f"- {err}")
-            else:
-                st.session_state.current_step += 1
-                st.rerun()
-    else:
-        if cols[1].button(txt["submit"], use_container_width=True):
-            all_errors: List[str] = []
-            for step in range(1, STEP_COUNT + 1):
-                all_errors.extend(validate_step(step, txt))
-            if all_errors:
-                st.error(txt["validation_title"])
-                for err in all_errors:
-                    st.write(f"- {err}")
-                return
-            with st.spinner(txt["save_label"]):
-                ok, msg, payload = submit_final()
-            st.session_state.last_submit_payload = payload
-            if ok:
-                st.success(txt["submit_success"])
-                st.session_state.github_message = msg
-            else:
-                st.warning(txt["submit_warning"])
-                st.session_state.github_message = msg
 
 
 def render_submission_downloads(txt: Dict) -> None:
@@ -1315,19 +1341,7 @@ def main() -> None:
     st.progress(st.session_state.current_step / STEP_COUNT, text=f"{txt['step_label']} : {st.session_state.current_step}/{STEP_COUNT}")
     st.markdown("---")
 
-    step = st.session_state.current_step
-    if step == 1:
-        render_step_1(txt)
-    elif step == 2:
-        render_step_2(txt)
-    elif step == 3:
-        render_step_3(txt)
-    elif step == 4:
-        render_step_4(txt)
-    elif step == 5:
-        render_step_5(txt)
-
-    render_navigation(txt)
+    render_step_form(txt)
     if st.session_state.github_message:
         st.caption(st.session_state.github_message)
     render_submission_downloads(txt)
