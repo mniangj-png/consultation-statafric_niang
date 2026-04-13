@@ -13,7 +13,7 @@ from typing import Dict, List, Tuple
 import requests
 import streamlit as st
 
-APP_VERSION = "2026-04-13c"
+APP_VERSION = "2026-04-13d"
 RESPONSE_PATH_ROOT = "validation_doc"
 DEFAULT_NOTE_URLS = {
     "en": os.getenv("NOTE_URL_EN", "https://1drv.ms/b/c/2afbae9640d93d5e/IQABX4McavudQZo7C7gOura-AdHesAay0yPW9kdPebcdl-k?e=gk6CIQ"),
@@ -1229,36 +1229,46 @@ def render_step_1(txt: Dict) -> None:
     q = txt["questions"]
     st.subheader(txt["sections"][1])
     st.caption(txt["questions_required"])
-    st.text_input(q["institution_acronym"], key="institution_acronym", placeholder=txt["placeholders"]["institution_acronym"])
+    institution_acronym_key = prime_widget("institution_acronym")
+    institution_type_key = prime_widget("institution_type")
+    country_or_rec_key = prime_widget("country_or_rec")
+    respondent_title_key = prime_widget("respondent_title")
+    email_key = prime_widget("email")
+
+    st.text_input(
+        q["institution_acronym"],
+        key=institution_acronym_key,
+        placeholder=txt["placeholders"]["institution_acronym"],
+    )
     st.selectbox(
         q["institution_type"],
         options=INSTITUTION_TYPES,
-        index=choice_index(INSTITUTION_TYPES, get_value("institution_type")),
+        index=choice_index(INSTITUTION_TYPES, st.session_state[institution_type_key]),
         placeholder="—",
         format_func=lambda x: txt["institution_types"][x],
-        key="institution_type",
+        key=institution_type_key,
     )
     st.selectbox(
         q["country_or_rec"],
         options=COUNTRY_OR_REC_OPTIONS,
-        index=choice_index(COUNTRY_OR_REC_OPTIONS, get_value("country_or_rec")),
+        index=choice_index(COUNTRY_OR_REC_OPTIONS, st.session_state[country_or_rec_key]),
         placeholder="—",
         format_func=lambda x: x,
-        key="country_or_rec",
+        key=country_or_rec_key,
     )
-    if get_value("country_or_rec") == "Other":
-        st.text_input(txt["other_country"], key="country_or_rec_other")
+    if st.session_state[country_or_rec_key] == "Other":
+        st.text_input(txt["other_country"], key=prime_widget("country_or_rec_other"))
     st.selectbox(
         q["respondent_title"],
         options=RESPONDENT_TITLES,
-        index=choice_index(RESPONDENT_TITLES, get_value("respondent_title")),
+        index=choice_index(RESPONDENT_TITLES, st.session_state[respondent_title_key]),
         placeholder="—",
         format_func=lambda x: txt["titles"][x],
-        key="respondent_title",
+        key=respondent_title_key,
     )
-    if get_value("respondent_title") == "other":
-        st.text_input(txt["other_specify"], key="respondent_title_other")
-    st.text_input(q["email"], key="email", placeholder=txt["placeholders"]["email"])
+    if st.session_state[respondent_title_key] == "other":
+        st.text_input(txt["other_specify"], key=prime_widget("respondent_title_other"))
+    st.text_input(q["email"], key=email_key, placeholder=txt["placeholders"]["email"])
 
 
 def render_step_2(txt: Dict) -> None:
@@ -1271,21 +1281,31 @@ def render_step_2(txt: Dict) -> None:
 def render_grid_section(rows: List[str], label: str, comments_key: str, options_map: Dict[str, str], txt: Dict, section_key: str) -> None:
     st.markdown(f"**{label}**")
     labels = txt[section_key]
+    option_keys = list(options_map.keys())
     for row in rows:
+        row_widget_key = prime_widget(row)
         st.markdown(f"**{labels[row]}**")
         st.radio(
             labels[row],
-            options=list(options_map.keys()),
-            index=choice_index(list(options_map.keys()), get_value(row)),
+            options=option_keys,
+            index=choice_index(option_keys, st.session_state[row_widget_key]),
             format_func=lambda x: options_map[x],
-            key=row,
+            key=row_widget_key,
             label_visibility="collapsed",
             horizontal=True,
         )
-        if get_value(row) in {"go_with_reservations", "no_go"}:
-            st.text_area(txt["overall_why"], key=f"{row}_why", placeholder=txt["placeholders"]["why"])
+        if st.session_state[row_widget_key] in {"go_with_reservations", "no_go"}:
+            st.text_area(
+                txt["overall_why"],
+                key=prime_widget(f"{row}_why"),
+                placeholder=txt["placeholders"]["why"],
+            )
         st.markdown("---")
-    st.text_area(txt["optional_summary"], key=comments_key, placeholder=txt["placeholders"]["summary"])
+    st.text_area(
+        txt["optional_summary"],
+        key=prime_widget(comments_key),
+        placeholder=txt["placeholders"]["summary"],
+    )
 
 
 def render_step_3(txt: Dict) -> None:
@@ -1304,12 +1324,14 @@ def render_step_4(txt: Dict) -> None:
 def render_step_5(txt: Dict) -> None:
     q = txt["questions"]
     st.subheader(txt["sections"][5])
+    final_position_key = prime_widget("final_institutional_position")
+    final_options = list(txt["final_positions"].keys())
     st.radio(
         q["final_position"],
-        options=list(txt["final_positions"].keys()),
-        index=choice_index(list(txt["final_positions"].keys()), get_value("final_institutional_position")),
+        options=final_options,
+        index=choice_index(final_options, st.session_state[final_position_key]),
         format_func=lambda x: txt["final_positions"][x],
-        key="final_institutional_position",
+        key=final_position_key,
         horizontal=False,
     )
 
