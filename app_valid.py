@@ -1,24 +1,29 @@
+from __future__ import annotations
+
 import base64
 import csv
 import io
 import json
 import os
 import re
-import uuid
-from datetime import datetime
-from typing import Dict, List, Optional
+import secrets
+from datetime import datetime, timedelta, timezone
+from typing import Dict, List, Tuple
 
 import requests
 import streamlit as st
 
-APP_VERSION = "2026-04-12"
-
-# -----------------------------------------------------------------------------
-# Configuration
-# -----------------------------------------------------------------------------
+APP_VERSION = "2026-04-13b"
+RESPONSE_PATH_ROOT = "validation_doc"
 DEFAULT_NOTE_URL = os.getenv("NOTE_URL", "")
-DEFAULT_FULL_DOC_URL = os.getenv("FULL_DOC_URL", "")
-DEFAULT_INTRO_IMAGE_URL = os.getenv("INTRO_IMAGE_URL", "")
+DEFAULT_DOC_URL_EN = os.getenv(
+    "FULL_DOC_URL_EN",
+    "https://onedrive.live.com/personal/11cdb27337d4c5b5/_layouts/15/Doc.aspx?sourcedoc=%7Bbed3dcb8-d08f-45b8-9bba-17a454341159%7D&action=edit&redeem=aHR0cHM6Ly8xZHJ2Lm1zL3cvYy8xMWNkYjI3MzM3ZDRjNWI1L0lRQzQzTk8tajlDNFJadTZGNlJVTkJGWkFVTVpXMXUxWmozVjJQU2d4TUhvSTFFP2U9QUlyajJE"
+)
+DEFAULT_DOC_URL_FR = os.getenv(
+    "FULL_DOC_URL_FR",
+    "https://onedrive.live.com/personal/11cdb27337d4c5b5/_layouts/15/Doc.aspx?sourcedoc=%7Bbed3dcb8-d08f-45b8-9bba-17a454341159%7D&action=edit&redeem=aHR0cHM6Ly8xZHJ2Lm1zL3cvYy8xMWNkYjI3MzM3ZDRjNWI1L0lRQzQzTk8tajlDNFJadTZGNlJVTkJGWkFVTVpXMXUxWmozVjJQU2d4TUhvSTFFP2U9QUlyajJE"
+)
 
 LANGUAGE_OPTIONS = {
     "en": "English",
@@ -27,6 +32,8 @@ LANGUAGE_OPTIONS = {
     "ar": "العربية",
 }
 
+STEP_COUNT = 5
+INSTITUTION_TYPES = ["nso", "rec"]
 RESPONSE_CODES = ["go", "go_with_reservations", "no_go", "no_opinion"]
 USABILITY_CODES = ["yes", "mostly_yes", "mostly_no", "no", "no_opinion"]
 FINAL_POSITION_CODES = [
@@ -36,52 +43,167 @@ FINAL_POSITION_CODES = [
     "discuss_in_workshop",
     "no_opinion",
 ]
-INSTITUTION_TYPES = ["nso", "rec"]
+
+STRATEGIC_ROWS = [
+    "strategic_prioritization_criteria",
+    "strategic_scoring_logic",
+    "strategic_core_extensions",
+    "strategic_gender_integration",
+    "strategic_min_disaggregations",
+    "strategic_data_sources",
+    "strategic_governance_roles",
+    "strategic_roadmap_update",
+]
+
+DOMAIN_ROWS = [
+    "domain_d01",
+    "domain_d02",
+    "domain_d03",
+    "domain_d04",
+    "domain_d05",
+    "domain_d06",
+    "domain_d07",
+    "domain_d08",
+    "domain_d09",
+    "domain_d10",
+    "domain_d11",
+    "domain_d12",
+]
+
+RESPONDENT_TITLES = [
+    "director_general",
+    "statistician_general",
+    "deputy_director_general",
+    "director_statistics",
+    "head_department",
+    "programme_manager",
+    "technical_expert",
+    "other",
+]
+
+COUNTRY_OR_REC_OPTIONS = [
+    "Algeria",
+    "Angola",
+    "Benin",
+    "Botswana",
+    "Burkina Faso",
+    "Burundi",
+    "Cabo Verde",
+    "Cameroon",
+    "Central African Republic",
+    "Chad",
+    "Comoros",
+    "Congo",
+    "Côte d’Ivoire",
+    "Democratic Republic of the Congo",
+    "Djibouti",
+    "Egypt",
+    "Equatorial Guinea",
+    "Eritrea",
+    "Eswatini",
+    "Ethiopia",
+    "Gabon",
+    "Gambia",
+    "Ghana",
+    "Guinea",
+    "Guinea-Bissau",
+    "Kenya",
+    "Lesotho",
+    "Liberia",
+    "Libya",
+    "Madagascar",
+    "Malawi",
+    "Mali",
+    "Mauritania",
+    "Mauritius",
+    "Morocco",
+    "Mozambique",
+    "Namibia",
+    "Niger",
+    "Nigeria",
+    "Rwanda",
+    "Sahrawi Arab Democratic Republic",
+    "Sao Tome and Principe",
+    "Senegal",
+    "Seychelles",
+    "Sierra Leone",
+    "Somalia",
+    "South Africa",
+    "South Sudan",
+    "Sudan",
+    "Tanzania",
+    "Togo",
+    "Tunisia",
+    "Uganda",
+    "Zambia",
+    "Zimbabwe",
+    "AMU",
+    "CEN-SAD",
+    "COMESA",
+    "EAC",
+    "ECCAS",
+    "ECOWAS",
+    "IGAD",
+    "SADC",
+    "Other",
+]
 
 TRANSLATIONS: Dict[str, Dict] = {
     "en": {
-        "app_title": "Strategic validation of the draft document on priority socio-economic statistics in Africa",
-        "app_subtitle": "Multilingual institutional questionnaire built from the decision-oriented summary note.",
-        "language_label": "Language",
-        "intro": (
-            "Please complete this form on behalf of your institution. It is designed to collect a structured "
-            "institutional position on the main strategic choices of the draft document on priority socio-economic "
-            "statistics in Africa, with due consideration of the gender dimension."
-        ),
-        "intro_2": (
-            "This form complements the decision-oriented summary note and the full draft document. It does not replace "
-            "a detailed technical review, but it helps secure institutional Go/No-Go decisions on the main methodological, "
-            "thematic, and operational choices."
-        ),
-        "intro_3": "Please respond after internal consultation whenever possible.",
-        "response_scale_title": "Response scale used",
-        "response_scale": [
+        "title": "Strategic validation of the draft document on priority socio-economic statistics in Africa",
+        "subtitle": "Multilingual institutional questionnaire built from the decision-oriented summary note.",
+        "lang": "Language",
+        "intro": "Please complete this questionnaire on behalf of your institution.",
+        "intro2": "It collects a structured institutional position on the main strategic choices of the draft document on priority socio-economic statistics in Africa, with due consideration of the gender dimension.",
+        "intro3": "It complements the summary note and the full draft document. It does not replace a detailed review, but it helps secure rapid institutional Go/No-Go decisions on the main methodological, thematic, and operational choices.",
+        "intro4": "Please respond after internal consultation whenever possible.",
+        "scale_title": "Response scale used",
+        "scale": [
             "Go: overall agreement",
             "Go with reservations: agreement subject to limited adjustments",
             "No-Go: major revision requested",
             "No opinion: no position at this stage",
         ],
-        "estimated_time": "Estimated completion time: 10 to 12 minutes.",
-        "links_title": "Reference documents",
+        "estimated": "Estimated completion time: 10 to 12 minutes.",
+        "step_label": "Progress",
+        "ref_docs": "Reference documents",
         "note_link": "Decision-oriented summary note",
-        "doc_link": "Full draft document",
-        "submit_success": "Thank you. Your response has been recorded successfully.",
-        "submit_warning": "Your response was validated locally, but online saving failed. Please download your response file below and share it manually.",
-        "download_json": "Download response (JSON)",
-        "download_csv": "Download response (CSV)",
-        "reset_form": "Start a new response",
-        "saving": "Saving your response...",
-        "github_ok": "Your response was saved to the configured GitHub repository.",
-        "github_missing": "GitHub saving is not configured. The app will still let respondents download their response locally.",
-        "github_error": "GitHub saving failed",
-        "validation_error_title": "Please complete the required fields before submitting.",
-        "footer": "Built with Streamlit for multilingual strategic validation.",
+        "doc_en": "English version",
+        "doc_fr": "French version",
+        "save_draft": "Save draft and pause for 48 hours",
+        "load_draft": "Resume a saved draft",
+        "draft_code": "Draft code",
+        "draft_code_placeholder": "Paste your draft code",
+        "draft_saved": "Draft saved successfully. Keep this code to resume within 48 hours.",
+        "draft_loaded": "Draft loaded successfully.",
+        "draft_expired": "This draft has expired.",
+        "draft_missing": "Draft not found.",
+        "draft_download": "Download current draft (JSON)",
+        "response_download_json": "Download current response (JSON)",
+        "response_download_csv": "Download current response (CSV)",
+        "sidebar_help": "You may save a partial draft and resume it for up to 48 hours.",
+        "sidebar_repo_missing": "GitHub saving is not configured. You can still download your draft locally.",
+        "validation_title": "Please complete the required fields before continuing.",
+        "back": "Back",
+        "continue": "Continue",
+        "submit": "Submit final response",
+        "start_over": "Start a new response",
+        "submit_success": "Thank you. Your final response has been recorded successfully.",
+        "submit_warning": "The form is valid, but online saving failed. Please download the response files below and share them manually.",
+        "draft_code_note": "Resume code",
+        "questions_required": "Required questions must be completed to continue.",
+        "save_label": "Saving…",
+        "overall_why": "Please explain why",
+        "optional_summary": "Additional summary comments (optional)",
+        "optional_revisions": "What are the three most important revisions needed before final validation? (optional)",
+        "other_specify": "Please specify",
+        "other_country": "Other country or REC",
         "sections": {
-            "s1": "Section 1. Identification of the respondent",
-            "s2": "Section 2. Overall validation",
-            "s3": "Section 3. Validation of strategic choices",
-            "s4": "Section 4. Validation of thematic domains",
-            "s5": "Section 5. Final institutional position",
+            1: "Section 1. Identification of the respondent",
+            2: "Section 2. Overall validation",
+            3: "Section 3. Validation of strategic choices",
+            4: "Section 4. Validation of thematic domains",
+            5: "Section 5. Final institutional position",
         },
         "questions": {
             "institution_acronym": "1. Acronym of institution",
@@ -92,47 +214,49 @@ TRANSLATIONS: Dict[str, Dict] = {
             "overall_validation": "6. Overall validation of the document",
             "operational_usability": "7. Is the document operational enough for use by Member States and RECs?",
             "strategic_grid": "8. Please assess the following strategic elements",
-            "strategic_comments": (
-                "9. If you selected ‘Go with reservations’ or ‘No-Go’ for one or more elements above, "
-                "please specify which ones and why"
-            ),
+            "strategic_comments": "9. If you selected ‘Go with reservations’ or ‘No-Go’ for one or more elements above, please specify which ones and why",
             "domain_grid": "10. Please assess the 12 proposed thematic domains",
-            "domain_comments": (
-                "11. If you selected ‘Go with reservations’ or ‘No-Go’ for one or more domains, "
-                "please specify which ones and why"
-            ),
+            "domain_comments": "11. If you selected ‘Go with reservations’ or ‘No-Go’ for one or more domains, please specify which ones and why",
             "top_3_revisions": "12. What are the three most important revisions needed before final validation?",
-            "final_position": (
-                "13. Is your institution broadly in favor of finalizing the document after consideration of comments received?"
-            ),
+            "final_position": "13. Is your institution broadly in favor of finalizing the document after consideration of comments received?",
         },
-        "institution_type_options": {
+        "institution_types": {
             "nso": "National Statistical Office",
             "rec": "Regional Economic Community",
         },
-        "response_options": {
+        "responses": {
             "go": "Go",
             "go_with_reservations": "Go with reservations",
             "no_go": "No-Go",
             "no_opinion": "No opinion",
         },
-        "usability_options": {
+        "usability": {
             "yes": "Yes",
             "mostly_yes": "Mostly yes",
             "mostly_no": "Mostly no",
             "no": "No",
             "no_opinion": "No opinion",
         },
-        "final_position_options": {
+        "final_positions": {
             "yes": "Yes",
             "yes_limited_adjustments": "Yes, subject to limited adjustments",
             "no_substantial_revision": "No, more substantial revision is needed",
             "discuss_in_workshop": "To be discussed in a workshop",
             "no_opinion": "No opinion",
         },
+        "titles": {
+            "director_general": "Director General",
+            "statistician_general": "Statistician General",
+            "deputy_director_general": "Deputy Director General",
+            "director_statistics": "Director of Statistics",
+            "head_department": "Head of department / unit",
+            "programme_manager": "Programme manager / coordinator",
+            "technical_expert": "Technical expert / statistician",
+            "other": "Other",
+        },
         "strategic_rows": {
             "strategic_prioritization_criteria": "Prioritization criteria used",
-            "strategic_scoring_logic": "Scoring logic",
+            "strategic_scoring_logic": "Multi-criteria scoring logic",
             "strategic_core_extensions": "Core and extensions logic",
             "strategic_gender_integration": "Cross-cutting integration of gender",
             "strategic_min_disaggregations": "Proposed minimum disaggregations",
@@ -154,61 +278,69 @@ TRANSLATIONS: Dict[str, Dict] = {
             "domain_d11": "D11 Blue economy and ocean management",
             "domain_d12": "D12 Partnerships and development financing",
         },
-        "form_buttons": {
-            "submit": "Submit response",
-        },
         "placeholders": {
             "institution_acronym": "e.g. ANSD / COMESA",
-            "country_or_rec": "e.g. Senegal / COMESA",
-            "respondent_title": "e.g. Director General / Director of Statistics",
-            "strategic_comments": "Brief justification for reservations or rejection",
-            "domain_comments": "Brief justification for reservations or rejection",
-            "top_3_revisions": "List the 3 most important revisions before final validation",
+            "email": "name@institution.org",
+            "why": "Brief justification",
+            "summary": "Optional summary comments",
+            "revisions": "List the three most important revisions, if any",
         },
     },
     "fr": {
-        "app_title": "Validation stratégique du projet de document sur les statistiques socio-économiques prioritaires en Afrique",
-        "app_subtitle": "Questionnaire institutionnel multilingue construit à partir de la note de synthèse décisionnelle.",
-        "language_label": "Langue",
-        "intro": (
-            "Merci de renseigner ce formulaire au nom de votre institution. Il vise à recueillir une position structurée "
-            "sur les principaux choix stratégiques du projet de document relatif à l’identification des statistiques "
-            "socio-économiques prioritaires en Afrique, avec prise en compte de la dimension genre."
-        ),
-        "intro_2": (
-            "Ce formulaire complète la note de synthèse décisionnelle et le document complet. Il ne remplace pas la "
-            "relecture détaillée, mais permet de sécuriser rapidement les arbitrages institutionnels sur les principaux "
-            "choix méthodologiques, thématiques et opérationnels."
-        ),
-        "intro_3": "Merci de répondre, dans la mesure du possible, après concertation interne.",
-        "response_scale_title": "Échelle de réponse utilisée",
-        "response_scale": [
+        "title": "Validation stratégique du projet de document sur les statistiques socio-économiques prioritaires en Afrique",
+        "subtitle": "Questionnaire institutionnel multilingue construit à partir de la note de synthèse décisionnelle.",
+        "lang": "Langue",
+        "intro": "Merci de renseigner ce questionnaire au nom de votre institution.",
+        "intro2": "Il vise à recueillir une position institutionnelle structurée sur les principaux choix stratégiques du projet de document relatif à l’identification des statistiques socio-économiques prioritaires en Afrique, avec prise en compte de la dimension genre.",
+        "intro3": "Il complète la note de synthèse et le document complet. Il ne remplace pas une relecture détaillée, mais permet de sécuriser rapidement les arbitrages institutionnels Go / No-Go sur les principaux choix méthodologiques, thématiques et opérationnels.",
+        "intro4": "Merci de répondre, dans la mesure du possible, après concertation interne.",
+        "scale_title": "Échelle de réponse utilisée",
+        "scale": [
             "Validé : accord global",
             "Validé sous réserve : accord sous ajustements limités",
             "Non-validé : révision importante demandée",
             "Sans avis : pas de position à ce stade",
         ],
-        "estimated_time": "Temps estimé de réponse : 10 à 12 minutes.",
-        "links_title": "Documents de référence",
+        "estimated": "Temps estimé de réponse : 10 à 12 minutes.",
+        "step_label": "Progression",
+        "ref_docs": "Documents de référence",
         "note_link": "Note de synthèse décisionnelle",
-        "doc_link": "Document complet",
-        "submit_success": "Merci. Votre réponse a été enregistrée avec succès.",
-        "submit_warning": "Votre réponse a été validée localement, mais l’enregistrement en ligne a échoué. Merci de télécharger le fichier de réponse ci-dessous et de le transmettre manuellement.",
-        "download_json": "Télécharger la réponse (JSON)",
-        "download_csv": "Télécharger la réponse (CSV)",
-        "reset_form": "Commencer une nouvelle réponse",
-        "saving": "Enregistrement de votre réponse...",
-        "github_ok": "Votre réponse a été enregistrée dans le dépôt GitHub configuré.",
-        "github_missing": "L’enregistrement GitHub n’est pas configuré. L’application permet toutefois aux répondants de télécharger leur réponse localement.",
-        "github_error": "Échec de l’enregistrement GitHub",
-        "validation_error_title": "Merci de renseigner les champs obligatoires avant soumission.",
-        "footer": "Application Streamlit pour la validation stratégique multilingue.",
+        "doc_en": "Version anglaise",
+        "doc_fr": "Version française",
+        "save_draft": "Enregistrer le brouillon et suspendre pendant 48 heures",
+        "load_draft": "Reprendre un brouillon enregistré",
+        "draft_code": "Code du brouillon",
+        "draft_code_placeholder": "Collez votre code de brouillon",
+        "draft_saved": "Brouillon enregistré avec succès. Conservez ce code pour reprendre dans les 48 heures.",
+        "draft_loaded": "Brouillon chargé avec succès.",
+        "draft_expired": "Ce brouillon a expiré.",
+        "draft_missing": "Brouillon introuvable.",
+        "draft_download": "Télécharger le brouillon courant (JSON)",
+        "response_download_json": "Télécharger la réponse courante (JSON)",
+        "response_download_csv": "Télécharger la réponse courante (CSV)",
+        "sidebar_help": "Vous pouvez enregistrer un brouillon partiel et le reprendre pendant 48 heures.",
+        "sidebar_repo_missing": "L’enregistrement GitHub n’est pas configuré. Vous pouvez toutefois télécharger votre brouillon localement.",
+        "validation_title": "Merci de renseigner les champs obligatoires avant de poursuivre.",
+        "back": "Retour",
+        "continue": "Continuer",
+        "submit": "Soumettre la réponse finale",
+        "start_over": "Commencer une nouvelle réponse",
+        "submit_success": "Merci. Votre réponse finale a été enregistrée avec succès.",
+        "submit_warning": "Le formulaire est valide, mais l’enregistrement en ligne a échoué. Merci de télécharger les fichiers de réponse ci-dessous et de les transmettre manuellement.",
+        "draft_code_note": "Code de reprise",
+        "questions_required": "Les questions obligatoires doivent être renseignées pour pouvoir poursuivre.",
+        "save_label": "Enregistrement…",
+        "overall_why": "Merci de préciser pourquoi",
+        "optional_summary": "Commentaires de synthèse supplémentaires (facultatif)",
+        "optional_revisions": "Quelles sont les trois révisions les plus importantes à apporter avant validation finale ? (facultatif)",
+        "other_specify": "Merci de préciser",
+        "other_country": "Autre pays ou CER",
         "sections": {
-            "s1": "Section 1. Identification du répondant",
-            "s2": "Section 2. Validation générale",
-            "s3": "Section 3. Validation des choix stratégiques",
-            "s4": "Section 4. Validation des domaines thématiques",
-            "s5": "Section 5. Position finale de l’institution",
+            1: "Section 1. Identification du répondant",
+            2: "Section 2. Validation générale",
+            3: "Section 3. Validation des choix stratégiques",
+            4: "Section 4. Validation des domaines thématiques",
+            5: "Section 5. Position finale de l’institution",
         },
         "questions": {
             "institution_acronym": "1. Sigle de l’institution",
@@ -219,41 +351,45 @@ TRANSLATIONS: Dict[str, Dict] = {
             "overall_validation": "6. Validation globale du document",
             "operational_usability": "7. Le document vous paraît-il suffisamment opérationnel pour un usage par les États membres et les CER ?",
             "strategic_grid": "8. Veuillez apprécier les éléments stratégiques suivants",
-            "strategic_comments": (
-                "9. Si vous avez indiqué ‘Validé sous réserve’ ou ‘Non-validé’ pour un ou plusieurs éléments ci-dessus, "
-                "merci de préciser lesquels et pourquoi"
-            ),
+            "strategic_comments": "9. Si vous avez indiqué ‘Validé sous réserve’ ou ‘Non-validé’ pour un ou plusieurs éléments ci-dessus, merci de préciser lesquels et pourquoi",
             "domain_grid": "10. Veuillez apprécier les 12 domaines thématiques proposés",
-            "domain_comments": (
-                "11. Si vous avez indiqué ‘Validé sous réserve’ ou ‘Non-validé’ pour un ou plusieurs domaines, "
-                "merci de préciser lesquels et pourquoi"
-            ),
+            "domain_comments": "11. Si vous avez indiqué ‘Validé sous réserve’ ou ‘Non-validé’ pour un ou plusieurs domaines, merci de préciser lesquels et pourquoi",
             "top_3_revisions": "12. Quelles sont les trois révisions les plus importantes à apporter avant validation finale ?",
             "final_position": "13. Votre institution est-elle globalement favorable à la finalisation du document après prise en compte des observations reçues ?",
         },
-        "institution_type_options": {
+        "institution_types": {
             "nso": "Institut national de statistique (INS)",
             "rec": "Communauté économique régionale (CER)",
         },
-        "response_options": {
+        "responses": {
             "go": "Validé",
             "go_with_reservations": "Validé sous réserve",
             "no_go": "Non-validé",
             "no_opinion": "Sans avis",
         },
-        "usability_options": {
+        "usability": {
             "yes": "Oui",
             "mostly_yes": "Plutôt oui",
             "mostly_no": "Plutôt non",
             "no": "Non",
             "no_opinion": "Sans avis",
         },
-        "final_position_options": {
+        "final_positions": {
             "yes": "Oui",
             "yes_limited_adjustments": "Oui, sous réserve d’ajustements limités",
             "no_substantial_revision": "Non, une révision plus substantielle est nécessaire",
             "discuss_in_workshop": "À discuter en atelier",
             "no_opinion": "Sans avis",
+        },
+        "titles": {
+            "director_general": "Directeur général",
+            "statistician_general": "Statisticien général",
+            "deputy_director_general": "Directeur général adjoint",
+            "director_statistics": "Directeur des statistiques",
+            "head_department": "Chef de département / unité",
+            "programme_manager": "Responsable / coordonnateur de programme",
+            "technical_expert": "Expert technique / statisticien",
+            "other": "Autre",
         },
         "strategic_rows": {
             "strategic_prioritization_criteria": "Critères de priorisation retenus",
@@ -279,106 +415,118 @@ TRANSLATIONS: Dict[str, Dict] = {
             "domain_d11": "D11 Économie bleue et gestion des océans",
             "domain_d12": "D12 Partenariats et financement du développement",
         },
-        "form_buttons": {
-            "submit": "Soumettre la réponse",
-        },
         "placeholders": {
-            "institution_acronym": "ex. ANSD / COMESA",
-            "country_or_rec": "ex. Sénégal / COMESA",
-            "respondent_title": "ex. Directeur général / Directeur des statistiques",
-            "strategic_comments": "Justification brève des réserves ou du rejet",
-            "domain_comments": "Justification brève des réserves ou du rejet",
-            "top_3_revisions": "Indiquez les 3 révisions les plus importantes avant validation finale",
+            "institution_acronym": "Ex. ANSD / COMESA",
+            "email": "nom@institution.org",
+            "why": "Brève justification",
+            "summary": "Commentaires de synthèse facultatifs",
+            "revisions": "Listez, le cas échéant, les trois révisions les plus importantes",
         },
     },
     "pt": {
-        "app_title": "Validação estratégica do projeto de documento sobre estatísticas socioeconómicas prioritárias em África",
-        "app_subtitle": "Questionário institucional multilingue construído a partir da nota de síntese decisional.",
-        "language_label": "Idioma",
-        "intro": (
-            "Por favor, preencha este formulário em nome da sua instituição. O objetivo é recolher uma posição "
-            "estruturada sobre as principais escolhas estratégicas do projeto de documento relativo à identificação "
-            "das estatísticas socioeconómicas prioritárias em África, com consideração da dimensão de género."
-        ),
-        "intro_2": (
-            "Este formulário complementa a nota de síntese decisional e o documento completo. Não substitui a revisão "
-            "técnica detalhada, mas ajuda a assegurar rapidamente as decisões institucionais de Go/No-Go sobre as "
-            "principais escolhas metodológicas, temáticas e operacionais."
-        ),
-        "intro_3": "Responda, sempre que possível, após consulta interna.",
-        "response_scale_title": "Escala de resposta utilizada",
-        "response_scale": [
-            "Validado: acordo global",
-            "Validado com reservas: acordo sujeito a ajustes limitados",
+        "title": "Validação estratégica do projeto de documento sobre estatísticas socioeconómicas prioritárias em África",
+        "subtitle": "Questionário institucional multilingue construído a partir da nota de síntese decisional.",
+        "lang": "Idioma",
+        "intro": "Por favor, preencha este questionário em nome da sua instituição.",
+        "intro2": "O objetivo é recolher uma posição institucional estruturada sobre as principais escolhas estratégicas do projeto de documento relativo à identificação das estatísticas socioeconómicas prioritárias em África, com consideração da dimensão de género.",
+        "intro3": "Complementa a nota de síntese e o documento completo. Não substitui uma revisão detalhada, mas ajuda a assegurar rapidamente decisões institucionais Go / No-Go sobre as principais escolhas metodológicas, temáticas e operacionais.",
+        "intro4": "Responda, se possível, após concertação interna.",
+        "scale_title": "Escala de resposta utilizada",
+        "scale": [
+            "Validado: acordo geral",
+            "Validado com reservas: acordo sujeito a ajustamentos limitados",
             "Não validado: revisão importante solicitada",
             "Sem opinião: sem posição nesta fase",
         ],
-        "estimated_time": "Tempo estimado de resposta: 10 a 12 minutos.",
-        "links_title": "Documentos de referência",
+        "estimated": "Tempo estimado de resposta: 10 a 12 minutos.",
+        "step_label": "Progresso",
+        "ref_docs": "Documentos de referência",
         "note_link": "Nota de síntese decisional",
-        "doc_link": "Documento completo",
-        "submit_success": "Obrigado. A sua resposta foi registada com sucesso.",
-        "submit_warning": "A sua resposta foi validada localmente, mas o registo online falhou. Por favor, descarregue o ficheiro de resposta abaixo e partilhe-o manualmente.",
-        "download_json": "Descarregar resposta (JSON)",
-        "download_csv": "Descarregar resposta (CSV)",
-        "reset_form": "Iniciar uma nova resposta",
-        "saving": "A guardar a sua resposta...",
-        "github_ok": "A sua resposta foi guardada no repositório GitHub configurado.",
-        "github_missing": "O armazenamento no GitHub não está configurado. A aplicação continuará a permitir o descarregamento local da resposta.",
-        "github_error": "Falha ao guardar no GitHub",
-        "validation_error_title": "Preencha os campos obrigatórios antes de submeter.",
-        "footer": "Aplicação Streamlit para validação estratégica multilingue.",
+        "doc_en": "Versão inglesa",
+        "doc_fr": "Versão francesa",
+        "save_draft": "Guardar rascunho e suspender durante 48 horas",
+        "load_draft": "Retomar um rascunho guardado",
+        "draft_code": "Código do rascunho",
+        "draft_code_placeholder": "Cole o seu código de rascunho",
+        "draft_saved": "Rascunho guardado com sucesso. Guarde este código para retomar dentro de 48 horas.",
+        "draft_loaded": "Rascunho carregado com sucesso.",
+        "draft_expired": "Este rascunho expirou.",
+        "draft_missing": "Rascunho não encontrado.",
+        "draft_download": "Descarregar rascunho atual (JSON)",
+        "response_download_json": "Descarregar resposta atual (JSON)",
+        "response_download_csv": "Descarregar resposta atual (CSV)",
+        "sidebar_help": "Pode guardar um rascunho parcial e retomá-lo durante 48 horas.",
+        "sidebar_repo_missing": "A gravação no GitHub não está configurada. Ainda assim, pode descarregar o rascunho localmente.",
+        "validation_title": "Preencha os campos obrigatórios antes de continuar.",
+        "back": "Voltar",
+        "continue": "Continuar",
+        "submit": "Submeter a resposta final",
+        "start_over": "Iniciar uma nova resposta",
+        "submit_success": "Obrigado. A sua resposta final foi registada com sucesso.",
+        "submit_warning": "O formulário é válido, mas a gravação online falhou. Descarregue os ficheiros de resposta abaixo e partilhe-os manualmente.",
+        "draft_code_note": "Código de retoma",
+        "questions_required": "As perguntas obrigatórias devem ser preenchidas para continuar.",
+        "save_label": "A guardar…",
+        "overall_why": "Por favor, explique porquê",
+        "optional_summary": "Comentários adicionais de síntese (opcional)",
+        "optional_revisions": "Quais são as três revisões mais importantes a introduzir antes da validação final? (opcional)",
+        "other_specify": "Por favor, especifique",
+        "other_country": "Outro país ou CER",
         "sections": {
-            "s1": "Secção 1. Identificação do respondente",
-            "s2": "Secção 2. Validação geral",
-            "s3": "Secção 3. Validação das escolhas estratégicas",
-            "s4": "Secção 4. Validação dos domínios temáticos",
-            "s5": "Secção 5. Posição final da instituição",
+            1: "Secção 1. Identificação do respondente",
+            2: "Secção 2. Validação geral",
+            3: "Secção 3. Validação das escolhas estratégicas",
+            4: "Secção 4. Validação dos domínios temáticos",
+            5: "Secção 5. Posição final da instituição",
         },
         "questions": {
             "institution_acronym": "1. Sigla da instituição",
             "institution_type": "2. Tipo de instituição",
-            "country_or_rec": "3. País ou CER representada",
+            "country_or_rec": "3. País ou CER representado",
             "respondent_title": "4. Função do principal respondente",
             "email": "5. Email",
             "overall_validation": "6. Validação global do documento",
-            "operational_usability": "7. O documento parece suficientemente operacional para ser usado pelos Estados-Membros e pelas CER?",
-            "strategic_grid": "8. Avalie os seguintes elementos estratégicos",
-            "strategic_comments": (
-                "9. Se selecionou ‘Validado com reservas’ ou ‘Não validado’ para um ou mais elementos acima, "
-                "indique quais e porquê"
-            ),
-            "domain_grid": "10. Avalie os 12 domínios temáticos propostos",
-            "domain_comments": (
-                "11. Se selecionou ‘Validado com reservas’ ou ‘Não validado’ para um ou mais domínios, "
-                "indique quais e porquê"
-            ),
+            "operational_usability": "7. O documento parece suficientemente operacional para utilização pelos Estados-Membros e pelas CER?",
+            "strategic_grid": "8. Aprecie os seguintes elementos estratégicos",
+            "strategic_comments": "9. Se selecionou ‘Validado com reservas’ ou ‘Não validado’ para um ou mais elementos acima, especifique quais e porquê",
+            "domain_grid": "10. Aprecie os 12 domínios temáticos propostos",
+            "domain_comments": "11. Se selecionou ‘Validado com reservas’ ou ‘Não validado’ para um ou mais domínios, especifique quais e porquê",
             "top_3_revisions": "12. Quais são as três revisões mais importantes a introduzir antes da validação final?",
-            "final_position": "13. A sua instituição é globalmente favorável à finalização do documento após consideração das observações recebidas?",
+            "final_position": "13. A sua instituição é globalmente favorável à finalização do documento após a consideração das observações recebidas?",
         },
-        "institution_type_options": {
+        "institution_types": {
             "nso": "Instituto Nacional de Estatística",
             "rec": "Comunidade Económica Regional",
         },
-        "response_options": {
+        "responses": {
             "go": "Validado",
             "go_with_reservations": "Validado com reservas",
             "no_go": "Não validado",
             "no_opinion": "Sem opinião",
         },
-        "usability_options": {
+        "usability": {
             "yes": "Sim",
-            "mostly_yes": "Mais sim do que não",
-            "mostly_no": "Mais não do que sim",
+            "mostly_yes": "Em grande medida sim",
+            "mostly_no": "Em grande medida não",
             "no": "Não",
             "no_opinion": "Sem opinião",
         },
-        "final_position_options": {
+        "final_positions": {
             "yes": "Sim",
-            "yes_limited_adjustments": "Sim, sujeito a ajustes limitados",
+            "yes_limited_adjustments": "Sim, sujeito a ajustamentos limitados",
             "no_substantial_revision": "Não, é necessária uma revisão mais substancial",
             "discuss_in_workshop": "A discutir em atelier",
             "no_opinion": "Sem opinião",
+        },
+        "titles": {
+            "director_general": "Diretor-geral",
+            "statistician_general": "Estatístico-geral",
+            "deputy_director_general": "Diretor-geral adjunto",
+            "director_statistics": "Diretor de estatística",
+            "head_department": "Chefe de departamento / unidade",
+            "programme_manager": "Gestor / coordenador de programa",
+            "technical_expert": "Perito técnico / estatístico",
+            "other": "Outro",
         },
         "strategic_rows": {
             "strategic_prioritization_criteria": "Critérios de priorização adotados",
@@ -387,12 +535,12 @@ TRANSLATIONS: Dict[str, Dict] = {
             "strategic_gender_integration": "Integração transversal do género",
             "strategic_min_disaggregations": "Desagregações mínimas propostas",
             "strategic_data_sources": "Fontes de dados e dispositivos de produção",
-            "strategic_governance_roles": "Governação e repartição dos papéis",
+            "strategic_governance_roles": "Governação e repartição de papéis",
             "strategic_roadmap_update": "Roteiro de implementação e mecanismo de atualização",
         },
         "domain_rows": {
             "domain_d01": "D01 Crescimento económico, transformação estrutural e comércio",
-            "domain_d02": "D02 Emprego, trabalho digno e proteção social",
+            "domain_d02": "D02 Emprego, trabalho decente e proteção social",
             "domain_d03": "D03 Agricultura sustentável, segurança alimentar e nutrição",
             "domain_d04": "D04 Infraestruturas, industrialização e inovação",
             "domain_d05": "D05 Inclusão, pobreza e desigualdades",
@@ -404,60 +552,69 @@ TRANSLATIONS: Dict[str, Dict] = {
             "domain_d11": "D11 Economia azul e gestão dos oceanos",
             "domain_d12": "D12 Parcerias e financiamento do desenvolvimento",
         },
-        "form_buttons": {
-            "submit": "Submeter resposta",
-        },
         "placeholders": {
-            "institution_acronym": "ex. INE / COMESA",
-            "country_or_rec": "ex. Moçambique / COMESA",
-            "respondent_title": "ex. Diretor-Geral / Diretor de Estatísticas",
-            "strategic_comments": "Justificação breve das reservas ou da rejeição",
-            "domain_comments": "Justificação breve das reservas ou da rejeição",
-            "top_3_revisions": "Indique as 3 revisões mais importantes antes da validação final",
+            "institution_acronym": "Ex. INE / COMESA",
+            "email": "nome@instituicao.org",
+            "why": "Justificação breve",
+            "summary": "Comentários de síntese opcionais",
+            "revisions": "Indique, se for o caso, as três revisões mais importantes",
         },
     },
     "ar": {
-        "app_title": "التحقق الاستراتيجي من مشروع الوثيقة بشأن الإحصاءات الاجتماعية والاقتصادية ذات الأولوية في أفريقيا",
-        "app_subtitle": "استبيان مؤسسي متعدد اللغات مبني على مذكرة التلخيص القرارّية.",
-        "language_label": "اللغة",
-        "intro": (
-            "يرجى تعبئة هذا النموذج باسم مؤسستكم. يهدف هذا النموذج إلى جمع موقف مؤسسي منظم بشأن الخيارات الاستراتيجية "
-            "الرئيسية في مشروع الوثيقة المتعلقة بتحديد الإحصاءات الاجتماعية والاقتصادية ذات الأولوية في أفريقيا، مع مراعاة "
-            "البعد المتعلق بالنوع الاجتماعي."
-        ),
-        "intro_2": (
-            "يكمل هذا النموذج مذكرة التلخيص القرارّية والوثيقة الكاملة. وهو لا يحل محل المراجعة الفنية التفصيلية، "
-            "لكنه يساعد على تأمين قرارات القبول أو الرفض المؤسسية بسرعة فيما يتعلق بأهم الخيارات المنهجية والموضوعية والتشغيلية."
-        ),
-        "intro_3": "يرجى الإجابة، قدر الإمكان، بعد التشاور الداخلي داخل المؤسسة.",
-        "response_scale_title": "مقياس الاستجابة المستخدم",
-        "response_scale": [
-            "مقبول: موافقة عامة",
-            "مقبول مع تحفظات: موافقة مشروطة بتعديلات محدودة",
-            "غير مقبول: مطلوب تنقيح مهم",
+        "title": "التحقق الاستراتيجي من مشروع الوثيقة الخاصة بالإحصاءات الاجتماعية والاقتصادية ذات الأولوية في أفريقيا",
+        "subtitle": "استبيان مؤسسي متعدد اللغات مبني على المذكرة التركيبية التقريرية.",
+        "lang": "اللغة",
+        "intro": "يرجى ملء هذا الاستبيان باسم مؤسستكم.",
+        "intro2": "يهدف إلى جمع موقف مؤسسي منظم بشأن الخيارات الاستراتيجية الرئيسية في مشروع الوثيقة المتعلقة بتحديد الإحصاءات الاجتماعية والاقتصادية ذات الأولوية في أفريقيا، مع مراعاة بُعد النوع الاجتماعي.",
+        "intro3": "يكمّل المذكرة التركيبية والوثيقة الكاملة. وهو لا يحل محل المراجعة التفصيلية، لكنه يساعد على تأمين قرارات مؤسسية سريعة من نوع Go / No-Go بشأن الخيارات المنهجية والموضوعية والتنفيذية الرئيسية.",
+        "intro4": "يرجى الإجابة، قدر الإمكان، بعد التشاور الداخلي.",
+        "scale_title": "مقياس الإجابة المستخدم",
+        "scale": [
+            "مُعتمد: موافقة عامة",
+            "مُعتمد مع تحفظات: موافقة مع تعديلات محدودة",
+            "غير معتمد: مطلوب تنقيح مهم",
             "لا رأي: لا يوجد موقف في هذه المرحلة",
         ],
-        "estimated_time": "الوقت التقديري للإجابة: من 10 إلى 12 دقيقة.",
-        "links_title": "الوثائق المرجعية",
-        "note_link": "مذكرة التلخيص القرارّية",
-        "doc_link": "الوثيقة الكاملة",
-        "submit_success": "شكرًا لكم. تم تسجيل إجابتكم بنجاح.",
-        "submit_warning": "تم التحقق من إجابتكم محليًا، لكن الحفظ عبر الإنترنت فشل. يُرجى تنزيل ملف الإجابة أدناه ومشاركته يدويًا.",
-        "download_json": "تنزيل الإجابة (JSON)",
-        "download_csv": "تنزيل الإجابة (CSV)",
-        "reset_form": "بدء إجابة جديدة",
-        "saving": "جارٍ حفظ إجابتكم...",
-        "github_ok": "تم حفظ إجابتكم في مستودع GitHub المهيأ.",
-        "github_missing": "لم يتم تهيئة الحفظ على GitHub. ومع ذلك سيظل بإمكان المجيب تنزيل إجابته محليًا.",
-        "github_error": "فشل الحفظ على GitHub",
-        "validation_error_title": "يرجى استكمال الحقول الإلزامية قبل الإرسال.",
-        "footer": "تطبيق Streamlit للتحقق الاستراتيجي متعدد اللغات.",
+        "estimated": "الوقت التقديري للإجابة: من 10 إلى 12 دقيقة.",
+        "step_label": "التقدم",
+        "ref_docs": "الوثائق المرجعية",
+        "note_link": "المذكرة التركيبية التقريرية",
+        "doc_en": "النسخة الإنجليزية",
+        "doc_fr": "النسخة الفرنسية",
+        "save_draft": "حفظ المسودة وإيقافها لمدة 48 ساعة",
+        "load_draft": "استئناف مسودة محفوظة",
+        "draft_code": "رمز المسودة",
+        "draft_code_placeholder": "ألصق رمز المسودة",
+        "draft_saved": "تم حفظ المسودة بنجاح. احتفظ بهذا الرمز للاستئناف خلال 48 ساعة.",
+        "draft_loaded": "تم تحميل المسودة بنجاح.",
+        "draft_expired": "انتهت صلاحية هذه المسودة.",
+        "draft_missing": "المسودة غير موجودة.",
+        "draft_download": "تنزيل المسودة الحالية (JSON)",
+        "response_download_json": "تنزيل الإجابة الحالية (JSON)",
+        "response_download_csv": "تنزيل الإجابة الحالية (CSV)",
+        "sidebar_help": "يمكنكم حفظ مسودة جزئية واستئنافها خلال 48 ساعة.",
+        "sidebar_repo_missing": "حفظ GitHub غير مُعدّ. ومع ذلك يمكن تنزيل المسودة محلياً.",
+        "validation_title": "يرجى استكمال الحقول الإلزامية قبل المتابعة.",
+        "back": "رجوع",
+        "continue": "متابعة",
+        "submit": "إرسال الإجابة النهائية",
+        "start_over": "بدء إجابة جديدة",
+        "submit_success": "شكراً لكم. تم تسجيل الإجابة النهائية بنجاح.",
+        "submit_warning": "الاستبيان صالح، لكن الحفظ عبر الإنترنت فشل. يرجى تنزيل ملفات الإجابة أدناه ومشاركتها يدوياً.",
+        "draft_code_note": "رمز الاستئناف",
+        "questions_required": "يجب استكمال الأسئلة الإلزامية للمتابعة.",
+        "save_label": "جارٍ الحفظ…",
+        "overall_why": "يرجى توضيح السبب",
+        "optional_summary": "ملاحظات تلخيصية إضافية (اختياري)",
+        "optional_revisions": "ما هي أهم ثلاثة تعديلات مطلوبة قبل الاعتماد النهائي؟ (اختياري)",
+        "other_specify": "يرجى التحديد",
+        "other_country": "بلد أو تجمع إقليمي آخر",
         "sections": {
-            "s1": "القسم 1. تحديد هوية المجيب",
-            "s2": "القسم 2. التحقق العام",
-            "s3": "القسم 3. التحقق من الخيارات الاستراتيجية",
-            "s4": "القسم 4. التحقق من المجالات الموضوعية",
-            "s5": "القسم 5. الموقف النهائي للمؤسسة",
+            1: "القسم 1. تعريف المجيب",
+            2: "القسم 2. التحقق العام",
+            3: "القسم 3. التحقق من الخيارات الاستراتيجية",
+            4: "القسم 4. التحقق من المجالات الموضوعية",
+            5: "القسم 5. الموقف النهائي للمؤسسة",
         },
         "questions": {
             "institution_acronym": "1. اختصار المؤسسة",
@@ -466,53 +623,57 @@ TRANSLATIONS: Dict[str, Dict] = {
             "respondent_title": "4. صفة المجيب الرئيسي",
             "email": "5. البريد الإلكتروني",
             "overall_validation": "6. التحقق العام من الوثيقة",
-            "operational_usability": "7. هل تبدو الوثيقة عملية بما يكفي لاستخدامها من قبل الدول الأعضاء والتجمعات الاقتصادية الإقليمية؟",
+            "operational_usability": "7. هل تبدو الوثيقة عملية بما يكفي للاستخدام من قبل الدول الأعضاء والتجمعات الاقتصادية الإقليمية؟",
             "strategic_grid": "8. يرجى تقييم العناصر الاستراتيجية التالية",
-            "strategic_comments": (
-                "9. إذا اخترتم ‘مقبول مع تحفظات’ أو ‘غير مقبول’ لعنصر واحد أو أكثر أعلاه، "
-                "فيرجى تحديد العناصر المعنية وشرح السبب"
-            ),
+            "strategic_comments": "9. إذا اخترتم ‘مُعتمد مع تحفظات’ أو ‘غير معتمد’ لعنصر واحد أو أكثر أعلاه، يرجى تحديد العناصر وسبب ذلك",
             "domain_grid": "10. يرجى تقييم المجالات الموضوعية الاثني عشر المقترحة",
-            "domain_comments": (
-                "11. إذا اخترتم ‘مقبول مع تحفظات’ أو ‘غير مقبول’ لمجال واحد أو أكثر، "
-                "فيرجى تحديد المجالات المعنية وشرح السبب"
-            ),
-            "top_3_revisions": "12. ما هي أهم ثلاثة تعديلات ينبغي إدخالها قبل التحقق النهائي؟",
-            "final_position": "13. هل مؤسستكم مؤيدة عمومًا لاستكمال الوثيقة بعد أخذ الملاحظات الواردة في الاعتبار؟",
+            "domain_comments": "11. إذا اخترتم ‘مُعتمد مع تحفظات’ أو ‘غير معتمد’ لمجال واحد أو أكثر، يرجى تحديد المجالات وسبب ذلك",
+            "top_3_revisions": "12. ما هي أهم ثلاثة تعديلات مطلوبة قبل الاعتماد النهائي؟",
+            "final_position": "13. هل مؤسستكم مؤيدة عموماً لإنهاء الوثيقة بعد أخذ الملاحظات الواردة في الاعتبار؟",
         },
-        "institution_type_options": {
+        "institution_types": {
             "nso": "المعهد الوطني للإحصاء",
-            "rec": "تجمع اقتصادي إقليمي",
+            "rec": "التجمع الاقتصادي الإقليمي",
         },
-        "response_options": {
-            "go": "مقبول",
-            "go_with_reservations": "مقبول مع تحفظات",
-            "no_go": "غير مقبول",
+        "responses": {
+            "go": "مُعتمد",
+            "go_with_reservations": "مُعتمد مع تحفظات",
+            "no_go": "غير معتمد",
             "no_opinion": "لا رأي",
         },
-        "usability_options": {
+        "usability": {
             "yes": "نعم",
             "mostly_yes": "نعم إلى حد كبير",
-            "mostly_no": "لا إلى حد ما",
+            "mostly_no": "لا إلى حد كبير",
             "no": "لا",
             "no_opinion": "لا رأي",
         },
-        "final_position_options": {
+        "final_positions": {
             "yes": "نعم",
             "yes_limited_adjustments": "نعم، مع تعديلات محدودة",
-            "no_substantial_revision": "لا، هناك حاجة إلى مراجعة أكثر جوهرية",
+            "no_substantial_revision": "لا، يلزم تنقيح أكثر جوهرية",
             "discuss_in_workshop": "يُناقش في ورشة عمل",
             "no_opinion": "لا رأي",
+        },
+        "titles": {
+            "director_general": "المدير العام",
+            "statistician_general": "الإحصائي العام",
+            "deputy_director_general": "نائب المدير العام",
+            "director_statistics": "مدير الإحصاءات",
+            "head_department": "رئيس الإدارة / الوحدة",
+            "programme_manager": "مسؤول / منسق البرنامج",
+            "technical_expert": "خبير تقني / إحصائي",
+            "other": "أخرى",
         },
         "strategic_rows": {
             "strategic_prioritization_criteria": "معايير تحديد الأولويات المعتمدة",
             "strategic_scoring_logic": "منطق التنقيط متعدد المعايير",
             "strategic_core_extensions": "التمييز بين النواة والامتدادات",
-            "strategic_gender_integration": "الإدماج الأفقي للنوع الاجتماعي",
+            "strategic_gender_integration": "الإدماج العرضي للنوع الاجتماعي",
             "strategic_min_disaggregations": "التفصيلات الدنيا المقترحة",
             "strategic_data_sources": "مصادر البيانات وترتيبات الإنتاج",
             "strategic_governance_roles": "الحوكمة وتوزيع الأدوار",
-            "strategic_roadmap_update": "خارطة طريق التنفيذ وآلية التحديث",
+            "strategic_roadmap_update": "خارطة الطريق وآلية التحيين",
         },
         "domain_rows": {
             "domain_d01": "D01 النمو الاقتصادي والتحول الهيكلي والتجارة",
@@ -528,566 +689,615 @@ TRANSLATIONS: Dict[str, Dict] = {
             "domain_d11": "D11 الاقتصاد الأزرق وتدبير المحيطات",
             "domain_d12": "D12 الشراكات وتمويل التنمية",
         },
-        "form_buttons": {
-            "submit": "إرسال الإجابة",
-        },
         "placeholders": {
             "institution_acronym": "مثال: ANSD / COMESA",
-            "country_or_rec": "مثال: السنغال / COMESA",
-            "respondent_title": "مثال: المدير العام / مدير الإحصاءات",
-            "strategic_comments": "تعليل موجز للتحفظات أو الرفض",
-            "domain_comments": "تعليل موجز للتحفظات أو الرفض",
-            "top_3_revisions": "اذكر أهم 3 تعديلات قبل التحقق النهائي",
+            "email": "name@institution.org",
+            "why": "مبرر موجز",
+            "summary": "ملاحظات تلخيصية اختيارية",
+            "revisions": "اذكر، عند الاقتضاء، أهم ثلاثة تعديلات",
         },
     },
 }
 
+FIELD_DEFAULTS = {
+    "institution_acronym": "",
+    "institution_type": None,
+    "country_or_rec": None,
+    "country_or_rec_other": "",
+    "respondent_title": None,
+    "respondent_title_other": "",
+    "email": "",
+    "overall_validation": None,
+    "overall_validation_why": "",
+    "operational_usability": None,
+    "operational_usability_why": "",
+    "strategic_comments": "",
+    "domain_comments": "",
+    "top_3_revisions": "",
+    "final_institutional_position": None,
+    "draft_code": "",
+}
 
-def t(lang: str, key_path: str):
-    value = TRANSLATIONS[lang]
-    for part in key_path.split("."):
-        value = value[part]
-    return value
-
-
-st.set_page_config(page_title="Strategic validation questionnaire", layout="wide")
-
-
-STRATEGIC_ROW_KEYS = [
-    "strategic_prioritization_criteria",
-    "strategic_scoring_logic",
-    "strategic_core_extensions",
-    "strategic_gender_integration",
-    "strategic_min_disaggregations",
-    "strategic_data_sources",
-    "strategic_governance_roles",
-    "strategic_roadmap_update",
-]
-
-DOMAIN_ROW_KEYS = [
-    "domain_d01",
-    "domain_d02",
-    "domain_d03",
-    "domain_d04",
-    "domain_d05",
-    "domain_d06",
-    "domain_d07",
-    "domain_d08",
-    "domain_d09",
-    "domain_d10",
-    "domain_d11",
-    "domain_d12",
-]
+for row in STRATEGIC_ROWS + DOMAIN_ROWS:
+    FIELD_DEFAULTS[row] = None
+    FIELD_DEFAULTS[f"{row}_why"] = ""
 
 
-def apply_direction(lang: str) -> None:
-    rtl = lang == "ar"
+def is_rtl(lang: str) -> bool:
+    return lang == "ar"
+
+
+def inject_base_css(lang: str) -> None:
+    rtl = is_rtl(lang)
     direction = "rtl" if rtl else "ltr"
     align = "right" if rtl else "left"
     st.markdown(
         f"""
         <style>
-        html, body, [data-testid="stAppViewContainer"], [data-testid="stMarkdownContainer"] {{
-            direction: {direction};
-            text-align: {align};
-        }}
-        .block-container {{
-            padding-top: 1.4rem;
-            padding-bottom: 2rem;
-        }}
-        div[data-testid="stRadio"] > label {{
-            font-weight: 600;
-        }}
-        .question-box {{
-            border: 1px solid rgba(120, 120, 120, 0.25);
-            border-radius: 12px;
-            padding: 0.7rem 0.9rem 0.4rem 0.9rem;
-            margin-bottom: 0.7rem;
-            background: rgba(250,250,250,0.02);
-        }}
+            html, body, [class*="css"] {{ direction: {direction}; text-align: {align}; }}
+            .stButton button, .stDownloadButton button {{ border-radius: 8px; }}
+            .small-note {{ font-size: 0.92rem; opacity: 0.92; }}
+            .code-box {{ padding: 0.6rem 0.8rem; border: 1px solid #ddd; border-radius: 8px; }}
         </style>
         """,
         unsafe_allow_html=True,
     )
 
 
-def get_github_config() -> Dict[str, str]:
-    secrets_github = st.secrets.get("github", {}) if hasattr(st, "secrets") else {}
-    return {
-        "owner": secrets_github.get("owner", os.getenv("GITHUB_REPO_OWNER", "")),
-        "repo": secrets_github.get("repo", os.getenv("GITHUB_REPO_NAME", "")),
-        "token": secrets_github.get("token", os.getenv("GITHUB_TOKEN", "")),
-        "branch": secrets_github.get("branch", os.getenv("GITHUB_BRANCH", "main")),
-        "folder": secrets_github.get("folder", os.getenv("GITHUB_SUBMISSIONS_FOLDER", "submissions")),
-    }
-
-
-def github_is_configured() -> bool:
-    cfg = get_github_config()
-    return bool(cfg["owner"] and cfg["repo"] and cfg["token"])
-
-
-EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
-
-
-def option_dict(lang: str, group_key: str, codes: List[str]) -> Dict[str, str]:
-    return {code: t(lang, f"{group_key}.{code}") for code in codes}
-
-
-def safe_filename(text: str) -> str:
-    return re.sub(r"[^A-Za-z0-9._-]+", "_", text.strip()) or "response"
-
-
-def response_to_csv_bytes(payload: Dict) -> bytes:
-    output = io.StringIO()
-    writer = csv.writer(output)
-    writer.writerow(["field", "value"])
-    flat_items = flatten_payload(payload)
-    for key, value in flat_items.items():
-        writer.writerow([key, json.dumps(value, ensure_ascii=False) if isinstance(value, (dict, list)) else value])
-    return output.getvalue().encode("utf-8-sig")
-
-
-def flatten_payload(payload: Dict) -> Dict[str, str]:
-    flat: Dict[str, str] = {}
-
-    def _flatten(prefix: str, value):
-        if isinstance(value, dict):
-            for sub_key, sub_value in value.items():
-                next_prefix = f"{prefix}.{sub_key}" if prefix else sub_key
-                _flatten(next_prefix, sub_value)
-        else:
-            flat[prefix] = value
-
-    _flatten("", payload)
-    return flat
-
-
-def validate_submission(data: Dict) -> List[str]:
-    missing = []
-    required_scalar_keys = [
-        "institution_acronym",
-        "institution_type",
-        "country_or_rec",
-        "respondent_title",
-        "email",
-        "overall_validation",
-        "operational_usability",
-        "top_3_revisions",
-        "final_institutional_position",
-    ]
-
-    for key in required_scalar_keys:
-        if not data.get(key):
-            missing.append(key)
-
-    if data.get("email") and not EMAIL_REGEX.match(data["email"].strip()):
-        missing.append("email_invalid")
-
-    for key in STRATEGIC_ROW_KEYS + DOMAIN_ROW_KEYS:
-        if not data.get(key):
-            missing.append(key)
-
-    return missing
-
-
-def save_submission_to_github(payload: Dict) -> Dict[str, str]:
-    cfg = get_github_config()
-    if not github_is_configured():
-        return {"ok": False, "reason": "not_configured"}
-
-    submission_id = payload["meta"]["submission_id"]
-    utc_now = datetime.utcnow()
-    path = (
-        f"{cfg['folder']}/{utc_now:%Y/%m/%d}/"
-        f"{submission_id}.json"
-    )
-    api_url = f"https://api.github.com/repos/{cfg['owner']}/{cfg['repo']}/contents/{path}"
-    content = base64.b64encode(
-        json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8")
-    ).decode("utf-8")
-
-    body = {
-        "message": f"Add validation submission {submission_id}",
-        "content": content,
-        "branch": cfg["branch"],
-    }
-    headers = {
-        "Accept": "application/vnd.github+json",
-        "Authorization": f"Bearer {cfg['token']}",
-        "X-GitHub-Api-Version": "2022-11-28",
-    }
-    response = requests.put(api_url, headers=headers, json=body, timeout=30)
-    if response.status_code in (200, 201):
-        return {"ok": True, "path": path}
-
-    detail = ""
-    try:
-        detail = response.json().get("message", "")
-    except Exception:
-        detail = response.text[:300]
-    return {
-        "ok": False,
-        "reason": f"http_{response.status_code}",
-        "detail": detail,
-        "path": path,
-    }
-
-
-def default_state() -> Dict:
-    return {
-        "language": "en",
-        "submitted_payload": None,
-        "last_save_status": None,
-    }
+def get_text(lang: str) -> Dict:
+    return TRANSLATIONS.get(lang, TRANSLATIONS["en"])
 
 
 def init_state() -> None:
-    defaults = default_state()
-    for key, value in defaults.items():
+    if "lang" not in st.session_state:
+        st.session_state.lang = "en"
+    if "current_step" not in st.session_state:
+        st.session_state.current_step = 1
+    if "draft_token" not in st.session_state:
+        st.session_state.draft_token = ""
+    if "last_submit_payload" not in st.session_state:
+        st.session_state.last_submit_payload = None
+    if "github_message" not in st.session_state:
+        st.session_state.github_message = ""
+    if "loaded_from_query" not in st.session_state:
+        st.session_state.loaded_from_query = False
+    for key, value in FIELD_DEFAULTS.items():
         if key not in st.session_state:
             st.session_state[key] = value
 
 
-def reset_form_state() -> None:
-    keys_to_keep = {"language"}
-    for key in list(st.session_state.keys()):
-        if key not in keys_to_keep:
-            del st.session_state[key]
-    init_state()
+def reset_form() -> None:
+    lang = st.session_state.lang
+    for key, value in FIELD_DEFAULTS.items():
+        st.session_state[key] = value
+    st.session_state.current_step = 1
+    st.session_state.draft_token = ""
+    st.session_state.last_submit_payload = None
+    st.session_state.github_message = ""
+    st.session_state.lang = lang
+    st.query_params.clear()
     st.rerun()
 
 
-def render_radio_question(
-    label: str,
-    options_map: Dict[str, str],
-    key: str,
-    horizontal: bool = True,
-) -> Optional[str]:
-    reverse = {v: k for k, v in options_map.items()}
-    current_code = st.session_state.get(key)
-    current_label = options_map.get(current_code) if current_code else None
-    selected_label = st.radio(
-        label,
-        options=list(options_map.values()),
-        index=None if current_label is None else list(options_map.values()).index(current_label),
-        horizontal=horizontal,
-        key=f"widget_{key}",
-    )
-    code = reverse.get(selected_label) if selected_label else None
-    st.session_state[key] = code
-    return code
+def valid_email(value: str) -> bool:
+    return bool(re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", value.strip()))
 
 
-def render_text_input(label: str, key: str, placeholder: str = "", input_type: str = "default") -> str:
-    value = st.text_input(label, value=st.session_state.get(key, ""), placeholder=placeholder, key=f"widget_{key}", type=input_type)
-    st.session_state[key] = value.strip()
-    return st.session_state[key]
+def github_settings() -> Dict[str, str]:
+    owner = ""
+    repo = ""
+    token = ""
+    branch = "main"
+    try:
+        gh = st.secrets.get("github", {})
+        owner = gh.get("owner", "")
+        repo = gh.get("repo", "")
+        token = gh.get("token", "")
+        branch = gh.get("branch", "main")
+    except Exception:
+        pass
+    owner = owner or os.getenv("GITHUB_OWNER", "")
+    repo = repo or os.getenv("GITHUB_REPO", "")
+    token = token or os.getenv("GITHUB_TOKEN", "")
+    branch = branch or os.getenv("GITHUB_BRANCH", "main")
+    return {"owner": owner, "repo": repo, "token": token, "branch": branch}
 
 
-def render_text_area(label: str, key: str, placeholder: str = "", height: int = 120) -> str:
-    value = st.text_area(label, value=st.session_state.get(key, ""), placeholder=placeholder, height=height, key=f"widget_{key}")
-    st.session_state[key] = value.strip()
-    return st.session_state[key]
+def github_ready() -> bool:
+    cfg = github_settings()
+    return bool(cfg["owner"] and cfg["repo"] and cfg["token"])
 
 
-def build_payload(lang: str) -> Dict:
-    response_options = option_dict(lang, "response_options", RESPONSE_CODES)
-    usability_options = option_dict(lang, "usability_options", USABILITY_CODES)
-    institution_options = option_dict(lang, "institution_type_options", INSTITUTION_TYPES)
-    final_options = option_dict(lang, "final_position_options", FINAL_POSITION_CODES)
+def github_headers() -> Dict[str, str]:
+    cfg = github_settings()
+    headers = {"Accept": "application/vnd.github+json"}
+    if cfg["token"]:
+        headers["Authorization"] = f"Bearer {cfg['token']}"
+    return headers
 
-    strategic_assessments = {}
-    for row_key in STRATEGIC_ROW_KEYS:
-        code = st.session_state.get(row_key)
-        strategic_assessments[row_key] = {
-            "code": code,
-            "label": response_options.get(code, ""),
-            "label_en": TRANSLATIONS["en"]["response_options"].get(code, ""),
-        }
 
-    domain_assessments = {}
-    for row_key in DOMAIN_ROW_KEYS:
-        code = st.session_state.get(row_key)
-        domain_assessments[row_key] = {
-            "code": code,
-            "label": response_options.get(code, ""),
-            "label_en": TRANSLATIONS["en"]["response_options"].get(code, ""),
-        }
+def github_get_file(path: str) -> Dict | None:
+    cfg = github_settings()
+    if not cfg["owner"] or not cfg["repo"]:
+        return None
+    url = f"https://api.github.com/repos/{cfg['owner']}/{cfg['repo']}/contents/{path}"
+    r = requests.get(url, headers=github_headers(), params={"ref": cfg["branch"]}, timeout=30)
+    if r.status_code == 404:
+        return None
+    r.raise_for_status()
+    return r.json()
 
-    submission_id = f"SUB-{datetime.utcnow():%Y%m%dT%H%M%SZ}-{uuid.uuid4().hex[:6].upper()}"
-    payload = {
-        "meta": {
-            "submission_id": submission_id,
-            "submitted_at_utc": datetime.utcnow().replace(microsecond=0).isoformat() + "Z",
-            "app_version": APP_VERSION,
-            "language": lang,
-            "language_label": LANGUAGE_OPTIONS.get(lang, lang),
-        },
-        "institution_acronym": st.session_state.get("institution_acronym", ""),
-        "institution_type": {
-            "code": st.session_state.get("institution_type"),
-            "label": institution_options.get(st.session_state.get("institution_type"), ""),
-            "label_en": TRANSLATIONS["en"]["institution_type_options"].get(st.session_state.get("institution_type"), ""),
-        },
-        "country_or_rec": st.session_state.get("country_or_rec", ""),
-        "respondent_title": st.session_state.get("respondent_title", ""),
-        "email": st.session_state.get("email", ""),
-        "overall_validation": {
-            "code": st.session_state.get("overall_validation"),
-            "label": response_options.get(st.session_state.get("overall_validation"), ""),
-            "label_en": TRANSLATIONS["en"]["response_options"].get(st.session_state.get("overall_validation"), ""),
-        },
-        "operational_usability": {
-            "code": st.session_state.get("operational_usability"),
-            "label": usability_options.get(st.session_state.get("operational_usability"), ""),
-            "label_en": TRANSLATIONS["en"]["usability_options"].get(st.session_state.get("operational_usability"), ""),
-        },
-        "strategic_assessments": strategic_assessments,
-        "strategic_comments": st.session_state.get("strategic_comments", ""),
-        "domain_assessments": domain_assessments,
-        "domain_comments": st.session_state.get("domain_comments", ""),
-        "top_3_revisions": st.session_state.get("top_3_revisions", ""),
-        "final_institutional_position": {
-            "code": st.session_state.get("final_institutional_position"),
-            "label": final_options.get(st.session_state.get("final_institutional_position"), ""),
-            "label_en": TRANSLATIONS["en"]["final_position_options"].get(st.session_state.get("final_institutional_position"), ""),
-        },
-        # Flat fields kept for easier export / consolidation
-        "flat_export": {
-            "institution_acronym": st.session_state.get("institution_acronym", ""),
-            "institution_type": st.session_state.get("institution_type", ""),
-            "country_or_rec": st.session_state.get("country_or_rec", ""),
-            "respondent_title": st.session_state.get("respondent_title", ""),
-            "email": st.session_state.get("email", ""),
-            "overall_validation": st.session_state.get("overall_validation", ""),
-            "operational_usability": st.session_state.get("operational_usability", ""),
-            **{k: st.session_state.get(k, "") for k in STRATEGIC_ROW_KEYS},
-            "strategic_comments": st.session_state.get("strategic_comments", ""),
-            **{k: st.session_state.get(k, "") for k in DOMAIN_ROW_KEYS},
-            "domain_comments": st.session_state.get("domain_comments", ""),
-            "top_3_revisions": st.session_state.get("top_3_revisions", ""),
-            "final_institutional_position": st.session_state.get("final_institutional_position", ""),
-        },
+
+def github_put_json(path: str, payload: Dict, message: str) -> Tuple[bool, str]:
+    cfg = github_settings()
+    if not github_ready():
+        return False, "GitHub is not configured."
+    url = f"https://api.github.com/repos/{cfg['owner']}/{cfg['repo']}/contents/{path}"
+    existing = github_get_file(path)
+    body = {
+        "message": message,
+        "content": base64.b64encode(json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8")).decode("utf-8"),
+        "branch": cfg["branch"],
     }
-    return payload
+    if existing and isinstance(existing, dict) and existing.get("sha"):
+        body["sha"] = existing["sha"]
+    r = requests.put(url, headers=github_headers(), json=body, timeout=30)
+    if 200 <= r.status_code < 300:
+        return True, "OK"
+    try:
+        detail = r.json()
+    except Exception:
+        detail = {"message": r.text}
+    return False, detail.get("message", "GitHub write failed")
 
 
-def render_form(lang: str) -> None:
-    response_options = option_dict(lang, "response_options", RESPONSE_CODES)
-    usability_options = option_dict(lang, "usability_options", USABILITY_CODES)
-    institution_options = option_dict(lang, "institution_type_options", INSTITUTION_TYPES)
-    final_options = option_dict(lang, "final_position_options", FINAL_POSITION_CODES)
+def load_draft_from_github(token: str) -> Tuple[bool, str, Dict | None]:
+    path = f"{RESPONSE_PATH_ROOT}/drafts/{token}.json"
+    item = github_get_file(path)
+    if not item:
+        return False, "missing", None
+    try:
+        content = base64.b64decode(item["content"]).decode("utf-8")
+        payload = json.loads(content)
+    except Exception:
+        return False, "decode_error", None
+    expires_at = payload.get("expires_at")
+    if expires_at:
+        expiry = datetime.fromisoformat(expires_at.replace("Z", "+00:00"))
+        if datetime.now(timezone.utc) > expiry:
+            return False, "expired", payload
+    return True, "ok", payload
 
-    st.header(t(lang, "sections.s1"))
-    c1, c2 = st.columns(2)
-    with c1:
-        render_text_input(
-            t(lang, "questions.institution_acronym"),
-            "institution_acronym",
-            placeholder=t(lang, "placeholders.institution_acronym"),
+
+def build_payload(status: str) -> Dict:
+    now = datetime.now(timezone.utc)
+    data = {
+        "app_version": APP_VERSION,
+        "status": status,
+        "saved_at": now.isoformat().replace("+00:00", "Z"),
+        "language": st.session_state.lang,
+        "institution_acronym": st.session_state.institution_acronym.strip(),
+        "institution_type": st.session_state.institution_type,
+        "country_or_rec": st.session_state.country_or_rec_other.strip() if st.session_state.country_or_rec == "Other" else st.session_state.country_or_rec,
+        "respondent_title": st.session_state.respondent_title_other.strip() if st.session_state.respondent_title == "other" else st.session_state.respondent_title,
+        "email": st.session_state.email.strip(),
+        "consolidated_position": "",
+        "overall_validation": st.session_state.overall_validation,
+        "overall_validation_why": st.session_state.overall_validation_why.strip(),
+        "operational_usability": st.session_state.operational_usability,
+        "operational_usability_why": st.session_state.operational_usability_why.strip(),
+        "strategic_comments": st.session_state.strategic_comments.strip(),
+        "domain_comments": st.session_state.domain_comments.strip(),
+        "priorities_to_strengthen": [],
+        "top_3_revisions": st.session_state.top_3_revisions.strip(),
+        "final_institutional_position": st.session_state.final_institutional_position,
+        "draft_token": st.session_state.draft_token,
+        "current_step": st.session_state.current_step,
+    }
+    for row in STRATEGIC_ROWS + DOMAIN_ROWS:
+        data[row] = st.session_state[row]
+        data[f"{row}_why"] = st.session_state[f"{row}_why"].strip()
+    return data
+
+
+def payload_to_csv_bytes(payload: Dict) -> bytes:
+    output = io.StringIO()
+    writer = csv.DictWriter(output, fieldnames=list(payload.keys()))
+    writer.writeheader()
+    writer.writerow(payload)
+    return output.getvalue().encode("utf-8-sig")
+
+
+def save_draft() -> Tuple[bool, str, Dict]:
+    if not st.session_state.draft_token:
+        st.session_state.draft_token = secrets.token_hex(4).upper()
+    payload = build_payload("draft")
+    payload["draft_token"] = st.session_state.draft_token
+    payload["expires_at"] = (datetime.now(timezone.utc) + timedelta(hours=48)).isoformat().replace("+00:00", "Z")
+    if github_ready():
+        ok, msg = github_put_json(
+            f"{RESPONSE_PATH_ROOT}/drafts/{st.session_state.draft_token}.json",
+            payload,
+            f"Save validation draft {st.session_state.draft_token}",
         )
-        render_text_input(
-            t(lang, "questions.country_or_rec"),
-            "country_or_rec",
-            placeholder=t(lang, "placeholders.country_or_rec"),
-        )
-        render_text_input(
-            t(lang, "questions.email"),
-            "email",
-            input_type="default",
-        )
-    with c2:
-        reverse_institution = {v: k for k, v in institution_options.items()}
-        institution_values = list(institution_options.values())
-        current_institution = institution_options.get(st.session_state.get("institution_type"))
-        selected_institution = st.selectbox(
-            t(lang, "questions.institution_type"),
-            options=institution_values,
-            index=None if current_institution is None else institution_values.index(current_institution),
-            placeholder="...",
-            key="widget_institution_type",
-        )
-        st.session_state["institution_type"] = reverse_institution.get(selected_institution) if selected_institution else None
+        return ok, msg, payload
+    return False, "GitHub is not configured.", payload
 
-        render_text_input(
-            t(lang, "questions.respondent_title"),
-            "respondent_title",
-            placeholder=t(lang, "placeholders.respondent_title"),
-        )
 
-    st.divider()
-    st.header(t(lang, "sections.s2"))
-    render_radio_question(
-        t(lang, "questions.overall_validation"),
-        response_options,
-        "overall_validation",
+def submit_final() -> Tuple[bool, str, Dict]:
+    payload = build_payload("submitted")
+    timestamp = datetime.now(timezone.utc)
+    sub_id = f"SUB-{timestamp.strftime('%Y%m%dT%H%M%SZ')}-{secrets.token_hex(3).upper()}"
+    payload["submission_id"] = sub_id
+    payload["submitted_at"] = timestamp.isoformat().replace("+00:00", "Z")
+    path = f"{RESPONSE_PATH_ROOT}/submissions/{timestamp:%Y/%m/%d}/{sub_id}.json"
+    if github_ready():
+        ok, msg = github_put_json(path, payload, f"Add validation submission {sub_id}")
+        return ok, msg, payload
+    return False, "GitHub is not configured.", payload
+
+
+def apply_payload_to_state(payload: Dict) -> None:
+    for key in FIELD_DEFAULTS.keys():
+        if key in payload:
+            st.session_state[key] = payload[key]
+    for row in STRATEGIC_ROWS + DOMAIN_ROWS:
+        if row in payload:
+            st.session_state[row] = payload[row]
+        why_key = f"{row}_why"
+        if why_key in payload:
+            st.session_state[why_key] = payload[why_key]
+    st.session_state.lang = payload.get("language", st.session_state.lang)
+    st.session_state.current_step = int(payload.get("current_step", 1))
+    st.session_state.draft_token = payload.get("draft_token", st.session_state.draft_token)
+
+
+def validate_step(step: int, txt: Dict) -> List[str]:
+    errors: List[str] = []
+    q = txt["questions"]
+    if step == 1:
+        if not st.session_state.institution_acronym.strip():
+            errors.append(q["institution_acronym"])
+        if not st.session_state.institution_type:
+            errors.append(q["institution_type"])
+        if not st.session_state.country_or_rec:
+            errors.append(q["country_or_rec"])
+        if st.session_state.country_or_rec == "Other" and not st.session_state.country_or_rec_other.strip():
+            errors.append(f"{q['country_or_rec']} - {txt['other_specify']}")
+        if not st.session_state.respondent_title:
+            errors.append(q["respondent_title"])
+        if st.session_state.respondent_title == "other" and not st.session_state.respondent_title_other.strip():
+            errors.append(f"{q['respondent_title']} - {txt['other_specify']}")
+        if not st.session_state.email.strip() or not valid_email(st.session_state.email):
+            errors.append(q["email"])
+    elif step == 2:
+        if not st.session_state.overall_validation:
+            errors.append(q["overall_validation"])
+        if st.session_state.overall_validation in {"go_with_reservations", "no_go"} and not st.session_state.overall_validation_why.strip():
+            errors.append(f"{q['overall_validation']} - {txt['overall_why']}")
+        if not st.session_state.operational_usability:
+            errors.append(q["operational_usability"])
+        if st.session_state.operational_usability in {"mostly_no", "no"} and not st.session_state.operational_usability_why.strip():
+            errors.append(f"{q['operational_usability']} - {txt['overall_why']}")
+    elif step == 3:
+        for row in STRATEGIC_ROWS:
+            if not st.session_state[row]:
+                errors.append(txt["strategic_rows"][row])
+            if st.session_state[row] in {"go_with_reservations", "no_go"} and not st.session_state[f"{row}_why"].strip():
+                errors.append(f"{txt['strategic_rows'][row]} - {txt['overall_why']}")
+    elif step == 4:
+        for row in DOMAIN_ROWS:
+            if not st.session_state[row]:
+                errors.append(txt["domain_rows"][row])
+            if st.session_state[row] in {"go_with_reservations", "no_go"} and not st.session_state[f"{row}_why"].strip():
+                errors.append(f"{txt['domain_rows'][row]} - {txt['overall_why']}")
+    elif step == 5:
+        if not st.session_state.final_institutional_position:
+            errors.append(q["final_position"])
+    return errors
+
+
+def choice_index(options: List[str], value: str | None) -> int | None:
+    if value in options:
+        return options.index(value)
+    return None
+
+
+def render_reference_links(txt: Dict) -> None:
+    st.markdown(f"**{txt['ref_docs']}**")
+    cols = st.columns(3)
+    if DEFAULT_NOTE_URL:
+        cols[0].link_button(txt["note_link"], DEFAULT_NOTE_URL)
+    cols[1].link_button(txt["doc_en"], DEFAULT_DOC_URL_EN)
+    cols[2].link_button(txt["doc_fr"], DEFAULT_DOC_URL_FR)
+
+
+def render_sidebar(txt: Dict) -> None:
+    st.sidebar.markdown(f"### {txt['lang']}")
+    st.session_state.lang = st.sidebar.selectbox(
+        txt["lang"],
+        options=list(LANGUAGE_OPTIONS.keys()),
+        index=list(LANGUAGE_OPTIONS.keys()).index(st.session_state.lang),
+        format_func=lambda x: LANGUAGE_OPTIONS[x],
     )
-    render_radio_question(
-        t(lang, "questions.operational_usability"),
-        usability_options,
-        "operational_usability",
-    )
-
-    st.divider()
-    st.header(t(lang, "sections.s3"))
-    st.markdown(f"**{t(lang, 'questions.strategic_grid')}**")
-    for row_key in STRATEGIC_ROW_KEYS:
-        with st.container(border=True):
-            render_radio_question(
-                t(lang, f"strategic_rows.{row_key}"),
-                response_options,
-                row_key,
-            )
-    render_text_area(
-        t(lang, "questions.strategic_comments"),
-        "strategic_comments",
-        placeholder=t(lang, "placeholders.strategic_comments"),
-        height=140,
-    )
-
-    st.divider()
-    st.header(t(lang, "sections.s4"))
-    st.markdown(f"**{t(lang, 'questions.domain_grid')}**")
-    for row_key in DOMAIN_ROW_KEYS:
-        with st.container(border=True):
-            render_radio_question(
-                t(lang, f"domain_rows.{row_key}"),
-                response_options,
-                row_key,
-            )
-    render_text_area(
-        t(lang, "questions.domain_comments"),
-        "domain_comments",
-        placeholder=t(lang, "placeholders.domain_comments"),
-        height=140,
-    )
-    render_text_area(
-        t(lang, "questions.top_3_revisions"),
-        "top_3_revisions",
-        placeholder=t(lang, "placeholders.top_3_revisions"),
-        height=160,
-    )
-
-    st.divider()
-    st.header(t(lang, "sections.s5"))
-    render_radio_question(
-        t(lang, "questions.final_position"),
-        final_options,
-        "final_institutional_position",
-    )
-
-
-def render_downloads(lang: str, payload: Dict) -> None:
-    json_bytes = json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8")
-    csv_bytes = response_to_csv_bytes(payload)
-    file_base = safe_filename(payload["meta"]["submission_id"])
-
-    col1, col2, col3 = st.columns([1, 1, 1])
-    with col1:
-        st.download_button(
-            label=t(lang, "download_json"),
-            data=json_bytes,
-            file_name=f"{file_base}.json",
+    st.sidebar.progress(st.session_state.current_step / STEP_COUNT, text=f"{txt['step_label']} : {st.session_state.current_step}/{STEP_COUNT}")
+    st.sidebar.caption(txt["sidebar_help"])
+    if not github_ready():
+        st.sidebar.info(txt["sidebar_repo_missing"])
+    st.sidebar.markdown("---")
+    if st.sidebar.button(txt["save_draft"], use_container_width=True):
+        with st.spinner(txt["save_label"]):
+            ok, msg, payload = save_draft()
+        if ok:
+            st.sidebar.success(txt["draft_saved"])
+            st.sidebar.markdown(f"**{txt['draft_code_note']} :** `{st.session_state.draft_token}`")
+            st.query_params["draft"] = st.session_state.draft_token
+        else:
+            st.sidebar.warning(msg)
+        st.sidebar.download_button(
+            txt["draft_download"],
+            data=json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8"),
+            file_name=f"validation_draft_{st.session_state.draft_token or 'draft'}.json",
             mime="application/json",
+            use_container_width=True,
         )
-    with col2:
-        st.download_button(
-            label=t(lang, "download_csv"),
-            data=csv_bytes,
-            file_name=f"{file_base}.csv",
-            mime="text/csv",
+    st.sidebar.text_input(
+        txt["draft_code"],
+        key="draft_code_input",
+        placeholder=txt["draft_code_placeholder"],
+    )
+    if st.sidebar.button(txt["load_draft"], use_container_width=True):
+        code = st.session_state.get("draft_code_input", "").strip()
+        if code:
+            ok, status, payload = load_draft_from_github(code)
+            if ok and payload:
+                apply_payload_to_state(payload)
+                st.query_params["draft"] = code
+                st.sidebar.success(txt["draft_loaded"])
+                st.rerun()
+            elif status == "expired":
+                st.sidebar.error(txt["draft_expired"])
+            else:
+                st.sidebar.error(txt["draft_missing"])
+    current_payload = build_payload("working_copy")
+    st.sidebar.download_button(
+        txt["response_download_json"],
+        data=json.dumps(current_payload, ensure_ascii=False, indent=2).encode("utf-8"),
+        file_name="validation_working_copy.json",
+        mime="application/json",
+        use_container_width=True,
+    )
+    st.sidebar.download_button(
+        txt["response_download_csv"],
+        data=payload_to_csv_bytes(current_payload),
+        file_name="validation_working_copy.csv",
+        mime="text/csv",
+        use_container_width=True,
+    )
+    st.sidebar.markdown("---")
+    if st.sidebar.button(txt["start_over"], use_container_width=True):
+        reset_form()
+
+
+def maybe_load_query_draft(txt: Dict) -> None:
+    if st.session_state.loaded_from_query:
+        return
+    draft_code = st.query_params.get("draft")
+    if draft_code:
+        ok, status, payload = load_draft_from_github(str(draft_code))
+        if ok and payload:
+            apply_payload_to_state(payload)
+            st.session_state.loaded_from_query = True
+            st.info(txt["draft_loaded"])
+        elif status == "expired":
+            st.warning(txt["draft_expired"])
+            st.session_state.loaded_from_query = True
+        else:
+            st.session_state.loaded_from_query = True
+
+
+def render_choice_field(label: str, code_key: str, options_map: Dict[str, str], required_reason_values: set[str], txt: Dict) -> None:
+    st.radio(
+        label,
+        options=list(options_map.keys()),
+        index=choice_index(list(options_map.keys()), st.session_state[code_key]),
+        format_func=lambda x: options_map[x],
+        key=code_key,
+        horizontal=False,
+    )
+    if st.session_state[code_key] in required_reason_values:
+        st.text_area(
+            txt["overall_why"],
+            key=f"{code_key}_why",
+            placeholder=txt["placeholders"]["why"],
         )
-    with col3:
-        if st.button(t(lang, "reset_form")):
-            reset_form_state()
+
+
+def render_step_1(txt: Dict) -> None:
+    q = txt["questions"]
+    st.subheader(txt["sections"][1])
+    st.caption(txt["questions_required"])
+    st.text_input(q["institution_acronym"], key="institution_acronym", placeholder=txt["placeholders"]["institution_acronym"])
+    st.selectbox(
+        q["institution_type"],
+        options=[None] + INSTITUTION_TYPES,
+        index=choice_index([None] + INSTITUTION_TYPES, st.session_state.institution_type) or 0,
+        format_func=lambda x: "—" if x is None else txt["institution_types"][x],
+        key="institution_type",
+    )
+    st.selectbox(
+        q["country_or_rec"],
+        options=[None] + COUNTRY_OR_REC_OPTIONS,
+        index=choice_index([None] + COUNTRY_OR_REC_OPTIONS, st.session_state.country_or_rec) or 0,
+        format_func=lambda x: "—" if x is None else x,
+        key="country_or_rec",
+    )
+    if st.session_state.country_or_rec == "Other":
+        st.text_input(txt["other_country"], key="country_or_rec_other")
+    st.selectbox(
+        q["respondent_title"],
+        options=[None] + RESPONDENT_TITLES,
+        index=choice_index([None] + RESPONDENT_TITLES, st.session_state.respondent_title) or 0,
+        format_func=lambda x: "—" if x is None else txt["titles"][x],
+        key="respondent_title",
+    )
+    if st.session_state.respondent_title == "other":
+        st.text_input(txt["other_specify"], key="respondent_title_other")
+    st.text_input(q["email"], key="email", placeholder=txt["placeholders"]["email"])
+
+
+def render_step_2(txt: Dict) -> None:
+    q = txt["questions"]
+    st.subheader(txt["sections"][2])
+    render_choice_field(q["overall_validation"], "overall_validation", txt["responses"], {"go_with_reservations", "no_go"}, txt)
+    render_choice_field(q["operational_usability"], "operational_usability", txt["usability"], {"mostly_no", "no"}, txt)
+
+
+def render_grid_section(rows: List[str], label: str, comments_key: str, options_map: Dict[str, str], txt: Dict, section_key: str) -> None:
+    st.markdown(f"**{label}**")
+    labels = txt[section_key]
+    for row in rows:
+        st.markdown(f"**{labels[row]}**")
+        st.radio(
+            labels[row],
+            options=list(options_map.keys()),
+            index=choice_index(list(options_map.keys()), st.session_state[row]),
+            format_func=lambda x: options_map[x],
+            key=row,
+            label_visibility="collapsed",
+            horizontal=True,
+        )
+        if st.session_state[row] in {"go_with_reservations", "no_go"}:
+            st.text_area(txt["overall_why"], key=f"{row}_why", placeholder=txt["placeholders"]["why"])
+        st.markdown("---")
+    st.text_area(txt["optional_summary"], key=comments_key, placeholder=txt["placeholders"]["summary"])
+
+
+def render_step_3(txt: Dict) -> None:
+    q = txt["questions"]
+    st.subheader(txt["sections"][3])
+    render_grid_section(STRATEGIC_ROWS, q["strategic_grid"], "strategic_comments", txt["responses"], txt, "strategic_rows")
+
+
+def render_step_4(txt: Dict) -> None:
+    q = txt["questions"]
+    st.subheader(txt["sections"][4])
+    render_grid_section(DOMAIN_ROWS, q["domain_grid"], "domain_comments", txt["responses"], txt, "domain_rows")
+    st.text_area(q["top_3_revisions"], key="top_3_revisions", placeholder=txt["placeholders"]["revisions"])
+
+
+def render_step_5(txt: Dict) -> None:
+    q = txt["questions"]
+    st.subheader(txt["sections"][5])
+    st.radio(
+        q["final_position"],
+        options=list(txt["final_positions"].keys()),
+        index=choice_index(list(txt["final_positions"].keys()), st.session_state.final_institutional_position),
+        format_func=lambda x: txt["final_positions"][x],
+        key="final_institutional_position",
+        horizontal=False,
+    )
+
+
+def render_navigation(txt: Dict) -> None:
+    cols = st.columns([1, 1, 2])
+    if st.session_state.current_step > 1:
+        if cols[0].button(txt["back"], use_container_width=True):
+            st.session_state.current_step -= 1
+            st.rerun()
+    if st.session_state.current_step < STEP_COUNT:
+        if cols[1].button(txt["continue"], use_container_width=True):
+            errors = validate_step(st.session_state.current_step, txt)
+            if errors:
+                st.error(txt["validation_title"])
+                for err in errors:
+                    st.write(f"- {err}")
+            else:
+                st.session_state.current_step += 1
+                st.rerun()
+    else:
+        if cols[1].button(txt["submit"], use_container_width=True):
+            all_errors: List[str] = []
+            for step in range(1, STEP_COUNT + 1):
+                all_errors.extend(validate_step(step, txt))
+            if all_errors:
+                st.error(txt["validation_title"])
+                for err in all_errors:
+                    st.write(f"- {err}")
+                return
+            with st.spinner(txt["save_label"]):
+                ok, msg, payload = submit_final()
+            st.session_state.last_submit_payload = payload
+            if ok:
+                st.success(txt["submit_success"])
+                st.session_state.github_message = msg
+            else:
+                st.warning(txt["submit_warning"])
+                st.session_state.github_message = msg
+
+
+def render_submission_downloads(txt: Dict) -> None:
+    payload = st.session_state.last_submit_payload
+    if not payload:
+        return
+    st.download_button(
+        txt["response_download_json"],
+        data=json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8"),
+        file_name=f"{payload.get('submission_id', 'validation_response')}.json",
+        mime="application/json",
+        use_container_width=True,
+    )
+    st.download_button(
+        txt["response_download_csv"],
+        data=payload_to_csv_bytes(payload),
+        file_name=f"{payload.get('submission_id', 'validation_response')}.csv",
+        mime="text/csv",
+        use_container_width=True,
+    )
 
 
 def main() -> None:
+    st.set_page_config(page_title="Strategic validation form", page_icon="📝", layout="wide")
     init_state()
+    txt = get_text(st.session_state.lang)
+    inject_base_css(st.session_state.lang)
+    render_sidebar(txt)
+    txt = get_text(st.session_state.lang)
+    inject_base_css(st.session_state.lang)
+    maybe_load_query_draft(txt)
 
-    lang = st.sidebar.selectbox(
-        "Language / Langue / Idioma / اللغة",
-        options=list(LANGUAGE_OPTIONS.keys()),
-        format_func=lambda x: LANGUAGE_OPTIONS[x],
-        index=list(LANGUAGE_OPTIONS.keys()).index(st.session_state.get("language", "en")),
-    )
-    st.session_state["language"] = lang
-    apply_direction(lang)
+    st.title(txt["title"])
+    st.caption(txt["subtitle"])
+    st.write(txt["intro"])
+    st.write(txt["intro2"])
+    st.write(txt["intro3"])
+    st.write(txt["intro4"])
+    st.markdown(f"**{txt['scale_title']}**")
+    for item in txt["scale"]:
+        st.write(f"- {item}")
+    st.caption(txt["estimated"])
+    render_reference_links(txt)
+    st.progress(st.session_state.current_step / STEP_COUNT, text=f"{txt['step_label']} : {st.session_state.current_step}/{STEP_COUNT}")
+    st.markdown("---")
 
-    st.title(t(lang, "app_title"))
-    st.caption(t(lang, "app_subtitle"))
+    step = st.session_state.current_step
+    if step == 1:
+        render_step_1(txt)
+    elif step == 2:
+        render_step_2(txt)
+    elif step == 3:
+        render_step_3(txt)
+    elif step == 4:
+        render_step_4(txt)
+    elif step == 5:
+        render_step_5(txt)
 
-    st.write(t(lang, "intro"))
-    st.write(t(lang, "intro_2"))
-    st.write(t(lang, "intro_3"))
-
-    with st.expander(t(lang, "response_scale_title"), expanded=False):
-        for item in t(lang, "response_scale"):
-            st.write(f"- {item}")
-        st.write(t(lang, "estimated_time"))
-
-    with st.sidebar:
-        st.subheader(t(lang, "links_title"))
-        note_url = st.secrets.get("links", {}).get("note_url", DEFAULT_NOTE_URL) if hasattr(st, "secrets") else DEFAULT_NOTE_URL
-        full_doc_url = st.secrets.get("links", {}).get("full_doc_url", DEFAULT_FULL_DOC_URL) if hasattr(st, "secrets") else DEFAULT_FULL_DOC_URL
-        if note_url:
-            st.markdown(f"- [{t(lang, 'note_link')}]({note_url})")
-        if full_doc_url:
-            st.markdown(f"- [{t(lang, 'doc_link')}]({full_doc_url})")
-
-        st.divider()
-        if github_is_configured():
-            st.success(t(lang, "github_ok"))
-        else:
-            st.info(t(lang, "github_missing"))
-
-    with st.form("strategic_validation_form", clear_on_submit=False):
-        render_form(lang)
-        submitted = st.form_submit_button(t(lang, "form_buttons.submit"))
-
-    if submitted:
-        data_for_validation = {
-            "institution_acronym": st.session_state.get("institution_acronym"),
-            "institution_type": st.session_state.get("institution_type"),
-            "country_or_rec": st.session_state.get("country_or_rec"),
-            "respondent_title": st.session_state.get("respondent_title"),
-            "email": st.session_state.get("email"),
-            "overall_validation": st.session_state.get("overall_validation"),
-            "operational_usability": st.session_state.get("operational_usability"),
-            "top_3_revisions": st.session_state.get("top_3_revisions"),
-            "final_institutional_position": st.session_state.get("final_institutional_position"),
-            **{k: st.session_state.get(k) for k in STRATEGIC_ROW_KEYS},
-            **{k: st.session_state.get(k) for k in DOMAIN_ROW_KEYS},
-        }
-        errors = validate_submission(data_for_validation)
-        if errors:
-            st.error(t(lang, "validation_error_title"))
-            for err in errors:
-                st.write(f"- {err}")
-        else:
-            with st.spinner(t(lang, "saving")):
-                payload = build_payload(lang)
-                save_status = save_submission_to_github(payload)
-                st.session_state["submitted_payload"] = payload
-                st.session_state["last_save_status"] = save_status
-
-    if st.session_state.get("submitted_payload"):
-        payload = st.session_state["submitted_payload"]
-        save_status = st.session_state.get("last_save_status") or {}
-        if save_status.get("ok"):
-            st.success(t(lang, "submit_success"))
-        elif save_status.get("reason") == "not_configured":
-            st.warning(t(lang, "submit_warning"))
-        else:
-            st.warning(t(lang, "submit_warning"))
-            detail = save_status.get("detail", "")
-            if detail:
-                st.caption(f"{t(lang, 'github_error')}: {detail}")
-        render_downloads(lang, payload)
-
-    st.divider()
-    st.caption(t(lang, "footer"))
+    render_navigation(txt)
+    if st.session_state.github_message:
+        st.caption(st.session_state.github_message)
+    render_submission_downloads(txt)
+    st.markdown("---")
+    st.caption(f"Streamlit • GitHub • v{APP_VERSION}")
 
 
 if __name__ == "__main__":
