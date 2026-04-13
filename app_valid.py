@@ -748,6 +748,74 @@ for row in STRATEGIC_ROWS + DOMAIN_ROWS:
     FIELD_DEFAULTS[row] = None
     FIELD_DEFAULTS[f"{row}_why"] = ""
 
+STEP_FIELDS = {
+    1: [
+        "institution_acronym",
+        "institution_type",
+        "country_or_rec",
+        "country_or_rec_other",
+        "respondent_title",
+        "respondent_title_other",
+        "email",
+    ],
+    2: [
+        "overall_validation",
+        "overall_validation_why",
+        "operational_usability",
+        "operational_usability_why",
+    ],
+    3: STRATEGIC_ROWS + [f"{row}_why" for row in STRATEGIC_ROWS] + ["strategic_comments"],
+    4: DOMAIN_ROWS + [f"{row}_why" for row in DOMAIN_ROWS] + ["domain_comments", "top_3_revisions"],
+    5: ["final_institutional_position"],
+}
+
+
+def ensure_form_data() -> None:
+    if "form_data" not in st.session_state:
+        st.session_state.form_data = dict(FIELD_DEFAULTS)
+    else:
+        for key, value in FIELD_DEFAULTS.items():
+            st.session_state.form_data.setdefault(key, value)
+
+
+def get_value(key: str):
+    ensure_form_data()
+    return st.session_state.form_data.get(key, FIELD_DEFAULTS.get(key))
+
+
+def set_value(key: str, value) -> None:
+    ensure_form_data()
+    st.session_state.form_data[key] = value
+
+
+def widget_key(field: str) -> str:
+    return f"w_{field}"
+
+
+def prime_widget(field: str) -> str:
+    wk = widget_key(field)
+    if wk not in st.session_state:
+        st.session_state[wk] = get_value(field)
+    return wk
+
+
+def sync_fields(fields: list[str]) -> None:
+    ensure_form_data()
+    for field in fields:
+        wk = widget_key(field)
+        if wk in st.session_state:
+            st.session_state.form_data[field] = st.session_state[wk]
+
+
+def sync_step_fields(step: int) -> None:
+    sync_fields(STEP_FIELDS.get(step, []))
+
+
+def clear_widget_cache() -> None:
+    for key in list(st.session_state.keys()):
+        if str(key).startswith("w_"):
+            del st.session_state[key]
+
 
 def is_rtl(lang: str) -> bool:
     return lang == "ar"
@@ -775,6 +843,7 @@ def get_text(lang: str) -> Dict:
 
 
 def init_state() -> None:
+    ensure_form_data()
     if "lang" not in st.session_state:
         st.session_state.lang = "en"
     if "lang_selector" not in st.session_state:
@@ -789,15 +858,12 @@ def init_state() -> None:
         st.session_state.github_message = ""
     if "loaded_from_query" not in st.session_state:
         st.session_state.loaded_from_query = False
-    for key, value in FIELD_DEFAULTS.items():
-        if key not in st.session_state:
-            st.session_state[key] = value
 
 
 def reset_form() -> None:
     lang = st.session_state.lang
-    for key, value in FIELD_DEFAULTS.items():
-        st.session_state[key] = value
+    st.session_state.form_data = dict(FIELD_DEFAULTS)
+    clear_widget_cache()
     st.session_state.current_step = 1
     st.session_state.draft_token = ""
     st.session_state.last_submit_payload = None
@@ -899,33 +965,35 @@ def load_draft_from_github(token: str) -> Tuple[bool, str, Dict | None]:
 
 
 def build_payload(status: str) -> Dict:
+    ensure_form_data()
     now = datetime.now(timezone.utc)
+    fd = st.session_state.form_data
     data = {
         "app_version": APP_VERSION,
         "status": status,
         "saved_at": now.isoformat().replace("+00:00", "Z"),
         "language": st.session_state.lang,
-        "institution_acronym": st.session_state.institution_acronym.strip(),
-        "institution_type": st.session_state.institution_type,
-        "country_or_rec": st.session_state.country_or_rec_other.strip() if st.session_state.country_or_rec == "Other" else st.session_state.country_or_rec,
-        "respondent_title": st.session_state.respondent_title_other.strip() if st.session_state.respondent_title == "other" else st.session_state.respondent_title,
-        "email": st.session_state.email.strip(),
+        "institution_acronym": (fd.get("institution_acronym") or "").strip(),
+        "institution_type": fd.get("institution_type"),
+        "country_or_rec": (fd.get("country_or_rec_other") or "").strip() if fd.get("country_or_rec") == "Other" else fd.get("country_or_rec"),
+        "respondent_title": (fd.get("respondent_title_other") or "").strip() if fd.get("respondent_title") == "other" else fd.get("respondent_title"),
+        "email": (fd.get("email") or "").strip(),
         "consolidated_position": "",
-        "overall_validation": st.session_state.overall_validation,
-        "overall_validation_why": st.session_state.overall_validation_why.strip(),
-        "operational_usability": st.session_state.operational_usability,
-        "operational_usability_why": st.session_state.operational_usability_why.strip(),
-        "strategic_comments": st.session_state.strategic_comments.strip(),
-        "domain_comments": st.session_state.domain_comments.strip(),
+        "overall_validation": fd.get("overall_validation"),
+        "overall_validation_why": (fd.get("overall_validation_why") or "").strip(),
+        "operational_usability": fd.get("operational_usability"),
+        "operational_usability_why": (fd.get("operational_usability_why") or "").strip(),
+        "strategic_comments": (fd.get("strategic_comments") or "").strip(),
+        "domain_comments": (fd.get("domain_comments") or "").strip(),
         "priorities_to_strengthen": [],
-        "top_3_revisions": st.session_state.top_3_revisions.strip(),
-        "final_institutional_position": st.session_state.final_institutional_position,
+        "top_3_revisions": (fd.get("top_3_revisions") or "").strip(),
+        "final_institutional_position": fd.get("final_institutional_position"),
         "draft_token": st.session_state.draft_token,
         "current_step": st.session_state.current_step,
     }
     for row in STRATEGIC_ROWS + DOMAIN_ROWS:
-        data[row] = st.session_state[row]
-        data[f"{row}_why"] = st.session_state[f"{row}_why"].strip()
+        data[row] = fd.get(row)
+        data[f"{row}_why"] = (fd.get(f"{row}_why") or "").strip()
     return data
 
 
@@ -967,15 +1035,17 @@ def submit_final() -> Tuple[bool, str, Dict]:
 
 
 def apply_payload_to_state(payload: Dict) -> None:
+    ensure_form_data()
     for key in FIELD_DEFAULTS.keys():
         if key in payload:
-            st.session_state[key] = payload[key]
+            st.session_state.form_data[key] = payload[key]
     for row in STRATEGIC_ROWS + DOMAIN_ROWS:
         if row in payload:
-            st.session_state[row] = payload[row]
+            st.session_state.form_data[row] = payload[row]
         why_key = f"{row}_why"
         if why_key in payload:
-            st.session_state[why_key] = payload[why_key]
+            st.session_state.form_data[why_key] = payload[why_key]
+    clear_widget_cache()
     st.session_state.lang = payload.get("language", st.session_state.lang)
     st.session_state.lang_selector = st.session_state.lang
     st.session_state.current_step = int(payload.get("current_step", 1))
@@ -986,43 +1056,43 @@ def validate_step(step: int, txt: Dict) -> List[str]:
     errors: List[str] = []
     q = txt["questions"]
     if step == 1:
-        if not st.session_state.institution_acronym.strip():
+        if not (get_value("institution_acronym") or "").strip():
             errors.append(q["institution_acronym"])
-        if not st.session_state.institution_type:
+        if not get_value("institution_type"):
             errors.append(q["institution_type"])
-        if not st.session_state.country_or_rec:
+        if not get_value("country_or_rec"):
             errors.append(q["country_or_rec"])
-        if st.session_state.country_or_rec == "Other" and not st.session_state.country_or_rec_other.strip():
+        if get_value("country_or_rec") == "Other" and not (get_value("country_or_rec_other") or "").strip():
             errors.append(f"{q['country_or_rec']} - {txt['other_specify']}")
-        if not st.session_state.respondent_title:
+        if not get_value("respondent_title"):
             errors.append(q["respondent_title"])
-        if st.session_state.respondent_title == "other" and not st.session_state.respondent_title_other.strip():
+        if get_value("respondent_title") == "other" and not (get_value("respondent_title_other") or "").strip():
             errors.append(f"{q['respondent_title']} - {txt['other_specify']}")
-        if not st.session_state.email.strip() or not valid_email(st.session_state.email):
+        if not (get_value("email") or "").strip() or not valid_email((get_value("email") or "")):
             errors.append(q["email"])
     elif step == 2:
-        if not st.session_state.overall_validation:
+        if not get_value("overall_validation"):
             errors.append(q["overall_validation"])
-        if st.session_state.overall_validation in {"go_with_reservations", "no_go"} and not st.session_state.overall_validation_why.strip():
+        if get_value("overall_validation") in {"go_with_reservations", "no_go"} and not (get_value("overall_validation_why") or "").strip():
             errors.append(f"{q['overall_validation']} - {txt['overall_why']}")
-        if not st.session_state.operational_usability:
+        if not get_value("operational_usability"):
             errors.append(q["operational_usability"])
-        if st.session_state.operational_usability in {"mostly_no", "no"} and not st.session_state.operational_usability_why.strip():
+        if get_value("operational_usability") in {"mostly_no", "no"} and not (get_value("operational_usability_why") or "").strip():
             errors.append(f"{q['operational_usability']} - {txt['overall_why']}")
     elif step == 3:
         for row in STRATEGIC_ROWS:
-            if not st.session_state[row]:
+            if not get_value(row):
                 errors.append(txt["strategic_rows"][row])
-            if st.session_state[row] in {"go_with_reservations", "no_go"} and not st.session_state[f"{row}_why"].strip():
+            if get_value(row) in {"go_with_reservations", "no_go"} and not (get_value(f"{row}_why") or "").strip():
                 errors.append(f"{txt['strategic_rows'][row]} - {txt['overall_why']}")
     elif step == 4:
         for row in DOMAIN_ROWS:
-            if not st.session_state[row]:
+            if not get_value(row):
                 errors.append(txt["domain_rows"][row])
-            if st.session_state[row] in {"go_with_reservations", "no_go"} and not st.session_state[f"{row}_why"].strip():
+            if get_value(row) in {"go_with_reservations", "no_go"} and not (get_value(f"{row}_why") or "").strip():
                 errors.append(f"{txt['domain_rows'][row]} - {txt['overall_why']}")
     elif step == 5:
-        if not st.session_state.final_institutional_position:
+        if not get_value("final_institutional_position"):
             errors.append(q["final_position"])
     return errors
 
@@ -1137,18 +1207,20 @@ def maybe_load_query_draft(txt: Dict) -> None:
 
 
 def render_choice_field(label: str, code_key: str, options_map: Dict[str, str], required_reason_values: set[str], txt: Dict) -> None:
+    value_key = prime_widget(code_key)
     st.radio(
         label,
         options=list(options_map.keys()),
-        index=choice_index(list(options_map.keys()), st.session_state[code_key]),
+        index=choice_index(list(options_map.keys()), st.session_state[value_key]),
         format_func=lambda x: options_map[x],
-        key=code_key,
+        key=value_key,
         horizontal=False,
     )
-    if st.session_state[code_key] in required_reason_values:
+    if st.session_state[value_key] in required_reason_values:
+        why_key = prime_widget(f"{code_key}_why")
         st.text_area(
             txt["overall_why"],
-            key=f"{code_key}_why",
+            key=why_key,
             placeholder=txt["placeholders"]["why"],
         )
 
@@ -1161,7 +1233,7 @@ def render_step_1(txt: Dict) -> None:
     st.selectbox(
         q["institution_type"],
         options=INSTITUTION_TYPES,
-        index=choice_index(INSTITUTION_TYPES, st.session_state.institution_type),
+        index=choice_index(INSTITUTION_TYPES, get_value("institution_type")),
         placeholder="—",
         format_func=lambda x: txt["institution_types"][x],
         key="institution_type",
@@ -1169,22 +1241,22 @@ def render_step_1(txt: Dict) -> None:
     st.selectbox(
         q["country_or_rec"],
         options=COUNTRY_OR_REC_OPTIONS,
-        index=choice_index(COUNTRY_OR_REC_OPTIONS, st.session_state.country_or_rec),
+        index=choice_index(COUNTRY_OR_REC_OPTIONS, get_value("country_or_rec")),
         placeholder="—",
         format_func=lambda x: x,
         key="country_or_rec",
     )
-    if st.session_state.country_or_rec == "Other":
+    if get_value("country_or_rec") == "Other":
         st.text_input(txt["other_country"], key="country_or_rec_other")
     st.selectbox(
         q["respondent_title"],
         options=RESPONDENT_TITLES,
-        index=choice_index(RESPONDENT_TITLES, st.session_state.respondent_title),
+        index=choice_index(RESPONDENT_TITLES, get_value("respondent_title")),
         placeholder="—",
         format_func=lambda x: txt["titles"][x],
         key="respondent_title",
     )
-    if st.session_state.respondent_title == "other":
+    if get_value("respondent_title") == "other":
         st.text_input(txt["other_specify"], key="respondent_title_other")
     st.text_input(q["email"], key="email", placeholder=txt["placeholders"]["email"])
 
@@ -1204,13 +1276,13 @@ def render_grid_section(rows: List[str], label: str, comments_key: str, options_
         st.radio(
             labels[row],
             options=list(options_map.keys()),
-            index=choice_index(list(options_map.keys()), st.session_state[row]),
+            index=choice_index(list(options_map.keys()), get_value(row)),
             format_func=lambda x: options_map[x],
             key=row,
             label_visibility="collapsed",
             horizontal=True,
         )
-        if st.session_state[row] in {"go_with_reservations", "no_go"}:
+        if get_value(row) in {"go_with_reservations", "no_go"}:
             st.text_area(txt["overall_why"], key=f"{row}_why", placeholder=txt["placeholders"]["why"])
         st.markdown("---")
     st.text_area(txt["optional_summary"], key=comments_key, placeholder=txt["placeholders"]["summary"])
@@ -1226,7 +1298,7 @@ def render_step_4(txt: Dict) -> None:
     q = txt["questions"]
     st.subheader(txt["sections"][4])
     render_grid_section(DOMAIN_ROWS, q["domain_grid"], "domain_comments", txt["responses"], txt, "domain_rows")
-    st.text_area(q["top_3_revisions"], key="top_3_revisions", placeholder=txt["placeholders"]["revisions"])
+    st.text_area(q["top_3_revisions"], key=prime_widget("top_3_revisions"), placeholder=txt["placeholders"]["revisions"])
 
 
 def render_step_5(txt: Dict) -> None:
@@ -1235,7 +1307,7 @@ def render_step_5(txt: Dict) -> None:
     st.radio(
         q["final_position"],
         options=list(txt["final_positions"].keys()),
-        index=choice_index(list(txt["final_positions"].keys()), st.session_state.final_institutional_position),
+        index=choice_index(list(txt["final_positions"].keys()), get_value("final_institutional_position")),
         format_func=lambda x: txt["final_positions"][x],
         key="final_institutional_position",
         horizontal=False,
@@ -1263,17 +1335,20 @@ def render_step_form(txt: Dict) -> None:
         if step < STEP_COUNT:
             continue_clicked = cols[1].form_submit_button(txt["continue"], use_container_width=True)
             if continue_clicked:
+                sync_step_fields(step)
                 errors = validate_step(step, txt)
                 if errors:
                     st.error(txt["validation_title"])
                     for err in errors:
                         st.write(f"- {err}")
                 else:
+                    clear_widget_cache()
                     st.session_state.current_step += 1
                     st.rerun()
         else:
             submit_clicked = cols[1].form_submit_button(txt["submit"], use_container_width=True)
             if submit_clicked:
+                sync_step_fields(step)
                 all_errors: List[str] = []
                 for step_num in range(1, STEP_COUNT + 1):
                     all_errors.extend(validate_step(step_num, txt))
@@ -1293,6 +1368,8 @@ def render_step_form(txt: Dict) -> None:
                         st.session_state.github_message = msg
 
         if back_clicked:
+            sync_step_fields(step)
+            clear_widget_cache()
             st.session_state.current_step -= 1
             st.rerun()
 
