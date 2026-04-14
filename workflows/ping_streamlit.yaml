@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Ping Streamlit app
         run: |
-          URL="https://consultation-statafricniang-zhtyvdtppaxvnd6ykkdlm2.streamlit.app/"
+          URL="https://consultation-statafricniang-shkttfxzynj34yfpchzvgf.streamlit.app/"
           for i in 1 2 3; do
             code=$(curl -L -s -o /dev/null -w "%{http_code}" --max-time 60 "$URL") || code="000"
             echo "HTTP $code"
