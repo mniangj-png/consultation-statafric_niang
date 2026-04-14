@@ -11,7 +11,7 @@ from typing import Dict, List, Tuple
 import requests
 import streamlit as st
 APP_VERSION = "2026-04-13d"
-RESPONSE_PATH_ROOT = "validation_doc"
+RESPONSE_PATH_ROOT = "data/validation_doc"
 DEFAULT_NOTE_URLS = {
     "en": os.getenv("NOTE_URL_EN", "https://1drv.ms/b/c/2afbae9640d93d5e/IQABX4McavudQZo7C7gOura-AdHesAay0yPW9kdPebcdl-k?e=gk6CIQ"),
     "fr": os.getenv("NOTE_URL_FR", "https://1drv.ms/b/c/2afbae9640d93d5e/IQCdAkqSoWp5Rr3QHGynDGoUAbasanwpp15xPR244J5qZzw?e=UNMnVs"),
@@ -28,7 +28,7 @@ DEFAULT_DOC_URL_FR = os.getenv(
 )
 DEFAULT_GITHUB_OWNER = os.getenv("GITHUB_OWNER", "mniangj-png")
 DEFAULT_GITHUB_REPO = os.getenv("GITHUB_REPO", "consultation-statafric_niang")
-DEFAULT_GITHUB_BRANCH = os.getenv("GITHUB_BRANCH", "data")
+DEFAULT_GITHUB_BRANCH = os.getenv("GITHUB_BRANCH", "main")
 LANGUAGE_OPTIONS = {
     "en": "English",
     "fr": "Français",
@@ -965,7 +965,10 @@ def github_put_json(path: str, payload: Dict, message: str) -> Tuple[bool, str]:
             detail = r.json()
         except Exception:
             detail = {"message": r.text}
-        return False, detail.get("message", "GitHub write failed")
+        msg = detail.get("message", "GitHub write failed")
+        if msg == "Not Found":
+            msg = f"Not Found: check owner/repo/branch/path configuration (current branch={cfg['branch']}, path={path})"
+        return False, msg
     except requests.exceptions.InvalidHeader:
         return False, "GitHub token invalid or malformed in secrets."
     except requests.exceptions.RequestException as exc:
