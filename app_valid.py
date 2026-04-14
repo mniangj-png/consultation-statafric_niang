@@ -753,6 +753,7 @@ FIELD_DEFAULTS = {
     "domain_comments": "",
     "top_3_revisions": "",
     "final_institutional_position": None,
+    "final_institutional_position_why": "",
     "draft_code": "",
 }
 
@@ -772,7 +773,7 @@ STEP_FIELDS = {
     ],
     2: STRATEGIC_ROWS + [f"{row}_why" for row in STRATEGIC_ROWS] + ["strategic_comments"],
     3: DOMAIN_ROWS + [f"{row}_why" for row in DOMAIN_ROWS] + ["domain_comments", "top_3_revisions"],
-    4: ["final_institutional_position"],
+    4: ["final_institutional_position", "final_institutional_position_why"],
 }
 
 
@@ -890,20 +891,37 @@ def valid_email(value: str) -> bool:
     return bool(re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", value.strip()))
 
 
+def _recursive_secret_find(obj, candidate_keys: set[str]) -> str:
+    try:
+        if hasattr(obj, "items"):
+            for key, value in obj.items():
+                if str(key) in candidate_keys and isinstance(value, str) and value.strip():
+                    return value.strip()
+                found = _recursive_secret_find(value, candidate_keys)
+                if found:
+                    return found
+    except Exception:
+        return ""
+    return ""
+
+
 def github_settings() -> Dict[str, str]:
     owner = DEFAULT_GITHUB_OWNER
     repo = DEFAULT_GITHUB_REPO
     token = ""
     branch = DEFAULT_GITHUB_BRANCH
     try:
-        gh = st.secrets.get("github", {})
-        owner = gh.get("owner", DEFAULT_GITHUB_OWNER) or DEFAULT_GITHUB_OWNER
-        repo = gh.get("repo", DEFAULT_GITHUB_REPO) or DEFAULT_GITHUB_REPO
-        token = gh.get("token", "")
-        branch = gh.get("branch", DEFAULT_GITHUB_BRANCH) or DEFAULT_GITHUB_BRANCH
+        secrets_obj = st.secrets
+        owner = _recursive_secret_find(secrets_obj, {"owner", "OWNER", "GITHUB_OWNER", "github_owner"}) or owner
+        repo = _recursive_secret_find(secrets_obj, {"repo", "REPO", "GITHUB_REPO", "github_repo"}) or repo
+        branch = _recursive_secret_find(secrets_obj, {"branch", "BRANCH", "GITHUB_BRANCH", "github_branch"}) or branch
+        token = _recursive_secret_find(secrets_obj, {"token", "TOKEN", "GITHUB_TOKEN", "github_token", "pat", "PAT"}) or token
     except Exception:
         pass
-    token = token or os.getenv("GITHUB_TOKEN", "")
+    token = token or os.getenv("GITHUB_TOKEN", "") or os.getenv("GH_TOKEN", "")
+    owner = owner or os.getenv("GITHUB_OWNER", DEFAULT_GITHUB_OWNER)
+    repo = repo or os.getenv("GITHUB_REPO", DEFAULT_GITHUB_REPO)
+    branch = branch or os.getenv("GITHUB_BRANCH", DEFAULT_GITHUB_BRANCH)
     return {"owner": owner, "repo": repo, "token": token, "branch": branch}
 
 
@@ -997,6 +1015,7 @@ def build_payload(status: str) -> Dict:
         "priorities_to_strengthen": [],
         "top_3_revisions": (fd.get("top_3_revisions") or "").strip(),
         "final_institutional_position": fd.get("final_institutional_position"),
+        "final_institutional_position_why": (fd.get("final_institutional_position_why") or "").strip(),
         "draft_token": st.session_state.draft_token,
         "current_step": st.session_state.current_step,
     }
@@ -1027,7 +1046,7 @@ def save_draft() -> Tuple[bool, str, Dict]:
             f"Save validation draft {st.session_state.draft_token}",
         )
         return ok, msg, payload
-    return False, "GitHub is not configured.", payload
+    return False, "GitHub is not configured. Add a writable GITHUB_TOKEN in Streamlit secrets or environment variables.", payload
 
 
 
@@ -1055,7 +1074,7 @@ def submit_final() -> Tuple[bool, str, Dict]:
     if github_ready():
         ok, msg = github_put_json(path, payload, f"Add validation submission {sub_id}")
         return ok, msg, payload
-    return False, "GitHub is not configured.", payload
+    return False, "GitHub is not configured. Add a writable GITHUB_TOKEN in Streamlit secrets or environment variables.", payload
 
 
 def apply_payload_to_state(payload: Dict) -> None:
@@ -1109,6 +1128,8 @@ def validate_step(step: int, txt: Dict) -> List[str]:
     elif step == 4:
         if not get_value("final_institutional_position"):
             errors.append(q["final_position"])
+        if get_value("final_institutional_position") in {"yes_limited_adjustments", "no_substantial_revision"} and not (get_value("final_institutional_position_why") or "").strip():
+            errors.append(f"{q["final_position"]} - {txt["overall_why"]}")
     return errors
 
 
@@ -1350,6 +1371,12 @@ def render_step_4(txt: Dict) -> None:
         key=final_position_key,
         horizontal=False,
     )
+    if st.session_state[final_position_key] in {"yes_limited_adjustments", "no_substantial_revision"}:
+        st.text_area(
+            txt["overall_why"],
+            key=prime_widget("final_institutional_position_why"),
+            placeholder=txt["placeholders"]["why"],
+        )
 
 
 def render_step_5(txt: Dict) -> None:
