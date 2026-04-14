@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 import io
-import math
 import json
 import os
 from dataclasses import dataclass
-from datetime import date, datetime, timezone
+from datetime import datetime, timezone
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 import pandas as pd
@@ -167,7 +166,7 @@ def fetch_repo_file_text(cfg: GitHubConfig, path: str, branch: str) -> str:
     return r.text
 
 
-def load_json_records_from_repo(cfg: GitHubConfig, subfolder: str) -> Tuple[str, List[Dict], List[str]]:
+def load_json_records_from_repo(cfg: GitHubConfig, subfolder: str) -> Tuple[str, List[Dict]]:
     root = f"{RESPONSE_ROOT}/{subfolder}".rstrip("/")
     branch, paths = list_repo_json_paths(cfg, root)
     records: List[Dict] = []
@@ -180,7 +179,7 @@ def load_json_records_from_repo(cfg: GitHubConfig, subfolder: str) -> Tuple[str,
                 records.append(item)
         except Exception:
             continue
-    return branch, records, paths
+    return branch, records
 
 
 def parse_iso_date(value: str | None) -> Optional[pd.Timestamp]:
@@ -234,31 +233,29 @@ def dataframe_to_xlsx_bytes(sheets: Dict[str, pd.DataFrame]) -> bytes:
 
 
 def _json_safe(value):
-    if isinstance(value, pd.Timestamp):
-        if pd.isna(value):
-            return None
-        return value.isoformat()
-    if isinstance(value, datetime):
-        return value.isoformat()
-    if isinstance(value, date):
-        return value.isoformat()
+    if isinstance(value, (pd.Timestamp, datetime)):
+        try:
+            return value.isoformat()
+        except Exception:
+            return str(value)
     if pd.isna(value):
         return None
-    if hasattr(value, "item"):
-        try:
-            return value.item()
-        except Exception:
-            pass
     if isinstance(value, dict):
         return {str(k): _json_safe(v) for k, v in value.items()}
     if isinstance(value, (list, tuple, set)):
         return [_json_safe(v) for v in value]
+    try:
+        import numpy as np
+        if isinstance(value, (np.integer, np.floating, np.bool_)):
+            return value.item()
+    except Exception:
+        pass
     return value
 
 
 def records_to_json_bytes(records: Sequence[Dict]) -> bytes:
-    safe_records = [_json_safe(r) for r in records]
-    return json.dumps(safe_records, ensure_ascii=False, indent=2).encode("utf-8")
+    safe = [_json_safe(r) for r in list(records)]
+    return json.dumps(safe, ensure_ascii=False, indent=2).encode("utf-8")
 
 
 def response_count_table(df: pd.DataFrame, columns: Sequence[str], mapping: Dict[str, str]) -> pd.DataFrame:
@@ -482,6 +479,8 @@ def apply_filters(
         out = out[out["submitted_at"] >= pd.Timestamp(date_from).tz_localize("UTC") if pd.Timestamp(date_from).tzinfo is None else out["submitted_at"] >= pd.Timestamp(date_from)]
     if date_to is not None and "submitted_at" in out.columns:
         end_ts = pd.Timestamp(date_to)
-        end_ts = end_ts.tz_localize("UTC") if end_ts.tzinfo is None else end_ts
+        if end_ts.tzinfo is None:
+            # make the upper bound inclusive for the whole selected day
+            end_ts = end_ts.tz_localize("UTC") + pd.Timedelta(days=1) - pd.Timedelta(microseconds=1)
         out = out[out["submitted_at"] <= end_ts]
     return out
