@@ -234,6 +234,8 @@ def _excel_safe_scalar(value):
         if value.tzinfo is not None:
             value = value.astimezone(timezone.utc).replace(tzinfo=None)
         return value.strftime("%Y-%m-%d %H:%M:%S")
+    if isinstance(value, pd.Timedelta):
+        return str(value)
     if isinstance(value, dict):
         return json.dumps({str(k): _excel_safe_scalar(v) for k, v in value.items()}, ensure_ascii=False)
     if isinstance(value, (list, tuple, set)):
@@ -258,10 +260,14 @@ def _prepare_dataframe_for_excel(df: pd.DataFrame) -> pd.DataFrame:
     out = df.copy()
     if out.empty:
         return out
-    # Apply cell-wise conversion to eliminate timezone-aware datetimes,
-    # nested objects, numpy scalars, and other Excel-incompatible values.
+    # Force object dtype first so pandas does not preserve timezone-aware
+    # datetime dtypes through Series.map/list assignment.
+    out = out.astype(object)
     for col in out.columns:
-        out[col] = out[col].map(_excel_safe_scalar)
+        safe_values = []
+        for value in out[col].tolist():
+            safe_values.append(_excel_safe_scalar(value))
+        out[col] = pd.Series(safe_values, dtype="object")
     return out
 
 
