@@ -226,12 +226,14 @@ def _excel_safe_scalar(value):
     if isinstance(value, pd.Timestamp):
         if pd.isna(value):
             return None
-        # Excel does not support timezone-aware datetimes
-        return value.tz_convert(None) if value.tzinfo is not None else value.to_pydatetime()
+        if value.tzinfo is not None:
+            value = value.tz_convert(None)
+        # Write as text to avoid all Excel timezone issues
+        return value.to_pydatetime().strftime("%Y-%m-%d %H:%M:%S")
     if isinstance(value, datetime):
         if value.tzinfo is not None:
-            return value.astimezone(timezone.utc).replace(tzinfo=None)
-        return value
+            value = value.astimezone(timezone.utc).replace(tzinfo=None)
+        return value.strftime("%Y-%m-%d %H:%M:%S")
     if isinstance(value, dict):
         return json.dumps({str(k): _excel_safe_scalar(v) for k, v in value.items()}, ensure_ascii=False)
     if isinstance(value, (list, tuple, set)):
@@ -256,15 +258,10 @@ def _prepare_dataframe_for_excel(df: pd.DataFrame) -> pd.DataFrame:
     out = df.copy()
     if out.empty:
         return out
+    # Apply cell-wise conversion to eliminate timezone-aware datetimes,
+    # nested objects, numpy scalars, and other Excel-incompatible values.
     for col in out.columns:
-        s = out[col]
-        # Convert tz-aware datetimes in dedicated datetime columns
-        if pd.api.types.is_datetime64tz_dtype(s):
-            out[col] = s.dt.tz_convert(None)
-            continue
-        # Object columns can hide complex values or timestamps
-        if s.dtype == object:
-            out[col] = s.map(_excel_safe_scalar)
+        out[col] = out[col].map(_excel_safe_scalar)
     return out
 
 
