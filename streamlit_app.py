@@ -1378,61 +1378,59 @@ def render_step_5(txt: Dict) -> None:
     )
 def render_step_form(txt: Dict) -> None:
     step = st.session_state.current_step
-    with st.form(key=f"step_form_{step}", clear_on_submit=False):
-        if step == 1:
-            render_step_1(txt)
-        elif step == 2:
-            render_step_2(txt)
-        elif step == 3:
-            render_step_3(txt)
-        elif step == 4:
-            render_step_4(txt)
-        cols = st.columns([1, 1, 2])
-        back_clicked = False
-        if step > 1:
-            back_clicked = cols[0].form_submit_button(txt["back"], use_container_width=True)
-        if step < STEP_COUNT:
-            continue_clicked = cols[1].form_submit_button(txt["continue"], use_container_width=True)
-            if continue_clicked:
-                sync_step_fields(step)
-                errors = validate_step(step, txt)
-                if errors:
-                    st.error(txt["validation_title"])
-                    for err in errors:
-                        st.write(f"- {err}")
-                else:
-                    maybe_autosave_current_progress(txt)
-                    clear_widget_cache()
-                    st.session_state.current_step += 1
-                    st.rerun()
-        else:
-            submit_clicked = cols[1].form_submit_button(txt["submit"], use_container_width=True)
-            if submit_clicked:
-                sync_step_fields(step)
-                all_errors: List[str] = []
-                for step_num in range(1, STEP_COUNT + 1):
-                    all_errors.extend(validate_step(step_num, txt))
-                if all_errors:
-                    st.error(txt["validation_title"])
-                    for err in all_errors:
-                        st.write(f"- {err}")
-                else:
-                    maybe_autosave_current_progress(txt)
-                    with st.spinner(txt["save_label"]):
-                        ok, msg, payload = submit_final()
-                    st.session_state.last_submit_payload = payload
-                    if ok:
-                        st.success(txt["submit_success"])
-                        st.session_state.github_message = msg
-                    else:
-                        st.warning(txt["submit_warning"])
-                        st.session_state.github_message = msg
-        if back_clicked:
+    if step == 1:
+        render_step_1(txt)
+    elif step == 2:
+        render_step_2(txt)
+    elif step == 3:
+        render_step_3(txt)
+    elif step == 4:
+        render_step_4(txt)
+
+    cols = st.columns([1, 1, 2])
+    back_clicked = False
+    if step > 1:
+        back_clicked = cols[0].button(txt["back"], use_container_width=True, key=f"back_step_{step}")
+    if step < STEP_COUNT:
+        continue_clicked = cols[1].button(txt["continue"], use_container_width=True, key=f"continue_step_{step}")
+        if continue_clicked:
             sync_step_fields(step)
-            maybe_autosave_current_progress(txt)
-            clear_widget_cache()
-            st.session_state.current_step -= 1
-            st.rerun()
+            errors = validate_step(step, txt)
+            if errors:
+                st.error(txt["validation_title"])
+                for err in errors:
+                    st.write(f"- {err}")
+            else:
+                maybe_autosave_current_progress(txt)
+                st.session_state.current_step += 1
+                st.rerun()
+    else:
+        submit_clicked = cols[1].button(txt["submit"], use_container_width=True, key=f"submit_step_{step}")
+        if submit_clicked:
+            sync_step_fields(step)
+            all_errors: List[str] = []
+            for step_num in range(1, STEP_COUNT + 1):
+                all_errors.extend(validate_step(step_num, txt))
+            if all_errors:
+                st.error(txt["validation_title"])
+                for err in all_errors:
+                    st.write(f"- {err}")
+            else:
+                maybe_autosave_current_progress(txt)
+                with st.spinner(txt["save_label"]):
+                    ok, msg, payload = submit_final()
+                st.session_state.last_submit_payload = payload
+                if ok:
+                    st.success(txt["submit_success"])
+                    st.session_state.github_message = msg
+                else:
+                    st.warning(txt["submit_warning"])
+                    st.session_state.github_message = msg
+    if back_clicked:
+        sync_step_fields(step)
+        maybe_autosave_current_progress(txt)
+        st.session_state.current_step -= 1
+        st.rerun()
 def render_submission_downloads(txt: Dict) -> None:
     payload = st.session_state.last_submit_payload
     if not payload:
