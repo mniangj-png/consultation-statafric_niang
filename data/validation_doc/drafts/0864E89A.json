@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-14T04:54:26.561695Z",
+  "saved_at": "2026-04-14T04:54:49.098921Z",
   "language": "fr",
   "institution_acronym": "INS",
   "institution_type": "nso",
@@ -17,10 +17,10 @@
   "domain_comments": "",
   "priorities_to_strengthen": [],
   "top_3_revisions": "",
-  "final_institutional_position": null,
+  "final_institutional_position": "no_opinion",
   "final_institutional_position_why": "",
   "draft_token": "0864E89A",
-  "current_step": 3,
+  "current_step": 4,
   "strategic_prioritization_criteria": "go",
   "strategic_prioritization_criteria_why": "",
   "strategic_scoring_logic": "go",
@@ -61,5 +61,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-16T04:54:26.561746Z"
+  "expires_at": "2026-04-16T04:54:49.098972Z"
 }
