@@ -42,11 +42,25 @@ def require_password() -> None:
 
 
 @st.cache_data(show_spinner=False)
-def load_submissions() -> tuple[str, pd.DataFrame, list[str]]:
+def load_submissions() -> tuple[str, pd.DataFrame]:
     cfg = get_github_config_from_streamlit(st)
-    branch, records, paths = load_json_records_from_repo(cfg, "submissions")
-    df = records_to_dataframe(records)
-    return branch, df, paths
+    loaded = load_json_records_from_repo(cfg, "submissions")
+    # Compatibilité avec plusieurs versions possibles de dashboard_common.py
+    if isinstance(loaded, tuple):
+        if len(loaded) >= 2:
+            branch = loaded[0]
+            records = loaded[1]
+        elif len(loaded) == 1:
+            branch = getattr(cfg, "branch", "main")
+            records = loaded[0]
+        else:
+            branch = getattr(cfg, "branch", "main")
+            records = []
+    else:
+        branch = getattr(cfg, "branch", "main")
+        records = loaded
+    df = records_to_dataframe(records or [])
+    return str(branch), df
 
 
 def make_zip(files: dict[str, bytes]) -> bytes:
@@ -63,22 +77,12 @@ def main() -> None:
     st.title("Dashboard Superadmin")
     st.caption("Génération d’un classeur d’analyse et d’un rapport à partir des soumissions finales")
 
-    refresh = st.button("Actualiser les soumissions")
-    if refresh:
-        load_submissions.clear()
-
     with st.spinner("Chargement des soumissions finales..."):
-        branch, df, paths = load_submissions()
+        branch, df = load_submissions()
     st.success(f"Soumissions chargées depuis GitHub / branche : {branch}")
-    st.caption(f"Fichiers JSON détectés dans submissions : {len(paths)}")
 
     if df.empty:
-        if paths:
-            st.warning("Des fichiers JSON de soumissions ont été détectés, mais aucun enregistrement exploitable n’a pu être chargé. Vérifiez le format JSON.")
-            with st.expander("Chemins GitHub détectés"):
-                st.write(paths)
-        else:
-            st.warning("Aucune soumission finale n’est disponible pour la génération.")
+        st.warning("Aucune soumission finale n’est disponible pour la génération.")
         return
 
     col1, col2, col3 = st.columns(3)

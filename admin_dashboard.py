@@ -42,11 +42,11 @@ def require_password() -> None:
 
 
 @st.cache_data(show_spinner=False)
-def load_data(source_kind: str) -> tuple[str, pd.DataFrame, list[dict], list[str]]:
+def load_data(source_kind: str) -> tuple[str, pd.DataFrame, list[dict]]:
     cfg = get_github_config_from_streamlit(st)
-    branch, records, paths = load_json_records_from_repo(cfg, source_kind)
+    branch, records = load_json_records_from_repo(cfg, source_kind)
     df = records_to_dataframe(records)
-    return branch, df, records, paths
+    return branch, df, records
 
 
 def main() -> None:
@@ -61,23 +61,13 @@ def main() -> None:
         horizontal=True,
     )
 
-    refresh = st.button("Actualiser les données")
-    if refresh:
-        load_data.clear()
-
     with st.spinner("Chargement des données depuis GitHub..."):
-        branch, df, records, paths = load_data(kind)
+        branch, df, records = load_data(kind)
 
     st.success(f"Données chargées depuis la branche GitHub : {branch}")
-    st.caption(f"Fichiers JSON détectés dans {kind} : {len(paths)}")
 
     if df.empty:
-        if paths:
-            st.warning("Des fichiers JSON ont été détectés, mais aucun enregistrement exploitable n’a pu être chargé. Vérifiez le format JSON des fichiers.")
-            with st.expander("Chemins détectés"):
-                st.write(paths)
-        else:
-            st.warning("Aucune donnée n’a été trouvée pour cette source.")
+        st.warning("Aucune donnée n’a été trouvée pour cette source.")
         return
 
     col1, col2, col3, col4 = st.columns(4)
@@ -152,8 +142,6 @@ def main() -> None:
             st.info("Aucune donnée après filtrage.")
 
     with tab4:
-        with st.expander("Chemins GitHub détectés", expanded=False):
-            st.write(paths)
         if not filtered.empty:
             selected = st.selectbox(
                 "Choisir un enregistrement",
