@@ -42,11 +42,11 @@ def require_password() -> None:
 
 
 @st.cache_data(show_spinner=False)
-def load_submissions() -> tuple[str, pd.DataFrame]:
+def load_submissions() -> tuple[str, pd.DataFrame, list[str]]:
     cfg = get_github_config_from_streamlit(st)
-    branch, records = load_json_records_from_repo(cfg, "submissions")
+    branch, records, paths = load_json_records_from_repo(cfg, "submissions")
     df = records_to_dataframe(records)
-    return branch, df
+    return branch, df, paths
 
 
 def make_zip(files: dict[str, bytes]) -> bytes:
@@ -63,12 +63,22 @@ def main() -> None:
     st.title("Dashboard Superadmin")
     st.caption("Génération d’un classeur d’analyse et d’un rapport à partir des soumissions finales")
 
+    refresh = st.button("Actualiser les soumissions")
+    if refresh:
+        load_submissions.clear()
+
     with st.spinner("Chargement des soumissions finales..."):
-        branch, df = load_submissions()
+        branch, df, paths = load_submissions()
     st.success(f"Soumissions chargées depuis GitHub / branche : {branch}")
+    st.caption(f"Fichiers JSON détectés dans submissions : {len(paths)}")
 
     if df.empty:
-        st.warning("Aucune soumission finale n’est disponible pour la génération.")
+        if paths:
+            st.warning("Des fichiers JSON de soumissions ont été détectés, mais aucun enregistrement exploitable n’a pu être chargé. Vérifiez le format JSON.")
+            with st.expander("Chemins GitHub détectés"):
+                st.write(paths)
+        else:
+            st.warning("Aucune soumission finale n’est disponible pour la génération.")
         return
 
     col1, col2, col3 = st.columns(3)

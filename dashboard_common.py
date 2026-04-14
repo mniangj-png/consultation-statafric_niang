@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import io
+import math
 import json
 import os
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 import pandas as pd
@@ -166,7 +167,7 @@ def fetch_repo_file_text(cfg: GitHubConfig, path: str, branch: str) -> str:
     return r.text
 
 
-def load_json_records_from_repo(cfg: GitHubConfig, subfolder: str) -> Tuple[str, List[Dict]]:
+def load_json_records_from_repo(cfg: GitHubConfig, subfolder: str) -> Tuple[str, List[Dict], List[str]]:
     root = f"{RESPONSE_ROOT}/{subfolder}".rstrip("/")
     branch, paths = list_repo_json_paths(cfg, root)
     records: List[Dict] = []
@@ -179,7 +180,7 @@ def load_json_records_from_repo(cfg: GitHubConfig, subfolder: str) -> Tuple[str,
                 records.append(item)
         except Exception:
             continue
-    return branch, records
+    return branch, records, paths
 
 
 def parse_iso_date(value: str | None) -> Optional[pd.Timestamp]:
@@ -232,8 +233,32 @@ def dataframe_to_xlsx_bytes(sheets: Dict[str, pd.DataFrame]) -> bytes:
     return output.getvalue()
 
 
+def _json_safe(value):
+    if isinstance(value, pd.Timestamp):
+        if pd.isna(value):
+            return None
+        return value.isoformat()
+    if isinstance(value, datetime):
+        return value.isoformat()
+    if isinstance(value, date):
+        return value.isoformat()
+    if pd.isna(value):
+        return None
+    if hasattr(value, "item"):
+        try:
+            return value.item()
+        except Exception:
+            pass
+    if isinstance(value, dict):
+        return {str(k): _json_safe(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple, set)):
+        return [_json_safe(v) for v in value]
+    return value
+
+
 def records_to_json_bytes(records: Sequence[Dict]) -> bytes:
-    return json.dumps(list(records), ensure_ascii=False, indent=2).encode("utf-8")
+    safe_records = [_json_safe(r) for r in records]
+    return json.dumps(safe_records, ensure_ascii=False, indent=2).encode("utf-8")
 
 
 def response_count_table(df: pd.DataFrame, columns: Sequence[str], mapping: Dict[str, str]) -> pd.DataFrame:
