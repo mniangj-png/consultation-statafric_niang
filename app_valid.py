@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 import base64
 import csv
 import io
@@ -9,10 +8,8 @@ import re
 import secrets
 from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Tuple
-
 import requests
 import streamlit as st
-
 APP_VERSION = "2026-04-13d"
 RESPONSE_PATH_ROOT = "validation_doc"
 DEFAULT_NOTE_URLS = {
@@ -32,14 +29,12 @@ DEFAULT_DOC_URL_FR = os.getenv(
 DEFAULT_GITHUB_OWNER = os.getenv("GITHUB_OWNER", "mniangj-png")
 DEFAULT_GITHUB_REPO = os.getenv("GITHUB_REPO", "consultation-statafric_niang")
 DEFAULT_GITHUB_BRANCH = os.getenv("GITHUB_BRANCH", "data")
-
 LANGUAGE_OPTIONS = {
     "en": "English",
     "fr": "Français",
     "pt": "Português",
     "ar": "العربية",
 }
-
 STEP_COUNT = 4
 INSTITUTION_TYPES = ["nso", "rec"]
 RESPONSE_CODES = ["go", "go_with_reservations", "no_go", "no_opinion"]
@@ -51,7 +46,6 @@ FINAL_POSITION_CODES = [
     "discuss_in_workshop",
     "no_opinion",
 ]
-
 STRATEGIC_ROWS = [
     "strategic_prioritization_criteria",
     "strategic_scoring_logic",
@@ -62,7 +56,6 @@ STRATEGIC_ROWS = [
     "strategic_governance_roles",
     "strategic_roadmap_update",
 ]
-
 DOMAIN_ROWS = [
     "domain_d01",
     "domain_d02",
@@ -77,7 +70,6 @@ DOMAIN_ROWS = [
     "domain_d11",
     "domain_d12",
 ]
-
 RESPONDENT_TITLES = [
     "director_general",
     "statistician_general",
@@ -88,7 +80,6 @@ RESPONDENT_TITLES = [
     "technical_expert",
     "other",
 ]
-
 COUNTRY_OR_REC_OPTIONS = [
     "Algeria",
     "Angola",
@@ -155,7 +146,6 @@ COUNTRY_OR_REC_OPTIONS = [
     "SADC",
     "Other",
 ]
-
 TRANSLATIONS: Dict[str, Dict] = {
     "en": {
         "title": "Validation of the draft document on priority socio-economic statistics in Africa",
@@ -736,7 +726,6 @@ TRANSLATIONS: Dict[str, Dict] = {
         },
     },
 }
-
 FIELD_DEFAULTS = {
     "institution_acronym": "",
     "institution_type": None,
@@ -756,11 +745,9 @@ FIELD_DEFAULTS = {
     "final_institutional_position_why": "",
     "draft_code": "",
 }
-
 for row in STRATEGIC_ROWS + DOMAIN_ROWS:
     FIELD_DEFAULTS[row] = None
     FIELD_DEFAULTS[f"{row}_why"] = ""
-
 STEP_FIELDS = {
     1: [
         "institution_acronym",
@@ -775,59 +762,39 @@ STEP_FIELDS = {
     3: DOMAIN_ROWS + [f"{row}_why" for row in DOMAIN_ROWS] + ["domain_comments", "top_3_revisions"],
     4: ["final_institutional_position", "final_institutional_position_why"],
 }
-
-
 def ensure_form_data() -> None:
     if "form_data" not in st.session_state:
         st.session_state.form_data = dict(FIELD_DEFAULTS)
     else:
         for key, value in FIELD_DEFAULTS.items():
             st.session_state.form_data.setdefault(key, value)
-
-
 def get_value(key: str):
     ensure_form_data()
     return st.session_state.form_data.get(key, FIELD_DEFAULTS.get(key))
-
-
 def set_value(key: str, value) -> None:
     ensure_form_data()
     st.session_state.form_data[key] = value
-
-
 def widget_key(field: str) -> str:
     return f"w_{field}"
-
-
 def prime_widget(field: str) -> str:
     wk = widget_key(field)
     if wk not in st.session_state:
         st.session_state[wk] = get_value(field)
     return wk
-
-
 def sync_fields(fields: list[str]) -> None:
     ensure_form_data()
     for field in fields:
         wk = widget_key(field)
         if wk in st.session_state:
             st.session_state.form_data[field] = st.session_state[wk]
-
-
 def sync_step_fields(step: int) -> None:
     sync_fields(STEP_FIELDS.get(step, []))
-
-
 def clear_widget_cache() -> None:
     for key in list(st.session_state.keys()):
         if str(key).startswith("w_"):
             del st.session_state[key]
-
-
 def is_rtl(lang: str) -> bool:
     return lang == "ar"
-
-
 def inject_base_css(lang: str) -> None:
     rtl = is_rtl(lang)
     direction = "rtl" if rtl else "ltr"
@@ -843,12 +810,8 @@ def inject_base_css(lang: str) -> None:
         """,
         unsafe_allow_html=True,
     )
-
-
 def get_text(lang: str) -> Dict:
     return TRANSLATIONS.get(lang, TRANSLATIONS["en"])
-
-
 def init_state() -> None:
     ensure_form_data()
     if "lang" not in st.session_state:
@@ -869,8 +832,6 @@ def init_state() -> None:
         st.session_state.autosave_notice = ""
     if "autosave_error" not in st.session_state:
         st.session_state.autosave_error = ""
-
-
 def reset_form() -> None:
     lang = st.session_state.lang
     st.session_state.form_data = dict(FIELD_DEFAULTS)
@@ -885,12 +846,8 @@ def reset_form() -> None:
     st.session_state.lang_selector = lang
     st.query_params.clear()
     st.rerun()
-
-
 def valid_email(value: str) -> bool:
     return bool(re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", value.strip()))
-
-
 def _recursive_secret_find(obj, candidate_keys: set[str]) -> str:
     try:
         if hasattr(obj, "items"):
@@ -903,7 +860,31 @@ def _recursive_secret_find(obj, candidate_keys: set[str]) -> str:
     except Exception:
         return ""
     return ""
+def _sanitize_secret(value) -> str:
+    if value is None:
+        return ""
+    if not isinstance(value, str):
+        try:
+            value = str(value)
+        except Exception:
+            return ""
+    value = value.strip().strip('"').strip("'")
+    value = value.replace("\r", "").replace("\n", "").strip()
+    if value.lower().startswith("bearer "):
+        value = value[7:].strip()
+    return "" if any(ch in value for ch in "\r\n") else value
 
+
+def _clean_github_token(value: str) -> str:
+    value = _sanitize_secret(value)
+    if not value:
+        return ""
+    # Remove every whitespace character defensively to avoid InvalidHeader crashes.
+    value = re.sub(r"\s+", "", value)
+    # Keep only characters commonly accepted in GitHub tokens.
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+", value):
+        return ""
+    return value
 
 def github_settings() -> Dict[str, str]:
     owner = DEFAULT_GITHUB_OWNER
@@ -912,48 +893,58 @@ def github_settings() -> Dict[str, str]:
     branch = DEFAULT_GITHUB_BRANCH
     try:
         secrets_obj = st.secrets
-        owner = _recursive_secret_find(secrets_obj, {"owner", "OWNER", "GITHUB_OWNER", "github_owner"}) or owner
-        repo = _recursive_secret_find(secrets_obj, {"repo", "REPO", "GITHUB_REPO", "github_repo"}) or repo
-        branch = _recursive_secret_find(secrets_obj, {"branch", "BRANCH", "GITHUB_BRANCH", "github_branch"}) or branch
-        token = _recursive_secret_find(secrets_obj, {"token", "TOKEN", "GITHUB_TOKEN", "github_token", "pat", "PAT"}) or token
+        owner = _sanitize_secret(_recursive_secret_find(secrets_obj, {"owner", "OWNER", "GITHUB_OWNER", "github_owner"})) or owner
+        repo = _sanitize_secret(_recursive_secret_find(secrets_obj, {"repo", "REPO", "GITHUB_REPO", "github_repo"})) or repo
+        branch = _sanitize_secret(_recursive_secret_find(secrets_obj, {"branch", "BRANCH", "GITHUB_BRANCH", "github_branch"})) or branch
+        token = _sanitize_secret(_recursive_secret_find(secrets_obj, {"token", "TOKEN", "GITHUB_TOKEN", "github_token", "pat", "PAT"})) or token
     except Exception:
         pass
-    token = token or os.getenv("GITHUB_TOKEN", "") or os.getenv("GH_TOKEN", "")
-    owner = owner or os.getenv("GITHUB_OWNER", DEFAULT_GITHUB_OWNER)
-    repo = repo or os.getenv("GITHUB_REPO", DEFAULT_GITHUB_REPO)
-    branch = branch or os.getenv("GITHUB_BRANCH", DEFAULT_GITHUB_BRANCH)
+    token = _clean_github_token(token or os.getenv("GITHUB_TOKEN", "") or os.getenv("GH_TOKEN", ""))
+    owner = _sanitize_secret(owner or os.getenv("GITHUB_OWNER", DEFAULT_GITHUB_OWNER))
+    repo = _sanitize_secret(repo or os.getenv("GITHUB_REPO", DEFAULT_GITHUB_REPO))
+    branch = _sanitize_secret(branch or os.getenv("GITHUB_BRANCH", DEFAULT_GITHUB_BRANCH))
     return {"owner": owner, "repo": repo, "token": token, "branch": branch}
 
 
 def github_ready() -> bool:
     cfg = github_settings()
-    return bool(cfg["owner"] and cfg["repo"] and cfg["token"])
+    token = _clean_github_token(cfg.get("token", ""))
+    return bool(cfg.get("owner") and cfg.get("repo") and token)
 
 
-def github_headers() -> Dict[str, str]:
+def github_headers() -> Dict[str, str] | None:
     cfg = github_settings()
-    headers = {"Accept": "application/vnd.github+json"}
-    if cfg["token"]:
-        headers["Authorization"] = f"Bearer {cfg['token']}"
-    return headers
-
+    token = _clean_github_token(cfg.get("token", ""))
+    if not token:
+        return None
+    return {"Accept": "application/vnd.github+json", "Authorization": f"Bearer {token}"}
 
 def github_get_file(path: str) -> Dict | None:
     cfg = github_settings()
     if not cfg["owner"] or not cfg["repo"]:
         return None
     url = f"https://api.github.com/repos/{cfg['owner']}/{cfg['repo']}/contents/{path}"
-    r = requests.get(url, headers=github_headers(), params={"ref": cfg["branch"]}, timeout=30)
-    if r.status_code == 404:
+    try:
+        headers = github_headers()
+        if not headers:
+            return None
+        r = requests.get(url, headers=headers, params={"ref": cfg["branch"]}, timeout=30)
+        if r.status_code == 404:
+            return None
+        r.raise_for_status()
+        return r.json()
+    except requests.exceptions.InvalidHeader:
         return None
-    r.raise_for_status()
-    return r.json()
+    except requests.exceptions.RequestException:
+        return None
+    except Exception:
+        return None
 
 
 def github_put_json(path: str, payload: Dict, message: str) -> Tuple[bool, str]:
     cfg = github_settings()
     if not github_ready():
-        return False, "GitHub is not configured."
+        return False, "GitHub is not configured or token is invalid."
     url = f"https://api.github.com/repos/{cfg['owner']}/{cfg['repo']}/contents/{path}"
     existing = github_get_file(path)
     body = {
@@ -963,14 +954,24 @@ def github_put_json(path: str, payload: Dict, message: str) -> Tuple[bool, str]:
     }
     if existing and isinstance(existing, dict) and existing.get("sha"):
         body["sha"] = existing["sha"]
-    r = requests.put(url, headers=github_headers(), json=body, timeout=30)
-    if 200 <= r.status_code < 300:
-        return True, "OK"
     try:
-        detail = r.json()
-    except Exception:
-        detail = {"message": r.text}
-    return False, detail.get("message", "GitHub write failed")
+        headers = github_headers()
+        if not headers:
+            return False, "GitHub token missing or invalid."
+        r = requests.put(url, headers=headers, json=body, timeout=30)
+        if 200 <= r.status_code < 300:
+            return True, "OK"
+        try:
+            detail = r.json()
+        except Exception:
+            detail = {"message": r.text}
+        return False, detail.get("message", "GitHub write failed")
+    except requests.exceptions.InvalidHeader:
+        return False, "GitHub token invalid or malformed in secrets."
+    except requests.exceptions.RequestException as exc:
+        return False, f"GitHub request failed: {exc}"
+    except Exception as exc:
+        return False, f"GitHub unexpected error: {exc}"
 
 
 def load_draft_from_github(token: str) -> Tuple[bool, str, Dict | None]:
@@ -989,8 +990,6 @@ def load_draft_from_github(token: str) -> Tuple[bool, str, Dict | None]:
         if datetime.now(timezone.utc) > expiry:
             return False, "expired", payload
     return True, "ok", payload
-
-
 def build_payload(status: str) -> Dict:
     ensure_form_data()
     now = datetime.now(timezone.utc)
@@ -1023,16 +1022,12 @@ def build_payload(status: str) -> Dict:
         data[row] = fd.get(row)
         data[f"{row}_why"] = (fd.get(f"{row}_why") or "").strip()
     return data
-
-
 def payload_to_csv_bytes(payload: Dict) -> bytes:
     output = io.StringIO()
     writer = csv.DictWriter(output, fieldnames=list(payload.keys()))
     writer.writeheader()
     writer.writerow(payload)
     return output.getvalue().encode("utf-8-sig")
-
-
 def save_draft() -> Tuple[bool, str, Dict]:
     if not st.session_state.draft_token:
         st.session_state.draft_token = secrets.token_hex(4).upper()
@@ -1046,11 +1041,7 @@ def save_draft() -> Tuple[bool, str, Dict]:
             f"Save validation draft {st.session_state.draft_token}",
         )
         return ok, msg, payload
-    return False, "GitHub is not configured. Add a writable GITHUB_TOKEN in Streamlit secrets or environment variables.", payload
-
-
-
-
+    return False, "GitHub is not configured or token is invalid. Add a writable GITHUB_TOKEN in Streamlit secrets or environment variables.", payload
 def maybe_autosave_current_progress(txt: Dict) -> None:
     email = (get_value("email") or "").strip()
     if not valid_email(email):
@@ -1062,8 +1053,6 @@ def maybe_autosave_current_progress(txt: Dict) -> None:
         st.query_params["draft"] = st.session_state.draft_token
     else:
         st.session_state.autosave_error = f"{txt['autosave_failed']} {msg}"
-
-
 def submit_final() -> Tuple[bool, str, Dict]:
     payload = build_payload("submitted")
     timestamp = datetime.now(timezone.utc)
@@ -1074,9 +1063,7 @@ def submit_final() -> Tuple[bool, str, Dict]:
     if github_ready():
         ok, msg = github_put_json(path, payload, f"Add validation submission {sub_id}")
         return ok, msg, payload
-    return False, "GitHub is not configured. Add a writable GITHUB_TOKEN in Streamlit secrets or environment variables.", payload
-
-
+    return False, "GitHub is not configured or token is invalid. Add a writable GITHUB_TOKEN in Streamlit secrets or environment variables.", payload
 def apply_payload_to_state(payload: Dict) -> None:
     ensure_form_data()
     for key in FIELD_DEFAULTS.keys():
@@ -1093,8 +1080,6 @@ def apply_payload_to_state(payload: Dict) -> None:
     st.session_state.lang_selector = st.session_state.lang
     st.session_state.current_step = int(payload.get("current_step", 1))
     st.session_state.draft_token = payload.get("draft_token", st.session_state.draft_token)
-
-
 def validate_step(step: int, txt: Dict) -> List[str]:
     errors: List[str] = []
     q = txt["questions"]
@@ -1131,14 +1116,10 @@ def validate_step(step: int, txt: Dict) -> List[str]:
         if get_value("final_institutional_position") in {"yes_limited_adjustments", "no_substantial_revision"} and not (get_value("final_institutional_position_why") or "").strip():
             errors.append(f"{q["final_position"]} - {txt["overall_why"]}")
     return errors
-
-
 def choice_index(options: List[str], value: str | None) -> int | None:
     if value in options:
         return options.index(value)
     return None
-
-
 def render_reference_links(txt: Dict) -> None:
     st.markdown(f"**{txt['ref_docs']}**")
     st.caption(txt["doc_links"])
@@ -1152,10 +1133,6 @@ def render_reference_links(txt: Dict) -> None:
         note_url = DEFAULT_NOTE_URLS.get(lang_code, "")
         if note_url:
             note_cols[idx].link_button(txt[label_key], note_url)
-
-
-
-
 def render_language_bar(txt: Dict) -> None:
     st.markdown(f"**{txt['language_bar']}**")
     selected_lang = st.radio(
@@ -1171,8 +1148,6 @@ def render_language_bar(txt: Dict) -> None:
         st.session_state.lang = selected_lang
         st.session_state.lang_selector = selected_lang
         st.rerun()
-
-
 def render_sidebar(txt: Dict) -> None:
     st.sidebar.progress(st.session_state.current_step / STEP_COUNT, text=f"{txt['step_label']} : {st.session_state.current_step}/{STEP_COUNT}")
     st.sidebar.caption(txt["sidebar_help"])
@@ -1231,8 +1206,6 @@ def render_sidebar(txt: Dict) -> None:
     st.sidebar.markdown("---")
     if st.sidebar.button(txt["start_over"], use_container_width=True):
         reset_form()
-
-
 def maybe_load_query_draft(txt: Dict) -> None:
     if st.session_state.loaded_from_query:
         return
@@ -1248,8 +1221,6 @@ def maybe_load_query_draft(txt: Dict) -> None:
             st.session_state.loaded_from_query = True
         else:
             st.session_state.loaded_from_query = True
-
-
 def render_choice_field(label: str, code_key: str, options_map: Dict[str, str], required_reason_values: set[str], txt: Dict) -> None:
     value_key = prime_widget(code_key)
     st.radio(
@@ -1267,8 +1238,6 @@ def render_choice_field(label: str, code_key: str, options_map: Dict[str, str], 
             key=why_key,
             placeholder=txt["placeholders"]["why"],
         )
-
-
 def render_step_1(txt: Dict) -> None:
     q = txt["questions"]
     st.subheader(txt["sections"][1])
@@ -1278,7 +1247,6 @@ def render_step_1(txt: Dict) -> None:
     country_or_rec_key = prime_widget("country_or_rec")
     respondent_title_key = prime_widget("respondent_title")
     email_key = prime_widget("email")
-
     st.text_input(
         q["institution_acronym"],
         key=institution_acronym_key,
@@ -1313,14 +1281,10 @@ def render_step_1(txt: Dict) -> None:
     if st.session_state[respondent_title_key] == "other":
         st.text_input(txt["other_specify"], key=prime_widget("respondent_title_other"))
     st.text_input(q["email"], key=email_key, placeholder=txt["placeholders"]["email"])
-
-
 def render_step_2(txt: Dict) -> None:
     q = txt["questions"]
     st.subheader(txt["sections"][2])
     render_grid_section(STRATEGIC_ROWS, q["strategic_grid"], "strategic_comments", txt["responses"], txt, "strategic_rows")
-
-
 def render_grid_section(rows: List[str], label: str, comments_key: str, options_map: Dict[str, str], txt: Dict, section_key: str) -> None:
     st.markdown(f"**{label}**")
     labels = txt[section_key]
@@ -1349,15 +1313,11 @@ def render_grid_section(rows: List[str], label: str, comments_key: str, options_
         key=prime_widget(comments_key),
         placeholder=txt["placeholders"]["summary"],
     )
-
-
 def render_step_3(txt: Dict) -> None:
     q = txt["questions"]
     st.subheader(txt["sections"][3])
     render_grid_section(DOMAIN_ROWS, q["domain_grid"], "domain_comments", txt["responses"], txt, "domain_rows")
     st.text_area(q["top_3_revisions"], key=prime_widget("top_3_revisions"), placeholder=txt["placeholders"]["revisions"])
-
-
 def render_step_4(txt: Dict) -> None:
     q = txt["questions"]
     st.subheader(txt["sections"][4])
@@ -1377,8 +1337,6 @@ def render_step_4(txt: Dict) -> None:
             key=prime_widget("final_institutional_position_why"),
             placeholder=txt["placeholders"]["why"],
         )
-
-
 def render_step_5(txt: Dict) -> None:
     q = txt["questions"]
     st.subheader(txt["sections"][5])
@@ -1392,8 +1350,6 @@ def render_step_5(txt: Dict) -> None:
         key=final_position_key,
         horizontal=False,
     )
-
-
 def render_step_form(txt: Dict) -> None:
     step = st.session_state.current_step
     with st.form(key=f"step_form_{step}", clear_on_submit=False):
@@ -1405,7 +1361,6 @@ def render_step_form(txt: Dict) -> None:
             render_step_3(txt)
         elif step == 4:
             render_step_4(txt)
-
         cols = st.columns([1, 1, 2])
         back_clicked = False
         if step > 1:
@@ -1446,15 +1401,12 @@ def render_step_form(txt: Dict) -> None:
                     else:
                         st.warning(txt["submit_warning"])
                         st.session_state.github_message = msg
-
         if back_clicked:
             sync_step_fields(step)
             maybe_autosave_current_progress(txt)
             clear_widget_cache()
             st.session_state.current_step -= 1
             st.rerun()
-
-
 def render_submission_downloads(txt: Dict) -> None:
     payload = st.session_state.last_submit_payload
     if not payload:
@@ -1473,8 +1425,6 @@ def render_submission_downloads(txt: Dict) -> None:
         mime="text/csv",
         use_container_width=True,
     )
-
-
 def main() -> None:
     st.set_page_config(page_title="Validation form", page_icon="📝", layout="wide")
     init_state()
@@ -1487,7 +1437,6 @@ def main() -> None:
     render_language_bar(txt)
     txt = get_text(st.session_state.lang)
     inject_base_css(st.session_state.lang)
-
     st.title(txt["title"])
     st.caption(txt["subtitle"])
     st.write(txt["intro"])
@@ -1505,14 +1454,11 @@ def main() -> None:
         st.warning(st.session_state.autosave_error)
     st.progress(st.session_state.current_step / STEP_COUNT, text=f"{txt['step_label']} : {st.session_state.current_step}/{STEP_COUNT}")
     st.markdown("---")
-
     render_step_form(txt)
     if st.session_state.github_message:
         st.caption(st.session_state.github_message)
     render_submission_downloads(txt)
     st.markdown("---")
     st.caption(f"Streamlit • GitHub • v{APP_VERSION}")
-
-
 if __name__ == "__main__":
     main()
