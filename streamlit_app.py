@@ -919,6 +919,15 @@ def github_headers() -> Dict[str, str] | None:
         return None
     return {"Accept": "application/vnd.github+json", "Authorization": f"Bearer {token}"}
 
+def github_candidate_branches(cfg: Dict[str, str]) -> List[str]:
+    branches: List[str] = []
+    for candidate in [cfg.get("branch", ""), "main", "master"]:
+        candidate = (candidate or "").strip()
+        if candidate and candidate not in branches:
+            branches.append(candidate)
+    return branches
+
+
 def github_get_file(path: str) -> Dict | None:
     cfg = github_settings()
     if not cfg["owner"] or not cfg["repo"]:
@@ -928,11 +937,16 @@ def github_get_file(path: str) -> Dict | None:
         headers = github_headers()
         if not headers:
             return None
-        r = requests.get(url, headers=headers, params={"ref": cfg["branch"]}, timeout=30)
-        if r.status_code == 404:
-            return None
-        r.raise_for_status()
-        return r.json()
+        for branch in github_candidate_branches(cfg):
+            r = requests.get(url, headers=headers, params={"ref": branch}, timeout=30)
+            if r.status_code == 404:
+                continue
+            r.raise_for_status()
+            data = r.json()
+            if isinstance(data, dict):
+                data["_resolved_branch"] = branch
+            return data
+        return None
     except requests.exceptions.InvalidHeader:
         return None
     except requests.exceptions.RequestException:
@@ -947,28 +961,37 @@ def github_put_json(path: str, payload: Dict, message: str) -> Tuple[bool, str]:
         return False, "GitHub is not configured or token is invalid."
     url = f"https://api.github.com/repos/{cfg['owner']}/{cfg['repo']}/contents/{path}"
     existing = github_get_file(path)
-    body = {
-        "message": message,
-        "content": base64.b64encode(json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8")).decode("utf-8"),
-        "branch": cfg["branch"],
-    }
-    if existing and isinstance(existing, dict) and existing.get("sha"):
-        body["sha"] = existing["sha"]
+    branches_to_try = github_candidate_branches(cfg)
+    if existing and isinstance(existing, dict) and existing.get("_resolved_branch"):
+        resolved = existing.get("_resolved_branch")
+        branches_to_try = [resolved] + [b for b in branches_to_try if b != resolved]
+    content_b64 = base64.b64encode(json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8")).decode("utf-8")
     try:
         headers = github_headers()
         if not headers:
             return False, "GitHub token missing or invalid."
-        r = requests.put(url, headers=headers, json=body, timeout=30)
-        if 200 <= r.status_code < 300:
-            return True, "OK"
-        try:
-            detail = r.json()
-        except Exception:
-            detail = {"message": r.text}
-        msg = detail.get("message", "GitHub write failed")
-        if msg == "Not Found":
-            msg = f"Not Found: check owner/repo/branch/path configuration (current branch={cfg['branch']}, path={path})"
-        return False, msg
+        last_msg = "GitHub write failed"
+        for branch in branches_to_try:
+            body = {
+                "message": message,
+                "content": content_b64,
+                "branch": branch,
+            }
+            if existing and isinstance(existing, dict) and existing.get("sha"):
+                body["sha"] = existing["sha"]
+            r = requests.put(url, headers=headers, json=body, timeout=30)
+            if 200 <= r.status_code < 300:
+                return True, f"OK (branch={branch})"
+            try:
+                detail = r.json()
+            except Exception:
+                detail = {"message": r.text}
+            msg = detail.get("message", "GitHub write failed")
+            last_msg = msg
+            if msg == "Not Found":
+                continue
+            return False, msg
+        return False, f"Not Found: check owner/repo/path configuration or branch secrets. Tried branches={', '.join(branches_to_try)}; path={path}"
     except requests.exceptions.InvalidHeader:
         return False, "GitHub token invalid or malformed in secrets."
     except requests.exceptions.RequestException as exc:
