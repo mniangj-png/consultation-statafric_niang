@@ -40,7 +40,7 @@ LANGUAGE_OPTIONS = {
     "ar": "العربية",
 }
 
-STEP_COUNT = 5
+STEP_COUNT = 4
 INSTITUTION_TYPES = ["nso", "rec"]
 RESPONSE_CODES = ["go", "go_with_reservations", "no_go", "no_opinion"]
 USABILITY_CODES = ["yes", "mostly_yes", "mostly_no", "no", "no_opinion"]
@@ -158,7 +158,7 @@ COUNTRY_OR_REC_OPTIONS = [
 
 TRANSLATIONS: Dict[str, Dict] = {
     "en": {
-        "title": "Strategic validation of the draft document on priority socio-economic statistics in Africa",
+        "title": "Validation of the draft document on priority socio-economic statistics in Africa",
         "subtitle": "Multilingual institutional questionnaire built from the decision-oriented summary note.",
         "doc_links": "Full draft document",
         "note_downloads": "Decision-oriented summary note",
@@ -204,6 +204,10 @@ TRANSLATIONS: Dict[str, Dict] = {
         "start_over": "Start a new response",
         "submit_success": "Thank you. Your final response has been recorded successfully.",
         "submit_warning": "The form is valid, but online saving failed. Please download the response files below and share them manually.",
+        "autosave_started": "Automatic draft saving is now active. Your draft will be saved online as you move through the questionnaire.",
+        "autosave_code": "Resume code",
+        "autosave_failed": "Automatic online draft saving could not be started.",
+        "language_bar": "Languages",
         "draft_code_note": "Resume code",
         "questions_required": "Required questions must be completed to continue.",
         "save_label": "Saving…",
@@ -214,10 +218,9 @@ TRANSLATIONS: Dict[str, Dict] = {
         "other_country": "Other country or REC",
         "sections": {
             1: "Section 1. Identification of the respondent",
-            2: "Section 2. Overall validation",
-            3: "Section 3. Validation of strategic choices",
-            4: "Section 4. Validation of thematic domains",
-            5: "Section 5. Final institutional position",
+            2: "Section 2. Validation of strategic choices",
+            3: "Section 3. Validation of thematic domains",
+            4: "Section 4. Final institutional position",
         },
         "questions": {
             "institution_acronym": "1. Acronym of institution",
@@ -227,12 +230,12 @@ TRANSLATIONS: Dict[str, Dict] = {
             "email": "5. Email",
             "overall_validation": "6. Overall validation of the document",
             "operational_usability": "7. Is the document operational enough for use by Member States and RECs?",
-            "strategic_grid": "8. Please assess the following strategic elements",
-            "strategic_comments": "9. If you selected ‘Go with reservations’ or ‘No-Go’ for one or more elements above, please specify which ones and why",
-            "domain_grid": "10. Please assess the 12 proposed thematic domains",
-            "domain_comments": "11. If you selected ‘Go with reservations’ or ‘No-Go’ for one or more domains, please specify which ones and why",
-            "top_3_revisions": "12. What are the three most important revisions needed before final validation?",
-            "final_position": "13. Is your institution broadly in favor of finalizing the document after consideration of comments received?",
+            "strategic_grid": "6. Please assess the following elements",
+            "strategic_comments": "7. If you selected ‘Go with reservations’ or ‘No-Go’ for one or more elements above, please specify which ones and why",
+            "domain_grid": "8. Please assess the 12 proposed thematic domains",
+            "domain_comments": "9. If you selected ‘Go with reservations’ or ‘No-Go’ for one or more domains, please specify which ones and why",
+            "top_3_revisions": "10. What are the three most important revisions needed before final validation?",
+            "final_position": "11. Is your institution broadly in favor of finalizing the document after consideration of comments received?",
         },
         "institution_types": {
             "nso": "National Statistical Office",
@@ -301,7 +304,7 @@ TRANSLATIONS: Dict[str, Dict] = {
         },
     },
     "fr": {
-        "title": "Validation stratégique du projet de document sur les statistiques socio-économiques prioritaires en Afrique",
+        "title": "Validation du projet de document sur les statistiques socio-économiques prioritaires en Afrique",
         "subtitle": "Questionnaire institutionnel multilingue construit à partir de la note de synthèse décisionnelle.",
         "doc_links": "Document complet",
         "note_downloads": "Note de synthèse décisionnelle",
@@ -347,6 +350,10 @@ TRANSLATIONS: Dict[str, Dict] = {
         "start_over": "Commencer une nouvelle réponse",
         "submit_success": "Merci. Votre réponse finale a été enregistrée avec succès.",
         "submit_warning": "Le formulaire est valide, mais l’enregistrement en ligne a échoué. Merci de télécharger les fichiers de réponse ci-dessous et de les transmettre manuellement.",
+        "autosave_started": "L’enregistrement automatique du brouillon est maintenant activé. Votre brouillon sera sauvegardé en ligne au fur et à mesure de votre progression dans le questionnaire.",
+        "autosave_code": "Code de reprise",
+        "autosave_failed": "Le démarrage de l’enregistrement automatique en ligne du brouillon a échoué.",
+        "language_bar": "Langues",
         "draft_code_note": "Code de reprise",
         "questions_required": "Les questions obligatoires doivent être renseignées pour pouvoir poursuivre.",
         "save_label": "Enregistrement…",
@@ -357,10 +364,9 @@ TRANSLATIONS: Dict[str, Dict] = {
         "other_country": "Autre pays ou CER",
         "sections": {
             1: "Section 1. Identification du répondant",
-            2: "Section 2. Validation générale",
-            3: "Section 3. Validation des choix stratégiques",
-            4: "Section 4. Validation des domaines thématiques",
-            5: "Section 5. Position finale de l’institution",
+            2: "Section 2. Validation des choix",
+            3: "Section 3. Validation des domaines thématiques",
+            4: "Section 4. Position finale de l’institution",
         },
         "questions": {
             "institution_acronym": "1. Sigle de l’institution",
@@ -370,12 +376,12 @@ TRANSLATIONS: Dict[str, Dict] = {
             "email": "5. Email",
             "overall_validation": "6. Validation globale du document",
             "operational_usability": "7. Le document vous paraît-il suffisamment opérationnel pour un usage par les États membres et les CER ?",
-            "strategic_grid": "8. Veuillez apprécier les éléments stratégiques suivants",
-            "strategic_comments": "9. Si vous avez indiqué ‘Validé sous réserve’ ou ‘Non-validé’ pour un ou plusieurs éléments ci-dessus, merci de préciser lesquels et pourquoi",
-            "domain_grid": "10. Veuillez apprécier les 12 domaines thématiques proposés",
-            "domain_comments": "11. Si vous avez indiqué ‘Validé sous réserve’ ou ‘Non-validé’ pour un ou plusieurs domaines, merci de préciser lesquels et pourquoi",
-            "top_3_revisions": "12. Quelles sont les trois révisions les plus importantes à apporter avant validation finale ?",
-            "final_position": "13. Votre institution est-elle globalement favorable à la finalisation du document après prise en compte des observations reçues ?",
+            "strategic_grid": "6. Veuillez apprécier les éléments suivants",
+            "strategic_comments": "7. Si vous avez indiqué ‘Validé sous réserve’ ou ‘Non-validé’ pour un ou plusieurs éléments ci-dessus, merci de préciser lesquels et pourquoi",
+            "domain_grid": "8. Veuillez apprécier les 12 domaines thématiques proposés",
+            "domain_comments": "9. Si vous avez indiqué ‘Validé sous réserve’ ou ‘Non-validé’ pour un ou plusieurs domaines, merci de préciser lesquels et pourquoi",
+            "top_3_revisions": "10. Quelles sont les trois révisions les plus importantes à apporter avant validation finale ?",
+            "final_position": "11. Votre institution est-elle globalement favorable à la finalisation du document après prise en compte des observations reçues ?",
         },
         "institution_types": {
             "nso": "Institut national de statistique (INS)",
@@ -444,7 +450,7 @@ TRANSLATIONS: Dict[str, Dict] = {
         },
     },
     "pt": {
-        "title": "Validação estratégica do projeto de documento sobre estatísticas socioeconómicas prioritárias em África",
+        "title": "Validação do projeto de documento sobre estatísticas socioeconómicas prioritárias em África",
         "subtitle": "Questionário institucional multilingue construído a partir da nota de síntese decisional.",
         "lang": "Idioma",
         "intro": "Por favor, preencha este questionário em nome da sua instituição.",
@@ -484,6 +490,10 @@ TRANSLATIONS: Dict[str, Dict] = {
         "start_over": "Iniciar uma nova resposta",
         "submit_success": "Obrigado. A sua resposta final foi registada com sucesso.",
         "submit_warning": "O formulário é válido, mas a gravação online falhou. Descarregue os ficheiros de resposta abaixo e partilhe-os manualmente.",
+        "autosave_started": "A gravação automática do rascunho está agora ativa. O seu rascunho será guardado online à medida que avança no questionário.",
+        "autosave_code": "Código de retoma",
+        "autosave_failed": "Não foi possível iniciar a gravação automática online do rascunho.",
+        "language_bar": "Idiomas",
         "draft_code_note": "Código de retoma",
         "questions_required": "As perguntas obrigatórias devem ser preenchidas para continuar.",
         "save_label": "A guardar…",
@@ -494,10 +504,9 @@ TRANSLATIONS: Dict[str, Dict] = {
         "other_country": "Outro país ou CER",
         "sections": {
             1: "Secção 1. Identificação do respondente",
-            2: "Secção 2. Validação geral",
-            3: "Secção 3. Validação das escolhas estratégicas",
-            4: "Secção 4. Validação dos domínios temáticos",
-            5: "Secção 5. Posição final da instituição",
+            2: "Secção 2. Validação das escolhas",
+            3: "Secção 3. Validação dos domínios temáticos",
+            4: "Secção 4. Posição final da instituição",
         },
         "questions": {
             "institution_acronym": "1. Sigla da instituição",
@@ -507,12 +516,12 @@ TRANSLATIONS: Dict[str, Dict] = {
             "email": "5. Email",
             "overall_validation": "6. Validação global do documento",
             "operational_usability": "7. O documento parece suficientemente operacional para utilização pelos Estados-Membros e pelas CER?",
-            "strategic_grid": "8. Aprecie os seguintes elementos estratégicos",
-            "strategic_comments": "9. Se selecionou ‘Validado com reservas’ ou ‘Não validado’ para um ou mais elementos acima, especifique quais e porquê",
-            "domain_grid": "10. Aprecie os 12 domínios temáticos propostos",
-            "domain_comments": "11. Se selecionou ‘Validado com reservas’ ou ‘Não validado’ para um ou mais domínios, especifique quais e porquê",
-            "top_3_revisions": "12. Quais são as três revisões mais importantes a introduzir antes da validação final?",
-            "final_position": "13. A sua instituição é globalmente favorável à finalização do documento após a consideração das observações recebidas?",
+            "strategic_grid": "6. Aprecie os seguintes elementos",
+            "strategic_comments": "7. Se selecionou ‘Validado com reservas’ ou ‘Não validado’ para um ou mais elementos acima, especifique quais e porquê",
+            "domain_grid": "8. Aprecie os 12 domínios temáticos propostos",
+            "domain_comments": "9. Se selecionou ‘Validado com reservas’ ou ‘Não validado’ para um ou mais domínios, especifique quais e porquê",
+            "top_3_revisions": "10. Quais são as três revisões mais importantes a introduzir antes da validação final?",
+            "final_position": "11. A sua instituição é globalmente favorável à finalização do documento após a consideração das observações recebidas?",
         },
         "institution_types": {
             "nso": "Instituto Nacional de Estatística",
@@ -581,7 +590,7 @@ TRANSLATIONS: Dict[str, Dict] = {
         },
     },
     "ar": {
-        "title": "التحقق الاستراتيجي من مشروع الوثيقة الخاصة بالإحصاءات الاجتماعية والاقتصادية ذات الأولوية في أفريقيا",
+        "title": "التحقق من مشروع الوثيقة الخاصة بالإحصاءات الاجتماعية والاقتصادية ذات الأولوية في أفريقيا",
         "subtitle": "استبيان مؤسسي متعدد اللغات مبني على المذكرة التركيبية التقريرية.",
         "doc_links": "الوثيقة الكاملة",
         "note_downloads": "المذكرة التركيبية التقريرية",
@@ -627,6 +636,10 @@ TRANSLATIONS: Dict[str, Dict] = {
         "start_over": "بدء إجابة جديدة",
         "submit_success": "شكراً لكم. تم تسجيل الإجابة النهائية بنجاح.",
         "submit_warning": "الاستبيان صالح، لكن الحفظ عبر الإنترنت فشل. يرجى تنزيل ملفات الإجابة أدناه ومشاركتها يدوياً.",
+        "autosave_started": "تم الآن تفعيل الحفظ التلقائي للمسودة. ستُحفَظ مسودتكم على الإنترنت أثناء تقدمكم في الاستبيان.",
+        "autosave_code": "رمز الاستئناف",
+        "autosave_failed": "تعذر بدء الحفظ التلقائي للمسودة عبر الإنترنت.",
+        "language_bar": "اللغات",
         "draft_code_note": "رمز الاستئناف",
         "questions_required": "يجب استكمال الأسئلة الإلزامية للمتابعة.",
         "save_label": "جارٍ الحفظ…",
@@ -637,10 +650,9 @@ TRANSLATIONS: Dict[str, Dict] = {
         "other_country": "بلد أو تجمع إقليمي آخر",
         "sections": {
             1: "القسم 1. تعريف المجيب",
-            2: "القسم 2. التحقق العام",
-            3: "القسم 3. التحقق من الخيارات الاستراتيجية",
-            4: "القسم 4. التحقق من المجالات الموضوعية",
-            5: "القسم 5. الموقف النهائي للمؤسسة",
+            2: "القسم 2. التحقق من الخيارات",
+            3: "القسم 3. التحقق من المجالات الموضوعية",
+            4: "القسم 4. الموقف النهائي للمؤسسة",
         },
         "questions": {
             "institution_acronym": "1. اختصار المؤسسة",
@@ -650,10 +662,10 @@ TRANSLATIONS: Dict[str, Dict] = {
             "email": "5. البريد الإلكتروني",
             "overall_validation": "6. التحقق العام من الوثيقة",
             "operational_usability": "7. هل تبدو الوثيقة عملية بما يكفي للاستخدام من قبل الدول الأعضاء والتجمعات الاقتصادية الإقليمية؟",
-            "strategic_grid": "8. يرجى تقييم العناصر الاستراتيجية التالية",
-            "strategic_comments": "9. إذا اخترتم ‘مُعتمد مع تحفظات’ أو ‘غير معتمد’ لعنصر واحد أو أكثر أعلاه، يرجى تحديد العناصر وسبب ذلك",
-            "domain_grid": "10. يرجى تقييم المجالات الموضوعية الاثني عشر المقترحة",
-            "domain_comments": "11. إذا اخترتم ‘مُعتمد مع تحفظات’ أو ‘غير معتمد’ لمجال واحد أو أكثر، يرجى تحديد المجالات وسبب ذلك",
+            "strategic_grid": "6. يرجى تقييم العناصر التالية",
+            "strategic_comments": "7. إذا اخترتم ‘مُعتمد مع تحفظات’ أو ‘غير معتمد’ لعنصر واحد أو أكثر أعلاه، يرجى تحديد العناصر وسبب ذلك",
+            "domain_grid": "8. يرجى تقييم المجالات الموضوعية الاثني عشر المقترحة",
+            "domain_comments": "9. إذا اخترتم ‘مُعتمد مع تحفظات’ أو ‘غير معتمد’ لمجال واحد أو أكثر، يرجى تحديد المجالات وسبب ذلك",
             "top_3_revisions": "12. ما هي أهم ثلاثة تعديلات مطلوبة قبل الاعتماد النهائي؟",
             "final_position": "13. هل مؤسستكم مؤيدة عموماً لإنهاء الوثيقة بعد أخذ الملاحظات الواردة في الاعتبار؟",
         },
@@ -758,15 +770,9 @@ STEP_FIELDS = {
         "respondent_title_other",
         "email",
     ],
-    2: [
-        "overall_validation",
-        "overall_validation_why",
-        "operational_usability",
-        "operational_usability_why",
-    ],
-    3: STRATEGIC_ROWS + [f"{row}_why" for row in STRATEGIC_ROWS] + ["strategic_comments"],
-    4: DOMAIN_ROWS + [f"{row}_why" for row in DOMAIN_ROWS] + ["domain_comments", "top_3_revisions"],
-    5: ["final_institutional_position"],
+    2: STRATEGIC_ROWS + [f"{row}_why" for row in STRATEGIC_ROWS] + ["strategic_comments"],
+    3: DOMAIN_ROWS + [f"{row}_why" for row in DOMAIN_ROWS] + ["domain_comments", "top_3_revisions"],
+    4: ["final_institutional_position"],
 }
 
 
@@ -858,6 +864,10 @@ def init_state() -> None:
         st.session_state.github_message = ""
     if "loaded_from_query" not in st.session_state:
         st.session_state.loaded_from_query = False
+    if "autosave_notice" not in st.session_state:
+        st.session_state.autosave_notice = ""
+    if "autosave_error" not in st.session_state:
+        st.session_state.autosave_error = ""
 
 
 def reset_form() -> None:
@@ -868,6 +878,8 @@ def reset_form() -> None:
     st.session_state.draft_token = ""
     st.session_state.last_submit_payload = None
     st.session_state.github_message = ""
+    st.session_state.autosave_notice = ""
+    st.session_state.autosave_error = ""
     st.session_state.lang = lang
     st.session_state.lang_selector = lang
     st.query_params.clear()
@@ -885,16 +897,13 @@ def github_settings() -> Dict[str, str]:
     branch = DEFAULT_GITHUB_BRANCH
     try:
         gh = st.secrets.get("github", {})
-        owner = gh.get("owner", "")
-        repo = gh.get("repo", "")
+        owner = gh.get("owner", DEFAULT_GITHUB_OWNER) or DEFAULT_GITHUB_OWNER
+        repo = gh.get("repo", DEFAULT_GITHUB_REPO) or DEFAULT_GITHUB_REPO
         token = gh.get("token", "")
-        branch = gh.get("branch", "main")
+        branch = gh.get("branch", DEFAULT_GITHUB_BRANCH) or DEFAULT_GITHUB_BRANCH
     except Exception:
         pass
-    owner = owner or DEFAULT_GITHUB_OWNER
-    repo = repo or DEFAULT_GITHUB_REPO
     token = token or os.getenv("GITHUB_TOKEN", "")
-    branch = branch or DEFAULT_GITHUB_BRANCH
     return {"owner": owner, "repo": repo, "token": token, "branch": branch}
 
 
@@ -1021,6 +1030,21 @@ def save_draft() -> Tuple[bool, str, Dict]:
     return False, "GitHub is not configured.", payload
 
 
+
+
+def maybe_autosave_current_progress(txt: Dict) -> None:
+    email = (get_value("email") or "").strip()
+    if not valid_email(email):
+        return
+    ok, msg, payload = save_draft()
+    if ok:
+        st.session_state.autosave_notice = f"{txt['autosave_started']} {txt['autosave_code']} : {st.session_state.draft_token}"
+        st.session_state.autosave_error = ""
+        st.query_params["draft"] = st.session_state.draft_token
+    else:
+        st.session_state.autosave_error = f"{txt['autosave_failed']} {msg}"
+
+
 def submit_final() -> Tuple[bool, str, Dict]:
     payload = build_payload("submitted")
     timestamp = datetime.now(timezone.utc)
@@ -1071,27 +1095,18 @@ def validate_step(step: int, txt: Dict) -> List[str]:
         if not (get_value("email") or "").strip() or not valid_email((get_value("email") or "")):
             errors.append(q["email"])
     elif step == 2:
-        if not get_value("overall_validation"):
-            errors.append(q["overall_validation"])
-        if get_value("overall_validation") in {"go_with_reservations", "no_go"} and not (get_value("overall_validation_why") or "").strip():
-            errors.append(f"{q['overall_validation']} - {txt['overall_why']}")
-        if not get_value("operational_usability"):
-            errors.append(q["operational_usability"])
-        if get_value("operational_usability") in {"mostly_no", "no"} and not (get_value("operational_usability_why") or "").strip():
-            errors.append(f"{q['operational_usability']} - {txt['overall_why']}")
-    elif step == 3:
         for row in STRATEGIC_ROWS:
             if not get_value(row):
                 errors.append(txt["strategic_rows"][row])
             if get_value(row) in {"go_with_reservations", "no_go"} and not (get_value(f"{row}_why") or "").strip():
                 errors.append(f"{txt['strategic_rows'][row]} - {txt['overall_why']}")
-    elif step == 4:
+    elif step == 3:
         for row in DOMAIN_ROWS:
             if not get_value(row):
                 errors.append(txt["domain_rows"][row])
             if get_value(row) in {"go_with_reservations", "no_go"} and not (get_value(f"{row}_why") or "").strip():
                 errors.append(f"{txt['domain_rows'][row]} - {txt['overall_why']}")
-    elif step == 5:
+    elif step == 4:
         if not get_value("final_institutional_position"):
             errors.append(q["final_position"])
     return errors
@@ -1118,18 +1133,26 @@ def render_reference_links(txt: Dict) -> None:
             note_cols[idx].link_button(txt[label_key], note_url)
 
 
-def render_sidebar(txt: Dict) -> None:
-    st.sidebar.markdown(f"### {txt['lang']}")
-    selected_lang = st.sidebar.selectbox(
+
+
+def render_language_bar(txt: Dict) -> None:
+    st.markdown(f"**{txt['language_bar']}**")
+    selected_lang = st.radio(
         txt["lang"],
         options=list(LANGUAGE_OPTIONS.keys()),
         index=list(LANGUAGE_OPTIONS.keys()).index(st.session_state.lang),
         format_func=lambda x: LANGUAGE_OPTIONS[x],
-        key="lang_selector",
+        key="lang_selector_main",
+        horizontal=True,
+        label_visibility="collapsed",
     )
     if selected_lang != st.session_state.lang:
         st.session_state.lang = selected_lang
+        st.session_state.lang_selector = selected_lang
         st.rerun()
+
+
+def render_sidebar(txt: Dict) -> None:
     st.sidebar.progress(st.session_state.current_step / STEP_COUNT, text=f"{txt['step_label']} : {st.session_state.current_step}/{STEP_COUNT}")
     st.sidebar.caption(txt["sidebar_help"])
     if not github_ready():
@@ -1274,8 +1297,7 @@ def render_step_1(txt: Dict) -> None:
 def render_step_2(txt: Dict) -> None:
     q = txt["questions"]
     st.subheader(txt["sections"][2])
-    render_choice_field(q["overall_validation"], "overall_validation", txt["responses"], {"go_with_reservations", "no_go"}, txt)
-    render_choice_field(q["operational_usability"], "operational_usability", txt["usability"], {"mostly_no", "no"}, txt)
+    render_grid_section(STRATEGIC_ROWS, q["strategic_grid"], "strategic_comments", txt["responses"], txt, "strategic_rows")
 
 
 def render_grid_section(rows: List[str], label: str, comments_key: str, options_map: Dict[str, str], txt: Dict, section_key: str) -> None:
@@ -1311,14 +1333,23 @@ def render_grid_section(rows: List[str], label: str, comments_key: str, options_
 def render_step_3(txt: Dict) -> None:
     q = txt["questions"]
     st.subheader(txt["sections"][3])
-    render_grid_section(STRATEGIC_ROWS, q["strategic_grid"], "strategic_comments", txt["responses"], txt, "strategic_rows")
+    render_grid_section(DOMAIN_ROWS, q["domain_grid"], "domain_comments", txt["responses"], txt, "domain_rows")
+    st.text_area(q["top_3_revisions"], key=prime_widget("top_3_revisions"), placeholder=txt["placeholders"]["revisions"])
 
 
 def render_step_4(txt: Dict) -> None:
     q = txt["questions"]
     st.subheader(txt["sections"][4])
-    render_grid_section(DOMAIN_ROWS, q["domain_grid"], "domain_comments", txt["responses"], txt, "domain_rows")
-    st.text_area(q["top_3_revisions"], key=prime_widget("top_3_revisions"), placeholder=txt["placeholders"]["revisions"])
+    final_position_key = prime_widget("final_institutional_position")
+    final_options = list(txt["final_positions"].keys())
+    st.radio(
+        q["final_position"],
+        options=final_options,
+        index=choice_index(final_options, st.session_state[final_position_key]),
+        format_func=lambda x: txt["final_positions"][x],
+        key=final_position_key,
+        horizontal=False,
+    )
 
 
 def render_step_5(txt: Dict) -> None:
@@ -1347,8 +1378,6 @@ def render_step_form(txt: Dict) -> None:
             render_step_3(txt)
         elif step == 4:
             render_step_4(txt)
-        elif step == 5:
-            render_step_5(txt)
 
         cols = st.columns([1, 1, 2])
         back_clicked = False
@@ -1364,6 +1393,7 @@ def render_step_form(txt: Dict) -> None:
                     for err in errors:
                         st.write(f"- {err}")
                 else:
+                    maybe_autosave_current_progress(txt)
                     clear_widget_cache()
                     st.session_state.current_step += 1
                     st.rerun()
@@ -1379,6 +1409,7 @@ def render_step_form(txt: Dict) -> None:
                     for err in all_errors:
                         st.write(f"- {err}")
                 else:
+                    maybe_autosave_current_progress(txt)
                     with st.spinner(txt["save_label"]):
                         ok, msg, payload = submit_final()
                     st.session_state.last_submit_payload = payload
@@ -1391,6 +1422,7 @@ def render_step_form(txt: Dict) -> None:
 
         if back_clicked:
             sync_step_fields(step)
+            maybe_autosave_current_progress(txt)
             clear_widget_cache()
             st.session_state.current_step -= 1
             st.rerun()
@@ -1417,14 +1449,17 @@ def render_submission_downloads(txt: Dict) -> None:
 
 
 def main() -> None:
-    st.set_page_config(page_title="Strategic validation form", page_icon="📝", layout="wide")
+    st.set_page_config(page_title="Validation form", page_icon="📝", layout="wide")
     init_state()
     txt = get_text(st.session_state.lang)
     inject_base_css(st.session_state.lang)
-    render_sidebar(txt)
+    maybe_load_query_draft(txt)
     txt = get_text(st.session_state.lang)
     inject_base_css(st.session_state.lang)
-    maybe_load_query_draft(txt)
+    render_sidebar(txt)
+    render_language_bar(txt)
+    txt = get_text(st.session_state.lang)
+    inject_base_css(st.session_state.lang)
 
     st.title(txt["title"])
     st.caption(txt["subtitle"])
@@ -1437,6 +1472,10 @@ def main() -> None:
         st.write(f"- {item}")
     st.caption(txt["estimated"])
     render_reference_links(txt)
+    if st.session_state.autosave_notice:
+        st.info(st.session_state.autosave_notice)
+    if st.session_state.autosave_error:
+        st.warning(st.session_state.autosave_error)
     st.progress(st.session_state.current_step / STEP_COUNT, text=f"{txt['step_label']} : {st.session_state.current_step}/{STEP_COUNT}")
     st.markdown("---")
 
