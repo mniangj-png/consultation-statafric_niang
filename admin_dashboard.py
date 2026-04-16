@@ -13,7 +13,7 @@ import pandas as pd
 import requests
 import streamlit as st
 
-APP_VERSION = "admin-clean-2026-04-16-v1"
+APP_VERSION = "admin-clean-2026-04-16-v2-proof"
 RESPONSE_PATH_ROOT = "data/validation_doc"
 MAX_FILTER_DATE = date(2026, 5, 31)
 CACHE_TTL_SECONDS = 60
@@ -133,7 +133,7 @@ def load_json_record(cfg: dict[str, str], path: str) -> dict[str, Any] | None:
 
 
 @st.cache_data(show_spinner=False, ttl=CACHE_TTL_SECONDS)
-def load_raw_records(source_kind: str) -> tuple[str, list[dict[str, Any]], list[str]]:
+def load_raw_records(source_kind: str, cache_buster: str = APP_VERSION) -> tuple[str, list[dict[str, Any]], list[str]]:
     cfg = get_github_config_from_streamlit()
     paths = list_json_paths(cfg, source_kind)
     records = []
@@ -222,6 +222,40 @@ def clean_records_df(df: pd.DataFrame, source_kind: str) -> tuple[pd.DataFrame, 
     # Remove helper columns not meant for display/exports.
     cleaned.drop(columns=["_email_norm", "_respondent_key", "_sort_time"], inplace=True, errors="ignore")
     return cleaned, stats
+
+
+def build_clean_diagnostics(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Return tables of removed test rows and removed duplicate rows."""
+    if df.empty:
+        return pd.DataFrame(), pd.DataFrame()
+
+    work = df.copy()
+    if "email" not in work.columns:
+        work["email"] = ""
+    work["_email_norm"] = work["email"].map(_norm_text)
+    tests_removed_df = work.loc[work["_email_norm"].isin(TEST_EMAILS)].copy()
+
+    non_tests = work.loc[~work["_email_norm"].isin(TEST_EMAILS)].copy()
+    non_tests["_respondent_key"] = non_tests.apply(_respondent_key, axis=1)
+    if "submitted_at" in non_tests.columns:
+        non_tests["_sort_time"] = pd.to_datetime(non_tests["submitted_at"], errors="coerce", utc=True)
+    elif "saved_at" in non_tests.columns:
+        non_tests["_sort_time"] = pd.to_datetime(non_tests["saved_at"], errors="coerce", utc=True)
+    else:
+        non_tests["_sort_time"] = pd.NaT
+
+    ranked = non_tests.sort_values(
+        by=["_respondent_key", "_sort_time", "_source_path"],
+        ascending=[True, False, False],
+        na_position="last",
+    ).copy()
+    ranked["_rank"] = ranked.groupby("_respondent_key").cumcount() + 1
+    duplicates_removed_df = ranked.loc[ranked["_rank"] > 1].copy()
+
+    drop_cols = ["_email_norm", "_respondent_key", "_sort_time", "_rank"]
+    tests_removed_df.drop(columns=drop_cols, inplace=True, errors="ignore")
+    duplicates_removed_df.drop(columns=drop_cols, inplace=True, errors="ignore")
+    return tests_removed_df, duplicates_removed_df
 
 
 def apply_filters(
@@ -353,6 +387,7 @@ def main() -> None:
     require_password()
     st.title("Dashboard Admin")
     st.caption(f"Téléchargement et exploration des réponses JSON, CSV et XLSX | version {APP_VERSION}")
+    st.info(f"VERSION ACTIVE DU DASHBOARD : {APP_VERSION}")
 
     top1, top2 = st.columns([3, 1])
     with top1:
@@ -368,10 +403,11 @@ def main() -> None:
             st.rerun()
 
     with st.spinner("Chargement des données depuis GitHub..."):
-        branch, records, paths = load_raw_records(kind)
+        branch, records, paths = load_raw_records(kind, APP_VERSION)
 
     raw_df = records_to_dataframe(records)
     df, clean_stats = clean_records_df(raw_df, kind)
+    removed_tests_df, removed_dups_df = build_clean_diagnostics(raw_df)
 
     st.success(
         f"Données chargées depuis la branche GitHub : {branch} | "
@@ -384,6 +420,22 @@ def main() -> None:
     c1.metric("Tests supprimés", clean_stats["tests_removed"])
     c2.metric("Doublons supprimés", clean_stats["duplicates_removed"])
     c3.metric("Lignes finales conservées", clean_stats["final_rows"])
+
+    # hard proof that cleaning has been applied before display
+    residual_tests = pd.DataFrame()
+    residual_dups = pd.DataFrame()
+    if not df.empty:
+        check = df.copy()
+        if "email" not in check.columns:
+            check["email"] = ""
+        check["_email_norm"] = check["email"].map(_norm_text)
+        residual_tests = check.loc[check["_email_norm"].isin(TEST_EMAILS)].copy()
+        check["_respondent_key"] = check.apply(_respondent_key, axis=1)
+        residual_dups = check.loc[check.duplicated(subset=["_respondent_key"], keep=False)].copy()
+    if not residual_tests.empty or not residual_dups.empty:
+        st.error("Attention : des tests ou doublons subsistent encore dans le tableau nettoyé.")
+    else:
+        st.success("Contrôle interne : aucun email de test ni doublon ne subsiste dans le tableau nettoyé.")
 
     if df.empty:
         st.warning("Aucune donnée n’a été trouvée après nettoyage.")
@@ -425,6 +477,20 @@ def main() -> None:
         date_from=pd.Timestamp(date_from) if isinstance(date_from, date) else None,
         date_to=pd.Timestamp(date_to) if isinstance(date_to, date) else None,
     )
+
+    with st.expander("Diagnostic de nettoyage", expanded=False):
+        st.write(f"Lignes retirées comme tests : {len(removed_tests_df)}")
+        if not removed_tests_df.empty:
+            st.dataframe(removed_tests_df, use_container_width=True, hide_index=True)
+        st.write(f"Lignes retirées comme doublons : {len(removed_dups_df)}")
+        if not removed_dups_df.empty:
+            st.dataframe(removed_dups_df, use_container_width=True, hide_index=True)
+        if not residual_tests.empty:
+            st.warning("Emails de test encore présents après nettoyage")
+            st.dataframe(residual_tests, use_container_width=True, hide_index=True)
+        if not residual_dups.empty:
+            st.warning("Doublons encore présents après nettoyage")
+            st.dataframe(residual_dups, use_container_width=True, hide_index=True)
 
     tab1, tab2, tab3, tab4 = st.tabs(["Tableau", "Téléchargements", "Résumé", "Enregistrement brut"])
 
