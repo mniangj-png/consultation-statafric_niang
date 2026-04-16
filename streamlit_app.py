@@ -6,6 +6,8 @@ import json
 import os
 import re
 import secrets
+import hashlib
+import unicodedata
 from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Tuple
 import requests
@@ -29,6 +31,7 @@ DEFAULT_DOC_URL_FR = os.getenv(
 DEFAULT_GITHUB_OWNER = os.getenv("GITHUB_OWNER", "mniangj-png")
 DEFAULT_GITHUB_REPO = os.getenv("GITHUB_REPO", "consultation-statafric_niang")
 DEFAULT_GITHUB_BRANCH = os.getenv("GITHUB_BRANCH", "main")
+TEST_EMAILS = {"kl@od.sd", "in@bc.sd", "de@re.bh"}
 LANGUAGE_OPTIONS = {
     "en": "English",
     "fr": "Français",
@@ -848,6 +851,12 @@ def reset_form() -> None:
     st.rerun()
 def valid_email(value: str) -> bool:
     return bool(re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", value.strip()))
+
+def normalize_email(value: str | None) -> str:
+    return (value or "").strip().lower()
+
+def is_test_email(value: str | None) -> bool:
+    return normalize_email(value) in TEST_EMAILS
 def _recursive_secret_find(obj, candidate_keys: set[str]) -> str:
     try:
         if hasattr(obj, "items"):
@@ -1016,6 +1025,33 @@ def load_draft_from_github(token: str) -> Tuple[bool, str, Dict | None]:
         if datetime.now(timezone.utc) > expiry:
             return False, "expired", payload
     return True, "ok", payload
+def _normalize_text_for_key(value: str | None) -> str:
+    value = (value or "").strip().lower()
+    if not value:
+        return ""
+    value = unicodedata.normalize("NFKD", value)
+    value = "".join(ch for ch in value if not unicodedata.combining(ch))
+    value = re.sub(r"[^a-z0-9]+", "-", value)
+    return value.strip("-")
+
+def respondent_unique_key(payload: Dict) -> str:
+    email = normalize_email(payload.get("email"))
+    if valid_email(email):
+        raw = f"email|{email}"
+        label = _normalize_text_for_key(email) or "respondent"
+    else:
+        parts = [
+            payload.get("institution_type") or "",
+            payload.get("country_or_rec") or "",
+            payload.get("institution_acronym") or "",
+            payload.get("respondent_title") or "",
+        ]
+        raw = "identity|" + "|".join(str(p).strip().lower() for p in parts)
+        label = "-".join(filter(None, (_normalize_text_for_key(str(p)) for p in parts))) or "respondent"
+    digest = hashlib.sha1(raw.encode("utf-8")).hexdigest()[:12].upper()
+    label = re.sub(r"-+", "-", label).strip("-")[:80] or "respondent"
+    return f"{label}-{digest}"
+
 def build_payload(status: str) -> Dict:
     ensure_form_data()
     now = datetime.now(timezone.utc)
@@ -1044,6 +1080,8 @@ def build_payload(status: str) -> Dict:
         "draft_token": st.session_state.draft_token,
         "current_step": st.session_state.current_step,
     }
+    data["respondent_key"] = respondent_unique_key(data)
+    data["is_test_email"] = is_test_email(data.get("email"))
     for row in STRATEGIC_ROWS + DOMAIN_ROWS:
         data[row] = fd.get(row)
         data[f"{row}_why"] = (fd.get(f"{row}_why") or "").strip()
@@ -1070,7 +1108,7 @@ def save_draft() -> Tuple[bool, str, Dict]:
     return False, "GitHub is not configured or token is invalid. Add a writable GITHUB_TOKEN in Streamlit secrets or environment variables.", payload
 def maybe_autosave_current_progress(txt: Dict) -> None:
     email = (get_value("email") or "").strip()
-    if not valid_email(email):
+    if not valid_email(email) or is_test_email(email):
         return
     ok, msg, payload = save_draft()
     if ok:
@@ -1082,12 +1120,21 @@ def maybe_autosave_current_progress(txt: Dict) -> None:
 def submit_final() -> Tuple[bool, str, Dict]:
     payload = build_payload("submitted")
     timestamp = datetime.now(timezone.utc)
+    respondent_key = payload.get("respondent_key") or respondent_unique_key(payload)
     sub_id = f"SUB-{timestamp.strftime('%Y%m%dT%H%M%SZ')}-{secrets.token_hex(3).upper()}"
     payload["submission_id"] = sub_id
     payload["submitted_at"] = timestamp.isoformat().replace("+00:00", "Z")
-    path = f"{RESPONSE_PATH_ROOT}/submissions/{timestamp:%Y/%m/%d}/{sub_id}.json"
+    payload["respondent_key"] = respondent_key
+    if is_test_email(payload.get("email")):
+        payload["submission_storage_mode"] = "ignored_test_email"
+        payload["submission_storage_path"] = ""
+        payload["status"] = "ignored_test_email"
+        return True, "Test email excluded from official database.", payload
+    payload["submission_storage_mode"] = "unique_per_respondent"
+    payload["submission_storage_path"] = f"{RESPONSE_PATH_ROOT}/submissions/by_respondent/{respondent_key}.json"
+    path = payload["submission_storage_path"]
     if github_ready():
-        ok, msg = github_put_json(path, payload, f"Add validation submission {sub_id}")
+        ok, msg = github_put_json(path, payload, f"Upsert validation submission for {respondent_key}")
         return ok, msg, payload
     return False, "GitHub is not configured or token is invalid. Add a writable GITHUB_TOKEN in Streamlit secrets or environment variables.", payload
 def apply_payload_to_state(payload: Dict) -> None:
@@ -1307,6 +1354,8 @@ def render_step_1(txt: Dict) -> None:
     if st.session_state[respondent_title_key] == "other":
         st.text_input(txt["other_specify"], key=prime_widget("respondent_title_other"))
     st.text_input(q["email"], key=email_key, placeholder=txt["placeholders"]["email"])
+    if is_test_email(st.session_state[email_key]):
+        st.warning("Cette adresse de test est exclue de la base officielle. / This test address is excluded from the official database.")
 def render_step_2(txt: Dict) -> None:
     q = txt["questions"]
     st.subheader(txt["sections"][2])
