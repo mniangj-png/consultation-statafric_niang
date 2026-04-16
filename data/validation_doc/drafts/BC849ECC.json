@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-16T08:05:06.235245Z",
+  "saved_at": "2026-04-16T08:05:24.514355Z",
   "language": "fr",
   "institution_acronym": "UMA",
   "institution_type": "rec",
@@ -61,5 +61,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-18T08:05:06.235295Z"
+  "expires_at": "2026-04-18T08:05:24.514422Z"
 }
