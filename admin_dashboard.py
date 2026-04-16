@@ -18,6 +18,10 @@ from dashboard_common import (
 
 st.set_page_config(page_title="Dashboard Admin - validation du document", layout="wide")
 
+# Date plafond demandée pour inclure automatiquement les nouvelles soumissions
+MAX_FILTER_DATE = date(2026, 5, 31)
+CACHE_TTL_SECONDS = 60
+
 
 def require_password() -> None:
     expected = ""
@@ -41,7 +45,7 @@ def require_password() -> None:
     st.stop()
 
 
-@st.cache_data(show_spinner=False)
+@st.cache_data(show_spinner=False, ttl=CACHE_TTL_SECONDS)
 def load_data(source_kind: str) -> tuple[str, pd.DataFrame, list[dict]]:
     cfg = get_github_config_from_streamlit(st)
     branch, records = load_json_records_from_repo(cfg, source_kind)
@@ -49,22 +53,42 @@ def load_data(source_kind: str) -> tuple[str, pd.DataFrame, list[dict]]:
     return branch, df, records
 
 
+def _default_date_from(df: pd.DataFrame) -> date | None:
+    if "submitted_at" in df.columns and df["submitted_at"].notna().any():
+        return df["submitted_at"].dt.date.min()
+    return None
+
+
+def _default_date_to() -> date:
+    return MAX_FILTER_DATE
+
+
 def main() -> None:
     require_password()
     st.title("Dashboard Admin")
     st.caption("Téléchargement et exploration des réponses JSON, CSV et XLSX")
 
-    kind = st.radio(
-        "Jeu de données",
-        options=["submissions", "drafts"],
-        format_func=lambda x: "Soumissions finales" if x == "submissions" else "Brouillons",
-        horizontal=True,
-    )
+    top1, top2 = st.columns([3, 1])
+    with top1:
+        kind = st.radio(
+            "Jeu de données",
+            options=["submissions", "drafts"],
+            format_func=lambda x: "Soumissions finales" if x == "submissions" else "Brouillons",
+            horizontal=True,
+        )
+    with top2:
+        if st.button("Actualiser les données", use_container_width=True):
+            load_data.clear()
+            st.rerun()
 
     with st.spinner("Chargement des données depuis GitHub..."):
         branch, df, records = load_data(kind)
 
-    st.success(f"Données chargées depuis la branche GitHub : {branch}")
+    st.success(
+        f"Données chargées depuis la branche GitHub : {branch} | "
+        f"Actualisation automatique toutes les {CACHE_TTL_SECONDS} secondes | "
+        f"Date maximale par défaut : {MAX_FILTER_DATE.strftime('%Y/%m/%d')}"
+    )
 
     if df.empty:
         st.warning("Aucune donnée n’a été trouvée pour cette source.")
@@ -72,25 +96,33 @@ def main() -> None:
 
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Enregistrements", len(df))
-    col2.metric("Institutions distinctes", df.get("institution_acronym", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique())
-    col3.metric("Pays / CER distincts", df.get("country_or_rec", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique())
-    col4.metric("Langues distinctes", df.get("language", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique())
+    col2.metric(
+        "Institutions distinctes",
+        df.get("institution_acronym", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique(),
+    )
+    col3.metric(
+        "Pays / CER distincts",
+        df.get("country_or_rec", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique(),
+    )
+    col4.metric(
+        "Langues distinctes",
+        df.get("language", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique(),
+    )
 
     with st.expander("Filtres", expanded=True):
         c1, c2, c3, c4 = st.columns(4)
         statuses = c1.multiselect("Statut", sorted(df.get("status", pd.Series(dtype=str)).dropna().unique().tolist()))
         languages = c2.multiselect("Langue", sorted(df.get("language", pd.Series(dtype=str)).dropna().unique().tolist()))
-        institution_types = c3.multiselect("Type d’institution", sorted(df.get("institution_type", pd.Series(dtype=str)).dropna().unique().tolist()))
+        institution_types = c3.multiselect(
+            "Type d’institution", sorted(df.get("institution_type", pd.Series(dtype=str)).dropna().unique().tolist())
+        )
         countries = c4.multiselect("Pays / CER", sorted(df.get("country_or_rec", pd.Series(dtype=str)).dropna().unique().tolist()))
 
         d1, d2 = st.columns(2)
-        min_date = None
-        max_date = None
-        if "submitted_at" in df.columns and df["submitted_at"].notna().any():
-            min_date = df["submitted_at"].dt.date.min()
-            max_date = df["submitted_at"].dt.date.max()
-        date_from = d1.date_input("Date minimale de soumission", value=min_date if min_date else None)
-        date_to = d2.date_input("Date maximale de soumission", value=max_date if max_date else None)
+        default_from = _default_date_from(df)
+        default_to = _default_date_to()
+        date_from = d1.date_input("Date minimale de soumission", value=default_from)
+        date_to = d2.date_input("Date maximale de soumission", value=default_to)
 
     filtered = apply_filters(
         df,
@@ -102,7 +134,7 @@ def main() -> None:
         date_to=pd.Timestamp(date_to) if isinstance(date_to, date) else None,
     )
 
-    tab1, tab2, tab3, tab4 = st.tabs(["Tableau", "Téléchargements", "Résumé", "Enregistrement brut"])  # st.tabs
+    tab1, tab2, tab3, tab4 = st.tabs(["Tableau", "Téléchargements", "Résumé", "Enregistrement brut"])
 
     with tab1:
         st.caption(f"Enregistrements après filtrage : {len(filtered)}")
