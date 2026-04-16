@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-16T18:47:47.825961Z",
+  "saved_at": "2026-04-16T18:48:10.471618Z",
   "language": "fr",
   "institution_acronym": "DGSTAT",
   "institution_type": "nso",
@@ -20,7 +20,7 @@
   "final_institutional_position": "yes",
   "final_institutional_position_why": "",
   "draft_token": "33DF1B74",
-  "current_step": 4,
+  "current_step": 3,
   "strategic_prioritization_criteria": "go",
   "strategic_prioritization_criteria_why": "",
   "strategic_scoring_logic": "go",
@@ -61,5 +61,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-18T18:47:47.826019Z"
+  "expires_at": "2026-04-18T18:48:10.471670Z"
 }
