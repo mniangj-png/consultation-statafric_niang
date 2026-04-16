@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from datetime import date
-import re
 
 import pandas as pd
 import streamlit as st
@@ -20,7 +19,6 @@ from dashboard_common import (
 
 st.set_page_config(page_title="Dashboard Admin - validation du document", layout="wide")
 
-# Date plafond demandée pour inclure automatiquement les nouvelles soumissions
 MAX_FILTER_DATE = date(2026, 5, 31)
 CACHE_TTL_SECONDS = 60
 
@@ -54,132 +52,118 @@ def require_password() -> None:
     st.stop()
 
 
-def _normalize_email(value: object) -> str:
-    if value is None:
-        return ""
-    try:
-        text = str(value).strip().lower()
-    except Exception:
-        return ""
-    return text
-
-
-def _clean_text(value: object) -> str:
-    if value is None:
-        return ""
-    try:
-        text = str(value).strip().lower()
-    except Exception:
-        return ""
-    text = re.sub(r"\s+", " ", text)
-    return text
-
-
-def _build_respondent_key(row: pd.Series) -> str:
-    email = _normalize_email(row.get("email"))
-    if email and email not in TEST_EMAILS:
-        return f"email::{email}"
-
-    parts = [
-        _clean_text(row.get("institution_type")),
-        _clean_text(row.get("country_or_rec")),
-        _clean_text(row.get("institution_acronym")),
-        _clean_text(row.get("respondent_title")),
-    ]
-    composite = "|".join(parts)
-    return f"resp::{composite}"
-
-
-def _deduplicate_and_remove_tests(df: pd.DataFrame, source_kind: str) -> tuple[pd.DataFrame, dict]:
-    summary = {
-        "rows_initial": int(len(df)),
-        "rows_removed_tests": 0,
-        "rows_removed_duplicates": 0,
-        "rows_final": int(len(df)),
-    }
-
-    if df.empty:
-        return df, summary
-
-    cleaned = df.copy()
-
-    if "email" in cleaned.columns:
-        cleaned["_email_norm"] = cleaned["email"].map(_normalize_email)
-        test_mask = cleaned["_email_norm"].isin(TEST_EMAILS)
-        summary["rows_removed_tests"] = int(test_mask.sum())
-        cleaned = cleaned.loc[~test_mask].copy()
-    else:
-        cleaned["_email_norm"] = ""
-
-    # Déduplication uniquement sur les soumissions finales
-    if source_kind == "submissions":
-        cleaned["_respondent_key"] = cleaned.apply(_build_respondent_key, axis=1)
-
-        if "submitted_at" in cleaned.columns:
-            cleaned["_submitted_sort"] = pd.to_datetime(cleaned["submitted_at"], errors="coerce", utc=True)
-        elif "saved_at" in cleaned.columns:
-            cleaned["_submitted_sort"] = pd.to_datetime(cleaned["saved_at"], errors="coerce", utc=True)
-        else:
-            cleaned["_submitted_sort"] = pd.NaT
-
-        if "submission_id" in cleaned.columns:
-            cleaned["_submission_id_sort"] = cleaned["submission_id"].astype(str)
-        else:
-            cleaned["_submission_id_sort"] = ""
-
-        before = len(cleaned)
-        cleaned = (
-            cleaned.sort_values(
-                by=["_respondent_key", "_submitted_sort", "_submission_id_sort"],
-                ascending=[True, True, True],
-                na_position="last",
-            )
-            .drop_duplicates(subset=["_respondent_key"], keep="last")
-            .copy()
-        )
-        summary["rows_removed_duplicates"] = int(before - len(cleaned))
-
-    drop_cols = [c for c in ["_email_norm", "_respondent_key", "_submitted_sort", "_submission_id_sort"] if c in cleaned.columns]
-    if drop_cols:
-        cleaned = cleaned.drop(columns=drop_cols)
-
-    summary["rows_final"] = int(len(cleaned))
-    return cleaned, summary
-
-
 @st.cache_data(show_spinner=False, ttl=CACHE_TTL_SECONDS)
-def load_data(source_kind: str) -> tuple[str, pd.DataFrame, list[dict], dict]:
+def load_data(source_kind: str) -> tuple[str, pd.DataFrame, list[dict]]:
     cfg = get_github_config_from_streamlit(st)
     loaded = load_json_records_from_repo(cfg, source_kind)
-
-    # Compatibilité avec plusieurs signatures possibles de load_json_records_from_repo
-    branch = cfg.get("branch", "main") if isinstance(cfg, dict) else "main"
-    records: list[dict] = []
+    # Tolérant aux variantes de retour de dashboard_common
     if isinstance(loaded, tuple):
-        if len(loaded) >= 2 and isinstance(loaded[0], str):
-            branch = loaded[0]
-            records = loaded[1] or []
-        elif len(loaded) >= 1:
-            records = loaded[0] or []
-    elif isinstance(loaded, list):
-        records = loaded
-
+        if len(loaded) == 3:
+            branch, records, _paths = loaded
+        elif len(loaded) == 2:
+            branch, records = loaded
+        elif len(loaded) == 1:
+            branch, records = "unknown", loaded[0]
+        else:
+            branch, records = "unknown", []
+    else:
+        branch, records = "unknown", loaded
     df = records_to_dataframe(records)
-    df, summary = _deduplicate_and_remove_tests(df, source_kind)
-    filtered_records = df.to_dict(orient="records")
-    return branch, df, filtered_records, summary
+    return branch, df, records
 
 
 def _default_date_from(df: pd.DataFrame) -> date | None:
-    if "submitted_at" in df.columns and df["submitted_at"].notna().any():
-        return df["submitted_at"].dt.date.min()
-    if "saved_at" in df.columns and df["saved_at"].notna().any():
-        return df["saved_at"].dt.date.min()
+    if "submitted_at" in df.columns:
+        ser = pd.to_datetime(df["submitted_at"], errors="coerce", utc=True)
+        if ser.notna().any():
+            return ser.dt.date.min()
+    if "saved_at" in df.columns:
+        ser = pd.to_datetime(df["saved_at"], errors="coerce", utc=True)
+        if ser.notna().any():
+            return ser.dt.date.min()
     return None
 
 
 def _default_date_to() -> date:
     return MAX_FILTER_DATE
+
+
+def _normalize_email(value) -> str:
+    if value is None or (isinstance(value, float) and pd.isna(value)):
+        return ""
+    return str(value).strip().lower()
+
+
+def _respondent_key(row: pd.Series) -> str:
+    email = _normalize_email(row.get("email"))
+    if email and email not in TEST_EMAILS and "@" in email:
+        return f"email::{email}"
+    parts = []
+    for col in ("institution_type", "country_or_rec", "institution_acronym", "respondent_title"):
+        val = row.get(col, "")
+        if val is None or (isinstance(val, float) and pd.isna(val)):
+            val = ""
+        parts.append(str(val).strip().lower())
+    return "meta::" + "|".join(parts)
+
+
+def clean_dataset(df: pd.DataFrame, source_kind: str) -> tuple[pd.DataFrame, dict]:
+    if df is None or df.empty:
+        return pd.DataFrame() if df is None else df.copy(), {
+            "source_rows": 0,
+            "tests_removed": 0,
+            "duplicates_removed": 0,
+            "final_rows": 0,
+        }
+
+    out = df.copy()
+
+    # Nettoyage des emails de test
+    if "email" in out.columns:
+        out["_email_norm"] = out["email"].map(_normalize_email)
+    else:
+        out["_email_norm"] = ""
+
+    source_rows = len(out)
+    tests_mask = out["_email_norm"].isin(TEST_EMAILS)
+    tests_removed = int(tests_mask.sum())
+    out = out.loc[~tests_mask].copy()
+
+    duplicates_removed = 0
+
+    # Déduplication seulement sur les soumissions finales
+    if source_kind == "submissions" and not out.empty:
+        out["_respondent_key"] = out.apply(_respondent_key, axis=1)
+
+        if "submitted_at" in out.columns:
+            out["_sort_ts"] = pd.to_datetime(out["submitted_at"], errors="coerce", utc=True)
+        elif "saved_at" in out.columns:
+            out["_sort_ts"] = pd.to_datetime(out["saved_at"], errors="coerce", utc=True)
+        else:
+            out["_sort_ts"] = pd.NaT
+
+        out["_row_order"] = range(len(out))
+        before = len(out)
+        out = (
+            out.sort_values(
+                by=["_respondent_key", "_sort_ts", "_row_order"],
+                ascending=[True, True, True],
+                kind="mergesort",
+            )
+            .drop_duplicates(subset=["_respondent_key"], keep="last")
+            .copy()
+        )
+        duplicates_removed = before - len(out)
+
+    drop_cols = [c for c in ["_email_norm", "_respondent_key", "_sort_ts", "_row_order"] if c in out.columns]
+    out = out.drop(columns=drop_cols, errors="ignore")
+
+    return out, {
+        "source_rows": source_rows,
+        "tests_removed": tests_removed,
+        "duplicates_removed": duplicates_removed,
+        "final_rows": len(out),
+    }
 
 
 def main() -> None:
@@ -201,7 +185,9 @@ def main() -> None:
             st.rerun()
 
     with st.spinner("Chargement des données depuis GitHub..."):
-        branch, df, records, cleanup = load_data(kind)
+        branch, df_raw, _records = load_data(kind)
+
+    df, cleanup = clean_dataset(df_raw, kind)
 
     st.success(
         f"Données chargées depuis la branche GitHub : {branch} | "
@@ -209,15 +195,14 @@ def main() -> None:
         f"Date maximale par défaut : {MAX_FILTER_DATE.strftime('%Y/%m/%d')}"
     )
 
-    st.info(
-        "Nettoyage appliqué : "
-        f"{cleanup['rows_removed_tests']} donnée(s) test supprimée(s), "
-        f"{cleanup['rows_removed_duplicates']} doublon(s) supprimé(s), "
-        f"{cleanup['rows_final']} enregistrement(s) conservé(s)."
-    )
+    info_cols = st.columns(4)
+    info_cols[0].metric("Lignes source", cleanup["source_rows"])
+    info_cols[1].metric("Tests supprimés", cleanup["tests_removed"])
+    info_cols[2].metric("Doublons supprimés", cleanup["duplicates_removed"])
+    info_cols[3].metric("Lignes finales conservées", cleanup["final_rows"])
 
     if df.empty:
-        st.warning("Aucune donnée n’a été trouvée pour cette source.")
+        st.warning("Aucune donnée exploitable n’a été trouvée pour cette source après nettoyage.")
         return
 
     col1, col2, col3, col4 = st.columns(4)
