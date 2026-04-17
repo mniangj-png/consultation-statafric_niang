@@ -1,52 +1,23 @@
-
 from __future__ import annotations
 
-from datetime import datetime
+import base64
 import io
 import json
+import os
 import re
 import zipfile
+from datetime import datetime, timezone
 from typing import Any
 
 import pandas as pd
+import requests
 import streamlit as st
 
-from dashboard_common import (
-    build_report_docx_bytes,
-    get_github_config_from_streamlit,
-    load_json_records_from_repo,
-    records_to_dataframe,
-)
-
-st.set_page_config(page_title="Dashboard Superadmin - validation du document", layout="wide")
-
-APP_VERSION = "superadmin-clean-2026-04-17-v1"
+APP_VERSION = "superadmin-autonomous-2026-04-17-v1"
+RESPONSE_PATH_ROOT = "data/validation_doc"
 TEST_EMAILS = {"kl@od.sd", "in@bc.sd", "de@re.bh", "gh@fg.jh"}
 
-STRATEGIC_LABELS = {
-    "strategic_prioritization_criteria": "Critères de priorisation retenus",
-    "strategic_scoring_logic": "Logique de notation multicritère (scoring)",
-    "strategic_core_extensions": "Distinction noyau / extensions",
-    "strategic_gender_integration": "Intégration transversale du genre",
-    "strategic_min_disaggregations": "Désagrégations minimales proposées",
-    "strategic_data_sources": "Sources de données et dispositifs de production",
-    "strategic_governance_roles": "Gouvernance et répartition des rôles",
-    "strategic_roadmap_update": "Feuille de route de mise en œuvre et mécanisme de mise à jour",
-}
-DOMAIN_LABELS = {
-    "domain_d01": "D01 Croissance économique, transformation structurelle et commerce",
-    "domain_d02": "D02 Emploi, travail décent et protection sociale",
-    "domain_d03": "D03 Agriculture durable, sécurité alimentaire et nutrition",
-    "domain_d04": "D04 Infrastructures, industrialisation et innovation",
-    "domain_d05": "D05 Inclusion, pauvreté et inégalités",
-    "domain_d06": "D06 Éducation, compétences et capital humain",
-    "domain_d07": "D07 Santé, bien-être et accès universel",
-    "domain_d08": "D08 Égalité des genres et autonomisation",
-    "domain_d09": "D09 Environnement, résilience climatique et villes durables",
-    "domain_d10": "D10 Gouvernance, paix et institutions",
-    "domain_d11": "D11 Économie bleue et gestion des océans",
-    "domain_d12": "D12 Partenariats et financement du développement",
-}
+st.set_page_config(page_title="Dashboard Superadmin - validation du document", layout="wide")
 
 
 def require_password() -> None:
@@ -69,6 +40,113 @@ def require_password() -> None:
         else:
             st.error("Mot de passe incorrect.")
     st.stop()
+
+
+def _sanitize_secret(value: Any) -> str:
+    if value is None:
+        return ""
+    value = str(value).strip().strip('"').strip("'")
+    value = value.replace("\r", "").replace("\n", "").strip()
+    if value.lower().startswith("bearer "):
+        value = value[7:].strip()
+    return value
+
+
+def get_github_config_from_streamlit() -> dict[str, str]:
+    owner = os.getenv("GITHUB_OWNER", "mniangj-png")
+    repo = os.getenv("GITHUB_REPO", "consultation-statafric_niang")
+    branch = os.getenv("GITHUB_BRANCH", "main")
+    token = os.getenv("GITHUB_TOKEN", "") or os.getenv("GH_TOKEN", "")
+    try:
+        gh = st.secrets.get("github", {})
+        owner = _sanitize_secret(gh.get("owner", owner)) or owner
+        repo = _sanitize_secret(gh.get("repo", repo)) or repo
+        branch = _sanitize_secret(gh.get("branch", branch)) or branch
+        token = _sanitize_secret(gh.get("token", token)) or token
+    except Exception:
+        pass
+    try:
+        token = _sanitize_secret(st.secrets.get("GITHUB_TOKEN", token)) or token
+    except Exception:
+        pass
+    return {"owner": owner, "repo": repo, "branch": branch, "token": token}
+
+
+def github_headers(cfg: dict[str, str]) -> dict[str, str]:
+    headers = {"Accept": "application/vnd.github+json"}
+    token = _sanitize_secret(cfg.get("token", ""))
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    return headers
+
+
+def github_api_get(cfg: dict[str, str], url: str, **kwargs) -> requests.Response:
+    r = requests.get(url, headers=github_headers(cfg), timeout=30, **kwargs)
+    r.raise_for_status()
+    return r
+
+
+def list_json_paths(cfg: dict[str, str], source_kind: str) -> list[str]:
+    root = f"{RESPONSE_PATH_ROOT}/{source_kind}"
+    base = f"https://api.github.com/repos/{cfg['owner']}/{cfg['repo']}/contents/{root}"
+    paths: list[str] = []
+    stack = [(base, root)]
+    while stack:
+        url, path = stack.pop()
+        r = github_api_get(cfg, url, params={"ref": cfg["branch"]})
+        payload = r.json()
+        if isinstance(payload, dict) and payload.get("type") == "file":
+            if str(payload.get("path", "")).lower().endswith(".json"):
+                paths.append(payload["path"])
+            continue
+        if not isinstance(payload, list):
+            continue
+        for item in payload:
+            item_type = item.get("type")
+            item_path = item.get("path", "")
+            item_url = item.get("url")
+            if item_type == "dir" and item_url:
+                stack.append((item_url, item_path))
+            elif item_type == "file" and str(item_path).lower().endswith(".json"):
+                paths.append(item_path)
+    return sorted(paths)
+
+
+def load_json_record(cfg: dict[str, str], path: str) -> dict[str, Any] | None:
+    url = f"https://api.github.com/repos/{cfg['owner']}/{cfg['repo']}/contents/{path}"
+    try:
+        r = github_api_get(cfg, url, params={"ref": cfg["branch"]})
+        item = r.json()
+        content = base64.b64decode(item["content"]).decode("utf-8")
+        data = json.loads(content)
+        if isinstance(data, dict):
+            data["_source_path"] = path
+            return data
+    except Exception:
+        return None
+    return None
+
+
+@st.cache_data(show_spinner=False)
+def load_submissions() -> tuple[str, list[dict[str, Any]], list[str]]:
+    cfg = get_github_config_from_streamlit()
+    paths = list_json_paths(cfg, "submissions")
+    records = []
+    for path in paths:
+        rec = load_json_record(cfg, path)
+        if rec is not None:
+            records.append(rec)
+    return cfg["branch"], records, paths
+
+
+def records_to_dataframe(records: list[dict[str, Any]]) -> pd.DataFrame:
+    if not records:
+        return pd.DataFrame()
+    df = pd.DataFrame(records)
+    for col in ["submitted_at", "saved_at"]:
+        if col in df.columns:
+            df[col] = pd.to_datetime(df[col], errors="coerce", utc=True)
+    return df
 
 
 def _norm_text(value: Any) -> str:
@@ -95,271 +173,269 @@ def _respondent_key(row: pd.Series) -> str:
     return "fallback:" + "|".join(parts)
 
 
-def clean_submissions_df(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, int]]:
-    stats = {
-        "source_rows": int(len(df)),
-        "tests_removed": 0,
-        "duplicates_removed": 0,
-        "final_rows": 0,
-    }
+def clean_records_df(df: pd.DataFrame) -> tuple[pd.DataFrame, dict[str, int], pd.DataFrame]:
+    stats = {"source_rows": int(len(df)), "tests_removed": 0, "duplicates_removed": 0, "final_rows": 0}
     if df.empty:
-        return df.copy(), pd.DataFrame(), stats
+        return df.copy(), stats, pd.DataFrame()
 
-    cleaned = df.copy()
-    if "email" not in cleaned.columns:
-        cleaned["email"] = ""
+    work = df.copy()
+    if "email" not in work.columns:
+        work["email"] = ""
+    work["_email_norm"] = work["email"].map(_norm_text)
+    work["_respondent_key"] = work.apply(_respondent_key, axis=1)
 
-    cleaned["_email_norm"] = cleaned["email"].map(_norm_text)
-    test_mask = cleaned["_email_norm"].isin(TEST_EMAILS)
-    tests_df = cleaned.loc[test_mask].copy()
-    stats["tests_removed"] = int(test_mask.sum())
-    cleaned = cleaned.loc[~test_mask].copy()
-
-    cleaned["_respondent_key"] = cleaned.apply(_respondent_key, axis=1)
-    if "submitted_at" in cleaned.columns:
-        cleaned["_sort_time"] = pd.to_datetime(cleaned["submitted_at"], errors="coerce", utc=True)
-    elif "saved_at" in cleaned.columns:
-        cleaned["_sort_time"] = pd.to_datetime(cleaned["saved_at"], errors="coerce", utc=True)
+    if "submitted_at" in work.columns:
+        work["_sort_time"] = pd.to_datetime(work["submitted_at"], errors="coerce", utc=True)
+    elif "saved_at" in work.columns:
+        work["_sort_time"] = pd.to_datetime(work["saved_at"], errors="coerce", utc=True)
     else:
-        cleaned["_sort_time"] = pd.NaT
+        work["_sort_time"] = pd.NaT
 
-    before = len(cleaned)
-    cleaned = (
-        cleaned.sort_values(
-            by=["_respondent_key", "_sort_time", "_source_path"],
-            ascending=[True, False, False],
-            na_position="last",
-        )
-        .drop_duplicates(subset=["_respondent_key"], keep="first")
-        .copy()
-    )
-    stats["duplicates_removed"] = int(before - len(cleaned))
+    journal_rows = []
+
+    test_mask = work["_email_norm"].isin(TEST_EMAILS)
+    if test_mask.any():
+        tests = work.loc[test_mask].copy()
+        tests["_removal_reason"] = "test_email"
+        journal_rows.append(tests)
+    stats["tests_removed"] = int(test_mask.sum())
+    work = work.loc[~test_mask].copy()
+
+    ranked = work.sort_values(
+        by=["_respondent_key", "_sort_time", "_source_path"],
+        ascending=[True, False, False],
+        na_position="last",
+    ).copy()
+    ranked["_rank_within_respondent"] = ranked.groupby("_respondent_key").cumcount() + 1
+    dup_mask = ranked["_rank_within_respondent"] > 1
+    if dup_mask.any():
+        dups = ranked.loc[dup_mask].copy()
+        dups["_removal_reason"] = "older_duplicate"
+        journal_rows.append(dups)
+    stats["duplicates_removed"] = int(dup_mask.sum())
+
+    cleaned = ranked.loc[~dup_mask].copy()
     stats["final_rows"] = int(len(cleaned))
 
-    dedup_keys = set(cleaned["_respondent_key"].tolist())
-    duplicates_df = df.copy()
-    duplicates_df["_email_norm"] = duplicates_df.get("email", "").map(_norm_text)
-    duplicates_df = duplicates_df.loc[~duplicates_df["_email_norm"].isin(TEST_EMAILS)].copy()
-    duplicates_df["_respondent_key"] = duplicates_df.apply(_respondent_key, axis=1)
-    if "submitted_at" in duplicates_df.columns:
-        duplicates_df["_sort_time"] = pd.to_datetime(duplicates_df["submitted_at"], errors="coerce", utc=True)
-    elif "saved_at" in duplicates_df.columns:
-        duplicates_df["_sort_time"] = pd.to_datetime(duplicates_df["saved_at"], errors="coerce", utc=True)
-    else:
-        duplicates_df["_sort_time"] = pd.NaT
-    duplicates_df = duplicates_df.sort_values(["_respondent_key", "_sort_time", "_source_path"], ascending=[True, False, False], na_position="last")
-    duplicates_df = duplicates_df.loc[duplicates_df.duplicated(subset=["_respondent_key"], keep="first")].copy()
+    journal = pd.concat(journal_rows, ignore_index=True) if journal_rows else pd.DataFrame()
 
-    journal_df = pd.concat([
-        tests_df.assign(motif_suppression="Email de test"),
-        duplicates_df.assign(motif_suppression="Doublon supprimé (dernière réponse conservée)")
-    ], ignore_index=True, sort=False)
-
-    cleaned.drop(columns=["_email_norm", "_respondent_key", "_sort_time"], inplace=True, errors="ignore")
-    journal_df.drop(columns=["_email_norm", "_respondent_key", "_sort_time"], inplace=True, errors="ignore")
-    return cleaned, journal_df, stats
+    drop_cols = ["_email_norm", "_respondent_key", "_sort_time", "_rank_within_respondent"]
+    cleaned.drop(columns=drop_cols, inplace=True, errors="ignore")
+    if not journal.empty:
+        journal.drop(columns=drop_cols, inplace=True, errors="ignore")
+    return cleaned, stats, journal
 
 
-def _safe_dt(series: pd.Series) -> pd.Series:
-    return pd.to_datetime(series, errors="coerce")
+def _safe_col(df: pd.DataFrame, col: str) -> pd.Series:
+    if col in df.columns:
+        return df[col]
+    return pd.Series(dtype="object")
 
 
-def _traceability_df(df: pd.DataFrame) -> pd.DataFrame:
-    rows: list[dict[str, Any]] = []
-    for _, r in df.iterrows():
-        common = {
-            "institution": r.get("institution_acronym"),
-            "type_institution": r.get("institution_type"),
-            "pays_cer": r.get("country_or_rec"),
-            "email": r.get("email"),
-            "langue": r.get("language"),
-            "soumis_le": r.get("submitted_at"),
-            "submission_id": r.get("submission_id"),
-            "source_path": r.get("_source_path"),
-        }
-        if pd.notna(r.get("overall_validation")):
-            rows.append({**common, "section": "Validation générale", "item_code": "overall_validation", "item_label": "Validation globale du document", "reponse": r.get("overall_validation"), "justification": r.get("overall_validation_why", "")})
-        if pd.notna(r.get("operational_usability")):
-            rows.append({**common, "section": "Validation générale", "item_code": "operational_usability", "item_label": "Document suffisamment opérationnel", "reponse": r.get("operational_usability"), "justification": r.get("operational_usability_why", "")})
-        for code, label in STRATEGIC_LABELS.items():
-            if pd.notna(r.get(code)):
-                rows.append({**common, "section": "Choix stratégiques", "item_code": code, "item_label": label, "reponse": r.get(code), "justification": r.get(f"{code}_why", "")})
-        for code, label in DOMAIN_LABELS.items():
-            if pd.notna(r.get(code)):
-                rows.append({**common, "section": "Domaines thématiques", "item_code": code, "item_label": label, "reponse": r.get(code), "justification": r.get(f"{code}_why", "")})
-        if pd.notna(r.get("final_institutional_position")):
-            rows.append({**common, "section": "Position finale", "item_code": "final_institutional_position", "item_label": "Position finale de l’institution", "reponse": r.get("final_institutional_position"), "justification": r.get("final_institutional_position_why", "")})
-        for field, label in [
-            ("strategic_comments", "Commentaires sur les choix stratégiques"),
-            ("domain_comments", "Commentaires sur les domaines"),
-            ("top_3_revisions", "Trois révisions prioritaires"),
-        ]:
-            val = r.get(field)
-            if pd.notna(val) and str(val).strip():
-                rows.append({**common, "section": "Commentaires libres", "item_code": field, "item_label": label, "reponse": "Commentaire libre", "justification": str(val).strip()})
-    trace_df = pd.DataFrame(rows)
-    if not trace_df.empty and "soumis_le" in trace_df.columns:
-        trace_df["soumis_le"] = _safe_dt(trace_df["soumis_le"])
-    return trace_df
+def build_summary_sheet(df: pd.DataFrame, stats: dict[str, int]) -> pd.DataFrame:
+    rows = [
+        {"indicateur": "Lignes source", "valeur": stats["source_rows"]},
+        {"indicateur": "Tests supprimés", "valeur": stats["tests_removed"]},
+        {"indicateur": "Doublons supprimés", "valeur": stats["duplicates_removed"]},
+        {"indicateur": "Lignes finales conservées", "valeur": stats["final_rows"]},
+        {"indicateur": "Institutions distinctes", "valeur": _safe_col(df, "institution_acronym").replace("", pd.NA).dropna().nunique()},
+        {"indicateur": "Pays / CER distincts", "valeur": _safe_col(df, "country_or_rec").replace("", pd.NA).dropna().nunique()},
+        {"indicateur": "Langues distinctes", "valeur": _safe_col(df, "language").replace("", pd.NA).dropna().nunique()},
+    ]
+    return pd.DataFrame(rows)
 
 
-def _uniq_join(series: pd.Series) -> str:
-    vals = [str(x).strip() for x in series.dropna().astype(str) if str(x).strip()]
-    return "; ".join(list(dict.fromkeys(vals)))
+def _value_counts_sheet(df: pd.DataFrame, col: str, sheet_label: str) -> pd.DataFrame:
+    if col not in df.columns:
+        return pd.DataFrame(columns=[sheet_label, "effectif"])
+    vc = df[col].fillna("NA").astype(str).value_counts(dropna=False).reset_index()
+    vc.columns = [sheet_label, "effectif"]
+    return vc
 
 
-def build_analysis_sheets_enhanced(df: pd.DataFrame, journal_df: pd.DataFrame, stats: dict[str, int]) -> dict[str, pd.DataFrame]:
-    sheets: dict[str, pd.DataFrame] = {}
-    cleaned = df.copy()
-    if "submitted_at" in cleaned.columns:
-        cleaned["submitted_at"] = _safe_dt(cleaned["submitted_at"])
-    if "saved_at" in cleaned.columns:
-        cleaned["saved_at"] = _safe_dt(cleaned["saved_at"])
-    if not journal_df.empty:
-        if "submitted_at" in journal_df.columns:
-            journal_df["submitted_at"] = _safe_dt(journal_df["submitted_at"])
-        if "saved_at" in journal_df.columns:
-            journal_df["saved_at"] = _safe_dt(journal_df["saved_at"])
+def build_traceability_sheet(df: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    source_time_col = "submitted_at" if "submitted_at" in df.columns else ("saved_at" if "saved_at" in df.columns else None)
 
-    summary = pd.DataFrame([
-        ["Lignes source", stats["source_rows"]],
-        ["Tests supprimés", stats["tests_removed"]],
-        ["Doublons supprimés", stats["duplicates_removed"]],
-        ["Lignes finales conservées", stats["final_rows"]],
-        ["Institutions distinctes", cleaned.get("institution_acronym", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique()],
-        ["Pays / CER distincts", cleaned.get("country_or_rec", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique()],
-        ["Langues distinctes", cleaned.get("language", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique()],
-    ], columns=["indicateur", "valeur"])
-    sheets["synthese_kpis"] = summary
+    def add_rows(section: str, item_map: dict[str, str], reason_suffix: str = "_why"):
+        for code, label in item_map.items():
+            if code not in df.columns:
+                continue
+            cols = [c for c in ["institution_acronym", "country_or_rec", "email", "submission_id", source_time_col, code, f"{code}{reason_suffix}"] if c and c in df.columns]
+            subset = df[cols].copy()
+            subset = subset.loc[subset[code].isin(["go_with_reservations", "no_go"])]
+            if subset.empty:
+                continue
+            subset["section"] = section
+            subset["item_code"] = code
+            subset["item_label"] = label
+            subset["position"] = subset[code]
+            why_col = f"{code}{reason_suffix}"
+            subset["commentaire"] = subset[why_col] if why_col in subset.columns else ""
+            keep_cols = ["section", "item_code", "item_label", "position", "commentaire", "institution_acronym", "country_or_rec", "email", "submission_id"]
+            if source_time_col:
+                keep_cols.append(source_time_col)
+            rows.append(subset[keep_cols])
 
-    trace_df = _traceability_df(cleaned)
-    reserve_codes = {
-        "Validé sous réserve",
-        "Non-validé",
-        "Plutôt non",
-        "Non",
-        "Oui, sous réserve d’ajustements limités",
-        "Non, une révision plus substantielle est nécessaire",
+    strategic_map = {
+        "strategic_prioritization_criteria": "Critères de priorisation retenus",
+        "strategic_scoring_logic": "Logique de notation multicritère",
+        "strategic_core_extensions": "Distinction noyau / extensions",
+        "strategic_gender_integration": "Intégration transversale du genre",
+        "strategic_min_disaggregations": "Désagrégations minimales proposées",
+        "strategic_data_sources": "Sources de données et dispositifs de production",
+        "strategic_governance_roles": "Gouvernance et répartition des rôles",
+        "strategic_roadmap_update": "Feuille de route de mise en œuvre et mécanisme de mise à jour",
     }
-    trace_obs = trace_df.loc[
-        (trace_df.get("reponse", pd.Series(dtype=str)).isin(reserve_codes))
-        | (trace_df.get("justification", pd.Series(dtype=str)).fillna("").astype(str).str.strip() != "")
-    ].copy()
+    domain_map = {
+        "domain_d01": "D01 Croissance économique, transformation structurelle et commerce",
+        "domain_d02": "D02 Emploi, travail décent et protection sociale",
+        "domain_d03": "D03 Agriculture durable, sécurité alimentaire et nutrition",
+        "domain_d04": "D04 Infrastructures, industrialisation et innovation",
+        "domain_d05": "D05 Inclusion, pauvreté et inégalités",
+        "domain_d06": "D06 Éducation, compétences et capital humain",
+        "domain_d07": "D07 Santé, bien-être et accès universel",
+        "domain_d08": "D08 Égalité des genres et autonomisation",
+        "domain_d09": "D09 Environnement, résilience climatique et villes durables",
+        "domain_d10": "D10 Gouvernance, paix et institutions",
+        "domain_d11": "D11 Économie bleue et gestion des océans",
+        "domain_d12": "D12 Partenariats et financement du développement",
+    }
+    add_rows("Choix stratégiques", strategic_map)
+    add_rows("Domaines", domain_map)
 
-    if not trace_df.empty:
-        counts = trace_df.pivot_table(
-            index=["section", "item_code", "item_label"],
-            columns="reponse",
-            values="institution",
-            aggfunc="count",
-            fill_value=0,
-        ).reset_index()
-        counts.columns.name = None
-    else:
-        counts = pd.DataFrame(columns=["section", "item_code", "item_label"])
+    for col, label in [
+        ("overall_validation_why", "Validation globale"),
+        ("operational_usability_why", "Caractère opérationnel"),
+        ("final_institutional_position_why", "Position finale"),
+        ("strategic_comments", "Commentaires stratégiques"),
+        ("domain_comments", "Commentaires domaines"),
+        ("top_3_revisions", "Révisions prioritaires"),
+    ]:
+        if col in df.columns:
+            cols = [c for c in ["institution_acronym", "country_or_rec", "email", "submission_id", source_time_col, col] if c and c in df.columns]
+            subset = df[cols].copy()
+            subset = subset.loc[subset[col].fillna("").astype(str).str.strip() != ""]
+            if not subset.empty:
+                subset["section"] = "Commentaires transversaux"
+                subset["item_code"] = col
+                subset["item_label"] = label
+                subset["position"] = ""
+                subset["commentaire"] = subset[col]
+                keep_cols = ["section", "item_code", "item_label", "position", "commentaire", "institution_acronym", "country_or_rec", "email", "submission_id"]
+                if source_time_col:
+                    keep_cols.append(source_time_col)
+                rows.append(subset[keep_cols])
 
-    needed_cols = [
-        "Validé", "Validé sous réserve", "Non-validé", "Sans avis",
-        "Oui", "Plutôt oui", "Plutôt non", "Non",
-        "Oui, sous réserve d’ajustements limités",
-        "Non, une révision plus substantielle est nécessaire",
-        "À discuter en atelier", "Commentaire libre",
+    if not rows:
+        return pd.DataFrame(columns=["section", "item_code", "item_label", "position", "commentaire", "institution_acronym", "country_or_rec", "email", "submission_id"])
+    return pd.concat(rows, ignore_index=True)
+
+
+def build_arbitration_sheet(trace_df: pd.DataFrame) -> pd.DataFrame:
+    if trace_df.empty:
+        return pd.DataFrame(columns=["section", "item_code", "item_label", "reserves_ou_rejets", "commentaires_non_vides", "orientation_recommandee"])
+    grouped = (
+        trace_df.assign(commentaire_non_vide=trace_df["commentaire"].fillna("").astype(str).str.strip().ne(""))
+        .groupby(["section", "item_code", "item_label"], dropna=False)
+        .agg(reserves_ou_rejets=("item_code", "size"), commentaires_non_vides=("commentaire_non_vide", "sum"))
+        .reset_index()
+    )
+    grouped["orientation_recommandee"] = grouped["reserves_ou_rejets"].apply(lambda n: "Arbitrage explicite recommandé" if n >= 2 else "A examiner / consolider")
+    return grouped
+
+
+def build_consolidation_support(df: pd.DataFrame, trace_df: pd.DataFrame) -> pd.DataFrame:
+    if trace_df.empty:
+        return pd.DataFrame(columns=["reference", "section", "item_label", "commentaire", "institution_acronym", "country_or_rec", "email", "arbitrage", "statut_traitement"])
+    comments = trace_df[["section", "item_label", "commentaire", "institution_acronym", "country_or_rec", "email"]].copy()
+    comments["reference"] = comments.index + 1
+    comments["arbitrage"] = ""
+    comments["statut_traitement"] = ""
+    return comments[["reference", "section", "item_label", "commentaire", "institution_acronym", "country_or_rec", "email", "arbitrage", "statut_traitement"]]
+
+
+def build_matrix_sheet(df: pd.DataFrame, row_cols: list[str], index_col: str, title_col_name: str) -> pd.DataFrame:
+    cols_present = [c for c in row_cols if c in df.columns]
+    if not cols_present or index_col not in df.columns:
+        return pd.DataFrame()
+    matrix = df[[index_col] + cols_present].copy()
+    matrix[index_col] = matrix[index_col].fillna("").replace("", "NA")
+    grouped = []
+    for col in cols_present:
+        tmp = matrix.groupby([index_col, col], dropna=False).size().reset_index(name="effectif")
+        tmp["item"] = col
+        grouped.append(tmp)
+    out = pd.concat(grouped, ignore_index=True) if grouped else pd.DataFrame()
+    out.rename(columns={index_col: title_col_name}, inplace=True)
+    return out
+
+
+def build_note_support(df: pd.DataFrame, stats: dict[str, int]) -> pd.DataFrame:
+    rows = [
+        {"rubrique": "Base", "message": f"{stats['final_rows']} réponses finales retenues après nettoyage."},
+        {"rubrique": "Nettoyage", "message": f"{stats['tests_removed']} données de test supprimées."},
+        {"rubrique": "Nettoyage", "message": f"{stats['duplicates_removed']} doublons supprimés en conservant la dernière réponse par répondant."},
     ]
-    for col in needed_cols:
-        if col not in counts.columns:
-            counts[col] = 0
+    if "overall_validation" in df.columns:
+        vc = df["overall_validation"].fillna("NA").astype(str).value_counts()
+        for k, v in vc.items():
+            rows.append({"rubrique": "Validation globale", "message": f"{k} : {v}"})
+    if "final_institutional_position" in df.columns:
+        vc = df["final_institutional_position"].fillna("NA").astype(str).value_counts()
+        for k, v in vc.items():
+            rows.append({"rubrique": "Position finale", "message": f"{k} : {v}"})
+    return pd.DataFrame(rows)
 
-    if not trace_obs.empty:
-        agg = trace_obs.groupby(["section", "item_code", "item_label"]).agg(
-            nb_institutions=("institution", "nunique"),
-            institutions=("institution", _uniq_join),
-            pays_cer=("pays_cer", _uniq_join),
-            extraits=("justification", lambda s: " | ".join([str(x).strip() for x in s.fillna("") if str(x).strip()][:5])),
-        ).reset_index()
-    else:
-        agg = pd.DataFrame(columns=["section", "item_code", "item_label", "nb_institutions", "institutions", "pays_cer", "extraits"])
 
-    arbitrages = counts.merge(agg, on=["section", "item_code", "item_label"], how="left").fillna({
-        "nb_institutions": 0,
-        "institutions": "",
-        "pays_cer": "",
-        "extraits": "",
-    })
-
-    def recommendation(row: pd.Series) -> str:
-        if row.get("Non-validé", 0) > 0 or row.get("Non, une révision plus substantielle est nécessaire", 0) > 0 or row.get("Plutôt non", 0) > 0 or row.get("Non", 0) > 0:
-            return "Arbitrage de fond requis"
-        if row.get("Validé sous réserve", 0) > 0 or row.get("Oui, sous réserve d’ajustements limités", 0) > 0:
-            return "Révision ciblée recommandée"
-        if row.get("Commentaire libre", 0) > 0:
-            return "Précision éditoriale utile"
-        return "Validation sans réserve"
-
-    def priority(row: pd.Series) -> str:
-        if row.get("Non-validé", 0) > 0 or row.get("Non, une révision plus substantielle est nécessaire", 0) > 0 or row.get("Plutôt non", 0) > 0 or row.get("Non", 0) > 0:
-            return "Haute"
-        if row.get("Validé sous réserve", 0) >= 2 or row.get("Oui, sous réserve d’ajustements limités", 0) >= 2 or row.get("nb_institutions", 0) >= 2:
-            return "Moyenne"
-        if row.get("Validé sous réserve", 0) > 0 or row.get("Oui, sous réserve d’ajustements limités", 0) > 0 or row.get("Commentaire libre", 0) > 0:
-            return "Faible"
-        return "Nulle"
-
-    if not arbitrages.empty:
-        arbitrages["orientation_recommandee"] = arbitrages.apply(recommendation, axis=1)
-        arbitrages["priorite"] = arbitrages.apply(priority, axis=1)
-    else:
-        arbitrages["orientation_recommandee"] = []
-        arbitrages["priorite"] = []
-
-    overall_counts = cleaned.get("overall_validation", pd.Series(dtype=str)).fillna("Sans valeur").value_counts().reset_index()
-    overall_counts.columns = ["modalite", "nombre"]
-    final_counts = cleaned.get("final_institutional_position", pd.Series(dtype=str)).fillna("Sans valeur").value_counts().reset_index()
-    final_counts.columns = ["modalite", "nombre"]
-
-    note_rows = [
-        ["Périmètre retenu", f"{len(cleaned)} réponses finales uniques retenues après suppression de {stats['tests_removed']} tests et de {stats['duplicates_removed']} doublons."],
-        ["Couverture institutionnelle", "; ".join(sorted(cleaned.get("institution_acronym", pd.Series(dtype=str)).dropna().astype(str).tolist()))],
-        ["Couverture pays / CER", "; ".join(sorted(cleaned.get("country_or_rec", pd.Series(dtype=str)).dropna().astype(str).tolist()))],
-        ["Validation globale - tendance", "; ".join(f"{r.modalite}: {r.nombre}" for r in overall_counts.itertuples(index=False))],
-        ["Position finale - tendance", "; ".join(f"{r.modalite}: {r.nombre}" for r in final_counts.itertuples(index=False))],
-    ]
-    note_df = pd.DataFrame(note_rows, columns=["rubrique", "constat_synthetique"])
-
-    version_consolidee = arbitrages[["section", "item_label", "orientation_recommandee", "priorite", "institutions", "extraits"]].copy()
-    version_consolidee.columns = [
-        "section_document",
-        "element",
-        "orientation_consolidee",
-        "priorite",
-        "institutions_concernees",
-        "commentaires_a_integrer",
-    ]
-    for col in ["decision_finale", "responsable_revision", "statut_redaction"]:
-        version_consolidee[col] = ""
-
-    sheets["base_nettoyee"] = cleaned
-    sheets["journal_nettoyage"] = journal_df
-    sheets["validations_globales"] = overall_counts
-    sheets["positions_finales"] = final_counts
-    sheets["traceabilite_commentaires"] = trace_df
-    sheets["arbitrages_recommandes"] = arbitrages
-    sheets["version_consolidee_support"] = version_consolidee
-    sheets["matrice_strategique"] = arbitrages.loc[arbitrages["section"] == "Choix stratégiques"].copy()
-    sheets["matrice_domaines"] = arbitrages.loc[arbitrages["section"] == "Domaines thématiques"].copy()
-    sheets["note_synthese_support"] = note_df
-    return sheets
+def build_analysis_sheets(df: pd.DataFrame, stats: dict[str, int], journal: pd.DataFrame) -> dict[str, pd.DataFrame]:
+    trace_df = build_traceability_sheet(df)
+    return {
+        "synthese_kpis": build_summary_sheet(df, stats),
+        "base_nettoyee": df.copy(),
+        "journal_nettoyage": journal.copy() if not journal.empty else pd.DataFrame(columns=["_removal_reason"]),
+        "validations_globales": _value_counts_sheet(df, "overall_validation", "overall_validation"),
+        "positions_finales": _value_counts_sheet(df, "final_institutional_position", "final_institutional_position"),
+        "traceabilite_commentaires": trace_df,
+        "arbitrages_recommandes": build_arbitration_sheet(trace_df),
+        "version_consolidee_support": build_consolidation_support(df, trace_df),
+        "matrice_strategique": build_matrix_sheet(
+            df,
+            [
+                "strategic_prioritization_criteria",
+                "strategic_scoring_logic",
+                "strategic_core_extensions",
+                "strategic_gender_integration",
+                "strategic_min_disaggregations",
+                "strategic_data_sources",
+                "strategic_governance_roles",
+                "strategic_roadmap_update",
+            ],
+            "institution_acronym",
+            "institution",
+        ),
+        "matrice_domaines": build_matrix_sheet(
+            df,
+            [
+                "domain_d01", "domain_d02", "domain_d03", "domain_d04", "domain_d05", "domain_d06",
+                "domain_d07", "domain_d08", "domain_d09", "domain_d10", "domain_d11", "domain_d12",
+            ],
+            "institution_acronym",
+            "institution",
+        ),
+        "note_synthese_support": build_note_support(df, stats),
+    }
 
 
 def _excel_safe_scalar(value: Any) -> Any:
-    if isinstance(value, pd.Timestamp):
-        if pd.isna(value):
-            return ""
-        if value.tzinfo is not None:
-            value = value.tz_convert(None)
-        return value.strftime("%Y-%m-%d %H:%M:%S")
-    if isinstance(value, datetime):
-        if value.tzinfo is not None:
-            value = value.astimezone().replace(tzinfo=None)
+    if isinstance(value, (datetime, pd.Timestamp)):
+        try:
+            if pd.isna(value):
+                return ""
+        except Exception:
+            pass
+        if getattr(value, "tzinfo", None) is not None:
+            value = value.tz_convert(None) if hasattr(value, "tz_convert") else value.astimezone(timezone.utc).replace(tzinfo=None)
         return value.strftime("%Y-%m-%d %H:%M:%S")
     if isinstance(value, (list, dict)):
         return json.dumps(value, ensure_ascii=False)
@@ -371,30 +447,64 @@ def _excel_safe_scalar(value: Any) -> Any:
     return value
 
 
-def dataframe_to_xlsx_bytes_local(sheets: dict[str, pd.DataFrame]) -> bytes:
+def dataframe_to_xlsx_bytes(sheets: dict[str, pd.DataFrame]) -> bytes:
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine="openpyxl") as writer:
-        for name, df in sheets.items():
-            safe_name = re.sub(r"[:\\/*?\[\]]", "_", name)[:31] or "sheet"
+        for sheet_name, df in sheets.items():
+            safe_name = re.sub(r"[:\\/*?\[\]]", "_", sheet_name)[:31] or "sheet"
             safe_df = df.copy().astype(object)
             for col in safe_df.columns:
                 safe_df[col] = safe_df[col].map(_excel_safe_scalar)
             safe_df.to_excel(writer, index=False, sheet_name=safe_name)
-            ws = writer.sheets[safe_name]
-            ws.freeze_panes = "A2"
-            for cell in ws[1]:
-                cell.font = cell.font.copy(bold=True)
-            for col in ws.columns:
-                max_len = 0
-                col_letter = col[0].column_letter
-                for cell in col:
-                    try:
-                        max_len = max(max_len, len(str(cell.value or "")))
-                    except Exception:
-                        pass
-                ws.column_dimensions[col_letter].width = min(max(max_len + 2, 10), 40)
     output.seek(0)
     return output.getvalue()
+
+
+def build_report_docx_bytes(df: pd.DataFrame, stats: dict[str, int], trace_df: pd.DataFrame) -> bytes:
+    try:
+        from docx import Document
+    except Exception:
+        return b""
+    doc = Document()
+    doc.add_heading("Note de synthèse des consultations / validation", level=1)
+    doc.add_paragraph(f"Version du tableau de bord : {APP_VERSION}")
+    doc.add_paragraph(f"Date de génération : {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}")
+    doc.add_heading("1. Base utilisée", level=2)
+    for line in [
+        f"Lignes source : {stats['source_rows']}",
+        f"Tests supprimés : {stats['tests_removed']}",
+        f"Doublons supprimés : {stats['duplicates_removed']}",
+        f"Lignes finales conservées : {stats['final_rows']}",
+    ]:
+        doc.add_paragraph(line, style="List Bullet")
+    doc.add_heading("2. Validation globale", level=2)
+    if "overall_validation" in df.columns and not df.empty:
+        vc = df["overall_validation"].fillna("NA").astype(str).value_counts()
+        for k, v in vc.items():
+            doc.add_paragraph(f"{k} : {v}", style="List Bullet")
+    else:
+        doc.add_paragraph("Aucune donnée disponible.")
+    doc.add_heading("3. Position finale des institutions", level=2)
+    if "final_institutional_position" in df.columns and not df.empty:
+        vc = df["final_institutional_position"].fillna("NA").astype(str).value_counts()
+        for k, v in vc.items():
+            doc.add_paragraph(f"{k} : {v}", style="List Bullet")
+    else:
+        doc.add_paragraph("Aucune donnée disponible.")
+    doc.add_heading("4. Commentaires et arbitrages", level=2)
+    if not trace_df.empty:
+        excerpt = trace_df.head(20)
+        for _, row in excerpt.iterrows():
+            doc.add_paragraph(
+                f"{row.get('section', '')} | {row.get('item_label', '')} | {row.get('institution_acronym', '')} | {row.get('commentaire', '')}",
+                style="List Bullet",
+            )
+    else:
+        doc.add_paragraph("Aucun commentaire traçable disponible.")
+    buf = io.BytesIO()
+    doc.save(buf)
+    buf.seek(0)
+    return buf.getvalue()
 
 
 def make_zip(files: dict[str, bytes]) -> bytes:
@@ -406,35 +516,17 @@ def make_zip(files: dict[str, bytes]) -> bytes:
     return buf.getvalue()
 
 
-@st.cache_data(show_spinner=False)
-def load_submissions_clean() -> tuple[str, pd.DataFrame, pd.DataFrame, dict[str, int]]:
-    cfg = get_github_config_from_streamlit(st)
-    loaded = load_json_records_from_repo(cfg, "submissions")
-    if isinstance(loaded, tuple):
-        if len(loaded) >= 2:
-            branch = loaded[0]
-            records = loaded[1]
-        elif len(loaded) == 1:
-            branch = getattr(cfg, "branch", "main")
-            records = loaded[0]
-        else:
-            branch = getattr(cfg, "branch", "main")
-            records = []
-    else:
-        branch = getattr(cfg, "branch", "main")
-        records = loaded
-    raw_df = records_to_dataframe(records or [])
-    cleaned_df, journal_df, stats = clean_submissions_df(raw_df)
-    return str(branch), cleaned_df, journal_df, stats
-
-
 def main() -> None:
     require_password()
     st.title("Dashboard Superadmin")
-    st.caption(f"Génération d’un classeur d’analyse consolidé | version {APP_VERSION}")
+    st.caption(f"Génération d’un classeur d’analyse et d’un rapport à partir des soumissions finales | version {APP_VERSION}")
 
-    with st.spinner("Chargement et nettoyage des soumissions finales..."):
-        branch, df, journal_df, stats = load_submissions_clean()
+    with st.spinner("Chargement des soumissions finales..."):
+        branch, records, paths = load_submissions()
+
+    raw_df = records_to_dataframe(records)
+    cleaned_df, stats, journal = clean_records_df(raw_df)
+
     st.success(f"Soumissions chargées depuis GitHub / branche : {branch}")
 
     c0, c1, c2, c3 = st.columns(4)
@@ -443,26 +535,28 @@ def main() -> None:
     c2.metric("Doublons supprimés", stats["duplicates_removed"])
     c3.metric("Lignes finales conservées", stats["final_rows"])
 
-    if df.empty:
+    if cleaned_df.empty:
         st.warning("Aucune soumission finale n’est disponible après nettoyage.")
         return
 
     col1, col2, col3 = st.columns(3)
-    col1.metric("Institutions distinctes", df.get("institution_acronym", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique())
-    col2.metric("Pays / CER distincts", df.get("country_or_rec", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique())
-    col3.metric("Langues distinctes", df.get("language", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique())
+    col1.metric("Soumissions finales retenues", len(cleaned_df))
+    col2.metric("Institutions distinctes", cleaned_df.get("institution_acronym", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique())
+    col3.metric("Pays / CER distincts", cleaned_df.get("country_or_rec", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique())
 
     with st.expander("Aperçu de la base nettoyée", expanded=False):
-        st.dataframe(df, use_container_width=True, hide_index=True)
-    with st.expander("Journal de nettoyage", expanded=False):
-        st.dataframe(journal_df, use_container_width=True, hide_index=True)
+        st.dataframe(cleaned_df, use_container_width=True, hide_index=True)
 
-    sheets = build_analysis_sheets_enhanced(df, journal_df, stats)
-    workbook_bytes = dataframe_to_xlsx_bytes_local(sheets)
-    try:
-        report_bytes = build_report_docx_bytes(df)
-    except Exception:
-        report_bytes = None
+    with st.expander("Journal de nettoyage", expanded=False):
+        if journal.empty:
+            st.info("Aucune ligne retirée.")
+        else:
+            st.dataframe(journal, use_container_width=True, hide_index=True)
+
+    sheets = build_analysis_sheets(cleaned_df, stats, journal)
+    trace_df = sheets["traceabilite_commentaires"]
+    workbook_bytes = dataframe_to_xlsx_bytes(sheets)
+    report_bytes = build_report_docx_bytes(cleaned_df, stats, trace_df)
     now = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
 
     st.subheader("Fichiers générés")
@@ -473,17 +567,19 @@ def main() -> None:
         file_name=f"classeur_analyse_validation_{now}.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
-    if report_bytes:
-        c2.download_button(
-            "Télécharger le rapport (.docx)",
-            data=report_bytes,
-            file_name=f"rapport_validation_{now}.docx",
-            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        )
-    bundle_files = {f"classeur_analyse_validation_{now}.xlsx": workbook_bytes}
-    if report_bytes:
-        bundle_files[f"rapport_validation_{now}.docx"] = report_bytes
-    bundle_bytes = make_zip(bundle_files)
+    c2.download_button(
+        "Télécharger le rapport (.docx)",
+        data=report_bytes,
+        file_name=f"rapport_validation_{now}.docx",
+        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        disabled=(report_bytes == b""),
+    )
+    bundle_bytes = make_zip(
+        {
+            f"classeur_analyse_validation_{now}.xlsx": workbook_bytes,
+            f"rapport_validation_{now}.docx": report_bytes if report_bytes else b"",
+        }
+    )
     c3.download_button(
         "Télécharger le paquet complet (.zip)",
         data=bundle_bytes,
@@ -491,25 +587,26 @@ def main() -> None:
         mime="application/zip",
     )
 
-    tab1, tab2, tab3 = st.tabs(["Classeur - aperçu", "Arbitrages", "Paramètres"])
+    tab1, tab2, tab3, tab4 = st.tabs(["Classeur - aperçu", "Traçabilité", "Rapport - contenu synthétique", "Paramètres"])
     with tab1:
         sheet_name = st.selectbox("Feuille du classeur", list(sheets.keys()))
         st.dataframe(sheets[sheet_name], use_container_width=True, hide_index=True)
-
     with tab2:
-        st.dataframe(sheets["arbitrages_recommandes"], use_container_width=True, hide_index=True)
-
+        st.dataframe(trace_df, use_container_width=True, hide_index=True)
     with tab3:
-        cfg = get_github_config_from_streamlit(st)
-        owner = getattr(cfg, "owner", None) or (cfg.get("owner") if isinstance(cfg, dict) else "")
-        repo = getattr(cfg, "repo", None) or (cfg.get("repo") if isinstance(cfg, dict) else "")
-        branch_cfg = getattr(cfg, "branch", None) or (cfg.get("branch") if isinstance(cfg, dict) else "")
+        st.markdown("Le rapport DOCX généré comprend une vue d’ensemble de la base retenue, la validation globale, la position finale des institutions, ainsi qu’un extrait traçable des commentaires.")
+    with tab4:
+        cfg = get_github_config_from_streamlit()
         st.code("\n".join([
-            f"GitHub owner : {owner}",
-            f"GitHub repo  : {repo}",
-            f"GitHub branch: {branch_cfg}",
+            f"GitHub owner : {cfg['owner']}",
+            f"GitHub repo  : {cfg['repo']}",
+            f"GitHub branch: {cfg['branch']}",
+            f"Fichiers JSON détectés : {len(paths)}",
         ]))
-        st.info("Le classeur intègre la base nettoyée, le journal de nettoyage, la traçabilité des commentaires, les arbitrages recommandés et un support de version consolidée.")
+        with st.expander("Chemins GitHub détectés"):
+            st.write(paths)
+        st.info("Le tableau de bord génère les fichiers à la demande. Il ne pousse pas automatiquement le classeur ni le rapport dans GitHub.")
+
 
 if __name__ == "__main__":
     main()
