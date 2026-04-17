@@ -1,24 +1,24 @@
-
 from __future__ import annotations
 
-import base64
-import io
-import json
-import os
-import re
-from datetime import date, datetime, timedelta, timezone
-from typing import Any
+from datetime import date
 
 import pandas as pd
-import requests
 import streamlit as st
 
-APP_VERSION = "admin-clean-2026-04-16-v2-proof"
-RESPONSE_PATH_ROOT = "data/validation_doc"
+from dashboard_common import (
+    apply_filters,
+    build_analysis_sheets,
+    dataframe_to_csv_bytes,
+    dataframe_to_xlsx_bytes,
+    get_github_config_from_streamlit,
+    load_json_records_from_repo,
+    records_to_dataframe,
+    records_to_json_bytes,
+)
+
+APP_VERSION = "admin-based-on-dashboard-common-2026-04-17-v1"
 MAX_FILTER_DATE = date(2026, 5, 31)
 CACHE_TTL_SECONDS = 60
-TEST_EMAILS = {"kl@od.sd", "in@bc.sd", "de@re.bh", "gh@fg.jh"}
-
 
 st.set_page_config(page_title="Dashboard Admin - validation du document", layout="wide")
 
@@ -45,331 +45,28 @@ def require_password() -> None:
     st.stop()
 
 
-def _sanitize_secret(value: Any) -> str:
-    if value is None:
-        return ""
-    value = str(value).strip().strip('"').strip("'")
-    value = value.replace("\r", "").replace("\n", "").strip()
-    if value.lower().startswith("bearer "):
-        value = value[7:].strip()
-    return value
-
-
-def get_github_config_from_streamlit() -> dict[str, str]:
-    owner = os.getenv("GITHUB_OWNER", "mniangj-png")
-    repo = os.getenv("GITHUB_REPO", "consultation-statafric_niang")
-    branch = os.getenv("GITHUB_BRANCH", "main")
-    token = os.getenv("GITHUB_TOKEN", "") or os.getenv("GH_TOKEN", "")
-    try:
-        gh = st.secrets.get("github", {})
-        owner = _sanitize_secret(gh.get("owner", owner)) or owner
-        repo = _sanitize_secret(gh.get("repo", repo)) or repo
-        branch = _sanitize_secret(gh.get("branch", branch)) or branch
-        token = _sanitize_secret(gh.get("token", token)) or token
-    except Exception:
-        pass
-    try:
-        token = _sanitize_secret(st.secrets.get("GITHUB_TOKEN", token)) or token
-    except Exception:
-        pass
-    return {"owner": owner, "repo": repo, "branch": branch, "token": token}
-
-
-def github_headers(cfg: dict[str, str]) -> dict[str, str]:
-    headers = {"Accept": "application/vnd.github+json"}
-    token = _sanitize_secret(cfg.get("token", ""))
-    if token:
-        headers["Authorization"] = f"Bearer {token}"
-    return headers
-
-
-def github_api_get(cfg: dict[str, str], url: str, **kwargs) -> requests.Response:
-    headers = github_headers(cfg)
-    r = requests.get(url, headers=headers, timeout=30, **kwargs)
-    r.raise_for_status()
-    return r
-
-
-def list_json_paths(cfg: dict[str, str], source_kind: str) -> list[str]:
-    """Recursively list .json files under submissions or drafts."""
-    root = f"{RESPONSE_PATH_ROOT}/{source_kind}"
-    base = f"https://api.github.com/repos/{cfg['owner']}/{cfg['repo']}/contents/{root}"
-    paths: list[str] = []
-    stack = [(base, root)]
-    while stack:
-        url, path = stack.pop()
-        r = github_api_get(cfg, url, params={"ref": cfg["branch"]})
-        payload = r.json()
-        if isinstance(payload, dict) and payload.get("type") == "file":
-            if str(payload.get("path", "")).lower().endswith(".json"):
-                paths.append(payload["path"])
-            continue
-        if not isinstance(payload, list):
-            continue
-        for item in payload:
-            item_type = item.get("type")
-            item_path = item.get("path", "")
-            item_url = item.get("url")
-            if item_type == "dir" and item_url:
-                stack.append((item_url, item_path))
-            elif item_type == "file" and str(item_path).lower().endswith(".json"):
-                paths.append(item_path)
-    return sorted(paths)
-
-
-def load_json_record(cfg: dict[str, str], path: str) -> dict[str, Any] | None:
-    url = f"https://api.github.com/repos/{cfg['owner']}/{cfg['repo']}/contents/{path}"
-    try:
-        r = github_api_get(cfg, url, params={"ref": cfg["branch"]})
-        item = r.json()
-        content = base64.b64decode(item["content"]).decode("utf-8")
-        data = json.loads(content)
-        if isinstance(data, dict):
-            data["_source_path"] = path
-            return data
-    except Exception:
-        return None
-    return None
-
-
 @st.cache_data(show_spinner=False, ttl=CACHE_TTL_SECONDS)
-def load_raw_records(source_kind: str, cache_buster: str = APP_VERSION) -> tuple[str, list[dict[str, Any]], list[str]]:
-    cfg = get_github_config_from_streamlit()
-    paths = list_json_paths(cfg, source_kind)
-    records = []
-    for path in paths:
-        rec = load_json_record(cfg, path)
-        if rec is not None:
-            records.append(rec)
-    return cfg["branch"], records, paths
+def load_data(source_kind: str) -> tuple[str, pd.DataFrame, list[dict]]:
+    cfg = get_github_config_from_streamlit(st)
+    loaded = load_json_records_from_repo(cfg, source_kind)
 
-
-def records_to_dataframe(records: list[dict[str, Any]]) -> pd.DataFrame:
-    if not records:
-        return pd.DataFrame()
-    df = pd.DataFrame(records)
-    for col in ["submitted_at", "saved_at"]:
-        if col in df.columns:
-            df[col] = pd.to_datetime(df[col], errors="coerce", utc=True)
-    return df
-
-
-def _norm_text(value: Any) -> str:
-    if value is None:
-        return ""
-    if pd.isna(value):
-        return ""
-    return re.sub(r"\s+", " ", str(value).strip().lower())
-
-
-def _respondent_key(row: pd.Series) -> str:
-    email = _norm_text(row.get("email"))
-    if email and email not in TEST_EMAILS:
-        return f"email:{email}"
-    parts = [
-        _norm_text(row.get("institution_type")),
-        _norm_text(row.get("country_or_rec")),
-        _norm_text(row.get("institution_acronym")),
-        _norm_text(row.get("respondent_title")),
-    ]
-    return "fallback:" + "|".join(parts)
-
-
-def clean_records_df(df: pd.DataFrame, source_kind: str) -> tuple[pd.DataFrame, dict[str, int]]:
-    stats = {
-        "source_rows": int(len(df)),
-        "tests_removed": 0,
-        "duplicates_removed": 0,
-        "final_rows": 0,
-    }
-    if df.empty:
-        return df.copy(), stats
-
-    cleaned = df.copy()
-
-    if "email" not in cleaned.columns:
-        cleaned["email"] = ""
-    cleaned["_email_norm"] = cleaned["email"].map(_norm_text)
-
-    tests_mask = cleaned["_email_norm"].isin(TEST_EMAILS)
-    stats["tests_removed"] = int(tests_mask.sum())
-    cleaned = cleaned.loc[~tests_mask].copy()
-
-    cleaned["_respondent_key"] = cleaned.apply(_respondent_key, axis=1)
-
-    if "submitted_at" in cleaned.columns:
-        cleaned["_sort_time"] = cleaned["submitted_at"]
-    elif "saved_at" in cleaned.columns:
-        cleaned["_sort_time"] = cleaned["saved_at"]
+    # Compatibilité avec plusieurs signatures possibles de dashboard_common.py
+    if isinstance(loaded, tuple):
+        if len(loaded) >= 2:
+            branch = str(loaded[0])
+            records = loaded[1] or []
+        elif len(loaded) == 1:
+            branch = str(getattr(cfg, "branch", "main"))
+            records = loaded[0] or []
+        else:
+            branch = str(getattr(cfg, "branch", "main"))
+            records = []
     else:
-        cleaned["_sort_time"] = pd.NaT
-    cleaned["_sort_time"] = pd.to_datetime(cleaned["_sort_time"], errors="coerce", utc=True)
+        branch = str(getattr(cfg, "branch", "main"))
+        records = loaded or []
 
-    # Keep the latest record for each respondent, for both submissions and drafts.
-    before = len(cleaned)
-    cleaned = (
-        cleaned.sort_values(
-            by=["_respondent_key", "_sort_time", "_source_path"],
-            ascending=[True, False, False],
-            na_position="last",
-        )
-        .drop_duplicates(subset=["_respondent_key"], keep="first")
-        .copy()
-    )
-    stats["duplicates_removed"] = int(before - len(cleaned))
-    stats["final_rows"] = int(len(cleaned))
-
-    # Remove helper columns not meant for display/exports.
-    cleaned.drop(columns=["_email_norm", "_respondent_key", "_sort_time"], inplace=True, errors="ignore")
-    return cleaned, stats
-
-
-def build_clean_diagnostics(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Return tables of removed test rows and removed duplicate rows."""
-    if df.empty:
-        return pd.DataFrame(), pd.DataFrame()
-
-    work = df.copy()
-    if "email" not in work.columns:
-        work["email"] = ""
-    work["_email_norm"] = work["email"].map(_norm_text)
-    tests_removed_df = work.loc[work["_email_norm"].isin(TEST_EMAILS)].copy()
-
-    non_tests = work.loc[~work["_email_norm"].isin(TEST_EMAILS)].copy()
-    non_tests["_respondent_key"] = non_tests.apply(_respondent_key, axis=1)
-    if "submitted_at" in non_tests.columns:
-        non_tests["_sort_time"] = pd.to_datetime(non_tests["submitted_at"], errors="coerce", utc=True)
-    elif "saved_at" in non_tests.columns:
-        non_tests["_sort_time"] = pd.to_datetime(non_tests["saved_at"], errors="coerce", utc=True)
-    else:
-        non_tests["_sort_time"] = pd.NaT
-
-    ranked = non_tests.sort_values(
-        by=["_respondent_key", "_sort_time", "_source_path"],
-        ascending=[True, False, False],
-        na_position="last",
-    ).copy()
-    ranked["_rank"] = ranked.groupby("_respondent_key").cumcount() + 1
-    duplicates_removed_df = ranked.loc[ranked["_rank"] > 1].copy()
-
-    drop_cols = ["_email_norm", "_respondent_key", "_sort_time", "_rank"]
-    tests_removed_df.drop(columns=drop_cols, inplace=True, errors="ignore")
-    duplicates_removed_df.drop(columns=drop_cols, inplace=True, errors="ignore")
-    return tests_removed_df, duplicates_removed_df
-
-
-def apply_filters(
-    df: pd.DataFrame,
-    statuses: list[str] | None = None,
-    languages: list[str] | None = None,
-    institution_types: list[str] | None = None,
-    countries: list[str] | None = None,
-    date_from: pd.Timestamp | None = None,
-    date_to: pd.Timestamp | None = None,
-) -> pd.DataFrame:
-    if df.empty:
-        return df.copy()
-
-    filtered = df.copy()
-    if statuses and "status" in filtered.columns:
-        filtered = filtered[filtered["status"].isin(statuses)]
-    if languages and "language" in filtered.columns:
-        filtered = filtered[filtered["language"].isin(languages)]
-    if institution_types and "institution_type" in filtered.columns:
-        filtered = filtered[filtered["institution_type"].isin(institution_types)]
-    if countries and "country_or_rec" in filtered.columns:
-        filtered = filtered[filtered["country_or_rec"].isin(countries)]
-
-    date_col = "submitted_at" if "submitted_at" in filtered.columns else ("saved_at" if "saved_at" in filtered.columns else None)
-    if date_col:
-        if date_from is not None:
-            start = pd.Timestamp(date_from).tz_localize("UTC") if pd.Timestamp(date_from).tzinfo is None else pd.Timestamp(date_from).tz_convert("UTC")
-            filtered = filtered[filtered[date_col] >= start]
-        if date_to is not None:
-            end = pd.Timestamp(date_to)
-            if end.tzinfo is None:
-                end = end.tz_localize("UTC")
-            else:
-                end = end.tz_convert("UTC")
-            end = end + pd.Timedelta(days=1) - pd.Timedelta(microseconds=1)
-            filtered = filtered[filtered[date_col] <= end]
-    return filtered
-
-
-def _json_safe(value: Any) -> Any:
-    if isinstance(value, (datetime, pd.Timestamp)):
-        if pd.isna(value):
-            return None
-        if getattr(value, "tzinfo", None) is not None:
-            value = value.tz_convert(None) if hasattr(value, "tz_convert") else value.astimezone(timezone.utc).replace(tzinfo=None)
-        return value.isoformat(sep=" ")
-    if isinstance(value, (list, dict)):
-        return value
-    if pd.isna(value):
-        return None
-    try:
-        import numpy as np
-        if isinstance(value, (np.integer,)):
-            return int(value)
-        if isinstance(value, (np.floating,)):
-            return float(value)
-        if isinstance(value, (np.bool_,)):
-            return bool(value)
-    except Exception:
-        pass
-    return value
-
-
-def records_to_json_bytes(records: list[dict[str, Any]]) -> bytes:
-    safe = []
-    for rec in records:
-        safe.append({k: _json_safe(v) for k, v in rec.items()})
-    return json.dumps(safe, ensure_ascii=False, indent=2).encode("utf-8")
-
-
-def dataframe_to_csv_bytes(df: pd.DataFrame) -> bytes:
-    safe = df.copy()
-    for col in safe.columns:
-        safe[col] = safe[col].map(lambda x: json.dumps(x, ensure_ascii=False) if isinstance(x, (list, dict)) else _json_safe(x))
-    return safe.to_csv(index=False).encode("utf-8-sig")
-
-
-def _excel_safe_scalar(value: Any) -> Any:
-    if isinstance(value, (datetime, pd.Timestamp)):
-        if pd.isna(value):
-            return ""
-        if getattr(value, "tzinfo", None) is not None:
-            value = value.tz_convert(None) if hasattr(value, "tz_convert") else value.astimezone(timezone.utc).replace(tzinfo=None)
-        return value.strftime("%Y-%m-%d %H:%M:%S")
-    if isinstance(value, (list, dict)):
-        return json.dumps(value, ensure_ascii=False)
-    if pd.isna(value):
-        return ""
-    return value
-
-
-def dataframe_to_xlsx_bytes(sheets: dict[str, pd.DataFrame]) -> bytes:
-    output = io.BytesIO()
-    with pd.ExcelWriter(output, engine="openpyxl") as writer:
-        for sheet_name, df in sheets.items():
-            safe_name = re.sub(r"[:\\/*?\[\]]", "_", sheet_name)[:31] or "sheet"
-            safe_df = df.copy().astype(object)
-            for col in safe_df.columns:
-                safe_df[col] = safe_df[col].map(_excel_safe_scalar)
-            safe_df.to_excel(writer, index=False, sheet_name=safe_name)
-    output.seek(0)
-    return output.getvalue()
-
-
-def build_summary_sheet(df: pd.DataFrame) -> pd.DataFrame:
-    rows = [{"indicateur": "Enregistrements", "valeur": len(df)}]
-    if "institution_acronym" in df.columns:
-        rows.append({"indicateur": "Institutions distinctes", "valeur": df["institution_acronym"].replace("", pd.NA).dropna().nunique()})
-    if "country_or_rec" in df.columns:
-        rows.append({"indicateur": "Pays / CER distincts", "valeur": df["country_or_rec"].replace("", pd.NA).dropna().nunique()})
-    if "language" in df.columns:
-        rows.append({"indicateur": "Langues distinctes", "valeur": df["language"].replace("", pd.NA).dropna().nunique()})
-    return pd.DataFrame(rows)
+    df = records_to_dataframe(records)
+    return branch, df, list(records)
 
 
 def _default_date_from(df: pd.DataFrame) -> date | None:
@@ -383,11 +80,19 @@ def _default_date_to() -> date:
     return MAX_FILTER_DATE
 
 
+def _cleaning_note(kind: str) -> str:
+    label = "soumissions finales" if kind == "submissions" else "brouillons"
+    return (
+        f"Le module dashboard_common est utilisé pour charger les {label}. "
+        "La suppression des données de test et la déduplication des répondants sont donc appliquées en amont, "
+        "au moment du chargement."
+    )
+
+
 def main() -> None:
     require_password()
     st.title("Dashboard Admin")
     st.caption(f"Téléchargement et exploration des réponses JSON, CSV et XLSX | version {APP_VERSION}")
-    st.info(f"VERSION ACTIVE DU DASHBOARD : {APP_VERSION}")
 
     top1, top2 = st.columns([3, 1])
     with top1:
@@ -399,46 +104,21 @@ def main() -> None:
         )
     with top2:
         if st.button("Actualiser les données", use_container_width=True):
-            load_raw_records.clear()
+            load_data.clear()
             st.rerun()
 
     with st.spinner("Chargement des données depuis GitHub..."):
-        branch, records, paths = load_raw_records(kind, APP_VERSION)
-
-    raw_df = records_to_dataframe(records)
-    df, clean_stats = clean_records_df(raw_df, kind)
-    removed_tests_df, removed_dups_df = build_clean_diagnostics(raw_df)
+        branch, df, records = load_data(kind)
 
     st.success(
         f"Données chargées depuis la branche GitHub : {branch} | "
         f"Actualisation automatique toutes les {CACHE_TTL_SECONDS} secondes | "
         f"Date maximale par défaut : {MAX_FILTER_DATE.strftime('%Y/%m/%d')}"
     )
-
-    c0, c1, c2, c3 = st.columns(4)
-    c0.metric("Lignes source", clean_stats["source_rows"])
-    c1.metric("Tests supprimés", clean_stats["tests_removed"])
-    c2.metric("Doublons supprimés", clean_stats["duplicates_removed"])
-    c3.metric("Lignes finales conservées", clean_stats["final_rows"])
-
-    # hard proof that cleaning has been applied before display
-    residual_tests = pd.DataFrame()
-    residual_dups = pd.DataFrame()
-    if not df.empty:
-        check = df.copy()
-        if "email" not in check.columns:
-            check["email"] = ""
-        check["_email_norm"] = check["email"].map(_norm_text)
-        residual_tests = check.loc[check["_email_norm"].isin(TEST_EMAILS)].copy()
-        check["_respondent_key"] = check.apply(_respondent_key, axis=1)
-        residual_dups = check.loc[check.duplicated(subset=["_respondent_key"], keep=False)].copy()
-    if not residual_tests.empty or not residual_dups.empty:
-        st.error("Attention : des tests ou doublons subsistent encore dans le tableau nettoyé.")
-    else:
-        st.success("Contrôle interne : aucun email de test ni doublon ne subsiste dans le tableau nettoyé.")
+    st.info(_cleaning_note(kind))
 
     if df.empty:
-        st.warning("Aucune donnée n’a été trouvée après nettoyage.")
+        st.warning("Aucune donnée n’a été trouvée pour cette source après nettoyage.")
         return
 
     col1, col2, col3, col4 = st.columns(4)
@@ -460,8 +140,12 @@ def main() -> None:
         c1, c2, c3, c4 = st.columns(4)
         statuses = c1.multiselect("Statut", sorted(df.get("status", pd.Series(dtype=str)).dropna().unique().tolist()))
         languages = c2.multiselect("Langue", sorted(df.get("language", pd.Series(dtype=str)).dropna().unique().tolist()))
-        institution_types = c3.multiselect("Type d’institution", sorted(df.get("institution_type", pd.Series(dtype=str)).dropna().unique().tolist()))
+        institution_types = c3.multiselect(
+            "Type d’institution",
+            sorted(df.get("institution_type", pd.Series(dtype=str)).dropna().unique().tolist()),
+        )
         countries = c4.multiselect("Pays / CER", sorted(df.get("country_or_rec", pd.Series(dtype=str)).dropna().unique().tolist()))
+
         d1, d2 = st.columns(2)
         default_from = _default_date_from(df)
         default_to = _default_date_to()
@@ -478,34 +162,30 @@ def main() -> None:
         date_to=pd.Timestamp(date_to) if isinstance(date_to, date) else None,
     )
 
-    with st.expander("Diagnostic de nettoyage", expanded=False):
-        st.write(f"Lignes retirées comme tests : {len(removed_tests_df)}")
-        if not removed_tests_df.empty:
-            st.dataframe(removed_tests_df, use_container_width=True, hide_index=True)
-        st.write(f"Lignes retirées comme doublons : {len(removed_dups_df)}")
-        if not removed_dups_df.empty:
-            st.dataframe(removed_dups_df, use_container_width=True, hide_index=True)
-        if not residual_tests.empty:
-            st.warning("Emails de test encore présents après nettoyage")
-            st.dataframe(residual_tests, use_container_width=True, hide_index=True)
-        if not residual_dups.empty:
-            st.warning("Doublons encore présents après nettoyage")
-            st.dataframe(residual_dups, use_container_width=True, hide_index=True)
+    tabs = st.tabs(["Tableau", "Téléchargements", "Résumé", "Enregistrement brut"])
 
-    tab1, tab2, tab3, tab4 = st.tabs(["Tableau", "Téléchargements", "Résumé", "Enregistrement brut"])
-
-    with tab1:
+    with tabs[0]:
         st.caption(f"Enregistrements après filtrage : {len(filtered)}")
         st.dataframe(filtered, use_container_width=True, hide_index=True)
 
-    with tab2:
+    with tabs[1]:
         json_bytes = records_to_json_bytes(filtered.to_dict(orient="records"))
         csv_bytes = dataframe_to_csv_bytes(filtered)
         xlsx_bytes = dataframe_to_xlsx_bytes({"donnees_filtrees": filtered})
 
         c1, c2, c3 = st.columns(3)
-        c1.download_button("Télécharger JSON", data=json_bytes, file_name=f"validation_{kind}.json", mime="application/json")
-        c2.download_button("Télécharger CSV", data=csv_bytes, file_name=f"validation_{kind}.csv", mime="text/csv")
+        c1.download_button(
+            "Télécharger JSON",
+            data=json_bytes,
+            file_name=f"validation_{kind}.json",
+            mime="application/json",
+        )
+        c2.download_button(
+            "Télécharger CSV",
+            data=csv_bytes,
+            file_name=f"validation_{kind}.csv",
+            mime="text/csv",
+        )
         c3.download_button(
             "Télécharger XLSX",
             data=xlsx_bytes,
@@ -513,30 +193,47 @@ def main() -> None:
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         )
 
-    with tab3:
+    with tabs[2]:
         st.write("Résumé rapide des données filtrées")
         if not filtered.empty:
-            st.dataframe(build_summary_sheet(filtered), use_container_width=True, hide_index=True)
+            sheets = build_analysis_sheets(filtered)
+            if "synthese" in sheets:
+                st.dataframe(sheets["synthese"], use_container_width=True, hide_index=True)
+            else:
+                st.info("La feuille de synthèse n’est pas disponible dans cette version de dashboard_common.")
             if "overall_validation" in filtered.columns:
                 st.bar_chart(filtered["overall_validation"].fillna("NA").value_counts())
         else:
             st.info("Aucune donnée après filtrage.")
 
-    with tab4:
+    with tabs[3]:
         if not filtered.empty:
             selected = st.selectbox(
                 "Choisir un enregistrement",
                 options=filtered.index.tolist(),
                 format_func=lambda idx: filtered.loc[idx].get("submission_id") or filtered.loc[idx].get("draft_token") or str(idx),
             )
-            st.json({k: _json_safe(v) for k, v in filtered.loc[selected].to_dict().items()})
+            st.json(filtered.loc[selected].to_dict())
         else:
             st.info("Aucun enregistrement à afficher.")
 
-    st.markdown("### Fichiers JSON détectés")
-    st.caption(f"{len(paths)} fichier(s) JSON lu(s) dans le dépôt.")
-    with st.expander("Afficher les chemins GitHub détectés"):
-        st.write(paths)
+    with st.expander("Paramètres et contrôle", expanded=False):
+        cfg = get_github_config_from_streamlit(st)
+        st.code(
+            "\n".join(
+                [
+                    f"GitHub owner : {cfg.owner}",
+                    f"GitHub repo  : {cfg.repo}",
+                    f"GitHub branch: {cfg.branch}",
+                    f"Jeu chargé   : {kind}",
+                    f"Enregistrements chargés (après nettoyage) : {len(df)}",
+                    f"Enregistrements filtrés : {len(filtered)}",
+                ]
+            )
+        )
+        st.caption(
+            "Si dashboard_common.py a bien été remplacé par la version corrigée, les données de test et les doublons ne doivent plus apparaître ici."
+        )
 
 
 if __name__ == "__main__":
