@@ -26,7 +26,7 @@ DEFAULT_DOC_URL_EN = os.getenv(
 )
 DEFAULT_DOC_URL_FR = os.getenv(
     "FULL_DOC_URL_FR",
-    "https://onedrive.live.com/personal/11cdb27337d4c5b5/_layouts/15/Doc.aspx?sourcedoc=%7Bbed3dcb8-d08f-45b8-9bba-17a454341159%7D&action=edit&redeem=aHR0cHM6Ly8xZHJ2Lm1zL3cvYy8xMWNkYjI3MzM3ZDRjNWI1L0lRQzQzTk8tajlDNFJadTZGNlJVTkJGWkFVTVpXMXUxWmozVjJQU2d4TUhvSTFFP2U9QUlyajJE"
+    "https://1drv.ms/w/c/11cdb27337d4c5b5/IQDIwTK9gdO7RoS_PD1ywM75AcjJhD04n9cj7iSQhLbH4Fw?e=Xzkrdl"
 )
 DEFAULT_GITHUB_OWNER = os.getenv("GITHUB_OWNER", "mniangj-png")
 DEFAULT_GITHUB_REPO = os.getenv("GITHUB_REPO", "consultation-statafric_niang")
