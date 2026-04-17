@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-17T08:02:46.795162Z",
+  "saved_at": "2026-04-17T08:10:36.980553Z",
   "language": "fr",
   "institution_acronym": "INEGE",
   "institution_type": "nso",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-19T08:02:46.795264Z"
+  "expires_at": "2026-04-19T08:10:36.980629Z"
 }
