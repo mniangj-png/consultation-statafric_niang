@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-16T10:53:23.913657Z",
+  "saved_at": "2026-04-17T05:22:06.563766Z",
   "language": "fr",
   "institution_acronym": "INEGE",
   "institution_type": "nso",
@@ -21,6 +21,8 @@
   "final_institutional_position_why": "",
   "draft_token": "283D2F4A",
   "current_step": 1,
+  "respondent_key": "amossanty-gmail-com-D15269BC1E65",
+  "is_test_email": false,
   "strategic_prioritization_criteria": null,
   "strategic_prioritization_criteria_why": "",
   "strategic_scoring_logic": null,
@@ -61,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": null,
   "domain_d12_why": "",
-  "expires_at": "2026-04-18T10:53:23.913706Z"
+  "expires_at": "2026-04-19T05:22:06.563853Z"
 }
