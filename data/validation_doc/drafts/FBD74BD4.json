@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-17T15:56:46.535816Z",
+  "saved_at": "2026-04-17T15:59:35.710173Z",
   "language": "en",
   "institution_acronym": "IGAD",
   "institution_type": "rec",
@@ -17,10 +17,10 @@
   "domain_comments": "",
   "priorities_to_strengthen": [],
   "top_3_revisions": "1. Strengthen integration of regional and transboundary dimensions (migration, pastoralism, cross-border trade) and reinforce RECs roles.\n2. Elevate climate resilience, food security, and fragility-related indicators within the core framework.\n3. Enhance use of administrative, geospatial, and innovative data systems, including stronger interoperability and data-sharing mechanisms.",
-  "final_institutional_position": null,
-  "final_institutional_position_why": "",
+  "final_institutional_position": "yes_limited_adjustments",
+  "final_institutional_position_why": "IGAD supports finalization of the document, subject to addressing adjustments related to regional dimensions.",
   "draft_token": "FBD74BD4",
-  "current_step": 3,
+  "current_step": 4,
   "respondent_key": "charles-ogolla-igad-int-BA705FCF675C",
   "is_test_email": false,
   "strategic_prioritization_criteria": "go",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-19T15:56:46.535907Z"
+  "expires_at": "2026-04-19T15:59:35.710255Z"
 }
