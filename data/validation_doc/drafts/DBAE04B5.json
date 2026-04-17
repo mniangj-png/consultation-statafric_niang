@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-17T06:55:13.028913Z",
+  "saved_at": "2026-04-17T06:55:47.027560Z",
   "language": "en",
   "institution_acronym": "NBS",
   "institution_type": "nso",
@@ -17,10 +17,10 @@
   "domain_comments": "",
   "priorities_to_strengthen": [],
   "top_3_revisions": "Blue economy and ocean management\npartnerships and development financing\nenvironment, climate resilience and sustainable cities",
-  "final_institutional_position": null,
+  "final_institutional_position": "discuss_in_workshop",
   "final_institutional_position_why": "",
   "draft_token": "DBAE04B5",
-  "current_step": 3,
+  "current_step": 4,
   "respondent_key": "elinzuu-yohana-nbs-go-tz-9CB3FB9BA272",
   "is_test_email": false,
   "strategic_prioritization_criteria": "go",
@@ -63,5 +63,5 @@
   "domain_d11_why": "Need capacity building",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-19T06:55:13.029014Z"
+  "expires_at": "2026-04-19T06:55:47.027637Z"
 }
