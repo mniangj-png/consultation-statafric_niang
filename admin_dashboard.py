@@ -34,6 +34,7 @@ def require_password() -> None:
         return
     if st.session_state.get("admin_ok"):
         return
+
     st.title("Dashboard Admin")
     pwd = st.text_input("Mot de passe Admin", type="password")
     if st.button("Ouvrir"):
@@ -50,27 +51,24 @@ def load_data(source_kind: str) -> tuple[str, pd.DataFrame, list[dict]]:
     cfg = get_github_config_from_streamlit(st)
     loaded = load_json_records_from_repo(cfg, source_kind)
 
-    # Compatibilité avec plusieurs signatures possibles de dashboard_common.py
+    # Compatibilité prudente avec plusieurs signatures éventuelles
     if isinstance(loaded, tuple):
         if len(loaded) >= 2:
-            branch = str(loaded[0])
-            records = loaded[1] or []
+            branch, records = loaded[0], loaded[1]
         elif len(loaded) == 1:
-            branch = str(getattr(cfg, "branch", "main"))
-            records = loaded[0] or []
+            branch, records = getattr(cfg, "branch", "main"), loaded[0]
         else:
-            branch = str(getattr(cfg, "branch", "main"))
-            records = []
+            branch, records = getattr(cfg, "branch", "main"), []
     else:
-        branch = str(getattr(cfg, "branch", "main"))
-        records = loaded or []
+        branch, records = getattr(cfg, "branch", "main"), loaded
 
+    records = records or []
     df = records_to_dataframe(records)
-    return branch, df, list(records)
+    return str(branch), df, records
 
 
 def _default_date_from(df: pd.DataFrame) -> date | None:
-    for col in ["submitted_at", "saved_at"]:
+    for col in ["submitted_at", "saved_at", "expires_at"]:
         if col in df.columns and df[col].notna().any():
             return df[col].dt.date.min()
     return None
@@ -80,19 +78,21 @@ def _default_date_to() -> date:
     return MAX_FILTER_DATE
 
 
-def _cleaning_note(kind: str) -> str:
-    label = "soumissions finales" if kind == "submissions" else "brouillons"
-    return (
-        f"Le module dashboard_common est utilisé pour charger les {label}. "
-        "La suppression des données de test et la déduplication des répondants sont donc appliquées en amont, "
-        "au moment du chargement."
-    )
+def _safe_series(df: pd.DataFrame, col: str) -> pd.Series:
+    if col in df.columns:
+        return df[col]
+    return pd.Series(dtype="object")
 
 
 def main() -> None:
     require_password()
+
     st.title("Dashboard Admin")
     st.caption(f"Téléchargement et exploration des réponses JSON, CSV et XLSX | version {APP_VERSION}")
+    st.info(
+        "Ce dashboard s’appuie directement sur dashboard_common.py. "
+        "La suppression des données de test et la déduplication doivent donc être héritées de ce module."
+    )
 
     top1, top2 = st.columns([3, 1])
     with top1:
@@ -115,42 +115,39 @@ def main() -> None:
         f"Actualisation automatique toutes les {CACHE_TTL_SECONDS} secondes | "
         f"Date maximale par défaut : {MAX_FILTER_DATE.strftime('%Y/%m/%d')}"
     )
-    st.info(_cleaning_note(kind))
 
     if df.empty:
-        st.warning("Aucune donnée n’a été trouvée pour cette source après nettoyage.")
+        st.warning("Aucune donnée n’a été trouvée pour cette source.")
         return
 
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Enregistrements", len(df))
     col2.metric(
         "Institutions distinctes",
-        df.get("institution_acronym", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique(),
+        _safe_series(df, "institution_acronym").replace("", pd.NA).dropna().nunique(),
     )
     col3.metric(
         "Pays / CER distincts",
-        df.get("country_or_rec", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique(),
+        _safe_series(df, "country_or_rec").replace("", pd.NA).dropna().nunique(),
     )
     col4.metric(
         "Langues distinctes",
-        df.get("language", pd.Series(dtype=str)).replace("", pd.NA).dropna().nunique(),
+        _safe_series(df, "language").replace("", pd.NA).dropna().nunique(),
     )
 
     with st.expander("Filtres", expanded=True):
         c1, c2, c3, c4 = st.columns(4)
-        statuses = c1.multiselect("Statut", sorted(df.get("status", pd.Series(dtype=str)).dropna().unique().tolist()))
-        languages = c2.multiselect("Langue", sorted(df.get("language", pd.Series(dtype=str)).dropna().unique().tolist()))
+        statuses = c1.multiselect("Statut", sorted(_safe_series(df, "status").dropna().astype(str).unique().tolist()))
+        languages = c2.multiselect("Langue", sorted(_safe_series(df, "language").dropna().astype(str).unique().tolist()))
         institution_types = c3.multiselect(
             "Type d’institution",
-            sorted(df.get("institution_type", pd.Series(dtype=str)).dropna().unique().tolist()),
+            sorted(_safe_series(df, "institution_type").dropna().astype(str).unique().tolist()),
         )
-        countries = c4.multiselect("Pays / CER", sorted(df.get("country_or_rec", pd.Series(dtype=str)).dropna().unique().tolist()))
+        countries = c4.multiselect("Pays / CER", sorted(_safe_series(df, "country_or_rec").dropna().astype(str).unique().tolist()))
 
         d1, d2 = st.columns(2)
-        default_from = _default_date_from(df)
-        default_to = _default_date_to()
-        date_from = d1.date_input("Date minimale de soumission", value=default_from)
-        date_to = d2.date_input("Date maximale de soumission", value=default_to)
+        date_from = d1.date_input("Date minimale de soumission", value=_default_date_from(df))
+        date_to = d2.date_input("Date maximale de soumission", value=_default_date_to())
 
     filtered = apply_filters(
         df,
@@ -162,13 +159,14 @@ def main() -> None:
         date_to=pd.Timestamp(date_to) if isinstance(date_to, date) else None,
     )
 
-    tabs = st.tabs(["Tableau", "Téléchargements", "Résumé", "Enregistrement brut"])
+    tabs = st.tabs(["Tableau", "Téléchargements", "Résumé", "Enregistrement brut", "Paramètres"])
+    tab1, tab2, tab3, tab4, tab5 = tabs
 
-    with tabs[0]:
+    with tab1:
         st.caption(f"Enregistrements après filtrage : {len(filtered)}")
         st.dataframe(filtered, use_container_width=True, hide_index=True)
 
-    with tabs[1]:
+    with tab2:
         json_bytes = records_to_json_bytes(filtered.to_dict(orient="records"))
         csv_bytes = dataframe_to_csv_bytes(filtered)
         xlsx_bytes = dataframe_to_xlsx_bytes({"donnees_filtrees": filtered})
@@ -193,46 +191,53 @@ def main() -> None:
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         )
 
-    with tabs[2]:
+    with tab3:
         st.write("Résumé rapide des données filtrées")
         if not filtered.empty:
             sheets = build_analysis_sheets(filtered)
-            if "synthese" in sheets:
-                st.dataframe(sheets["synthese"], use_container_width=True, hide_index=True)
+            summary_sheet = sheets.get("synthese")
+            if summary_sheet is not None and not summary_sheet.empty:
+                st.dataframe(summary_sheet, use_container_width=True, hide_index=True)
             else:
-                st.info("La feuille de synthèse n’est pas disponible dans cette version de dashboard_common.")
+                st.info("Aucune feuille de synthèse disponible.")
             if "overall_validation" in filtered.columns:
-                st.bar_chart(filtered["overall_validation"].fillna("NA").value_counts())
+                st.bar_chart(filtered["overall_validation"].fillna("NA").astype(str).value_counts())
         else:
             st.info("Aucune donnée après filtrage.")
 
-    with tabs[3]:
+    with tab4:
         if not filtered.empty:
             selected = st.selectbox(
                 "Choisir un enregistrement",
                 options=filtered.index.tolist(),
-                format_func=lambda idx: filtered.loc[idx].get("submission_id") or filtered.loc[idx].get("draft_token") or str(idx),
+                format_func=lambda idx: str(
+                    filtered.loc[idx].get("submission_id")
+                    or filtered.loc[idx].get("draft_token")
+                    or filtered.loc[idx].get("respondent_key")
+                    or idx
+                ),
             )
             st.json(filtered.loc[selected].to_dict())
         else:
             st.info("Aucun enregistrement à afficher.")
 
-    with st.expander("Paramètres et contrôle", expanded=False):
+    with tab5:
         cfg = get_github_config_from_streamlit(st)
         st.code(
             "\n".join(
                 [
-                    f"GitHub owner : {cfg.owner}",
-                    f"GitHub repo  : {cfg.repo}",
-                    f"GitHub branch: {cfg.branch}",
-                    f"Jeu chargé   : {kind}",
-                    f"Enregistrements chargés (après nettoyage) : {len(df)}",
-                    f"Enregistrements filtrés : {len(filtered)}",
+                    f"GitHub owner : {getattr(cfg, 'owner', '')}",
+                    f"GitHub repo  : {getattr(cfg, 'repo', '')}",
+                    f"GitHub branch: {getattr(cfg, 'branch', '')}",
+                    f"Enregistrements chargés : {len(records)}",
+                    f"Enregistrements après transformation : {len(df)}",
                 ]
             )
         )
-        st.caption(
-            "Si dashboard_common.py a bien été remplacé par la version corrigée, les données de test et les doublons ne doivent plus apparaître ici."
+        st.info(
+            "Si des doublons ou des données de test apparaissent encore ici alors que le dashboard Superadmin "
+            "basé sur dashboard_common.py est correct, cela signifie en pratique que ce fichier n’est probablement "
+            "pas celui qui est réellement exécuté."
         )
 
 
