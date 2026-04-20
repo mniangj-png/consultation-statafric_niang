@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-20T08:56:50.081002Z",
+  "saved_at": "2026-04-20T08:57:27.264475Z",
   "language": "en",
   "institution_acronym": "Commission CEDEAO",
   "institution_type": "rec",
@@ -17,10 +17,10 @@
   "domain_comments": "",
   "priorities_to_strengthen": [],
   "top_3_revisions": "The three revisions to be made before validation are content and consistency, form and style, and conformity and accuracy; these are the three pillars to be reviewed.",
-  "final_institutional_position": null,
+  "final_institutional_position": "yes",
   "final_institutional_position_why": "",
   "draft_token": "29C43658",
-  "current_step": 3,
+  "current_step": 4,
   "respondent_key": "mba-ecowas-int-AA1D0383E9EA",
   "is_test_email": false,
   "strategic_prioritization_criteria": "go",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-22T08:56:50.081093Z"
+  "expires_at": "2026-04-22T08:57:27.264585Z"
 }
