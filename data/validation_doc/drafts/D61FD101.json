@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-20T08:31:59.577844Z",
+  "saved_at": "2026-04-20T08:49:41.152947Z",
   "language": "en",
   "institution_acronym": "CSO",
   "institution_type": "nso",
@@ -16,11 +16,11 @@
   "strategic_comments": "",
   "domain_comments": "",
   "priorities_to_strengthen": [],
-  "top_3_revisions": "",
+  "top_3_revisions": "1. Clarify indicator definitions and methodologies to ensure harmonization amongst African countries.\n2. Capacity building in areas with limited data availability",
   "final_institutional_position": "yes",
   "final_institutional_position_why": "",
   "draft_token": "D61FD101",
-  "current_step": 4,
+  "current_step": 3,
   "respondent_key": "tilungm-gmail-com-BAA324D4A188",
   "is_test_email": false,
   "strategic_prioritization_criteria": "go",
@@ -57,11 +57,11 @@
   "domain_d08_why": "",
   "domain_d09": "go",
   "domain_d09_why": "",
-  "domain_d10": "go",
-  "domain_d10_why": "",
-  "domain_d11": "go",
+  "domain_d10": "go_with_reservations",
+  "domain_d10_why": "Governance, peace and institutions indicators require harmonized methodologies and administrative data which may vary across countries.",
+  "domain_d11": "no_opinion",
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-22T08:31:59.577933Z"
+  "expires_at": "2026-04-22T08:49:41.153047Z"
 }
