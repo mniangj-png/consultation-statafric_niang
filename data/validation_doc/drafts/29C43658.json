@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-20T06:06:40.354384Z",
+  "saved_at": "2026-04-20T06:06:46.645538Z",
   "language": "en",
   "institution_acronym": "Commission CEDEAO",
   "institution_type": "rec",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": null,
   "domain_d12_why": "",
-  "expires_at": "2026-04-22T06:06:40.354475Z"
+  "expires_at": "2026-04-22T06:06:46.645659Z"
 }
