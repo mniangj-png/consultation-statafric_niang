@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-20T08:17:55.785236Z",
+  "saved_at": "2026-04-20T08:18:06.888616Z",
   "language": "fr",
   "institution_acronym": "INSTAT",
   "institution_type": "nso",
@@ -17,10 +17,10 @@
   "domain_comments": "",
   "priorities_to_strengthen": [],
   "top_3_revisions": "Les trois révisions prioritaires suivantes à apporter avant validation finale du document sont :  la clarification des fiches d’indicateurs et des métadonnées, le renforcement du dispositif de validation/qualité, et la formalisation de la gouvernance des révisions et du partage des données.",
-  "final_institutional_position": null,
+  "final_institutional_position": "yes",
   "final_institutional_position_why": "",
   "draft_token": "6EA09C21",
-  "current_step": 3,
+  "current_step": 4,
   "respondent_key": "eric-rakotomanana-gmail-com-198C6A386170",
   "is_test_email": false,
   "strategic_prioritization_criteria": "go",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-22T08:17:55.785333Z"
+  "expires_at": "2026-04-22T08:18:06.888719Z"
 }
