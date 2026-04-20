@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-20T08:49:41.152947Z",
+  "saved_at": "2026-04-20T08:50:11.819274Z",
   "language": "en",
   "institution_acronym": "CSO",
   "institution_type": "nso",
@@ -20,7 +20,7 @@
   "final_institutional_position": "yes",
   "final_institutional_position_why": "",
   "draft_token": "D61FD101",
-  "current_step": 3,
+  "current_step": 4,
   "respondent_key": "tilungm-gmail-com-BAA324D4A188",
   "is_test_email": false,
   "strategic_prioritization_criteria": "go",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-22T08:49:41.153047Z"
+  "expires_at": "2026-04-22T08:50:11.819376Z"
 }
