@@ -3,7 +3,6 @@ from __future__ import annotations
 import io
 import json
 import os
-import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
@@ -17,7 +16,6 @@ RESPONSE_ROOT = os.getenv("RESPONSE_PATH_ROOT", "data/validation_doc")
 DEFAULT_OWNER = os.getenv("GITHUB_OWNER", "mniangj-png")
 DEFAULT_REPO = os.getenv("GITHUB_REPO", "consultation-statafric_niang")
 DEFAULT_BRANCH = os.getenv("GITHUB_BRANCH", "main")
-TEST_EMAILS = {"kl@od.sd", "in@bc.sd", "de@re.bh", "gh@fg.jh"}
 
 RESPONSE_LABELS_FR = {
     "go": "Validé",
@@ -168,79 +166,6 @@ def fetch_repo_file_text(cfg: GitHubConfig, path: str, branch: str) -> str:
     return r.text
 
 
-
-def parse_iso_date(value: str | None) -> Optional[pd.Timestamp]:
-    if not value:
-        return None
-    try:
-        return pd.to_datetime(value, utc=True)
-    except Exception:
-        return None
-
-
-def normalize_email(value: str | None) -> str:
-    return (value or "").strip().lower()
-
-
-def is_test_email(value: str | None) -> bool:
-    return normalize_email(value) in TEST_EMAILS
-
-
-def _norm_text(value) -> str:
-    if value is None:
-        return ""
-    try:
-        if pd.isna(value):
-            return ""
-    except Exception:
-        pass
-    return re.sub(r"\s+", " ", str(value).strip().lower())
-
-
-def respondent_key_from_record(rec: Dict) -> str:
-    email = normalize_email(rec.get("email"))
-    if email and not is_test_email(email):
-        return f"email:{email}"
-    parts = [
-        _norm_text(rec.get("institution_type")),
-        _norm_text(rec.get("country_or_rec")),
-        _norm_text(rec.get("institution_acronym")),
-        _norm_text(rec.get("respondent_title")),
-    ]
-    return "fallback:" + "|".join(parts)
-
-
-def _record_sort_timestamp(rec: Dict) -> pd.Timestamp:
-    for key in ("submitted_at", "saved_at", "expires_at"):
-        ts = parse_iso_date(rec.get(key))
-        if ts is not None and not pd.isna(ts):
-            return ts
-    return pd.Timestamp("1900-01-01", tz="UTC")
-
-
-def clean_loaded_records(records: Sequence[Dict], subfolder: str) -> List[Dict]:
-    if not records:
-        return []
-
-    cleaned = [dict(rec) for rec in records if not is_test_email(rec.get("email"))]
-
-    if subfolder not in {"submissions", "drafts"}:
-        return cleaned
-
-    latest_by_key: Dict[str, Tuple[pd.Timestamp, str, Dict]] = {}
-    for rec in cleaned:
-        respondent_key = respondent_key_from_record(rec)
-        sort_ts = _record_sort_timestamp(rec)
-        source_path = str(rec.get("_source_path", ""))
-        current = latest_by_key.get(respondent_key)
-        if current is None or (sort_ts, source_path) > (current[0], current[1]):
-            latest_by_key[respondent_key] = (sort_ts, source_path, rec)
-
-    deduped = [item[2] for item in latest_by_key.values()]
-    deduped.sort(key=lambda rec: (str(rec.get("_source_path", "")), respondent_key_from_record(rec)))
-    return deduped
-
-
 def load_json_records_from_repo(cfg: GitHubConfig, subfolder: str) -> Tuple[str, List[Dict]]:
     root = f"{RESPONSE_ROOT}/{subfolder}".rstrip("/")
     branch, paths = list_repo_json_paths(cfg, root)
@@ -254,7 +179,16 @@ def load_json_records_from_repo(cfg: GitHubConfig, subfolder: str) -> Tuple[str,
                 records.append(item)
         except Exception:
             continue
-    return branch, clean_loaded_records(records, subfolder)
+    return branch, records
+
+
+def parse_iso_date(value: str | None) -> Optional[pd.Timestamp]:
+    if not value:
+        return None
+    try:
+        return pd.to_datetime(value, utc=True)
+    except Exception:
+        return None
 
 
 def label_value(value):
@@ -394,19 +328,42 @@ def response_count_table(df: pd.DataFrame, columns: Sequence[str], mapping: Dict
 
 def extract_justifications(df: pd.DataFrame, prefixes: Sequence[str], mapping: Dict[str, str]) -> pd.DataFrame:
     rows = []
+
+    id_candidates = ["submission_id", "draft_token", "respondent_key", "_source_path"]
+    id_col = next((col for col in id_candidates if col in df.columns), None)
+
+    base_cols = []
+    if id_col:
+        base_cols.append(id_col)
+    for col in ["institution_acronym", "country_or_rec"]:
+        if col in df.columns:
+            base_cols.append(col)
+
     for prefix in prefixes:
         why_col = f"{prefix}_why"
         if prefix not in df.columns or why_col not in df.columns:
             continue
-        mask = df[prefix].isin(["Validé sous réserve", "Non-validé"]) & df[why_col].fillna("").str.strip().ne("")
-        subset = df.loc[mask, ["submission_id", "institution_acronym", "country_or_rec", prefix, why_col]].copy()
+
+        mask = df[prefix].isin(["Validé sous réserve", "Non-validé"]) & df[why_col].fillna("").astype(str).str.strip().ne("")
+        selected_cols = base_cols + [prefix, why_col]
+        subset = df.loc[mask, selected_cols].copy()
         if subset.empty:
             continue
+
         subset.insert(0, "élément", mapping.get(prefix, prefix))
         subset = subset.rename(columns={prefix: "position", why_col: "justification"})
+        if id_col and id_col != "reference_id":
+            subset = subset.rename(columns={id_col: "reference_id"})
         rows.append(subset)
+
+    empty_cols = ["élément"]
+    if id_col:
+        empty_cols.append("reference_id")
+    empty_cols.extend([col for col in ["institution_acronym", "country_or_rec"] if col in df.columns or col in ["institution_acronym", "country_or_rec"]])
+    empty_cols.extend(["position", "justification"])
+
     if not rows:
-        return pd.DataFrame(columns=["élément", "submission_id", "institution_acronym", "country_or_rec", "position", "justification"])
+        return pd.DataFrame(columns=empty_cols)
     return pd.concat(rows, ignore_index=True)
 
 
