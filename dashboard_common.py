@@ -3,19 +3,20 @@ from __future__ import annotations
 import io
 import json
 import os
+import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Dict, List, Optional, Sequence, Tuple
 
 import pandas as pd
 import requests
 from docx import Document
-from docx.shared import Inches
 
 RESPONSE_ROOT = os.getenv("RESPONSE_PATH_ROOT", "data/validation_doc")
 DEFAULT_OWNER = os.getenv("GITHUB_OWNER", "mniangj-png")
 DEFAULT_REPO = os.getenv("GITHUB_REPO", "consultation-statafric_niang")
 DEFAULT_BRANCH = os.getenv("GITHUB_BRANCH", "main")
+TEST_EMAILS = {"kl@od.sd", "in@bc.sd", "de@re.bh", "gh@fg.jh"}
 
 RESPONSE_LABELS_FR = {
     "go": "Validé",
@@ -166,6 +167,85 @@ def fetch_repo_file_text(cfg: GitHubConfig, path: str, branch: str) -> str:
     return r.text
 
 
+def parse_iso_date(value: str | None) -> Optional[pd.Timestamp]:
+    if not value:
+        return None
+    try:
+        return pd.to_datetime(value, utc=True)
+    except Exception:
+        return None
+
+
+def _norm_text(value) -> str:
+    if value is None:
+        return ""
+    try:
+        if pd.isna(value):
+            return ""
+    except Exception:
+        pass
+    return re.sub(r"\s+", " ", str(value).strip().lower())
+
+
+def _respondent_key_from_raw(rec: Dict) -> str:
+    email = _norm_text(rec.get("email"))
+    if email and email not in TEST_EMAILS:
+        return f"email:{email}"
+    parts = [
+        _norm_text(rec.get("institution_type")),
+        _norm_text(rec.get("country_or_rec")),
+        _norm_text(rec.get("institution_acronym")),
+        _norm_text(rec.get("respondent_title")),
+    ]
+    return "fallback:" + "|".join(parts)
+
+
+def _record_sort_key(rec: Dict) -> pd.Timestamp:
+    for field in ("submitted_at", "saved_at", "expires_at"):
+        ts = parse_iso_date(rec.get(field))
+        if ts is not None and not pd.isna(ts):
+            return ts
+    return pd.Timestamp("1970-01-01", tz="UTC")
+
+
+def _clean_loaded_records(records: List[Dict]) -> List[Dict]:
+    if not records:
+        return []
+
+    prepared = []
+    for rec in records:
+        email = _norm_text(rec.get("email"))
+        if email in TEST_EMAILS:
+            continue
+        item = dict(rec)
+        item["_respondent_key_tmp"] = _respondent_key_from_raw(item)
+        item["_sort_time_tmp"] = _record_sort_key(item)
+        prepared.append(item)
+
+    prepared.sort(
+        key=lambda r: (
+            r.get("_respondent_key_tmp", ""),
+            r.get("_sort_time_tmp", pd.Timestamp("1970-01-01", tz="UTC")),
+            r.get("_source_path", ""),
+        ),
+        reverse=True,
+    )
+
+    seen = set()
+    kept = []
+    for rec in prepared:
+        key = rec.get("_respondent_key_tmp", "")
+        if key in seen:
+            continue
+        seen.add(key)
+        rec.pop("_respondent_key_tmp", None)
+        rec.pop("_sort_time_tmp", None)
+        kept.append(rec)
+
+    kept.sort(key=lambda r: r.get("_source_path", ""))
+    return kept
+
+
 def load_json_records_from_repo(cfg: GitHubConfig, subfolder: str) -> Tuple[str, List[Dict]]:
     root = f"{RESPONSE_ROOT}/{subfolder}".rstrip("/")
     branch, paths = list_repo_json_paths(cfg, root)
@@ -179,16 +259,7 @@ def load_json_records_from_repo(cfg: GitHubConfig, subfolder: str) -> Tuple[str,
                 records.append(item)
         except Exception:
             continue
-    return branch, records
-
-
-def parse_iso_date(value: str | None) -> Optional[pd.Timestamp]:
-    if not value:
-        return None
-    try:
-        return pd.to_datetime(value, utc=True)
-    except Exception:
-        return None
+    return branch, _clean_loaded_records(records)
 
 
 def label_value(value):
@@ -228,7 +299,6 @@ def _excel_safe_scalar(value):
             return None
         if value.tzinfo is not None:
             value = value.tz_convert(None)
-        # Write as text to avoid all Excel timezone issues
         return value.to_pydatetime().strftime("%Y-%m-%d %H:%M:%S")
     if isinstance(value, datetime):
         if value.tzinfo is not None:
@@ -260,14 +330,9 @@ def _prepare_dataframe_for_excel(df: pd.DataFrame) -> pd.DataFrame:
     out = df.copy()
     if out.empty:
         return out
-    # Force object dtype first so pandas does not preserve timezone-aware
-    # datetime dtypes through Series.map/list assignment.
     out = out.astype(object)
     for col in out.columns:
-        safe_values = []
-        for value in out[col].tolist():
-            safe_values.append(_excel_safe_scalar(value))
-        out[col] = pd.Series(safe_values, dtype="object")
+        out[col] = pd.Series([_excel_safe_scalar(v) for v in out[col].tolist()], dtype="object")
     return out
 
 
@@ -276,8 +341,7 @@ def dataframe_to_xlsx_bytes(sheets: Dict[str, pd.DataFrame]) -> bytes:
     with pd.ExcelWriter(output, engine="openpyxl") as writer:
         for name, df in sheets.items():
             safe_name = name[:31] if name else "Sheet1"
-            safe_df = _prepare_dataframe_for_excel(df)
-            safe_df.to_excel(writer, index=False, sheet_name=safe_name)
+            _prepare_dataframe_for_excel(df).to_excel(writer, index=False, sheet_name=safe_name)
     output.seek(0)
     return output.getvalue()
 
@@ -288,8 +352,11 @@ def _json_safe(value):
             return value.isoformat()
         except Exception:
             return str(value)
-    if pd.isna(value):
-        return None
+    try:
+        if pd.isna(value):
+            return None
+    except Exception:
+        pass
     if isinstance(value, dict):
         return {str(k): _json_safe(v) for k, v in value.items()}
     if isinstance(value, (list, tuple, set)):
@@ -316,8 +383,8 @@ def response_count_table(df: pd.DataFrame, columns: Sequence[str], mapping: Dict
         s = df[col].fillna("")
         counts = s.value_counts(dropna=False)
         row = {"élément": mapping.get(col, col), "total réponses": int((s != "").sum())}
-        for code, label in [("Validé", "Validé"), ("Validé sous réserve", "Validé sous réserve"), ("Non-validé", "Non-validé"), ("Sans avis", "Sans avis")]:
-            row[label] = int(counts.get(code, 0))
+        for label in ["Validé", "Validé sous réserve", "Non-validé", "Sans avis"]:
+            row[label] = int(counts.get(label, 0))
         rows.append(row)
     out = pd.DataFrame(rows)
     if not out.empty:
@@ -326,18 +393,16 @@ def response_count_table(df: pd.DataFrame, columns: Sequence[str], mapping: Dict
     return out
 
 
+def _reference_id_series(df: pd.DataFrame) -> pd.Series:
+    for col in ["submission_id", "draft_token", "respondent_key", "_source_path"]:
+        if col in df.columns:
+            return df[col].fillna("").astype(str)
+    return pd.Series([""] * len(df), index=df.index, dtype="object")
+
+
 def extract_justifications(df: pd.DataFrame, prefixes: Sequence[str], mapping: Dict[str, str]) -> pd.DataFrame:
     rows = []
-
-    id_candidates = ["submission_id", "draft_token", "respondent_key", "_source_path"]
-    id_col = next((col for col in id_candidates if col in df.columns), None)
-
-    base_cols = []
-    if id_col:
-        base_cols.append(id_col)
-    for col in ["institution_acronym", "country_or_rec"]:
-        if col in df.columns:
-            base_cols.append(col)
+    reference_id = _reference_id_series(df)
 
     for prefix in prefixes:
         why_col = f"{prefix}_why"
@@ -345,25 +410,20 @@ def extract_justifications(df: pd.DataFrame, prefixes: Sequence[str], mapping: D
             continue
 
         mask = df[prefix].isin(["Validé sous réserve", "Non-validé"]) & df[why_col].fillna("").astype(str).str.strip().ne("")
-        selected_cols = base_cols + [prefix, why_col]
-        subset = df.loc[mask, selected_cols].copy()
-        if subset.empty:
+        if not mask.any():
             continue
 
+        subset = pd.DataFrame(index=df.index[mask])
+        subset["reference_id"] = reference_id.loc[mask].values
+        subset["institution_acronym"] = df.loc[mask, "institution_acronym"].values if "institution_acronym" in df.columns else ""
+        subset["country_or_rec"] = df.loc[mask, "country_or_rec"].values if "country_or_rec" in df.columns else ""
+        subset["position"] = df.loc[mask, prefix].values
+        subset["justification"] = df.loc[mask, why_col].values
         subset.insert(0, "élément", mapping.get(prefix, prefix))
-        subset = subset.rename(columns={prefix: "position", why_col: "justification"})
-        if id_col and id_col != "reference_id":
-            subset = subset.rename(columns={id_col: "reference_id"})
         rows.append(subset)
 
-    empty_cols = ["élément"]
-    if id_col:
-        empty_cols.append("reference_id")
-    empty_cols.extend([col for col in ["institution_acronym", "country_or_rec"] if col in df.columns or col in ["institution_acronym", "country_or_rec"]])
-    empty_cols.extend(["position", "justification"])
-
     if not rows:
-        return pd.DataFrame(columns=empty_cols)
+        return pd.DataFrame(columns=["élément", "reference_id", "institution_acronym", "country_or_rec", "position", "justification"])
     return pd.concat(rows, ignore_index=True)
 
 
@@ -405,13 +465,17 @@ def build_analysis_sheets(df: pd.DataFrame) -> Dict[str, pd.DataFrame]:
 
     strategic = response_count_table(df, STRATEGIC_KEYS, STRATEGIC_ROWS_FR)
     domains = response_count_table(df, DOMAIN_KEYS, DOMAIN_ROWS_FR)
-    justifs = extract_justifications(df, list(STRATEGIC_ROWS_FR) + list(DOMAIN_ROWS_FR) + ["overall_validation", "operational_usability", "final_institutional_position"], {
-        **STRATEGIC_ROWS_FR,
-        **DOMAIN_ROWS_FR,
-        "overall_validation": "Validation globale du document",
-        "operational_usability": "Document suffisamment opérationnel",
-        "final_institutional_position": "Position finale de l’institution",
-    })
+    justifs = extract_justifications(
+        df,
+        list(STRATEGIC_ROWS_FR) + list(DOMAIN_ROWS_FR) + ["overall_validation", "operational_usability", "final_institutional_position"],
+        {
+            **STRATEGIC_ROWS_FR,
+            **DOMAIN_ROWS_FR,
+            "overall_validation": "Validation globale du document",
+            "operational_usability": "Document suffisamment opérationnel",
+            "final_institutional_position": "Position finale de l’institution",
+        },
+    )
 
     metadata = pd.DataFrame(
         {
@@ -458,6 +522,7 @@ def build_report_docx_bytes(df: pd.DataFrame) -> bytes:
         p.add_run("Soumissions finales : ").bold = True
         p.add_run(str(submitted))
         p = doc.add_paragraph()
+        p.addRun = None
         p.add_run("Brouillons : ").bold = True
         p.add_run(str(drafts))
         p = doc.add_paragraph()
@@ -507,13 +572,17 @@ def build_report_docx_bytes(df: pd.DataFrame) -> bytes:
             doc.add_paragraph("Aucune information disponible.")
 
         doc.add_heading("6. Extraits de justifications", level=2)
-        justifs = extract_justifications(df, list(STRATEGIC_ROWS_FR) + list(DOMAIN_ROWS_FR) + ["overall_validation", "operational_usability", "final_institutional_position"], {
-            **STRATEGIC_ROWS_FR,
-            **DOMAIN_ROWS_FR,
-            "overall_validation": "Validation globale du document",
-            "operational_usability": "Document suffisamment opérationnel",
-            "final_institutional_position": "Position finale de l’institution",
-        })
+        justifs = extract_justifications(
+            df,
+            list(STRATEGIC_ROWS_FR) + list(DOMAIN_ROWS_FR) + ["overall_validation", "operational_usability", "final_institutional_position"],
+            {
+                **STRATEGIC_ROWS_FR,
+                **DOMAIN_ROWS_FR,
+                "overall_validation": "Validation globale du document",
+                "operational_usability": "Document suffisamment opérationnel",
+                "final_institutional_position": "Position finale de l’institution",
+            },
+        )
         if not justifs.empty:
             for _, row in justifs.head(20).iterrows():
                 doc.add_paragraph(
@@ -548,12 +617,15 @@ def apply_filters(
         out = out[out["institution_type"].isin(institution_types)]
     if countries and "country_or_rec" in out.columns:
         out = out[out["country_or_rec"].isin(countries)]
-    if date_from is not None and "submitted_at" in out.columns:
-        out = out[out["submitted_at"] >= pd.Timestamp(date_from).tz_localize("UTC") if pd.Timestamp(date_from).tzinfo is None else out["submitted_at"] >= pd.Timestamp(date_from)]
-    if date_to is not None and "submitted_at" in out.columns:
+    date_col = "submitted_at" if "submitted_at" in out.columns else ("saved_at" if "saved_at" in out.columns else None)
+    if date_from is not None and date_col:
+        start_ts = pd.Timestamp(date_from)
+        if start_ts.tzinfo is None:
+            start_ts = start_ts.tz_localize("UTC")
+        out = out[out[date_col] >= start_ts]
+    if date_to is not None and date_col:
         end_ts = pd.Timestamp(date_to)
         if end_ts.tzinfo is None:
-            # make the upper bound inclusive for the whole selected day
             end_ts = end_ts.tz_localize("UTC") + pd.Timedelta(days=1) - pd.Timedelta(microseconds=1)
-        out = out[out["submitted_at"] <= end_ts]
+        out = out[out[date_col] <= end_ts]
     return out
