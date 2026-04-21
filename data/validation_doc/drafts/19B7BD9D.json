@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-21T15:35:56.176957Z",
+  "saved_at": "2026-04-21T15:56:58.205866Z",
   "language": "fr",
   "institution_acronym": "INSTAT-GABON",
   "institution_type": "nso",
@@ -20,7 +20,7 @@
   "final_institutional_position": null,
   "final_institutional_position_why": "",
   "draft_token": "19B7BD9D",
-  "current_step": 1,
+  "current_step": 2,
   "respondent_key": "jondomegne-yahoo-fr-73D07218C2FA",
   "is_test_email": false,
   "strategic_prioritization_criteria": null,
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": null,
   "domain_d12_why": "",
-  "expires_at": "2026-04-23T15:35:56.177050Z"
+  "expires_at": "2026-04-23T15:56:58.205944Z"
 }
