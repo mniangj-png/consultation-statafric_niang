@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-22T10:13:20.667222Z",
+  "saved_at": "2026-04-22T10:19:18.876236Z",
   "language": "en",
   "institution_acronym": "NATIONAL BUREAU OF STATISTICS",
   "institution_type": "nso",
@@ -17,10 +17,10 @@
   "domain_comments": "",
   "priorities_to_strengthen": [],
   "top_3_revisions": "Economic growth, structural transformation and trade, Blue economy and ocean management and Sustainable agriculture, food security and nutrition.",
-  "final_institutional_position": null,
+  "final_institutional_position": "yes",
   "final_institutional_position_why": "",
   "draft_token": "8A980898",
-  "current_step": 3,
+  "current_step": 4,
   "respondent_key": "ceo-nbs-gov-sc-07303089B70A",
   "is_test_email": false,
   "strategic_prioritization_criteria": "go",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-24T10:13:20.667346Z"
+  "expires_at": "2026-04-24T10:19:18.876388Z"
 }
