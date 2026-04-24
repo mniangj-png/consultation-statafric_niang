@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-24T15:04:45.699932Z",
+  "saved_at": "2026-04-24T15:05:05.069761Z",
   "language": "en",
   "institution_acronym": "NBS",
   "institution_type": "nso",
@@ -20,7 +20,7 @@
   "final_institutional_position": null,
   "final_institutional_position_why": "",
   "draft_token": "C5CA3FB4",
-  "current_step": 2,
+  "current_step": 1,
   "respondent_key": "cumunna-nigerianstat-gov-ng-9B96BD5F83B4",
   "is_test_email": false,
   "strategic_prioritization_criteria": "go",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-26T15:04:45.700049Z"
+  "expires_at": "2026-04-26T15:05:05.069868Z"
 }
