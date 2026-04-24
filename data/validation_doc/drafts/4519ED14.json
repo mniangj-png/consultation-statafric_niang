@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-24T08:54:09.366699Z",
+  "saved_at": "2026-04-24T08:54:53.505778Z",
   "language": "fr",
   "institution_acronym": "INStaD",
   "institution_type": "nso",
@@ -13,14 +13,14 @@
   "overall_validation_why": "",
   "operational_usability": null,
   "operational_usability_why": "",
-  "strategic_comments": "",
+  "strategic_comments": "RAS",
   "domain_comments": "Le document sur l'Identification des statistiques socio-économiques prioritaires par domaine thématique, avec prise en compte de la dimension genre est pertinent qui servira de référence dans la priorisation statistique à l'échelle du continent africain.",
   "priorities_to_strengthen": [],
   "top_3_revisions": "RAS",
   "final_institutional_position": "yes",
   "final_institutional_position_why": "",
   "draft_token": "4519ED14",
-  "current_step": 1,
+  "current_step": 2,
   "respondent_key": "ggogan-instad-bj-BE4908DF3DD9",
   "is_test_email": false,
   "strategic_prioritization_criteria": "go",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-26T08:54:09.366780Z"
+  "expires_at": "2026-04-26T08:54:53.505862Z"
 }
