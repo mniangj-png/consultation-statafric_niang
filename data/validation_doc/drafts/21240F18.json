@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-24T16:12:38.658932Z",
+  "saved_at": "2026-04-24T16:13:15.145863Z",
   "language": "fr",
   "institution_acronym": "INStaD",
   "institution_type": "nso",
@@ -17,10 +17,10 @@
   "domain_comments": "Le document sur l'identification des statistiques prioritaires par domaine thématique, avec prise en compte de la dimension genre, est pertinent et servira de référence dans la la priorisation statistique à l'échelle du continent africain.",
   "priorities_to_strengthen": [],
   "top_3_revisions": "1- D04 Infrastructures, industrialisation, innovation et Intelligence Artificielle (IA)\n2- D10 Gouvernance, paix , sécurité et institutions",
-  "final_institutional_position": null,
+  "final_institutional_position": "yes",
   "final_institutional_position_why": "",
   "draft_token": "21240F18",
-  "current_step": 3,
+  "current_step": 4,
   "respondent_key": "ggogan-instad-bj-BE4908DF3DD9",
   "is_test_email": false,
   "strategic_prioritization_criteria": "go",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-26T16:12:38.659125Z"
+  "expires_at": "2026-04-26T16:13:15.146038Z"
 }
