@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-25T14:36:19.900055Z",
+  "saved_at": "2026-04-25T14:39:42.914317Z",
   "language": "en",
   "institution_acronym": "EAC",
   "institution_type": "rec",
@@ -20,7 +20,7 @@
   "final_institutional_position": null,
   "final_institutional_position_why": "",
   "draft_token": "EDC24400",
-  "current_step": 3,
+  "current_step": 4,
   "respondent_key": "snjuru-eachq-org-9AF990E63638",
   "is_test_email": false,
   "strategic_prioritization_criteria": "no_opinion",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": "no_opinion",
   "domain_d12_why": "",
-  "expires_at": "2026-04-27T14:36:19.900223Z"
+  "expires_at": "2026-04-27T14:39:42.914460Z"
 }
