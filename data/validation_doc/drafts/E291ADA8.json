@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-27T14:04:20.387285Z",
+  "saved_at": "2026-04-27T14:11:53.400600Z",
   "language": "en",
   "institution_acronym": "NSO",
   "institution_type": "nso",
@@ -20,12 +20,12 @@
   "final_institutional_position": null,
   "final_institutional_position_why": "",
   "draft_token": "E291ADA8",
-  "current_step": 1,
+  "current_step": 2,
   "respondent_key": "tlalinyanep-ymail-com-F0BF6D72C9B1",
   "is_test_email": false,
-  "strategic_prioritization_criteria": null,
+  "strategic_prioritization_criteria": "go",
   "strategic_prioritization_criteria_why": "",
-  "strategic_scoring_logic": null,
+  "strategic_scoring_logic": "no_opinion",
   "strategic_scoring_logic_why": "",
   "strategic_core_extensions": null,
   "strategic_core_extensions_why": "",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": null,
   "domain_d12_why": "",
-  "expires_at": "2026-04-29T14:04:20.387378Z"
+  "expires_at": "2026-04-29T14:11:53.400724Z"
 }
