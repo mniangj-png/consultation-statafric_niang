@@ -22,11 +22,11 @@ DEFAULT_NOTE_URLS = {
 }
 DEFAULT_DOC_URL_EN = os.getenv(
     "FULL_DOC_URL_EN",
-    "https://1drv.ms/w/c/11cdb27337d4c5b5/IQC43NO-j9C4RZu6F6RUNBFZAUMZW1u1Zj3V2PSgxMHoI1E?e=UT0QKq"
+    "https://onedrive.live.com/personal/11cdb27337d4c5b5/_layouts/15/Doc.aspx?sourcedoc=%7Bbed3dcb8-d08f-45b8-9bba-17a454341159%7D&action=edit&redeem=aHR0cHM6Ly8xZHJ2Lm1zL3cvYy8xMWNkYjI3MzM3ZDRjNWI1L0lRQzQzTk8tajlDNFJadTZGNlJVTkJGWkFVTVpXMXUxWmozVjJQU2d4TUhvSTFFP2U9QUlyajJE"
 )
 DEFAULT_DOC_URL_FR = os.getenv(
     "FULL_DOC_URL_FR",
-    "https://1drv.ms/w/c/11cdb27337d4c5b5/IQDIwTK9gdO7RoS_PD1ywM75AcjJhD04n9cj7iSQhLbH4Fw?e=IDCh8w"
+    "https://onedrive.live.com/personal/11cdb27337d4c5b5/_layouts/15/Doc.aspx?sourcedoc=%7Bbed3dcb8-d08f-45b8-9bba-17a454341159%7D&action=edit&redeem=aHR0cHM6Ly8xZHJ2Lm1zL3cvYy8xMWNkYjI3MzM3ZDRjNWI1L0lRQzQzTk8tajlDNFJadTZGNlJVTkJGWkFVTVpXMXUxWmozVjJQU2d4TUhvSTFFP2U9QUlyajJE"
 )
 DEFAULT_GITHUB_OWNER = os.getenv("GITHUB_OWNER", "mniangj-png")
 DEFAULT_GITHUB_REPO = os.getenv("GITHUB_REPO", "consultation-statafric_niang")
@@ -445,6 +445,12 @@ TRANSLATIONS: Dict[str, Dict] = {
     "pt": {
         "title": "Validação do projeto de documento sobre estatísticas socioeconómicas prioritárias em África",
         "subtitle": "Questionário institucional multilingue construído a partir da nota de síntese decisional.",
+        "doc_links": "Documento completo",
+        "note_downloads": "Nota de síntese decisional",
+        "note_en": "Nota - versão inglesa",
+        "note_fr": "Nota - versão francesa",
+        "note_pt": "Nota - versão portuguesa (Portugal)",
+        "note_ar": "Nota - versão árabe",
         "lang": "Idioma",
         "intro": "Por favor, preencha este questionário em nome da sua instituição.",
         "intro2": "O objetivo é recolher uma posição institucional estruturada sobre as principais escolhas estratégicas do projeto de documento relativo à identificação das estatísticas socioeconómicas prioritárias em África, com consideração da dimensão de género.",
