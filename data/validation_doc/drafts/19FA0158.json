@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-27T15:24:21.330982Z",
+  "saved_at": "2026-04-27T15:25:10.707625Z",
   "language": "fr",
   "institution_acronym": "ANSD",
   "institution_type": "nso",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-29T15:24:21.331416Z"
+  "expires_at": "2026-04-29T15:25:10.707813Z"
 }
