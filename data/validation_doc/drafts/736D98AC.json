@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-28T11:52:49.816408Z",
+  "saved_at": "2026-04-28T11:53:41.598091Z",
   "language": "en",
   "institution_acronym": "StatsSL",
   "institution_type": "nso",
@@ -17,10 +17,10 @@
   "domain_comments": "",
   "priorities_to_strengthen": [],
   "top_3_revisions": "",
-  "final_institutional_position": null,
-  "final_institutional_position_why": "",
+  "final_institutional_position": "yes_limited_adjustments",
+  "final_institutional_position_why": "As per comments in some responses",
   "draft_token": "736D98AC",
-  "current_step": 3,
+  "current_step": 4,
   "respondent_key": "mwaluma-gegbe-statistics-sl-2E143D6F0682",
   "is_test_email": false,
   "strategic_prioritization_criteria": "go",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-30T11:52:49.816544Z"
+  "expires_at": "2026-04-30T11:53:41.598222Z"
 }
