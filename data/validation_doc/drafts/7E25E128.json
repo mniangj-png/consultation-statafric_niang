@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-28T16:02:08.433371Z",
+  "saved_at": "2026-04-28T16:02:50.470775Z",
   "language": "fr",
   "institution_acronym": "INS",
   "institution_type": "nso",
@@ -17,10 +17,10 @@
   "domain_comments": "Domaines à ajouter : Populations et ménages ; Violence",
   "priorities_to_strengthen": [],
   "top_3_revisions": "",
-  "final_institutional_position": null,
+  "final_institutional_position": "discuss_in_workshop",
   "final_institutional_position_why": "",
   "draft_token": "7E25E128",
-  "current_step": 3,
+  "current_step": 4,
   "respondent_key": "adzossa-yahoo-fr-859F76C1C1E9",
   "is_test_email": false,
   "strategic_prioritization_criteria": "go",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-30T16:02:08.433509Z"
+  "expires_at": "2026-04-30T16:02:50.470871Z"
 }
