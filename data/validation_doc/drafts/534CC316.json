@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-28T16:47:59.036315Z",
+  "saved_at": "2026-04-28T16:48:06.454510Z",
   "language": "fr",
   "institution_acronym": "ANSTAT",
   "institution_type": "nso",
@@ -17,10 +17,10 @@
   "domain_comments": "",
   "priorities_to_strengthen": [],
   "top_3_revisions": "",
-  "final_institutional_position": null,
+  "final_institutional_position": "yes",
   "final_institutional_position_why": "",
   "draft_token": "534CC316",
-  "current_step": 3,
+  "current_step": 4,
   "respondent_key": "k-doho-stat-plan-gouv-ci-ED724E84953D",
   "is_test_email": false,
   "strategic_prioritization_criteria": "go",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-30T16:47:59.036415Z"
+  "expires_at": "2026-04-30T16:48:06.454610Z"
 }
