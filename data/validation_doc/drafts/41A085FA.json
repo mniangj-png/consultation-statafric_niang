@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-28T08:57:36.274355Z",
+  "saved_at": "2026-04-28T08:58:06.876598Z",
   "language": "pt",
   "institution_acronym": "INE",
   "institution_type": "nso",
@@ -17,10 +17,10 @@
   "domain_comments": "",
   "priorities_to_strengthen": [],
   "top_3_revisions": "",
-  "final_institutional_position": null,
+  "final_institutional_position": "yes",
   "final_institutional_position_why": "",
   "draft_token": "41A085FA",
-  "current_step": 3,
+  "current_step": 4,
   "respondent_key": "gueitt-almeida-mef-gov-st-3330F64197FA",
   "is_test_email": false,
   "strategic_prioritization_criteria": "go",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-04-30T08:57:36.274469Z"
+  "expires_at": "2026-04-30T08:58:06.876724Z"
 }
