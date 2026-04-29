@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-29T08:36:14.243054Z",
+  "saved_at": "2026-04-29T08:37:24.110567Z",
   "language": "en",
   "institution_acronym": "The Central Agency for Public Mobilization and Statistics",
   "institution_type": "nso",
@@ -20,7 +20,7 @@
   "final_institutional_position": null,
   "final_institutional_position_why": "",
   "draft_token": "314C2D0E",
-  "current_step": 2,
+  "current_step": 1,
   "respondent_key": "theeconomist2020-gmail-com-2A9E92024651",
   "is_test_email": false,
   "strategic_prioritization_criteria": "go",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": null,
   "domain_d12_why": "",
-  "expires_at": "2026-05-01T08:36:14.243139Z"
+  "expires_at": "2026-05-01T08:37:24.110736Z"
 }
