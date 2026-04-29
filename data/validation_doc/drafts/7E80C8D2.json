@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-04-29T12:59:15.001487Z",
+  "saved_at": "2026-04-29T12:59:41.213308Z",
   "language": "en",
   "institution_acronym": "The Central Agency for Public Mobilization and Statistics",
   "institution_type": "nso",
@@ -17,10 +17,10 @@
   "domain_comments": "",
   "priorities_to_strengthen": [],
   "top_3_revisions": "Translation for English document \nWe have sent comments from CAPMAS",
-  "final_institutional_position": null,
+  "final_institutional_position": "yes",
   "final_institutional_position_why": "",
   "draft_token": "7E80C8D2",
-  "current_step": 3,
+  "current_step": 4,
   "respondent_key": "eman-o-capmas-gov-eg-3D4715D28544",
   "is_test_email": false,
   "strategic_prioritization_criteria": "go",
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": "go",
   "domain_d12_why": "",
-  "expires_at": "2026-05-01T12:59:15.001618Z"
+  "expires_at": "2026-05-01T12:59:41.213415Z"
 }
