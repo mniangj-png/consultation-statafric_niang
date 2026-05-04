@@ -1,7 +1,7 @@
 {
   "app_version": "2026-04-13d",
   "status": "draft",
-  "saved_at": "2026-05-04T01:07:15.315511Z",
+  "saved_at": "2026-05-04T01:07:22.038987Z",
   "language": "fr",
   "institution_acronym": "ANS",
   "institution_type": "nso",
@@ -20,7 +20,7 @@
   "final_institutional_position": null,
   "final_institutional_position_why": "",
   "draft_token": "4AEF90A6",
-  "current_step": 2,
+  "current_step": 1,
   "respondent_key": "ns-sd-ds-33DAA61B67A1",
   "is_test_email": false,
   "strategic_prioritization_criteria": null,
@@ -63,5 +63,5 @@
   "domain_d11_why": "",
   "domain_d12": null,
   "domain_d12_why": "",
-  "expires_at": "2026-05-06T01:07:15.315588Z"
+  "expires_at": "2026-05-06T01:07:22.039185Z"
 }
