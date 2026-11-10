@@ -1,0 +1,25 @@
+# Secrets et toutes les données recueillies restent hors du dépôt.
+.streamlit/secrets.toml
+secrets*.toml
+*.private.*
+.env
+.env.*
+.local/
+data/
+exports/
+backups/
+*.sqlite
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+*.db
+HISWACA_brouillon_*.json
+HISWACA_envoi_en_attente.json
+REP-*.json
+HISWACA_contacts_*.csv
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.DS_Store

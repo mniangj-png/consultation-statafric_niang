@@ -1,6 +1,3 @@
-streamlit>=1.40
-pandas>=2.2
-numpy>=2.0
-openpyxl>=3.1
-matplotlib>=3.8
-python-docx>=1.1
+# Version publiée vérifiée ; ne pas mettre à niveau sans rejouer les tests.
+streamlit[auth]==1.62.0
+requests>=2.32.3,<3

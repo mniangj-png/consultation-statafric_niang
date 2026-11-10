@@ -1,0 +1,165 @@
+{
+  "release": "1.0.0",
+  "files": [
+    {
+      "path": ".github/workflows/tests.yml",
+      "sha256": "9abd3e3c1adb4afcce2acc63077d9a2d74e3df457ffff83b335c3daf13ccc788"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "78d2c97de652bccb032bb500fd15427eded2deeb335c497f4d053c6538da7650"
+    },
+    {
+      "path": ".streamlit/config.toml",
+      "sha256": "c503b40e2480d0e61b1d579e26db1974fa42097e0cee38a5edcc2e1b201575cd"
+    },
+    {
+      "path": "DEPLOIEMENT.md",
+      "sha256": "f53013ed9b7d9f84959963d436762b1ece2b8428f1d5a1a9c5858775d6241d51"
+    },
+    {
+      "path": "README.md",
+      "sha256": "654f0f4dd49c162b3754f678481c6c713294570fe8938c5b295d01c2d2748a56"
+    },
+    {
+      "path": "admin.py",
+      "sha256": "37e123d1b16e377043b8c37b5e5e68fde2b0cc86e102a9b3b53515207a5a8ac5"
+    },
+    {
+      "path": "app.py",
+      "sha256": "c08d7cf81cd452049a48dd22074f8505ea267fd34a864b948a0ae6212685795d"
+    },
+    {
+      "path": "diagnostic/__init__.py",
+      "sha256": "04dee8a61ea46b112dbf31c2789a7072efd371826c3a9e28114647e14b2d62cd"
+    },
+    {
+      "path": "diagnostic/engine.py",
+      "sha256": "f7550276bbb3f465bf9fb1cf2a4c469d43630c62b7ea66679dd6da7100657242"
+    },
+    {
+      "path": "diagnostic/exports.py",
+      "sha256": "7ae0d811f242c35381f1ab528f85135d1be99743b59416bf5fd9f04f42d24f57"
+    },
+    {
+      "path": "diagnostic/schema.py",
+      "sha256": "330eba2c98dda946bc83de685794d6b555a0e608281ef8a524b926f5d39a6007"
+    },
+    {
+      "path": "diagnostic/storage.py",
+      "sha256": "57bfb0256054fcb0e1952c8f0bad4c590eabaf7038f6719def4e3ceb4d85f559"
+    },
+    {
+      "path": "docs/Dictionnaire_questionnaires_FR_EN.csv",
+      "sha256": "2d82bff7190445d20051ae264f253f59696a7ea9dbb4d2786699e75de74fd30b"
+    },
+    {
+      "path": "docs/EMAIL_INVITATION_FR_EN.md",
+      "sha256": "ba276ca2f4052f660a3f7ce641bc35a02d6a3c0fbdd986727411a1d3704a63c7"
+    },
+    {
+      "path": "docs/FIDELITE_ET_ADAPTATIONS.md",
+      "sha256": "0ec752992df26429f8760540b38a482c740d495f6b62e3e8212a04ac7188c593"
+    },
+    {
+      "path": "docs/RECETTE.md",
+      "sha256": "f51d737db54bcafebfeab519fa1e44523b0677d96217f0cd80d426ab5eb9d92c"
+    },
+    {
+      "path": "docs/SECURITE.md",
+      "sha256": "7ed51dd033380329f068872905a5a553873a7442c5b6e7afd625eb8b1f77743c"
+    },
+    {
+      "path": "docs/TESTS_EXECUTES.md",
+      "sha256": "7cc43752b71451bf9f744862e31cafc0a7d2f71d3df9448b5e7a793bbca3fdd5"
+    },
+    {
+      "path": "docs/admin.secrets.example.toml",
+      "sha256": "21301cc735b314756cd27f7aaa1512b35fb2eb2846b26a244bd5ec41fc07d873"
+    },
+    {
+      "path": "docs/collecte.secrets.example.toml",
+      "sha256": "1228268497f3dcbe11622f682f6986558c3768019208e6907fc2b094ba13909e"
+    },
+    {
+      "path": "docs/local.secrets.example.toml",
+      "sha256": "6131a7d4aa06cd70287c29e4d5f7e6f3c6dd08d8b453ec5d736546cd53924d1b"
+    },
+    {
+      "path": "docs/questionnaires.schema.json",
+      "sha256": "bafdd37d92d63d78e5ed78ea13264ae6727f3cad98ecb332af9e3d5dd48f5c04"
+    },
+    {
+      "path": "docs/sources.manifest.json",
+      "sha256": "41a284cc5d619b1ecc5223ca707700222ecfb16e02ca40931713fd1a07a0bd14"
+    },
+    {
+      "path": "pytest.ini",
+      "sha256": "b160d82f7811555051f8966d8e02750a985227c1d022208c784e606946f2eada"
+    },
+    {
+      "path": "requirements-dev.txt",
+      "sha256": "8636f9ab1a075be9f3039e2a6471837259c4f36b625bcaf7a3d9a1edd2419c6d"
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "0852559c45b1130224d86898ac42e8443396c41240b57ba54af065b22d6fd592"
+    },
+    {
+      "path": "scripts/export_dictionary.py",
+      "sha256": "1439387f8580ab96a7694facb3a598c61f89e6de18dc2e50e4d3eae9856083a6"
+    },
+    {
+      "path": "scripts/generate_secrets.py",
+      "sha256": "aebf84f1f2099f534e70105ccb7d625674ab35de00322b83d3b6887c3ccfa9a9"
+    },
+    {
+      "path": "sql/01_schema.sql",
+      "sha256": "0a8e0bcd613c60bed44fb289536c372a81d2d99b521f0f2d543c4163a7028f3a"
+    },
+    {
+      "path": "sql/02_campaign.example.sql",
+      "sha256": "3caddd3576b37a59b504aceaf6c3f50a5b0dd4342d43e2a88b806a8950eb1311"
+    },
+    {
+      "path": "sql/03_security_checks.sql",
+      "sha256": "ae4537cc2c390b8a95faae08fe37f50980a2ea842eeeec923b0905c3f3eea8aa"
+    },
+    {
+      "path": "sql/04_recette_transactionnelle.sql",
+      "sha256": "f5af018acb971e5141307cd042f12172598ba2c982c545cdff4c5e19a4f1445b"
+    },
+    {
+      "path": "tests/conftest.py",
+      "sha256": "7752eb1555ddce95adfedb5bec9ffba64a5a13a2e2e8944920662dfab31d53d8"
+    },
+    {
+      "path": "tests/test_app_streamlit.py",
+      "sha256": "68f1a3684ad2151fa78a068ce3759f118fc47e90c0d0112ac73ec87190f82bd2"
+    },
+    {
+      "path": "tests/test_engine.py",
+      "sha256": "38a7635b5922e441a50695cead833a262a4145bec5b71478a03de73cd275897e"
+    },
+    {
+      "path": "tests/test_exports.py",
+      "sha256": "7ac83a9d3b4686275aac30a520e6292327e6d9d499b631986d0fab06d85d884f"
+    },
+    {
+      "path": "tests/test_schema.py",
+      "sha256": "261a92a20dd2ebd05c3b6e97d829a7bf925e3d84b785a5a0453bd535fb0ce02c"
+    },
+    {
+      "path": "tests/test_scripts.py",
+      "sha256": "6d66df030da68998961534410c409d1691dcbe11e4484542ac11c92fc0855a7a"
+    },
+    {
+      "path": "tests/test_sql_contract.py",
+      "sha256": "44eb9e3a2a30e7a8c18e53a728378afc506224c26df62063b502b83d7e717752"
+    },
+    {
+      "path": "tests/test_storage.py",
+      "sha256": "25d6cc41919f8b11090a76e7cc6f2ac79e3de0a03288b19f772bb1214b67d4d2"
+    }
+  ]
+}
