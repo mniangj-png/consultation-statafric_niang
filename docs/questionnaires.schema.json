@@ -1,0 +1,5716 @@
+{
+  "schema_version": "2026-11-08.web-1",
+  "hashes": {
+    "ins": "b7232a79ba5f0c72203efb2687960f5c40e5830fae5eae7a5429dcca9e530636",
+    "utilisateurs": "0d513471eef9205e7f86d7aa26df527e8f37bdaca19c92fe4d800d2d19cdd0b2",
+    "partenaires": "3ecade9fcdab5ec7aa6aeb1f55a58434a5519370ba7766ba30fbd8e38a58a933",
+    "abrege": "0fe3f6d3ebe3e0a843f8adea2d5a2f3539e1ccfa83872791312df92799748a29"
+  },
+  "forms": {
+    "ins": {
+      "title": {
+        "fr": "Instituts nationaux de la statistique",
+        "en": "National statistical offices"
+      },
+      "duration": {
+        "fr": "15 à 20 minutes",
+        "en": "15 to 20 minutes"
+      },
+      "sections": [
+        {
+          "id": "QI01",
+          "title": {
+            "fr": "Accord de participation et périmètre de la réponse",
+            "en": "Participation agreement and scope of the response"
+          },
+          "fields": [
+            {
+              "id": "QI01_Participation",
+              "label": {
+                "fr": "Acceptez-vous l’utilisation de votre contribution selon la notice ?",
+                "en": "Do you agree to the use of your contribution as described in the notice?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "J’accepte",
+                    "en": "I agree"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Je ne participe pas — fin du questionnaire",
+                    "en": "I do not wish to participate — end of questionnaire"
+                  }
+                }
+              ],
+              "required": true
+            },
+            {
+              "id": "QI01_Pays",
+              "label": {
+                "fr": "Pays",
+                "en": "Country"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500
+            },
+            {
+              "id": "QI01_INS",
+              "label": {
+                "fr": "Nom ou sigle de l’INS",
+                "en": "Name or acronym of the NSO"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500
+            },
+            {
+              "id": "QI01_Statut",
+              "label": {
+                "fr": "Statut de la réponse",
+                "en": "Response status"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Réponse institutionnelle consolidée",
+                    "en": "Consolidated institutional response"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Contribution d’un service, non consolidée au niveau de l’institution",
+                    "en": "Service-level contribution, not consolidated at institution level"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Contribution individuelle fondée sur ma pratique professionnelle",
+                    "en": "Individual contribution based on my professional practice"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI01_Fonction",
+              "label": {
+                "fr": "Fonction du répondant, sans nom personnel",
+                "en": "Respondent’s function, without a personal name"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Production statistique",
+                    "en": "Statistical production"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Communication ou diffusion",
+                    "en": "Communication or dissemination"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Coordination ou direction",
+                    "en": "Coordination or management"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Méthodes ou qualité",
+                    "en": "Methods or quality"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI01_Fonction_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QI01_Fonction",
+                "op": "in",
+                "values": [
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QI01_Envoi",
+              "label": {
+                "fr": "Nature de l’envoi",
+                "en": "Type of submission"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Première réponse",
+                    "en": "First response"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Complément",
+                    "en": "Supplement"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI01_Reference_precedente",
+              "label": {
+                "fr": "Référence ou date de l’envoi précédent, si connue",
+                "en": "Reference or date of the previous submission, if known"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QI01_Envoi",
+                "op": "in",
+                "values": [
+                  2
+                ]
+              }
+            }
+          ],
+          "note": {
+            "fr": "Une réponse consolidée par INS est privilégiée. Pour une contribution de service ou individuelle, répondre sur le périmètre réellement connu et utiliser « ne sait pas » pour le reste de l’INS.",
+            "en": "A consolidated response per NSO is preferred. For a service-level or individual contribution, describe only the scope you actually know and use ‘Do not know’ for the rest of the NSO."
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Questionnaire INS, p. 1"
+        },
+        {
+          "id": "QI02",
+          "title": {
+            "fr": "Demandes reçues pendant les douze mois de référence",
+            "en": "Requests received during the twelve-month reference period"
+          },
+          "fields": [
+            {
+              "id": "QI02a",
+              "label": {
+                "fr": "Combien de demandes distinctes avez-vous recensées dans le périmètre de votre réponse ?",
+                "en": "How many distinct requests did you identify within the scope of your response?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Aucune / aucun",
+                    "en": "None"
+                  }
+                },
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "De 1 à 5",
+                    "en": "1 to 5"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "De 6 à 20",
+                    "en": "6 to 20"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "De 21 à 50",
+                    "en": "21 to 50"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Plus de 50",
+                    "en": "More than 50"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI02b",
+              "label": {
+                "fr": "Certaines de ces demandes exigeaient-elles une réponse dans les 24 heures ou moins suivant leur réception ?",
+                "en": "Did any of these requests require a response within 24 hours of receipt?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Oui",
+                    "en": "Yes"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Non",
+                    "en": "No"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable, aucune demande",
+                    "en": "Not applicable, no requests"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI02c",
+              "label": {
+                "fr": "Sur quoi repose cette réponse ?",
+                "en": "What is this response based on?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Registre ou inventaire consulté",
+                    "en": "Register or inventory consulted"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Estimation fondée sur la pratique connue",
+                    "en": "Estimate based on known practice"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ]
+            }
+          ],
+          "note": {
+            "fr": "Une demande désigne un appui sollicité pour préparer un discours, une allocution ou une intervention orale d’un décideur. Plusieurs échanges ou versions concernant le même appui comptent comme une seule demande. Les demandes générales de données sans lien connu avec un discours sont exclues. Si aucune demande n’a été reçue, passer à QI08. Si le nombre est inconnu, QI03 peut être renseignée lorsqu’un cas réel est connu.",
+            "en": "A request means support requested to prepare a decision-maker’s speech, address or oral intervention. Multiple exchanges or versions for the same support count as one request. General data requests with no known link to a speech are excluded. If there were no requests, proceed to QI08. If the number is unknown, QI03 may still be completed when a real case is known."
+          },
+          "gate": null,
+          "theme": "Demande et urgence",
+          "source": "Questionnaire INS, p. 1–2"
+        },
+        {
+          "id": "QI03",
+          "title": {
+            "fr": "Dernière demande clôturée connue",
+            "en": "Most recent known closed request"
+          },
+          "fields": [
+            {
+              "id": "QI03_Situation",
+              "label": {
+                "fr": "Situation",
+                "en": "Situation"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Des chiffres ont été transmis",
+                    "en": "Figures were provided"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "La demande a été clôturée sans fourniture de chiffres",
+                    "en": "The request was closed without providing figures"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Aucune demande clôturée connue pendant la période",
+                    "en": "No known request closed during the period"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Je ne dispose pas des informations nécessaires",
+                    "en": "I do not have the necessary information"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI03_Mois",
+              "label": {
+                "fr": "Mois et année de clôture, MM/AAAA",
+                "en": "Month and year of closure, MM/YYYY"
+              },
+              "type": "month",
+              "options": [],
+              "max_chars": 7,
+              "gate": {
+                "field": "QI03_Situation",
+                "op": "in",
+                "values": [
+                  1,
+                  2
+                ]
+              }
+            },
+            {
+              "id": "QI03_Theme",
+              "label": {
+                "fr": "Thème général, sans nom de personne ni titre confidentiel du discours",
+                "en": "General topic, without a person’s name or a confidential speech title"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QI03_Situation",
+                "op": "in",
+                "values": [
+                  1,
+                  2
+                ]
+              }
+            },
+            {
+              "id": "QI03_Demandeur",
+              "label": {
+                "fr": "Service demandeur",
+                "en": "Requesting service"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Cabinet ou équipe d’un décideur national",
+                    "en": "Office or team of a national decision-maker"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Ministère ou administration sectorielle",
+                    "en": "Ministry or sectoral administration"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Autorité territoriale ou locale",
+                    "en": "Subnational or local authority"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Direction de l’INS",
+                    "en": "NSO management"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Institution régionale ou internationale",
+                    "en": "Regional or international institution"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ],
+              "gate": {
+                "field": "QI03_Situation",
+                "op": "in",
+                "values": [
+                  1,
+                  2
+                ]
+              }
+            },
+            {
+              "id": "QI03_Demandeur_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QI03_Demandeur",
+                "op": "in",
+                "values": [
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QI03_Canal",
+              "label": {
+                "fr": "Canal principal de réception",
+                "en": "Main channel through which the request was received"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Courriel",
+                    "en": "Email"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Courrier ou note officielle",
+                    "en": "Letter or official memorandum"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Téléphone ou échange oral",
+                    "en": "Telephone or oral exchange"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Messagerie instantanée",
+                    "en": "Instant messaging"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Formulaire ou plateforme",
+                    "en": "Form or platform"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ],
+              "gate": {
+                "field": "QI03_Situation",
+                "op": "in",
+                "values": [
+                  1,
+                  2
+                ]
+              }
+            },
+            {
+              "id": "QI03_Canal_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QI03_Canal",
+                "op": "in",
+                "values": [
+                  97
+                ]
+              }
+            }
+          ],
+          "note": {
+            "fr": "Choisir la demande la plus récemment clôturée pendant la période de référence, qu’elle ait ou non abouti à la fourniture de chiffres. Ne pas sélectionner uniquement un exemple particulièrement réussi. Les situations 3 et 98 conduisent à QI08. La situation 2 conduit à QI04, puis QI08.",
+            "en": "Select the request most recently closed during the reference period, whether or not figures were provided. Do not select only a particularly successful example. Situations 3 and 98 lead to QI08. Situation 2 leads to QI04 and then QI08."
+          },
+          "gate": {
+            "field": "QI02a",
+            "op": "not_in",
+            "values": [
+              0
+            ]
+          },
+          "theme": "Demande et urgence",
+          "source": "Questionnaire INS, p. 2"
+        },
+        {
+          "id": "QI04",
+          "title": {
+            "fr": "Délai et traitement de cette dernière demande",
+            "en": "Deadline and handling of this most recent request"
+          },
+          "fields": [
+            {
+              "id": "QI04a",
+              "label": {
+                "fr": "Quel délai était laissé à l’INS pour répondre, à partir de la réception de la demande ?",
+                "en": "How much time was the NSO given to respond from receipt of the request?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Moins de 6 heures",
+                    "en": "Less than 6 hours"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "De 6 à 24 heures incluses",
+                    "en": "6 to 24 hours inclusive"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Plus de 24 heures à 3 jours inclus",
+                    "en": "More than 24 hours up to 3 days inclusive"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Plus de 3 jours",
+                    "en": "More than 3 days"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Aucune échéance indiquée",
+                    "en": "No deadline specified"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI04b",
+              "label": {
+                "fr": "La réponse de l’INS a-t-elle été transmise avant l’échéance demandée ?",
+                "en": "Was the NSO’s response sent before the requested deadline?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Oui",
+                    "en": "Yes"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Non",
+                    "en": "No"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable, aucune échéance indiquée",
+                    "en": "Not applicable, no deadline specified"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI04c",
+              "label": {
+                "fr": "Si aucun chiffre n’a été fourni ou si le délai n’a pas été respecté, quel a été le principal obstacle ?",
+                "en": "If no figures were provided or the deadline was missed, what was the main obstacle?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Donnée appropriée indisponible",
+                    "en": "Suitable data unavailable"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Besoin insuffisamment précisé",
+                    "en": "Need insufficiently specified"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Délai trop court",
+                    "en": "Deadline too short"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Contrôle ou validation non terminé",
+                    "en": "Checking or validation not completed"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Agent ou service compétent indisponible",
+                    "en": "Responsible staff member or service unavailable"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI04c_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QI04c",
+                "op": "in",
+                "values": [
+                  97
+                ]
+              }
+            }
+          ],
+          "note": {
+            "fr": "Les durées sont calendaires, y compris les nuits et week-ends. Une réponse expliquant qu’aucun chiffre ne pouvait être fourni reste distinguée de la fourniture de chiffres par QI03. Le respect d’un délai ne suffit pas à conclure que le besoin statistique a été satisfait.",
+            "en": "Times are calendar durations, including nights and weekends. QI03 distinguishes a response explaining that no figures could be provided from an actual provision of figures. Meeting a deadline does not by itself establish that the statistical need was met."
+          },
+          "gate": {
+            "all": [
+              {
+                "field": "QI02a",
+                "op": "not_in",
+                "values": [
+                  0
+                ]
+              },
+              {
+                "field": "QI03_Situation",
+                "op": "in",
+                "values": [
+                  1,
+                  2
+                ]
+              }
+            ]
+          },
+          "theme": "Demande et urgence",
+          "source": "Questionnaire INS, p. 2"
+        },
+        {
+          "id": "QI05",
+          "title": {
+            "fr": "Source et informations accompagnant le premier chiffre transmis",
+            "en": "Source and information accompanying the first figure provided"
+          },
+          "fields": [
+            {
+              "id": "QI05_Origine",
+              "label": {
+                "fr": "Origine principale de ce chiffre",
+                "en": "Main origin of this figure"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Publication, base ou résultat produit par l’INS",
+                    "en": "Publication, database or result produced by the NSO"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Source officielle d’une autre administration nationale",
+                    "en": "Official source from another national administration"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Organisation régionale ou internationale",
+                    "en": "Regional or international organisation"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Recherche ou source privée identifiée",
+                    "en": "Identified research or private source"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Discours ou document antérieur sans retour à la source statistique",
+                    "en": "Earlier speech or document, without consulting the statistical source"
+                  }
+                },
+                {
+                  "code": 6,
+                  "label": {
+                    "fr": "Source non identifiée",
+                    "en": "Unidentified source"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI05_Origine_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QI05_Origine",
+                "op": "in",
+                "values": [
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QI05_S1",
+              "label": {
+                "fr": "Source précise permettant de retrouver le résultat",
+                "en": "Specific source enabling the result to be located"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Présente dans la réponse",
+                    "en": "Included in the response"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Accessible par un lien ou une référence précise transmis avec la réponse",
+                    "en": "Available through a specific link or reference sent with the response"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Absente",
+                    "en": "Absent"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI05_S2",
+              "label": {
+                "fr": "Date de publication ou version de la source",
+                "en": "Publication date or source version"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Présente dans la réponse",
+                    "en": "Included in the response"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Accessible par un lien ou une référence précise transmis avec la réponse",
+                    "en": "Available through a specific link or reference sent with the response"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Absente",
+                    "en": "Absent"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI05_S3",
+              "label": {
+                "fr": "Période à laquelle se rapporte la valeur",
+                "en": "Period to which the value relates"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Présente dans la réponse",
+                    "en": "Included in the response"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Accessible par un lien ou une référence précise transmis avec la réponse",
+                    "en": "Available through a specific link or reference sent with the response"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Absente",
+                    "en": "Absent"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI05_S4",
+              "label": {
+                "fr": "Définition de l’indicateur",
+                "en": "Definition of the indicator"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Présente dans la réponse",
+                    "en": "Included in the response"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Accessible par un lien ou une référence précise transmis avec la réponse",
+                    "en": "Available through a specific link or reference sent with the response"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Absente",
+                    "en": "Absent"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI05_S5",
+              "label": {
+                "fr": "Unité et base de calcul, notamment dénominateur d’un taux",
+                "en": "Unit and calculation basis, particularly the denominator of a rate"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Présente dans la réponse",
+                    "en": "Included in the response"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Accessible par un lien ou une référence précise transmis avec la réponse",
+                    "en": "Available through a specific link or reference sent with the response"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Absente",
+                    "en": "Absent"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI05_S6",
+              "label": {
+                "fr": "Population et territoire couverts",
+                "en": "Population and geographical coverage"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Présente dans la réponse",
+                    "en": "Included in the response"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Accessible par un lien ou une référence précise transmis avec la réponse",
+                    "en": "Available through a specific link or reference sent with the response"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Absente",
+                    "en": "Absent"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI05_S7",
+              "label": {
+                "fr": "Limites utiles à l’interprétation ou à la comparaison",
+                "en": "Limitations relevant to interpretation or comparison"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Présente dans la réponse",
+                    "en": "Included in the response"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Accessible par un lien ou une référence précise transmis avec la réponse",
+                    "en": "Available through a specific link or reference sent with the response"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Absente",
+                    "en": "Absent"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI05_S8",
+              "label": {
+                "fr": "Statut provisoire ou révisé, lorsqu’il s’applique",
+                "en": "Provisional or revised status, where applicable"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Présente dans la réponse",
+                    "en": "Included in the response"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Accessible par un lien ou une référence précise transmis avec la réponse",
+                    "en": "Available through a specific link or reference sent with the response"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Absente",
+                    "en": "Absent"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            }
+          ],
+          "note": {
+            "fr": "Considérer le premier chiffre présenté dans la dernière réponse transmise, et non le mieux documenté. Indiquer les informations qui l’accompagnaient effectivement. Une simple mention du nom d’un organisme ne suffit pas pour le code 2. Ne pas recopier une valeur non publique.",
+            "en": "Consider the first figure presented in the most recent response, not the best-documented figure. Indicate the information that actually accompanied it. Merely naming an organisation does not qualify for code 2. Do not copy a non-public value."
+          },
+          "gate": {
+            "all": [
+              {
+                "field": "QI02a",
+                "op": "not_in",
+                "values": [
+                  0
+                ]
+              },
+              {
+                "field": "QI03_Situation",
+                "op": "in",
+                "values": [
+                  1
+                ]
+              }
+            ]
+          },
+          "theme": "Sources et métadonnées",
+          "source": "Questionnaire INS, p. 2–3"
+        },
+        {
+          "id": "QI06",
+          "title": {
+            "fr": "Vérification et validation effectivement réalisées",
+            "en": "Checking and validation actually performed"
+          },
+          "fields": [
+            {
+              "id": "QI06a",
+              "label": {
+                "fr": "Qui a vérifié le contenu statistique avant son envoi ? Plusieurs réponses possibles.",
+                "en": "Who checked the statistical content before it was sent? Multiple answers allowed."
+              },
+              "type": "multi",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "L’agent qui l’a préparé",
+                    "en": "The staff member who prepared it"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Un autre agent producteur des données",
+                    "en": "Another staff member producing the data"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Un responsable technique ou de qualité",
+                    "en": "A technical or quality manager"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Le service de communication",
+                    "en": "The communication service"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "La direction ou son délégataire",
+                    "en": "Management or its delegate"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Aucun contrôle connu",
+                    "en": "No known check"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre fonction",
+                    "en": "Other function"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ],
+              "exclusive": [
+                0,
+                98
+              ]
+            },
+            {
+              "id": "QI06a_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QI06a",
+                "op": "contains",
+                "values": [
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QI06b",
+              "label": {
+                "fr": "Quelle trace de la validation statistique finale existe pour cet envoi ?",
+                "en": "What record exists of the final statistical validation for this submission?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Trace écrite, courriel, visa ou journal de validation",
+                    "en": "Written record, email, sign-off or validation log"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Accord oral seulement",
+                    "en": "Oral agreement only"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Aucune validation distincte connue",
+                    "en": "No separate validation known"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ]
+            }
+          ],
+          "note": {
+            "fr": "Il s’agit du contrôle du contenu statistique, pas de l’approbation politique du discours.",
+            "en": "This concerns checking statistical content, not political approval of the speech."
+          },
+          "gate": {
+            "all": [
+              {
+                "field": "QI02a",
+                "op": "not_in",
+                "values": [
+                  0
+                ]
+              },
+              {
+                "field": "QI03_Situation",
+                "op": "in",
+                "values": [
+                  1
+                ]
+              }
+            ]
+          },
+          "theme": "Vérification",
+          "source": "Questionnaire INS, p. 3"
+        },
+        {
+          "id": "QI07",
+          "title": {
+            "fr": "Format transmis et vérification du passage de discours",
+            "en": "Format provided and checking of the speech passage"
+          },
+          "fields": [
+            {
+              "id": "QI07a",
+              "label": {
+                "fr": "Sous quelle forme l’appui a-t-il été transmis ? Jusqu’à trois réponses.",
+                "en": "In what form was the support provided? Up to three answers."
+              },
+              "type": "multi",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Tableau ou liste de chiffres",
+                    "en": "Table or list of figures"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Fiche accompagnée d’explications",
+                    "en": "Fact sheet with explanations"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Proposition de phrases ou de paragraphes",
+                    "en": "Suggested sentences or paragraphs"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Graphique ou illustration",
+                    "en": "Chart or illustration"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Explication orale uniquement",
+                    "en": "Oral explanation only"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ],
+              "max_choices": 3,
+              "exclusive": [
+                98
+              ]
+            },
+            {
+              "id": "QI07a_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QI07a",
+                "op": "contains",
+                "values": [
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QI07b",
+              "label": {
+                "fr": "L’INS a-t-il ensuite pu vérifier les chiffres dans le passage de discours préparé avant sa diffusion ?",
+                "en": "Was the NSO subsequently able to check the figures in the prepared speech passage before dissemination?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Oui",
+                    "en": "Yes"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Non, le passage n’a pas été reçu",
+                    "en": "No, the passage was not received"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Non, le passage a été reçu mais n’a pas été vérifié",
+                    "en": "No, the passage was received but not checked"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Le discours n’a pas été diffusé ou cette étape n’a pas eu lieu",
+                    "en": "The speech was not delivered or this stage did not occur"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ]
+            }
+          ],
+          "note": {
+            "fr": "",
+            "en": ""
+          },
+          "gate": {
+            "all": [
+              {
+                "field": "QI02a",
+                "op": "not_in",
+                "values": [
+                  0
+                ]
+              },
+              {
+                "field": "QI03_Situation",
+                "op": "in",
+                "values": [
+                  1
+                ]
+              }
+            ]
+          },
+          "theme": "Messages et publics",
+          "source": "Questionnaire INS, p. 3"
+        },
+        {
+          "id": "QI08",
+          "title": {
+            "fr": "Correction ou actualisation après transmission",
+            "en": "Correction or updating after transmission"
+          },
+          "fields": [
+            {
+              "id": "QI08_Situation",
+              "label": {
+                "fr": "Pendant la période de référence, avez-vous connaissance d’un appui déjà transmis qu’il a fallu corriger ou actualiser ?",
+                "en": "During the reference period, do you know of support already provided that had to be corrected or updated?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Oui, pour corriger une erreur",
+                    "en": "Yes, to correct an error"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Oui, pour actualiser une donnée",
+                    "en": "Yes, to update data"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Les deux situations ont été rencontrées",
+                    "en": "Both situations occurred"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Aucun épisode connu",
+                    "en": "No known instance"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable, aucun appui concerné",
+                    "en": "Not applicable, no relevant support"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI08_Actions",
+              "label": {
+                "fr": "Pour le cas le plus récent, quelles actions ont été réalisées ? Plusieurs réponses possibles.",
+                "en": "For the most recent case, what actions were taken? Multiple answers allowed."
+              },
+              "type": "multi",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Alerte de l’équipe préparant le discours",
+                    "en": "Alerting the speech-preparation team"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Envoi d’une version corrigée avec sa source",
+                    "en": "Sending a corrected version with its source"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Conservation des versions et du motif de changement",
+                    "en": "Keeping versions and the reason for the change"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Demande de correction d’un passage déjà diffusé",
+                    "en": "Requesting correction of a passage already disseminated"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Vérification de la prise en compte de la correction",
+                    "en": "Checking that the correction was incorporated"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Aucune action connue",
+                    "en": "No known action"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ],
+              "exclusive": [
+                0,
+                98
+              ],
+              "gate": {
+                "field": "QI08_Situation",
+                "op": "in",
+                "values": [
+                  1,
+                  2,
+                  3
+                ]
+              }
+            },
+            {
+              "id": "QI08_Actions_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QI08_Actions",
+                "op": "contains",
+                "values": [
+                  97
+                ]
+              }
+            }
+          ],
+          "note": {
+            "fr": "Un appui initialement fourni avant la période peut être pris en compte si la correction intervient pendant celle-ci. Cette question reste accessible même si aucune nouvelle demande n’a été reçue.",
+            "en": "Support originally provided before the period may be included if the correction occurred during the period. This question remains available even if no new request was received."
+          },
+          "gate": null,
+          "theme": "Actualisation et correction",
+          "source": "Questionnaire INS, p. 4"
+        },
+        {
+          "id": "QI09",
+          "title": {
+            "fr": "Organisation effectivement en place au 31 octobre 2026",
+            "en": "Arrangements actually in place on 31 October 2026"
+          },
+          "fields": [
+            {
+              "id": "QI09_D1",
+              "label": {
+                "fr": "Point d’entrée ou fonction identifiée pour recevoir les demandes",
+                "en": "Identified contact point or function for receiving requests"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Existe et a été utilisé pour ces appuis pendant la période",
+                    "en": "Exists and was used for this support during the period"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Existe mais n’a pas été utilisé pendant la période",
+                    "en": "Exists but was not used during the period"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "N’existe pas",
+                    "en": "Does not exist"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI09_D2",
+              "label": {
+                "fr": "Consigne écrite de traitement, y compris des urgences",
+                "en": "Written handling instructions, including for urgent requests"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Existe et a été utilisé pour ces appuis pendant la période",
+                    "en": "Exists and was used for this support during the period"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Existe mais n’a pas été utilisé pendant la période",
+                    "en": "Exists but was not used during the period"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "N’existe pas",
+                    "en": "Does not exist"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI09_D3",
+              "label": {
+                "fr": "Registre des demandes avec échéance, responsable et état de traitement",
+                "en": "Request register with deadline, responsible officer and processing status"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Existe et a été utilisé pour ces appuis pendant la période",
+                    "en": "Exists and was used for this support during the period"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Existe mais n’a pas été utilisé pendant la période",
+                    "en": "Exists but was not used during the period"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "N’existe pas",
+                    "en": "Does not exist"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI09_D4",
+              "label": {
+                "fr": "Répertoire de chiffres avec sources et informations d’interprétation",
+                "en": "Repository of figures with sources and interpretation information"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Existe et a été utilisé pour ces appuis pendant la période",
+                    "en": "Exists and was used for this support during the period"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Existe mais n’a pas été utilisé pendant la période",
+                    "en": "Exists but was not used during the period"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "N’existe pas",
+                    "en": "Does not exist"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI09_D5",
+              "label": {
+                "fr": "Trace du contrôle et de la validation statistique",
+                "en": "Record of statistical checking and validation"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Existe et a été utilisé pour ces appuis pendant la période",
+                    "en": "Exists and was used for this support during the period"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Existe mais n’a pas été utilisé pendant la période",
+                    "en": "Exists but was not used during the period"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "N’existe pas",
+                    "en": "Does not exist"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI09_D6",
+              "label": {
+                "fr": "Conservation des versions et des corrections",
+                "en": "Retention of versions and corrections"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Existe et a été utilisé pour ces appuis pendant la période",
+                    "en": "Exists and was used for this support during the period"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Existe mais n’a pas été utilisé pendant la période",
+                    "en": "Exists but was not used during the period"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "N’existe pas",
+                    "en": "Does not exist"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI09_D7",
+              "label": {
+                "fr": "Examen des délais, difficultés et retours des utilisateurs",
+                "en": "Review of deadlines, difficulties and user feedback"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Existe et a été utilisé pour ces appuis pendant la période",
+                    "en": "Exists and was used for this support during the period"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Existe mais n’a pas été utilisé pendant la période",
+                    "en": "Exists but was not used during the period"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "N’existe pas",
+                    "en": "Does not exist"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI09_Nouveaute",
+              "label": {
+                "fr": "Pratique nouvelle après le 31 octobre, facultatif : dispositif, date de mise en place et une phrase",
+                "en": "New practice after 31 October, optional: arrangement, implementation date and one sentence"
+              },
+              "type": "textarea",
+              "options": [],
+              "max_chars": 2500
+            }
+          ],
+          "note": {
+            "fr": "",
+            "en": ""
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Questionnaire INS, p. 4"
+        },
+        {
+          "id": "QI10",
+          "title": {
+            "fr": "Besoins prioritaires",
+            "en": "Priority needs"
+          },
+          "fields": [
+            {
+              "id": "QI10_P1",
+              "label": {
+                "fr": "Priorité 1",
+                "en": "Priority 1"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Clarifier le point d’entrée et les responsabilités",
+                    "en": "Clarify the contact point and responsibilities"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Mieux préciser et prioriser les demandes urgentes",
+                    "en": "Clarify and prioritise urgent requests"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Disposer d’un répertoire de chiffres documentés",
+                    "en": "Have a repository of documented figures"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Simplifier le contrôle et la validation",
+                    "en": "Simplify checking and validation"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Préparer des messages et exemples de passages de discours",
+                    "en": "Prepare messages and examples of speech passages"
+                  }
+                },
+                {
+                  "code": 6,
+                  "label": {
+                    "fr": "Organiser les corrections et versions",
+                    "en": "Organise corrections and versions"
+                  }
+                },
+                {
+                  "code": 7,
+                  "label": {
+                    "fr": "Former les agents",
+                    "en": "Train staff"
+                  }
+                },
+                {
+                  "code": 8,
+                  "label": {
+                    "fr": "Suivre les délais et les retours d’utilisation",
+                    "en": "Monitor deadlines and user feedback"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Aucun besoin exprimé",
+                    "en": "No need expressed"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI10_P2",
+              "label": {
+                "fr": "Priorité 2",
+                "en": "Priority 2"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Clarifier le point d’entrée et les responsabilités",
+                    "en": "Clarify the contact point and responsibilities"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Mieux préciser et prioriser les demandes urgentes",
+                    "en": "Clarify and prioritise urgent requests"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Disposer d’un répertoire de chiffres documentés",
+                    "en": "Have a repository of documented figures"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Simplifier le contrôle et la validation",
+                    "en": "Simplify checking and validation"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Préparer des messages et exemples de passages de discours",
+                    "en": "Prepare messages and examples of speech passages"
+                  }
+                },
+                {
+                  "code": 6,
+                  "label": {
+                    "fr": "Organiser les corrections et versions",
+                    "en": "Organise corrections and versions"
+                  }
+                },
+                {
+                  "code": 7,
+                  "label": {
+                    "fr": "Former les agents",
+                    "en": "Train staff"
+                  }
+                },
+                {
+                  "code": 8,
+                  "label": {
+                    "fr": "Suivre les délais et les retours d’utilisation",
+                    "en": "Monitor deadlines and user feedback"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                }
+              ],
+              "gate": {
+                "field": "QI10_P1",
+                "op": "in",
+                "values": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QI10_P3",
+              "label": {
+                "fr": "Priorité 3",
+                "en": "Priority 3"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Clarifier le point d’entrée et les responsabilités",
+                    "en": "Clarify the contact point and responsibilities"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Mieux préciser et prioriser les demandes urgentes",
+                    "en": "Clarify and prioritise urgent requests"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Disposer d’un répertoire de chiffres documentés",
+                    "en": "Have a repository of documented figures"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Simplifier le contrôle et la validation",
+                    "en": "Simplify checking and validation"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Préparer des messages et exemples de passages de discours",
+                    "en": "Prepare messages and examples of speech passages"
+                  }
+                },
+                {
+                  "code": 6,
+                  "label": {
+                    "fr": "Organiser les corrections et versions",
+                    "en": "Organise corrections and versions"
+                  }
+                },
+                {
+                  "code": 7,
+                  "label": {
+                    "fr": "Former les agents",
+                    "en": "Train staff"
+                  }
+                },
+                {
+                  "code": 8,
+                  "label": {
+                    "fr": "Suivre les délais et les retours d’utilisation",
+                    "en": "Monitor deadlines and user feedback"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                }
+              ],
+              "gate": {
+                "field": "QI10_P1",
+                "op": "in",
+                "values": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QI10_Autre",
+              "label": {
+                "fr": "Autre priorité : précisez",
+                "en": "Other priority: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "any": [
+                  {
+                    "field": "QI10_P1",
+                    "op": "in",
+                    "values": [
+                      97
+                    ]
+                  },
+                  {
+                    "field": "QI10_P2",
+                    "op": "in",
+                    "values": [
+                      97
+                    ]
+                  },
+                  {
+                    "field": "QI10_P3",
+                    "op": "in",
+                    "values": [
+                      97
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "id": "QI10_Difficulte",
+              "label": {
+                "fr": "Pour la priorité 1, quelle difficulté réelle cela permettrait-il de résoudre ? Au plus 40 mots ; sinon, écrire « besoin anticipé ».",
+                "en": "For priority 1, what actual difficulty would this resolve? Up to 40 words; otherwise write ‘anticipated need’."
+              },
+              "type": "textarea",
+              "options": [],
+              "max_chars": 2500,
+              "max_words": 40
+            },
+            {
+              "id": "QI10_Action",
+              "label": {
+                "fr": "Première action possible avec les moyens existants",
+                "en": "First action possible with existing resources"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500
+            },
+            {
+              "id": "QI10_Responsable",
+              "label": {
+                "fr": "Fonction pouvant la conduire",
+                "en": "Function that could lead the action"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500
+            },
+            {
+              "id": "QI10_Moyen",
+              "label": {
+                "fr": "Moyen déjà disponible",
+                "en": "Resource already available"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500
+            },
+            {
+              "id": "QI10_Obstacle",
+              "label": {
+                "fr": "Principal obstacle",
+                "en": "Main obstacle"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500
+            }
+          ],
+          "note": {
+            "fr": "Classer au plus trois codes différents. Une ou deux priorités suffisent. 0 et 98 sont exclusifs des autres priorités. Indiquer « à déterminer » si nécessaire pour l’action, le responsable, les moyens ou l’obstacle.",
+            "en": "Rank up to three different codes. One or two priorities are sufficient. Codes 0 and 98 exclude other priorities. Write ‘to be determined’ where necessary for the action, lead function, resources or obstacle."
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Questionnaire INS, p. 4"
+        },
+        {
+          "id": "QI11",
+          "title": {
+            "fr": "Un exemple ou document partageable",
+            "en": "One shareable example or document"
+          },
+          "fields": [
+            {
+              "id": "QI11_Type",
+              "label": {
+                "fr": "Exemple proposé, facultatif",
+                "en": "Example provided, optional"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Lien public",
+                    "en": "Public link"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Extrait non confidentiel dont le partage est autorisé",
+                    "en": "Non-confidential extract authorised for sharing"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Aucun exemple partagé",
+                    "en": "No example shared"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI11_Reference",
+              "label": {
+                "fr": "Titre ou description, date et lien public si disponible ; extrait autorisé le cas échéant",
+                "en": "Title or description, date and public link if available; authorised extract where relevant"
+              },
+              "type": "textarea",
+              "options": [],
+              "max_chars": 2500,
+              "gate": {
+                "field": "QI11_Type",
+                "op": "in",
+                "values": [
+                  1,
+                  2
+                ]
+              }
+            },
+            {
+              "id": "QI11_Apport",
+              "label": {
+                "fr": "Ce que cet exemple montre et ce qui pourrait être adapté ailleurs, au plus 60 mots",
+                "en": "What this example demonstrates and what could be adapted elsewhere, up to 60 words"
+              },
+              "type": "textarea",
+              "options": [],
+              "max_chars": 2500,
+              "max_words": 60,
+              "gate": {
+                "field": "QI11_Type",
+                "op": "in",
+                "values": [
+                  1,
+                  2
+                ]
+              }
+            }
+          ],
+          "note": {
+            "fr": "Proposer un seul exemple : procédure, fiche de chiffres, modèle de demande, contrôle, correction ou discours public. Ne pas joindre de données individuelles, brouillon confidentiel, coordonnées personnelles ou contenu non autorisé. Un exemple antérieur peut illustrer une pratique, mais sa date doit rester visible.",
+            "en": "Provide only one example: procedure, fact sheet, request template, check, correction or public speech. Do not provide individual-level data, confidential drafts, personal contact details or unauthorised content. An older example can illustrate a practice, but its date must remain visible."
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Questionnaire INS, p. 5"
+        },
+        {
+          "id": "QI12",
+          "title": {
+            "fr": "Attribution et contact facultatif",
+            "en": "Attribution and optional contact"
+          },
+          "fields": [
+            {
+              "id": "QI12_Attribution",
+              "label": {
+                "fr": "Modalité autorisée pour la contribution et l’exemple partagé",
+                "en": "Permitted use of the contribution and shared example"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Synthèse anonymisée seulement, sans attribution identifiable",
+                    "en": "Anonymised summary only, with no identifiable attribution"
+                  }
+                },
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Attribution à l’institution, sans citation textuelle identifiable",
+                    "en": "Attribution to the institution, without an identifiable quotation"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Attribution à l’institution et citation textuelle",
+                    "en": "Attribution to the institution and direct quotation"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Me soumettre le passage avant toute attribution ou citation identifiable",
+                    "en": "Submit the passage to me before any identifiable attribution or quotation"
+                  }
+                }
+              ],
+              "attribution": true
+            },
+            {
+              "id": "QI12_Suite",
+              "label": {
+                "fr": "Accepteriez-vous un bref complément ou un test d’outil ?",
+                "en": "Would you agree to a brief follow-up or a tool test?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Complément",
+                    "en": "Follow-up clarification"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Test",
+                    "en": "Tool test"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Les deux",
+                    "en": "Both"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Non",
+                    "en": "No"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "À déterminer",
+                    "en": "To be determined"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QI12_Contact_fonction",
+              "label": {
+                "fr": "Contact facultatif : fonction ou service à recontacter",
+                "en": "Optional contact: function or service to contact"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "private": true
+            },
+            {
+              "id": "QI12_Contact_courriel",
+              "label": {
+                "fr": "Courriel institutionnel ou générique, facultatif",
+                "en": "Institutional or generic email address, optional"
+              },
+              "type": "email",
+              "options": [],
+              "max_chars": 254,
+              "private": true
+            },
+            {
+              "id": "QI12_Contact_relais",
+              "label": {
+                "fr": "Préférer un relais par le point focal STATAFRIC, facultatif",
+                "en": "Prefer contact through the STATAFRIC focal point, optional"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Passer par le point focal STATAFRIC",
+                    "en": "Contact through the STATAFRIC focal point"
+                  }
+                }
+              ],
+              "private": true
+            }
+          ],
+          "note": {
+            "fr": "Les choix 1 et 2 supposent l’autorisation correspondante. Une contribution individuelle sans cette autorisation reste anonymisée. Sans choix explicite, la synthèse anonymisée (code 0) s’applique. L’absence de retour ne vaut jamais accord de citation.",
+            "en": "Options 1 and 2 require the corresponding authorisation. An individual contribution without that authorisation remains anonymised. Without an explicit choice, an anonymised summary (code 0) applies. Silence never constitutes permission to quote."
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Questionnaire INS, p. 5"
+        }
+      ],
+      "consent": "QI01_Participation",
+      "attribution": "QI12_Attribution",
+      "institution": "QI01_INS",
+      "country": "QI01_Pays",
+      "status": "QI01_Statut",
+      "previous": "QI01_Reference_precedente"
+    },
+    "utilisateurs": {
+      "title": {
+        "fr": "Équipes préparant les discours",
+        "en": "Speech-preparation teams"
+      },
+      "duration": {
+        "fr": "10 à 15 minutes",
+        "en": "10 to 15 minutes"
+      },
+      "sections": [
+        {
+          "id": "QU01",
+          "title": {
+            "fr": "Accord de participation et profil",
+            "en": "Participation agreement and profile"
+          },
+          "fields": [
+            {
+              "id": "QU01_Participation",
+              "label": {
+                "fr": "Acceptez-vous l’utilisation de votre contribution selon la notice ?",
+                "en": "Do you agree to the use of your contribution as described in the notice?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "J’accepte",
+                    "en": "I agree"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Je ne participe pas — fin du questionnaire",
+                    "en": "I do not wish to participate — end of questionnaire"
+                  }
+                }
+              ],
+              "required": true
+            },
+            {
+              "id": "QU01_Pays",
+              "label": {
+                "fr": "Pays",
+                "en": "Country"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500
+            },
+            {
+              "id": "QU01_Institution",
+              "label": {
+                "fr": "Institution ou type d’institution",
+                "en": "Institution or type of institution"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500
+            },
+            {
+              "id": "QU01_Statut",
+              "label": {
+                "fr": "Périmètre",
+                "en": "Scope"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Réponse consolidée de l’équipe ou du service",
+                    "en": "Consolidated team or service response"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Contribution individuelle fondée sur ma propre pratique",
+                    "en": "Individual contribution based on my own practice"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QU01_Fonction",
+              "label": {
+                "fr": "Fonction, sans nom personnel",
+                "en": "Function, without a personal name"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Rédaction de discours ou conseil",
+                    "en": "Speechwriting or advisory work"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Communication",
+                    "en": "Communication"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Appui technique ou statistique",
+                    "en": "Technical or statistical support"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Coordination d’équipe",
+                    "en": "Team coordination"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QU01_Fonction_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QU01_Fonction",
+                "op": "in",
+                "values": [
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QU01_Reference_precedente",
+              "label": {
+                "fr": "Si cet envoi complète une réponse antérieure, indiquer sa référence ou sa date",
+                "en": "If this submission supplements an earlier response, give its reference or date"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500
+            }
+          ],
+          "note": {
+            "fr": "Répondre pour une équipe ou un service préparant des discours, ou sur votre pratique personnelle si vous n’êtes pas mandaté pour l’équipe. Les informations portent sur les chiffres, sans évaluation politique des discours.",
+            "en": "Respond for a speech-preparation team or service, or describe your own practice if you are not mandated to respond for the team. Information concerns figures, without any political assessment of speeches."
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Questionnaire utilisateurs, p. 1"
+        },
+        {
+          "id": "QU02",
+          "title": {
+            "fr": "Activité pendant les douze mois de référence",
+            "en": "Activity during the twelve-month reference period"
+          },
+          "fields": [
+            {
+              "id": "QU02a",
+              "label": {
+                "fr": "À combien de discours comportant des chiffres votre équipe ou vous-même avez-vous contribué ?",
+                "en": "How many speeches containing figures did your team or you contribute to?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Aucune / aucun",
+                    "en": "None"
+                  }
+                },
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "De 1 à 5",
+                    "en": "1 to 5"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "De 6 à 20",
+                    "en": "6 to 20"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "De 21 à 50",
+                    "en": "21 to 50"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Plus de 50",
+                    "en": "More than 50"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QU02b",
+              "label": {
+                "fr": "Avez-vous demandé un appui statistique à l’INS pour au moins un de ces discours ?",
+                "en": "Did you request statistical support from the NSO for at least one of these speeches?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Oui",
+                    "en": "Yes"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Non",
+                    "en": "No"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable, aucun discours concerné",
+                    "en": "Not applicable, no relevant speech"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QU02_Base",
+              "label": {
+                "fr": "Base de la réponse",
+                "en": "Basis for the response"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Registre ou inventaire consulté",
+                    "en": "Register or inventory consulted"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Estimation fondée sur la pratique connue",
+                    "en": "Estimate based on known practice"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ]
+            }
+          ],
+          "note": {
+            "fr": "Compter une intervention une seule fois, même si elle a fait l’objet de plusieurs versions. Si aucun discours n’est concerné, passer à QU07. Si le nombre est inconnu, poursuivre lorsqu’un cas réel est connu.",
+            "en": "Count an intervention only once, even if several versions were prepared. If there were no relevant speeches, proceed to QU07. If the number is unknown, continue when a real case is known."
+          },
+          "gate": null,
+          "theme": "Demande et urgence",
+          "source": "Questionnaire utilisateurs, p. 1–2"
+        },
+        {
+          "id": "QU03",
+          "title": {
+            "fr": "Dernier discours préparé comportant des chiffres",
+            "en": "Most recent speech prepared containing figures"
+          },
+          "fields": [
+            {
+              "id": "QU03_Cas",
+              "label": {
+                "fr": "Un tel cas peut-il être décrit ?",
+                "en": "Can such a case be described?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Oui",
+                    "en": "Yes"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Non",
+                    "en": "No"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QU03_Mois",
+              "label": {
+                "fr": "Mois et année de fin de préparation, MM/AAAA",
+                "en": "Month and year preparation ended, MM/YYYY"
+              },
+              "type": "month",
+              "options": [],
+              "max_chars": 7,
+              "gate": {
+                "field": "QU03_Cas",
+                "op": "in",
+                "values": [
+                  1
+                ]
+              }
+            },
+            {
+              "id": "QU03_Theme",
+              "label": {
+                "fr": "Thème général, sans nom de personne",
+                "en": "General topic, without a person’s name"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QU03_Cas",
+                "op": "in",
+                "values": [
+                  1
+                ]
+              }
+            },
+            {
+              "id": "QU03_Public",
+              "label": {
+                "fr": "Public principal",
+                "en": "Main audience"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Grand public",
+                    "en": "General public"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Parlement ou élus",
+                    "en": "Parliament or elected representatives"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Public technique ou professionnel",
+                    "en": "Technical or professional audience"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Communauté locale",
+                    "en": "Local community"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ],
+              "gate": {
+                "field": "QU03_Cas",
+                "op": "in",
+                "values": [
+                  1
+                ]
+              }
+            },
+            {
+              "id": "QU03_Public_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QU03_Public",
+                "op": "in",
+                "values": [
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QU03_Langues",
+              "label": {
+                "fr": "Langue ou langues du discours",
+                "en": "Language(s) of the speech"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QU03_Cas",
+                "op": "in",
+                "values": [
+                  1
+                ]
+              }
+            },
+            {
+              "id": "QU03_Origine",
+              "label": {
+                "fr": "Origine du premier chiffre utilisé",
+                "en": "Origin of the first figure used"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Source publiée de l’INS consultée directement",
+                    "en": "Published NSO source consulted directly"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Chiffre transmis directement par l’INS",
+                    "en": "Figure supplied directly by the NSO"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Autre administration nationale",
+                    "en": "Other national administration"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Organisation régionale ou internationale",
+                    "en": "Regional or international organisation"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Recherche ou source privée identifiée",
+                    "en": "Identified research or private source"
+                  }
+                },
+                {
+                  "code": 6,
+                  "label": {
+                    "fr": "Discours ou document précédent sans retour à la source statistique",
+                    "en": "Previous speech or document, without consulting the statistical source"
+                  }
+                },
+                {
+                  "code": 7,
+                  "label": {
+                    "fr": "Source non identifiée",
+                    "en": "Unidentified source"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ],
+              "gate": {
+                "field": "QU03_Cas",
+                "op": "in",
+                "values": [
+                  1
+                ]
+              }
+            },
+            {
+              "id": "QU03_Origine_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QU03_Origine",
+                "op": "in",
+                "values": [
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QU03_Delai",
+              "label": {
+                "fr": "Si un appui a été demandé à l’INS pour ce cas, délai demandé",
+                "en": "If NSO support was requested for this case, requested turnaround time"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Moins de 6 heures",
+                    "en": "Less than 6 hours"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "De 6 à 24 heures incluses",
+                    "en": "6 to 24 hours inclusive"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Plus de 24 heures à 3 jours inclus",
+                    "en": "More than 24 hours up to 3 days inclusive"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Plus de 3 jours",
+                    "en": "More than 3 days"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Aucune échéance indiquée",
+                    "en": "No deadline specified"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Aucun appui demandé à l’INS pour ce cas",
+                    "en": "No NSO support requested for this case"
+                  }
+                }
+              ],
+              "gate": {
+                "field": "QU03_Cas",
+                "op": "in",
+                "values": [
+                  1
+                ]
+              }
+            },
+            {
+              "id": "QU03_Issue",
+              "label": {
+                "fr": "Si un appui a été demandé, son issue",
+                "en": "If support was requested, its outcome"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Chiffres reçus à temps",
+                    "en": "Figures received on time"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Chiffres reçus après l’échéance",
+                    "en": "Figures received after the deadline"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Aucun chiffre reçu",
+                    "en": "No figures received"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Chiffres reçus, sans échéance convenue",
+                    "en": "Figures received, with no agreed deadline"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Aucun appui demandé",
+                    "en": "No support requested"
+                  }
+                }
+              ],
+              "gate": {
+                "field": "QU03_Cas",
+                "op": "in",
+                "values": [
+                  1
+                ]
+              }
+            },
+            {
+              "id": "QU03_Exemple",
+              "label": {
+                "fr": "Cas partageable, facultatif : lien vers le discours public ou bref extrait non confidentiel autorisé, avec sa date",
+                "en": "Shareable case, optional: link to the public speech or brief authorised non-confidential extract, with its date"
+              },
+              "type": "textarea",
+              "options": [],
+              "max_chars": 2500,
+              "gate": {
+                "field": "QU03_Cas",
+                "op": "in",
+                "values": [
+                  1
+                ]
+              }
+            }
+          ],
+          "note": {
+            "fr": "Considérer le discours comportant des chiffres dont la préparation s’est achevée le plus récemment pendant la période, et non un exemple sélectionné pour sa qualité. Si aucun cas n’est décrit, passer à QU07. L’absence de lien ne remet pas en cause votre réponse.",
+            "en": "Consider the speech containing figures whose preparation ended most recently during the period, rather than an example chosen for its quality. If no case can be described, proceed to QU07. The absence of a link does not invalidate your response."
+          },
+          "gate": {
+            "field": "QU02a",
+            "op": "not_in",
+            "values": [
+              0
+            ]
+          },
+          "theme": "Messages et publics",
+          "source": "Questionnaire utilisateurs, p. 2"
+        },
+        {
+          "id": "QU04",
+          "title": {
+            "fr": "Informations disponibles pour comprendre ce chiffre",
+            "en": "Information available to understand this figure"
+          },
+          "fields": [
+            {
+              "id": "QU04_M1",
+              "label": {
+                "fr": "Source permettant de retrouver le résultat",
+                "en": "Source enabling the result to be located"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Dans le document ou message utilisé",
+                    "en": "In the document or message used"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Accessible par un lien ou une référence précise disponible",
+                    "en": "Accessible through an available specific link or reference"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Absente",
+                    "en": "Absent"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QU04_M2",
+              "label": {
+                "fr": "Date de publication ou version",
+                "en": "Publication date or version"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Dans le document ou message utilisé",
+                    "en": "In the document or message used"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Accessible par un lien ou une référence précise disponible",
+                    "en": "Accessible through an available specific link or reference"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Absente",
+                    "en": "Absent"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QU04_M3",
+              "label": {
+                "fr": "Période de la valeur",
+                "en": "Period of the value"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Dans le document ou message utilisé",
+                    "en": "In the document or message used"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Accessible par un lien ou une référence précise disponible",
+                    "en": "Accessible through an available specific link or reference"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Absente",
+                    "en": "Absent"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QU04_M4",
+              "label": {
+                "fr": "Définition de l’indicateur",
+                "en": "Definition of the indicator"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Dans le document ou message utilisé",
+                    "en": "In the document or message used"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Accessible par un lien ou une référence précise disponible",
+                    "en": "Accessible through an available specific link or reference"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Absente",
+                    "en": "Absent"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QU04_M5",
+              "label": {
+                "fr": "Unité et base de calcul du taux, le cas échéant",
+                "en": "Unit and calculation basis of the rate, where applicable"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Dans le document ou message utilisé",
+                    "en": "In the document or message used"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Accessible par un lien ou une référence précise disponible",
+                    "en": "Accessible through an available specific link or reference"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Absente",
+                    "en": "Absent"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QU04_M6",
+              "label": {
+                "fr": "Population et territoire couverts",
+                "en": "Population and geographical coverage"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Dans le document ou message utilisé",
+                    "en": "In the document or message used"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Accessible par un lien ou une référence précise disponible",
+                    "en": "Accessible through an available specific link or reference"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Absente",
+                    "en": "Absent"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QU04_M7",
+              "label": {
+                "fr": "Limites de comparaison, incertitudes ou précautions utiles",
+                "en": "Comparability limitations, uncertainties or relevant cautions"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Dans le document ou message utilisé",
+                    "en": "In the document or message used"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Accessible par un lien ou une référence précise disponible",
+                    "en": "Accessible through an available specific link or reference"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Absente",
+                    "en": "Absent"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            }
+          ],
+          "note": {
+            "fr": "Pour le premier chiffre indiqué en QU03, quelles informations aviez-vous effectivement à disposition lors de la préparation ?",
+            "en": "For the first figure identified in QU03, what information did you actually have available during preparation?"
+          },
+          "gate": {
+            "all": [
+              {
+                "field": "QU02a",
+                "op": "not_in",
+                "values": [
+                  0
+                ]
+              },
+              {
+                "field": "QU03_Cas",
+                "op": "in",
+                "values": [
+                  1
+                ]
+              }
+            ]
+          },
+          "theme": "Sources et métadonnées",
+          "source": "Questionnaire utilisateurs, p. 2"
+        },
+        {
+          "id": "QU05",
+          "title": {
+            "fr": "Vérifications avant diffusion de ce discours",
+            "en": "Checks before dissemination of this speech"
+          },
+          "fields": [
+            {
+              "id": "QU05a",
+              "label": {
+                "fr": "Qui a effectivement vérifié les chiffres et leur interprétation ? Plusieurs réponses possibles.",
+                "en": "Who actually checked the figures and their interpretation? Multiple answers allowed."
+              },
+              "type": "multi",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Rédacteur ou équipe de communication",
+                    "en": "Speechwriter or communication team"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Conseiller technique ou statisticien de l’institution",
+                    "en": "Institution’s technical adviser or statistician"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Agent de l’INS",
+                    "en": "NSO staff member"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Autre organisme producteur",
+                    "en": "Other producing organisation"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Aucun contrôle connu",
+                    "en": "No known check"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre fonction",
+                    "en": "Other function"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ],
+              "exclusive": [
+                0,
+                98
+              ]
+            },
+            {
+              "id": "QU05a_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QU05a",
+                "op": "contains",
+                "values": [
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QU05b",
+              "label": {
+                "fr": "L’INS a-t-il relu le passage contenant les chiffres dans le projet de discours ?",
+                "en": "Did the NSO review the passage containing figures in the draft speech?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Oui",
+                    "en": "Yes"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Non, il n’a pas été sollicité",
+                    "en": "No, it was not asked"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Non, il a été sollicité mais la relecture n’a pas eu lieu à temps",
+                    "en": "No, it was asked but the review did not take place in time"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable, cette étape n’a pas eu lieu",
+                    "en": "Not applicable, this stage did not occur"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QU05c",
+              "label": {
+                "fr": "Une référence à la source statistique figurait-elle dans la version diffusée ?",
+                "en": "Did the disseminated version include a reference to the statistical source?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Oui",
+                    "en": "Yes"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Non",
+                    "en": "No"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Discours non diffusé ou version diffusée inconnue",
+                    "en": "Speech not disseminated or disseminated version unknown"
+                  }
+                }
+              ]
+            }
+          ],
+          "note": {
+            "fr": "",
+            "en": ""
+          },
+          "gate": {
+            "all": [
+              {
+                "field": "QU02a",
+                "op": "not_in",
+                "values": [
+                  0
+                ]
+              },
+              {
+                "field": "QU03_Cas",
+                "op": "in",
+                "values": [
+                  1
+                ]
+              }
+            ]
+          },
+          "theme": "Vérification",
+          "source": "Questionnaire utilisateurs, p. 2–3"
+        },
+        {
+          "id": "QU06",
+          "title": {
+            "fr": "Corrections et retour à l’INS",
+            "en": "Corrections and feedback to the NSO"
+          },
+          "fields": [
+            {
+              "id": "QU06a",
+              "label": {
+                "fr": "Pendant la période, avez-vous connaissance d’un chiffre ou d’une interprétation à corriger après finalisation d’un discours ?",
+                "en": "During the period, do you know of a figure or interpretation requiring correction after a speech was finalised?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Oui, correction avant diffusion",
+                    "en": "Yes, correction before dissemination"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Oui, correction après diffusion",
+                    "en": "Yes, correction after dissemination"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Les deux situations",
+                    "en": "Both situations"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Aucun épisode connu",
+                    "en": "No known instance"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Aucun discours concerné",
+                    "en": "No relevant speech"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QU06_Actions",
+              "label": {
+                "fr": "Pour le cas le plus récent, quelles actions ont été réalisées ? Plusieurs réponses possibles.",
+                "en": "For the most recent case, what actions were taken? Multiple answers allowed."
+              },
+              "type": "multi",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Retour à la source ou au producteur",
+                    "en": "Returning to the source or producer"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Version corrigée transmise à l’équipe",
+                    "en": "Corrected version sent to the team"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Conservation du changement et de son motif",
+                    "en": "Keeping a record of the change and its reason"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Rectificatif diffusé pour une erreur déjà publique",
+                    "en": "Correction issued for an already public error"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Vérification de la prise en compte",
+                    "en": "Checking that the correction was incorporated"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Aucune action connue",
+                    "en": "No known action"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ],
+              "exclusive": [
+                0,
+                98
+              ],
+              "gate": {
+                "field": "QU06a",
+                "op": "in",
+                "values": [
+                  1,
+                  2,
+                  3
+                ]
+              }
+            },
+            {
+              "id": "QU06_Actions_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QU06_Actions",
+                "op": "contains",
+                "values": [
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QU06b",
+              "label": {
+                "fr": "Pour le dernier appui demandé à l’INS pendant la période, lui avez-vous transmis un retour sur l’utilisation des chiffres ?",
+                "en": "For the most recent support requested from the NSO during the period, did you provide feedback on the use of the figures?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Oui, texte ou lien vers le discours",
+                    "en": "Yes, text or a link to the speech"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Oui, commentaire sur l’appui, sans texte ni lien",
+                    "en": "Yes, comments on the support, without text or link"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Les deux",
+                    "en": "Both"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Non",
+                    "en": "No"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Aucun appui demandé",
+                    "en": "No support requested"
+                  }
+                }
+              ]
+            }
+          ],
+          "note": {
+            "fr": "",
+            "en": ""
+          },
+          "gate": {
+            "all": [
+              {
+                "field": "QU02a",
+                "op": "not_in",
+                "values": [
+                  0
+                ]
+              },
+              {
+                "field": "QU03_Cas",
+                "op": "in",
+                "values": [
+                  1
+                ]
+              }
+            ]
+          },
+          "theme": "Actualisation et correction",
+          "source": "Questionnaire utilisateurs, p. 3"
+        },
+        {
+          "id": "QU07",
+          "title": {
+            "fr": "Appuis les plus utiles",
+            "en": "Most useful forms of support"
+          },
+          "fields": [
+            {
+              "id": "QU07_P1",
+              "label": {
+                "fr": "Priorité 1",
+                "en": "Priority 1"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Contact clairement identifié à l’INS",
+                    "en": "Clearly identified contact at the NSO"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Réponse dans un délai convenu, y compris en urgence",
+                    "en": "Response within an agreed deadline, including urgent requests"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Fiche courte avec chiffre, source et période",
+                    "en": "Short fact sheet with figure, source and period"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Explication des définitions et limites",
+                    "en": "Explanation of definitions and limitations"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Proposition de phrases compréhensibles",
+                    "en": "Suggested clear wording"
+                  }
+                },
+                {
+                  "code": 6,
+                  "label": {
+                    "fr": "Relecture rapide du passage statistique",
+                    "en": "Quick review of the statistical passage"
+                  }
+                },
+                {
+                  "code": 7,
+                  "label": {
+                    "fr": "Alerte en cas de révision ou d’erreur",
+                    "en": "Alert in the event of a revision or error"
+                  }
+                },
+                {
+                  "code": 8,
+                  "label": {
+                    "fr": "Exemples et courte formation",
+                    "en": "Examples and brief training"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Aucun besoin exprimé",
+                    "en": "No need expressed"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QU07_P2",
+              "label": {
+                "fr": "Priorité 2",
+                "en": "Priority 2"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Contact clairement identifié à l’INS",
+                    "en": "Clearly identified contact at the NSO"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Réponse dans un délai convenu, y compris en urgence",
+                    "en": "Response within an agreed deadline, including urgent requests"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Fiche courte avec chiffre, source et période",
+                    "en": "Short fact sheet with figure, source and period"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Explication des définitions et limites",
+                    "en": "Explanation of definitions and limitations"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Proposition de phrases compréhensibles",
+                    "en": "Suggested clear wording"
+                  }
+                },
+                {
+                  "code": 6,
+                  "label": {
+                    "fr": "Relecture rapide du passage statistique",
+                    "en": "Quick review of the statistical passage"
+                  }
+                },
+                {
+                  "code": 7,
+                  "label": {
+                    "fr": "Alerte en cas de révision ou d’erreur",
+                    "en": "Alert in the event of a revision or error"
+                  }
+                },
+                {
+                  "code": 8,
+                  "label": {
+                    "fr": "Exemples et courte formation",
+                    "en": "Examples and brief training"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                }
+              ],
+              "gate": {
+                "field": "QU07_P1",
+                "op": "in",
+                "values": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QU07_P3",
+              "label": {
+                "fr": "Priorité 3",
+                "en": "Priority 3"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Contact clairement identifié à l’INS",
+                    "en": "Clearly identified contact at the NSO"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Réponse dans un délai convenu, y compris en urgence",
+                    "en": "Response within an agreed deadline, including urgent requests"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Fiche courte avec chiffre, source et période",
+                    "en": "Short fact sheet with figure, source and period"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Explication des définitions et limites",
+                    "en": "Explanation of definitions and limitations"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Proposition de phrases compréhensibles",
+                    "en": "Suggested clear wording"
+                  }
+                },
+                {
+                  "code": 6,
+                  "label": {
+                    "fr": "Relecture rapide du passage statistique",
+                    "en": "Quick review of the statistical passage"
+                  }
+                },
+                {
+                  "code": 7,
+                  "label": {
+                    "fr": "Alerte en cas de révision ou d’erreur",
+                    "en": "Alert in the event of a revision or error"
+                  }
+                },
+                {
+                  "code": 8,
+                  "label": {
+                    "fr": "Exemples et courte formation",
+                    "en": "Examples and brief training"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                }
+              ],
+              "gate": {
+                "field": "QU07_P1",
+                "op": "in",
+                "values": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QU07_Autre",
+              "label": {
+                "fr": "Autre priorité : précisez",
+                "en": "Other priority: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "any": [
+                  {
+                    "field": "QU07_P1",
+                    "op": "in",
+                    "values": [
+                      97
+                    ]
+                  },
+                  {
+                    "field": "QU07_P2",
+                    "op": "in",
+                    "values": [
+                      97
+                    ]
+                  },
+                  {
+                    "field": "QU07_P3",
+                    "op": "in",
+                    "values": [
+                      97
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "id": "QU07_Difficulte",
+              "label": {
+                "fr": "Pour la priorité 1, citer une difficulté effectivement rencontrée, au plus 40 mots. À défaut, écrire « besoin anticipé ».",
+                "en": "For priority 1, describe a difficulty actually experienced, up to 40 words. Otherwise write ‘anticipated need’."
+              },
+              "type": "textarea",
+              "options": [],
+              "max_chars": 2500,
+              "max_words": 40
+            },
+            {
+              "id": "QU07_Contrainte",
+              "label": {
+                "fr": "Contrainte particulière liée au public, à la langue ou au contexte de communication, facultatif ; au plus 40 mots, aucune opinion politique demandée",
+                "en": "Specific constraint related to the audience, language or communication context, optional; up to 40 words, no political opinion requested"
+              },
+              "type": "textarea",
+              "options": [],
+              "max_chars": 2500,
+              "max_words": 40
+            },
+            {
+              "id": "QU07_Nouveaute",
+              "label": {
+                "fr": "Pratique nouvelle après le 31 octobre, facultatif : changement et date",
+                "en": "New practice after 31 October, optional: change and date"
+              },
+              "type": "textarea",
+              "options": [],
+              "max_chars": 2500
+            }
+          ],
+          "note": {
+            "fr": "Classer au plus trois codes différents. Les choix 0 et 98 excluent les autres priorités.",
+            "en": "Rank up to three different codes. Options 0 and 98 exclude other priorities."
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Questionnaire utilisateurs, p. 3"
+        },
+        {
+          "id": "QU08",
+          "title": {
+            "fr": "Attribution et contact facultatif",
+            "en": "Attribution and optional contact"
+          },
+          "fields": [
+            {
+              "id": "QU08_Attribution",
+              "label": {
+                "fr": "Modalité autorisée pour la contribution et le cas partagé",
+                "en": "Permitted use of the contribution and shared case"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Synthèse anonymisée seulement, sans attribution identifiable",
+                    "en": "Anonymised summary only, with no identifiable attribution"
+                  }
+                },
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Attribution à l’institution, sans citation textuelle identifiable",
+                    "en": "Attribution to the institution, without an identifiable quotation"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Attribution à l’institution et citation textuelle",
+                    "en": "Attribution to the institution and direct quotation"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Me soumettre le passage avant toute attribution ou citation identifiable",
+                    "en": "Submit the passage to me before any identifiable attribution or quotation"
+                  }
+                }
+              ],
+              "attribution": true
+            },
+            {
+              "id": "QU08_Suite",
+              "label": {
+                "fr": "Acceptez-vous un complément ou un test ?",
+                "en": "Do you agree to follow-up or a test?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Complément",
+                    "en": "Follow-up clarification"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Test",
+                    "en": "Tool test"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Les deux",
+                    "en": "Both"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Non",
+                    "en": "No"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "À déterminer",
+                    "en": "To be determined"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QU08_Contact_fonction",
+              "label": {
+                "fr": "Contact facultatif : fonction ou service à recontacter",
+                "en": "Optional contact: function or service to contact"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "private": true
+            },
+            {
+              "id": "QU08_Contact_courriel",
+              "label": {
+                "fr": "Courriel institutionnel ou générique, facultatif",
+                "en": "Institutional or generic email address, optional"
+              },
+              "type": "email",
+              "options": [],
+              "max_chars": 254,
+              "private": true
+            },
+            {
+              "id": "QU08_Contact_relais",
+              "label": {
+                "fr": "Préférer un relais par le point focal STATAFRIC, facultatif",
+                "en": "Prefer contact through the STATAFRIC focal point, optional"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Passer par le point focal STATAFRIC",
+                    "en": "Contact through the STATAFRIC focal point"
+                  }
+                }
+              ],
+              "private": true
+            }
+          ],
+          "note": {
+            "fr": "Les choix 1 et 2 supposent l’autorisation correspondante. Une contribution individuelle sans cette autorisation reste anonymisée. Sans choix explicite, la synthèse anonymisée (code 0) s’applique. L’absence de retour ne vaut jamais accord de citation.",
+            "en": "Options 1 and 2 require the corresponding authorisation. An individual contribution without that authorisation remains anonymised. Without an explicit choice, an anonymised summary (code 0) applies. Silence never constitutes permission to quote."
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Questionnaire utilisateurs, p. 3"
+        }
+      ],
+      "consent": "QU01_Participation",
+      "attribution": "QU08_Attribution",
+      "institution": "QU01_Institution",
+      "country": "QU01_Pays",
+      "status": "QU01_Statut",
+      "previous": "QU01_Reference_precedente"
+    },
+    "partenaires": {
+      "title": {
+        "fr": "CER et organisations internationales",
+        "en": "RECs and international organisations"
+      },
+      "duration": {
+        "fr": "Environ 10 minutes",
+        "en": "About 10 minutes"
+      },
+      "sections": [
+        {
+          "id": "QR01",
+          "title": {
+            "fr": "Participation et champ de la contribution",
+            "en": "Participation and scope of the contribution"
+          },
+          "fields": [
+            {
+              "id": "QR01_Participation",
+              "label": {
+                "fr": "Acceptez-vous l’utilisation de votre contribution selon la notice ?",
+                "en": "Do you agree to the use of your contribution as described in the notice?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "J’accepte",
+                    "en": "I agree"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Je ne participe pas — fin du questionnaire",
+                    "en": "I do not wish to participate — end of questionnaire"
+                  }
+                }
+              ],
+              "required": true
+            },
+            {
+              "id": "QR01_Organisation",
+              "label": {
+                "fr": "Organisation",
+                "en": "Organisation"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500
+            },
+            {
+              "id": "QR01_Type",
+              "label": {
+                "fr": "Type d’organisation",
+                "en": "Type of organisation"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Communauté économique régionale (CER)",
+                    "en": "Regional Economic Community (REC)"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Organisation internationale",
+                    "en": "International organisation"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QR01_Type_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QR01_Type",
+                "op": "in",
+                "values": [
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QR01_Fonction",
+              "label": {
+                "fr": "Fonction du service répondant, sans nom personnel",
+                "en": "Function of the responding service, without a personal name"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500
+            },
+            {
+              "id": "QR01_Statut",
+              "label": {
+                "fr": "Statut de la contribution",
+                "en": "Contribution status"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Réponse institutionnelle consolidée",
+                    "en": "Consolidated institutional response"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Contribution d’un service, non consolidée au niveau de l’institution",
+                    "en": "Service-level contribution, not consolidated at institution level"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Contribution individuelle fondée sur ma pratique professionnelle",
+                    "en": "Individual contribution based on my professional practice"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QR01_Champ",
+              "label": {
+                "fr": "Territoires ou institutions couverts par votre expérience, sans supposer la couverture de tous les membres",
+                "en": "Territories or institutions covered by your experience, without assuming coverage of all members"
+              },
+              "type": "textarea",
+              "options": [],
+              "max_chars": 2500
+            }
+          ],
+          "note": {
+            "fr": "",
+            "en": ""
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Guide, § 2, p. 1–2"
+        },
+        {
+          "id": "QR02",
+          "title": {
+            "fr": "Appuis effectivement réalisés pendant la période",
+            "en": "Support actually provided during the period"
+          },
+          "fields": [
+            {
+              "id": "QR02_Appui",
+              "label": {
+                "fr": "Avez-vous réalisé ou suivi un appui lié à l’utilisation des statistiques dans les discours ?",
+                "en": "Have you provided or monitored support related to the use of statistics in speeches?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Oui",
+                    "en": "Yes"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Non",
+                    "en": "No"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Hors de votre champ d’activité",
+                    "en": "Outside your area of activity"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QR02_Activites",
+              "label": {
+                "fr": "Si oui, cocher les activités réellement connues",
+                "en": "If yes, select the activities actually known"
+              },
+              "type": "multi",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Guide ou modèle",
+                    "en": "Guide or template"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Formation ou accompagnement",
+                    "en": "Training or support"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Fourniture ou vérification de chiffres",
+                    "en": "Providing or checking figures"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Appui à une procédure nationale",
+                    "en": "Support for a national procedure"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Diffusion ou partage d’expériences",
+                    "en": "Dissemination or sharing experiences"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                }
+              ],
+              "gate": {
+                "field": "QR02_Appui",
+                "op": "in",
+                "values": [
+                  1
+                ]
+              }
+            },
+            {
+              "id": "QR02_Activites_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QR02_Activites",
+                "op": "contains",
+                "values": [
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QR02_Cas",
+              "label": {
+                "fr": "Décrire un cas en deux phrases : période, type d’institution bénéficiaire et réalisation observable. Ajouter une référence publique si disponible.",
+                "en": "Describe one case in two sentences: period, type of beneficiary institution and observable output. Add a public reference if available."
+              },
+              "type": "textarea",
+              "options": [],
+              "max_chars": 2500,
+              "gate": {
+                "field": "QR02_Appui",
+                "op": "in",
+                "values": [
+                  1
+                ]
+              }
+            }
+          ],
+          "note": {
+            "fr": "Ne pas interpréter une participation à une formation comme la preuve d’une réforme appliquée.",
+            "en": "Participation in training must not be interpreted as proof that a reform has been implemented."
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Guide, § 2, p. 2"
+        },
+        {
+          "id": "QR03",
+          "title": {
+            "fr": "Pratiques transférables et conditions d’adaptation",
+            "en": "Transferable practices and conditions for adaptation"
+          },
+          "fields": [
+            {
+              "id": "QR03_Absence",
+              "label": {
+                "fr": "Si vous ne proposez aucune pratique, indiquer la situation ; sinon laisser ce champ vide",
+                "en": "If you are not proposing a practice, indicate the situation; otherwise leave this field blank"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Aucune pratique documentée à proposer",
+                    "en": "No documented practice to propose"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QR03_Pratiques",
+              "label": {
+                "fr": "Au maximum deux pratiques : pratique ; source ou preuve ; contexte où elle a fonctionné ; condition nécessaire à son adaptation. Au plus 80 mots au total.",
+                "en": "Up to two practices: practice; source or evidence; context in which it worked; condition required for adaptation. Up to 80 words in total."
+              },
+              "type": "textarea",
+              "options": [],
+              "max_chars": 2500,
+              "max_words": 80,
+              "gate": {
+                "field": "QR03_Absence",
+                "op": "not_in",
+                "values": [
+                  0,
+                  98
+                ]
+              }
+            }
+          ],
+          "note": {
+            "fr": "Citer seulement des pratiques effectivement observées ou documentées. Un exemple plus ancien peut être cité avec sa date ; il ne constitue pas un appui réalisé pendant la période.",
+            "en": "Cite only practices actually observed or documented. An older example may be cited with its date; it is not support provided during the reference period."
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Guide, § 2, p. 2"
+        },
+        {
+          "id": "QR04",
+          "title": {
+            "fr": "Besoins prioritaires et contribution envisageable",
+            "en": "Priority needs and possible contribution"
+          },
+          "fields": [
+            {
+              "id": "QR04_Besoins",
+              "label": {
+                "fr": "Retenir au plus trois besoins",
+                "en": "Select up to three needs"
+              },
+              "type": "multi",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Procédures communes adaptables",
+                    "en": "Adaptable common procedures"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Sources et fiches de chiffres",
+                    "en": "Sources and fact sheets"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Contrôle et interprétation",
+                    "en": "Checking and interpretation"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Communication et formulation",
+                    "en": "Communication and wording"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Formation",
+                    "en": "Training"
+                  }
+                },
+                {
+                  "code": 6,
+                  "label": {
+                    "fr": "Partage d’expériences",
+                    "en": "Sharing experiences"
+                  }
+                },
+                {
+                  "code": 7,
+                  "label": {
+                    "fr": "Adaptation linguistique",
+                    "en": "Language adaptation"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Aucun besoin identifié",
+                    "en": "No identified need"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ],
+              "max_choices": 3,
+              "exclusive": [
+                0,
+                98
+              ]
+            },
+            {
+              "id": "QR04_Besoins_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QR04_Besoins",
+                "op": "contains",
+                "values": [
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QR04_Contribution",
+              "label": {
+                "fr": "Quelle contribution votre organisation pourrait-elle envisager, sous réserve de sa décision interne ? Un choix.",
+                "en": "What contribution might your organisation consider, subject to its internal decision? Select one."
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Relais de consultation",
+                    "en": "Relaying the consultation"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Documents publics",
+                    "en": "Public documents"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Commentaires techniques",
+                    "en": "Technical comments"
+                  }
+                },
+                {
+                  "code": 4,
+                  "label": {
+                    "fr": "Mise en relation avec des utilisateurs volontaires",
+                    "en": "Contact with volunteer users"
+                  }
+                },
+                {
+                  "code": 5,
+                  "label": {
+                    "fr": "Aucune contribution envisagée à ce stade",
+                    "en": "No contribution envisaged at this stage"
+                  }
+                },
+                {
+                  "code": 97,
+                  "label": {
+                    "fr": "Autre",
+                    "en": "Other"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "QR04_Contribution_Autre",
+              "label": {
+                "fr": "Autre : précisez",
+                "en": "Other: please specify"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "gate": {
+                "field": "QR04_Contribution",
+                "op": "in",
+                "values": [
+                  97
+                ]
+              }
+            },
+            {
+              "id": "QR04_Contrainte",
+              "label": {
+                "fr": "Préciser une contrainte de moyens, de mandat ou de langue, si utile",
+                "en": "Specify a resource, mandate or language constraint, if useful"
+              },
+              "type": "textarea",
+              "options": [],
+              "max_chars": 2500
+            }
+          ],
+          "note": {
+            "fr": "Cette réponse ne constitue pas un engagement de financement ou de personnel.",
+            "en": "This response is not a commitment of funding or staff."
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Guide, § 2, p. 2"
+        },
+        {
+          "id": "QR05",
+          "title": {
+            "fr": "Attribution et suite éventuelle",
+            "en": "Attribution and possible follow-up"
+          },
+          "fields": [
+            {
+              "id": "QR05_Attribution",
+              "label": {
+                "fr": "Réutilisation autorisée",
+                "en": "Authorised reuse"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Synthèse anonymisée seulement, sans attribution identifiable",
+                    "en": "Anonymised summary only, with no identifiable attribution"
+                  }
+                },
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Attribution à l’institution, sans citation textuelle identifiable",
+                    "en": "Attribution to the institution, without an identifiable quotation"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Attribution à l’institution et citation textuelle",
+                    "en": "Attribution to the institution and direct quotation"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Me soumettre le passage avant toute attribution ou citation identifiable",
+                    "en": "Submit the passage to me before any identifiable attribution or quotation"
+                  }
+                }
+              ],
+              "attribution": true
+            },
+            {
+              "id": "QR05_Contact_fonction",
+              "label": {
+                "fr": "Contact facultatif : fonction ou service à recontacter",
+                "en": "Optional contact: function or service to contact"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "private": true
+            },
+            {
+              "id": "QR05_Contact_courriel",
+              "label": {
+                "fr": "Courriel institutionnel ou générique, facultatif",
+                "en": "Institutional or generic email address, optional"
+              },
+              "type": "email",
+              "options": [],
+              "max_chars": 254,
+              "private": true
+            },
+            {
+              "id": "QR05_Contact_relais",
+              "label": {
+                "fr": "Préférer un relais par le point focal STATAFRIC, facultatif",
+                "en": "Prefer contact through the STATAFRIC focal point, optional"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Passer par le point focal STATAFRIC",
+                    "en": "Contact through the STATAFRIC focal point"
+                  }
+                }
+              ],
+              "private": true
+            },
+            {
+              "id": "QR05_Nouveaute",
+              "label": {
+                "fr": "Pratique nouvelle après le 31 octobre, facultatif : description courte et date",
+                "en": "New practice after 31 October, optional: brief description and date"
+              },
+              "type": "textarea",
+              "options": [],
+              "max_chars": 2500
+            }
+          ],
+          "note": {
+            "fr": "Les choix 1 et 2 supposent l’autorisation correspondante. Une contribution individuelle sans cette autorisation reste anonymisée. Sans choix explicite, la synthèse anonymisée (code 0) s’applique. L’absence de retour ne vaut jamais accord de citation.",
+            "en": "Options 1 and 2 require the corresponding authorisation. An individual contribution without that authorisation remains anonymised. Without an explicit choice, an anonymised summary (code 0) applies. Silence never constitutes permission to quote."
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Guide, § 2, p. 2"
+        }
+      ],
+      "consent": "QR01_Participation",
+      "attribution": "QR05_Attribution",
+      "institution": "QR01_Organisation",
+      "country": "QR01_Champ",
+      "status": "QR01_Statut"
+    },
+    "abrege": {
+      "title": {
+        "fr": "Réponse abrégée",
+        "en": "Short response"
+      },
+      "duration": {
+        "fr": "5 à 10 minutes",
+        "en": "5 to 10 minutes"
+      },
+      "sections": [
+        {
+          "id": "RA01",
+          "title": {
+            "fr": "Participation et périmètre",
+            "en": "Participation and scope"
+          },
+          "fields": [
+            {
+              "id": "RA01_Participation",
+              "label": {
+                "fr": "Acceptez-vous l’utilisation de votre contribution selon la notice ?",
+                "en": "Do you agree to the use of your contribution as described in the notice?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "J’accepte",
+                    "en": "I agree"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Je ne participe pas — fin du questionnaire",
+                    "en": "I do not wish to participate — end of questionnaire"
+                  }
+                }
+              ],
+              "required": true
+            },
+            {
+              "id": "RA01_Pays",
+              "label": {
+                "fr": "Pays",
+                "en": "Country"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500
+            },
+            {
+              "id": "RA01_Institution",
+              "label": {
+                "fr": "Institution ou type d’institution",
+                "en": "Institution or type of institution"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500
+            },
+            {
+              "id": "RA01_Fonction",
+              "label": {
+                "fr": "Fonction",
+                "en": "Function"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500
+            },
+            {
+              "id": "RA01_Statut",
+              "label": {
+                "fr": "Réponse institutionnelle, de service ou individuelle",
+                "en": "Institutional, service-level or individual response"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Réponse institutionnelle consolidée",
+                    "en": "Consolidated institutional response"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Contribution d’un service, non consolidée au niveau de l’institution",
+                    "en": "Service-level contribution, not consolidated at institution level"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Contribution individuelle fondée sur ma pratique professionnelle",
+                    "en": "Individual contribution based on my professional practice"
+                  }
+                }
+              ]
+            }
+          ],
+          "note": {
+            "fr": "",
+            "en": ""
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Guide, § 3, p. 3"
+        },
+        {
+          "id": "RA02",
+          "title": {
+            "fr": "Dernière situation connue",
+            "en": "Most recent known situation"
+          },
+          "fields": [
+            {
+              "id": "RA02_Cas",
+              "label": {
+                "fr": "Décrivez une demande ou préparation de discours pendant la période : mois, thème, délai disponible, appui obtenu ou non. Si aucun cas n’est connu, l’indiquer. Trois lignes.",
+                "en": "Describe a request or speech preparation during the period: month, topic, time available, support obtained or not. If no case is known, say so. Three lines."
+              },
+              "type": "textarea",
+              "options": [],
+              "max_chars": 2500
+            }
+          ],
+          "note": {
+            "fr": "",
+            "en": ""
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Guide, § 3, p. 3"
+        },
+        {
+          "id": "RA03",
+          "title": {
+            "fr": "Source et contrôle",
+            "en": "Source and checking"
+          },
+          "fields": [
+            {
+              "id": "RA03_Source",
+              "label": {
+                "fr": "Pour ce cas, pouvait-on retrouver la source du chiffre ?",
+                "en": "For this case, could the source of the figure be located?"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Oui",
+                    "en": "Yes"
+                  }
+                },
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Non",
+                    "en": "No"
+                  }
+                },
+                {
+                  "code": 98,
+                  "label": {
+                    "fr": "Ne sait pas",
+                    "en": "Do not know"
+                  }
+                },
+                {
+                  "code": 99,
+                  "label": {
+                    "fr": "Non applicable",
+                    "en": "Not applicable"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "RA03_Controle",
+              "label": {
+                "fr": "Qui a vérifié le contenu avant transmission ? Fonction ou absence de contrôle connu.",
+                "en": "Who checked the content before transmission? Function or absence of a known check."
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500
+            }
+          ],
+          "note": {
+            "fr": "",
+            "en": ""
+          },
+          "gate": null,
+          "theme": "Vérification",
+          "source": "Guide, § 3, p. 3"
+        },
+        {
+          "id": "RA04",
+          "title": {
+            "fr": "Première amélioration",
+            "en": "First improvement"
+          },
+          "fields": [
+            {
+              "id": "RA04_Amelioration",
+              "label": {
+                "fr": "Quelle difficulté faut-il résoudre en priorité ? Quelle action serait possible avec les moyens existants et quelle fonction pourrait la conduire ? Trois lignes.",
+                "en": "Which difficulty should be addressed first? What action would be possible with existing resources and which function could lead it? Three lines."
+              },
+              "type": "textarea",
+              "options": [],
+              "max_chars": 2500
+            }
+          ],
+          "note": {
+            "fr": "",
+            "en": ""
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Guide, § 3, p. 3"
+        },
+        {
+          "id": "RA05",
+          "title": {
+            "fr": "Réutilisation et suite",
+            "en": "Reuse and follow-up"
+          },
+          "fields": [
+            {
+              "id": "RA05_Attribution",
+              "label": {
+                "fr": "Restitution autorisée",
+                "en": "Authorised reporting"
+              },
+              "type": "single",
+              "options": [
+                {
+                  "code": 0,
+                  "label": {
+                    "fr": "Synthèse anonymisée seulement, sans attribution identifiable",
+                    "en": "Anonymised summary only, with no identifiable attribution"
+                  }
+                },
+                {
+                  "code": 1,
+                  "label": {
+                    "fr": "Attribution à l’institution, sans citation textuelle identifiable",
+                    "en": "Attribution to the institution, without an identifiable quotation"
+                  }
+                },
+                {
+                  "code": 2,
+                  "label": {
+                    "fr": "Attribution à l’institution et citation textuelle",
+                    "en": "Attribution to the institution and direct quotation"
+                  }
+                },
+                {
+                  "code": 3,
+                  "label": {
+                    "fr": "Me soumettre le passage avant toute attribution ou citation identifiable",
+                    "en": "Submit the passage to me before any identifiable attribution or quotation"
+                  }
+                }
+              ],
+              "attribution": true
+            },
+            {
+              "id": "RA05_Lien",
+              "label": {
+                "fr": "Lien public utile, facultatif",
+                "en": "Useful public link, optional"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 2000
+            },
+            {
+              "id": "RA05_Contact_fonction",
+              "label": {
+                "fr": "Contact institutionnel pour un complément : fonction ou service, facultatif",
+                "en": "Institutional follow-up contact: function or service, optional"
+              },
+              "type": "text",
+              "options": [],
+              "max_chars": 500,
+              "private": true
+            },
+            {
+              "id": "RA05_Contact_courriel",
+              "label": {
+                "fr": "Contact institutionnel pour un complément, facultatif (courriel)",
+                "en": "Institutional contact for follow-up, optional (email)"
+              },
+              "type": "email",
+              "options": [],
+              "max_chars": 254,
+              "private": true
+            }
+          ],
+          "note": {
+            "fr": "Les choix 1 et 2 supposent l’autorisation correspondante. Une contribution individuelle sans cette autorisation reste anonymisée. Sans choix explicite, la synthèse anonymisée (code 0) s’applique. L’absence de retour ne vaut jamais accord de citation.",
+            "en": "Options 1 and 2 require the corresponding authorisation. An individual contribution without that authorisation remains anonymised. Without an explicit choice, an anonymised summary (code 0) applies. Silence never constitutes permission to quote."
+          },
+          "gate": null,
+          "theme": "Suivi et moyens",
+          "source": "Guide, § 3, p. 3"
+        }
+      ],
+      "consent": "RA01_Participation",
+      "attribution": "RA05_Attribution",
+      "institution": "RA01_Institution",
+      "country": "RA01_Pays",
+      "status": "RA01_Statut"
+    }
+  }
+}

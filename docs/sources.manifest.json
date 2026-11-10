@@ -1,0 +1,30 @@
+{
+  "description": "Fichiers sources effectivement utilisés ; pas de réponses de participants.",
+  "sources": [
+    {
+      "filename": "Classeur_diagnostic_HISWACA_FR.xlsx",
+      "size_bytes": 81322,
+      "sha256": "e9910e942f416075911e704102b9e3c8605bc5fa6826a5f6b0b1b5adbfc887aa"
+    },
+    {
+      "filename": "Guide_diagnostic_ecrit_HISWACA_FR.docx",
+      "size_bytes": 47583,
+      "sha256": "6aa253b47a957579676c9379a0334db0d6bf82607ba2a3890300509a3b6b77fd"
+    },
+    {
+      "filename": "Questionnaire_diagnostic_INS_HISWACA_FR.docx",
+      "size_bytes": 44348,
+      "sha256": "17d08bb54240cf084ef509b8a590770ba37876c72ebf1efd559fd0182a135a97"
+    },
+    {
+      "filename": "Questionnaire_utilisateurs_discours_HISWACA_FR.docx",
+      "size_bytes": 42397,
+      "sha256": "e23170e303ad9ad8f1c18a256e2b577b941ea8020752ff2414b18f2789f9a4c5"
+    },
+    {
+      "filename": "Rapport_methodologique_HISWACA_FR_20261108.docx",
+      "size_bytes": 54942,
+      "sha256": "22465b3d55d5dd9b78bfb448fef1739df5f074721b5acc81389ea426ff3bfcd4"
+    }
+  ]
+}
