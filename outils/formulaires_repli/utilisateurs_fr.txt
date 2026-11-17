@@ -1,0 +1,371 @@
+﻿Équipes préparant les discours
+2026-11-15.web-2
+Référence : 01/11/2025–31/10/2026. Collecte : 19–26 novembre 2026 inclus.
+STATAFRIC et le consultant Mamadou Niang préparent des outils pratiques pour l’appui statistique aux discours et à la décision. Référence des pratiques : du 1er novembre 2025 au 31 octobre 2026 ; dater séparément les évolutions ultérieures. Collecte : du 19 au 26 novembre 2026 inclus. Les réponses réelles alimenteront L3, jamais L2 qui reste documentaire.
+
+Participation volontaire. Une réponse institutionnelle, de service ou individuelle est recevable si son périmètre est précisé. Répondre directement à l’équipe de la mission, sans approbation préalable de l’INS relais. Les restitutions sont agrégées ou anonymisées par défaut ; attribution ou citation identifiable selon votre choix à la dernière rubrique. Les pièces remises au Client respectent ces autorisations. Un cas particulier peut rester reconnaissable. Les coordonnées facultatives sont séparées de l’analyse.
+
+Ne transmettre ni opinions politiques, données individuelles, coordonnées personnelles inutiles ni document confidentiel. Utiliser des liens publics ou extraits non confidentiels autorisés. Une contribution individuelle n’engage pas l’institution.
+
+Une réponse partielle est utile. Aucun choix substantiel n’est précoché. Un blanc ne signifie ni « non » ni zéro. « Aucun », « ne sait pas » et « non applicable » sont exclusifs des autres réponses lorsque le questionnaire le prévoit.
+
+Avant l’envoi, la saisie reste dans la session, pas dans la base. Elle peut être perdue à la fermeture : télécharger un brouillon pour reprendre. Un brouillon ne vaut pas envoi. Seul un accusé confirmé atteste l’enregistrement. Les réponses originales restent protégées ; seuls le consultant et les personnes habilitées y accèdent. La langue peut être changée sans créer une nouvelle contribution. En cas de difficulté, utiliser le formulaire de repli dans la même langue et l’envoyer au contact de la mission.
+Formulaire de repli : conserver les codes. Les conditions affichées traduisent les filtres : ∈ signifie « parmi », ∉ « différent de », ∩ ≠ ∅ « contient au moins un ». En cas de condition non remplie, ne pas répondre au champ. Une réponse partielle est admise. Après refus, arrêter sans autre réponse.
+
+QU01 — Accord de participation et profil
+Répondre pour une équipe ou un service préparant des discours, ou sur votre pratique personnelle si vous n’êtes pas mandaté pour l’équipe. Les informations portent sur les chiffres, sans évaluation politique des discours.
+QU01_Participation — Acceptez-vous l’utilisation de votre contribution selon la notice ?
+[ ] 1 J’accepte
+[ ] 0 Je ne participe pas — fin du questionnaire
+____________________________
+QU01_Pays — Pays
+Condition d’affichage : (QU01_Participation ∈ {1})
+____________________________
+QU01_Institution — Institution ou type d’institution
+Condition d’affichage : (QU01_Participation ∈ {1})
+____________________________
+QU01_Statut — Périmètre
+Condition d’affichage : (QU01_Participation ∈ {1})
+[ ] 1 Réponse consolidée de l’équipe ou du service
+[ ] 2 Contribution individuelle fondée sur ma propre pratique
+____________________________
+QU01_Fonction — Fonction, sans nom personnel
+Condition d’affichage : (QU01_Participation ∈ {1})
+[ ] 1 Rédaction de discours ou conseil
+[ ] 2 Communication
+[ ] 3 Appui technique ou statistique
+[ ] 4 Coordination d’équipe
+[ ] 97 Autre
+____________________________
+QU01_Fonction_Autre — Autre : précisez
+Condition d’affichage : ((QU01_Participation ∈ {1} ET QU01_Fonction ∈ {97}))
+____________________________
+QU01_Reference_precedente — Si cet envoi complète une réponse antérieure, indiquer sa référence ou sa date
+Condition d’affichage : (QU01_Participation ∈ {1})
+____________________________
+QU01_Unite — Service ou unité concernée
+Condition d’affichage : (QU01_Participation ∈ {1})
+____________________________
+QU01_Domaine — Domaine ou secteur, facultatif
+Condition d’affichage : (QU01_Participation ∈ {1})
+____________________________
+QU01_Langue_texte — Langue principale de vos réponses libres
+Condition d’affichage : (QU01_Participation ∈ {1})
+[ ] fr Français
+[ ] en Anglais
+[ ] ar Arabe
+[ ] pt Portugais
+[ ] es Espagnol
+____________________________
+QU01_Origine_invitation — Origine de l’invitation ou du lien
+Condition d’affichage : (QU01_Participation ∈ {1})
+[ ] 1 INS
+[ ] 2 STATAFRIC ou consultant
+[ ] 3 Autre relais
+[ ] 4 Accès spontané
+[ ] 98 Ne sait pas
+____________________________
+QU01_INS_relais — INS ou organisme relais, facultatif
+Condition d’affichage : (QU01_Participation ∈ {1})
+____________________________
+
+QU02 — Activité pendant les douze mois de référence
+Compter une intervention une seule fois, même si elle a fait l’objet de plusieurs versions. Si aucun discours n’est concerné, passer à QU07. Si le nombre est inconnu, poursuivre lorsqu’un cas réel est connu.
+QU02a — À combien de discours comportant des chiffres votre équipe ou vous-même avez-vous contribué ?
+Condition d’affichage : (QU01_Participation ∈ {1})
+[ ] 0 Aucune / aucun
+[ ] 1 De 1 à 5
+[ ] 2 De 6 à 20
+[ ] 3 De 21 à 50
+[ ] 4 Plus de 50
+[ ] 98 Ne sait pas
+____________________________
+QU02b — Avez-vous demandé un appui statistique à l’INS pour au moins un de ces discours ?
+Condition d’affichage : (QU01_Participation ∈ {1})
+[ ] 1 Oui
+[ ] 0 Non
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable, aucun discours concerné
+____________________________
+QU02_Base — Base de la réponse
+Condition d’affichage : (QU01_Participation ∈ {1})
+[ ] 1 Registre ou inventaire consulté
+[ ] 2 Estimation fondée sur la pratique connue
+[ ] 98 Ne sait pas
+____________________________
+
+QU03 — Dernier discours préparé comportant des chiffres
+Considérer le discours comportant des chiffres dont la préparation s’est achevée le plus récemment pendant la période, et non un exemple sélectionné pour sa qualité. Si aucun cas n’est décrit, passer à QU07. L’absence de lien ne remet pas en cause votre réponse.
+QU03_Cas — Un tel cas peut-il être décrit ?
+Condition d’affichage : (QU02a ∉ {0} ET QU01_Participation ∈ {1})
+[ ] 1 Oui
+[ ] 0 Non
+[ ] 98 Ne sait pas
+____________________________
+QU03_Mois — Mois et année de fin de préparation, MM/AAAA
+Condition d’affichage : (QU02a ∉ {0} ET (QU01_Participation ∈ {1} ET QU03_Cas ∈ {1}))
+____________________________
+QU03_Theme — Thème général, sans nom de personne
+Condition d’affichage : (QU02a ∉ {0} ET (QU01_Participation ∈ {1} ET QU03_Cas ∈ {1}))
+____________________________
+QU03_Public — Public principal
+Condition d’affichage : (QU02a ∉ {0} ET (QU01_Participation ∈ {1} ET QU03_Cas ∈ {1}))
+[ ] 1 Grand public
+[ ] 2 Parlement ou élus
+[ ] 3 Public technique ou professionnel
+[ ] 4 Communauté locale
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+____________________________
+QU03_Public_Autre — Autre : précisez
+Condition d’affichage : (QU02a ∉ {0} ET (QU01_Participation ∈ {1} ET QU03_Public ∈ {97}))
+____________________________
+QU03_Langues — Langue ou langues du discours
+Condition d’affichage : (QU02a ∉ {0} ET (QU01_Participation ∈ {1} ET QU03_Cas ∈ {1}))
+____________________________
+QU03_Origine — Origine du premier chiffre utilisé
+Condition d’affichage : (QU02a ∉ {0} ET (QU01_Participation ∈ {1} ET QU03_Cas ∈ {1}))
+[ ] 1 Source publiée de l’INS consultée directement
+[ ] 2 Chiffre transmis directement par l’INS
+[ ] 3 Autre administration nationale
+[ ] 4 Organisation régionale ou internationale
+[ ] 5 Recherche ou source privée identifiée
+[ ] 6 Discours ou document précédent sans retour à la source statistique
+[ ] 7 Source non identifiée
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+____________________________
+QU03_Origine_Autre — Autre : précisez
+Condition d’affichage : (QU02a ∉ {0} ET (QU01_Participation ∈ {1} ET QU03_Origine ∈ {97}))
+____________________________
+QU03_Delai — Si un appui a été demandé à l’INS pour ce cas, délai demandé
+Condition d’affichage : (QU02a ∉ {0} ET (QU01_Participation ∈ {1} ET QU03_Cas ∈ {1}))
+[ ] 1 Moins de 6 heures
+[ ] 2 De 6 à 24 heures incluses
+[ ] 3 Plus de 24 heures à 3 jours inclus
+[ ] 4 Plus de 3 jours
+[ ] 5 Aucune échéance indiquée
+[ ] 98 Ne sait pas
+[ ] 99 Aucun appui demandé à l’INS pour ce cas
+____________________________
+QU03_Issue — Si un appui a été demandé, son issue
+Condition d’affichage : (QU02a ∉ {0} ET (QU01_Participation ∈ {1} ET QU03_Cas ∈ {1}))
+[ ] 1 Chiffres reçus à temps
+[ ] 2 Chiffres reçus après l’échéance
+[ ] 3 Aucun chiffre reçu
+[ ] 4 Chiffres reçus, sans échéance convenue
+[ ] 98 Ne sait pas
+[ ] 99 Aucun appui demandé
+____________________________
+QU03_Exemple — Cas partageable, facultatif : lien vers le discours public ou bref extrait non confidentiel autorisé, avec sa date
+Condition d’affichage : (QU02a ∉ {0} ET (QU01_Participation ∈ {1} ET QU03_Cas ∈ {1}))
+____________________________
+
+QU04 — Informations disponibles pour comprendre ce chiffre
+Pour le premier chiffre indiqué en QU03, quelles informations aviez-vous effectivement à disposition lors de la préparation ?
+QU04_M1 — Source permettant de retrouver le résultat
+Condition d’affichage : ((QU02a ∉ {0} ET QU03_Cas ∈ {1}) ET QU01_Participation ∈ {1})
+[ ] 1 Dans le document ou message utilisé
+[ ] 2 Accessible par un lien ou une référence précise disponible
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QU04_M2 — Date de publication ou version
+Condition d’affichage : ((QU02a ∉ {0} ET QU03_Cas ∈ {1}) ET QU01_Participation ∈ {1})
+[ ] 1 Dans le document ou message utilisé
+[ ] 2 Accessible par un lien ou une référence précise disponible
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QU04_M3 — Période de la valeur
+Condition d’affichage : ((QU02a ∉ {0} ET QU03_Cas ∈ {1}) ET QU01_Participation ∈ {1})
+[ ] 1 Dans le document ou message utilisé
+[ ] 2 Accessible par un lien ou une référence précise disponible
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QU04_M4 — Définition de l’indicateur
+Condition d’affichage : ((QU02a ∉ {0} ET QU03_Cas ∈ {1}) ET QU01_Participation ∈ {1})
+[ ] 1 Dans le document ou message utilisé
+[ ] 2 Accessible par un lien ou une référence précise disponible
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QU04_M5 — Unité et base de calcul du taux, le cas échéant
+Condition d’affichage : ((QU02a ∉ {0} ET QU03_Cas ∈ {1}) ET QU01_Participation ∈ {1})
+[ ] 1 Dans le document ou message utilisé
+[ ] 2 Accessible par un lien ou une référence précise disponible
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QU04_M6 — Population et territoire couverts
+Condition d’affichage : ((QU02a ∉ {0} ET QU03_Cas ∈ {1}) ET QU01_Participation ∈ {1})
+[ ] 1 Dans le document ou message utilisé
+[ ] 2 Accessible par un lien ou une référence précise disponible
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QU04_M7 — Limites de comparaison, incertitudes ou précautions utiles
+Condition d’affichage : ((QU02a ∉ {0} ET QU03_Cas ∈ {1}) ET QU01_Participation ∈ {1})
+[ ] 1 Dans le document ou message utilisé
+[ ] 2 Accessible par un lien ou une référence précise disponible
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+
+QU05 — Vérifications avant diffusion de ce discours
+
+QU05a — Qui a effectivement vérifié les chiffres et leur interprétation ? Plusieurs réponses possibles.
+Condition d’affichage : ((QU02a ∉ {0} ET QU03_Cas ∈ {1}) ET QU01_Participation ∈ {1})
+[ ] 1 Rédacteur ou équipe de communication
+[ ] 2 Conseiller technique ou statisticien de l’institution
+[ ] 3 Agent de l’INS
+[ ] 4 Autre organisme producteur
+[ ] 0 Aucun contrôle connu
+[ ] 97 Autre fonction
+[ ] 98 Ne sait pas
+____________________________
+QU05a_Autre — Autre : précisez
+Condition d’affichage : ((QU02a ∉ {0} ET QU03_Cas ∈ {1}) ET (QU01_Participation ∈ {1} ET QU05a ∩ ≠ ∅ {97}))
+____________________________
+QU05b — L’INS a-t-il relu le passage contenant les chiffres dans le projet de discours ?
+Condition d’affichage : ((QU02a ∉ {0} ET QU03_Cas ∈ {1}) ET QU01_Participation ∈ {1})
+[ ] 1 Oui
+[ ] 2 Non, il n’a pas été sollicité
+[ ] 3 Non, il a été sollicité mais la relecture n’a pas eu lieu à temps
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable, cette étape n’a pas eu lieu
+____________________________
+QU05c — Une référence à la source statistique figurait-elle dans la version diffusée ?
+Condition d’affichage : ((QU02a ∉ {0} ET QU03_Cas ∈ {1}) ET QU01_Participation ∈ {1})
+[ ] 1 Oui
+[ ] 0 Non
+[ ] 98 Ne sait pas
+[ ] 99 Discours non diffusé ou version diffusée inconnue
+____________________________
+
+QU06 — Corrections et retour à l’INS
+
+QU06a — Pendant la période, avez-vous connaissance d’un chiffre ou d’une interprétation à corriger après finalisation d’un discours ?
+Condition d’affichage : ((QU02a ∉ {0} ET QU03_Cas ∈ {1}) ET QU01_Participation ∈ {1})
+[ ] 1 Oui, correction avant diffusion
+[ ] 2 Oui, correction après diffusion
+[ ] 3 Les deux situations
+[ ] 0 Aucun épisode connu
+[ ] 98 Ne sait pas
+[ ] 99 Aucun discours concerné
+____________________________
+QU06_Actions — Pour le cas le plus récent, quelles actions ont été réalisées ? Plusieurs réponses possibles.
+Condition d’affichage : ((QU02a ∉ {0} ET QU03_Cas ∈ {1}) ET (QU01_Participation ∈ {1} ET QU06a ∈ {1, 2, 3}))
+[ ] 1 Retour à la source ou au producteur
+[ ] 2 Version corrigée transmise à l’équipe
+[ ] 3 Conservation du changement et de son motif
+[ ] 4 Rectificatif diffusé pour une erreur déjà publique
+[ ] 5 Vérification de la prise en compte
+[ ] 0 Aucune action connue
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+____________________________
+QU06_Actions_Autre — Autre : précisez
+Condition d’affichage : ((QU02a ∉ {0} ET QU03_Cas ∈ {1}) ET (QU01_Participation ∈ {1} ET QU06_Actions ∩ ≠ ∅ {97}))
+____________________________
+QU06b — Pour le dernier appui demandé à l’INS pendant la période, lui avez-vous transmis un retour sur l’utilisation des chiffres ?
+Condition d’affichage : ((QU02a ∉ {0} ET QU03_Cas ∈ {1}) ET QU01_Participation ∈ {1})
+[ ] 1 Oui, texte ou lien vers le discours
+[ ] 2 Oui, commentaire sur l’appui, sans texte ni lien
+[ ] 3 Les deux
+[ ] 0 Non
+[ ] 98 Ne sait pas
+[ ] 99 Aucun appui demandé
+____________________________
+
+QU07 — Appuis les plus utiles
+Classer au plus trois codes différents. Les choix 0 et 98 excluent les autres priorités.
+QU07_P1 — Priorité 1
+Condition d’affichage : (QU01_Participation ∈ {1})
+[ ] 1 Contact clairement identifié à l’INS
+[ ] 2 Réponse dans un délai convenu, y compris en urgence
+[ ] 3 Fiche courte avec chiffre, source et période
+[ ] 4 Explication des définitions et limites
+[ ] 5 Proposition de phrases compréhensibles
+[ ] 6 Relecture rapide du passage statistique
+[ ] 7 Alerte en cas de révision ou d’erreur
+[ ] 8 Exemples et courte formation
+[ ] 97 Autre
+[ ] 0 Aucun besoin exprimé
+[ ] 98 Ne sait pas
+____________________________
+QU07_P2 — Priorité 2
+Condition d’affichage : ((QU01_Participation ∈ {1} ET QU07_P1 ∈ {1, 2, 3, 4, 5, 6, 7, 8, 97}))
+[ ] 1 Contact clairement identifié à l’INS
+[ ] 2 Réponse dans un délai convenu, y compris en urgence
+[ ] 3 Fiche courte avec chiffre, source et période
+[ ] 4 Explication des définitions et limites
+[ ] 5 Proposition de phrases compréhensibles
+[ ] 6 Relecture rapide du passage statistique
+[ ] 7 Alerte en cas de révision ou d’erreur
+[ ] 8 Exemples et courte formation
+[ ] 97 Autre
+____________________________
+QU07_P3 — Priorité 3
+Condition d’affichage : ((QU01_Participation ∈ {1} ET QU07_P1 ∈ {1, 2, 3, 4, 5, 6, 7, 8, 97}))
+[ ] 1 Contact clairement identifié à l’INS
+[ ] 2 Réponse dans un délai convenu, y compris en urgence
+[ ] 3 Fiche courte avec chiffre, source et période
+[ ] 4 Explication des définitions et limites
+[ ] 5 Proposition de phrases compréhensibles
+[ ] 6 Relecture rapide du passage statistique
+[ ] 7 Alerte en cas de révision ou d’erreur
+[ ] 8 Exemples et courte formation
+[ ] 97 Autre
+____________________________
+QU07_Autre — Autre priorité : précisez
+Condition d’affichage : ((QU01_Participation ∈ {1} ET (QU07_P1 ∈ {97} OU QU07_P2 ∈ {97} OU QU07_P3 ∈ {97})))
+____________________________
+QU07_Difficulte — Pour la priorité 1, citer une difficulté effectivement rencontrée, au plus 40 mots. À défaut, écrire « besoin anticipé ».
+Condition d’affichage : (QU01_Participation ∈ {1})
+Repère : 40 mots au plus. Le texte original est conservé.
+____________________________
+QU07_Contrainte — Contrainte particulière liée au public, à la langue ou au contexte de communication, facultatif ; au plus 40 mots, aucune opinion politique demandée
+Condition d’affichage : (QU01_Participation ∈ {1})
+Repère : 40 mots au plus. Le texte original est conservé.
+____________________________
+QU07_Nouveaute — Pratique nouvelle après le 31 octobre, facultatif : changement et date
+Condition d’affichage : (QU01_Participation ∈ {1})
+____________________________
+
+QU08 — Attribution et contact facultatif
+Les choix 1 et 2 supposent l’autorisation correspondante. Une contribution individuelle sans cette autorisation reste anonymisée. Sans choix explicite, la synthèse anonymisée (code 0) s’applique. L’absence de retour ne vaut jamais accord de citation.
+QU08_Attribution — Modalité autorisée pour la contribution et le cas partagé
+Condition d’affichage : (QU01_Participation ∈ {1})
+[ ] 0 Synthèse anonymisée seulement, sans attribution identifiable
+[ ] 1 Attribution à l’institution, sans citation textuelle identifiable
+[ ] 2 Attribution à l’institution et citation textuelle
+[ ] 3 Me soumettre le passage avant toute attribution ou citation identifiable
+____________________________
+QU08_Suite — Acceptez-vous un complément ou un test ?
+Condition d’affichage : (QU01_Participation ∈ {1})
+[ ] 1 Complément
+[ ] 2 Test
+[ ] 3 Les deux
+[ ] 0 Non
+[ ] 98 À déterminer
+____________________________
+QU08_Contact_fonction — Contact facultatif : fonction ou service à recontacter
+Condition d’affichage : (QU01_Participation ∈ {1})
+____________________________
+QU08_Contact_courriel — Courriel institutionnel ou générique, facultatif
+Condition d’affichage : (QU01_Participation ∈ {1})
+____________________________
+QU08_Contact_relais — Préférer un relais par STATAFRIC, facultatif
+Condition d’affichage : (QU01_Participation ∈ {1})
+[ ] 1 Passer par STATAFRIC
+____________________________
+La réception ne vaut ni validation du contenu ni approbation institutionnelle.

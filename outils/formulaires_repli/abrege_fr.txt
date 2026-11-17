@@ -1,0 +1,119 @@
+﻿Réponse abrégée
+2026-11-15.web-2
+Référence : 01/11/2025–31/10/2026. Collecte : 19–26 novembre 2026 inclus.
+STATAFRIC et le consultant Mamadou Niang préparent des outils pratiques pour l’appui statistique aux discours et à la décision. Référence des pratiques : du 1er novembre 2025 au 31 octobre 2026 ; dater séparément les évolutions ultérieures. Collecte : du 19 au 26 novembre 2026 inclus. Les réponses réelles alimenteront L3, jamais L2 qui reste documentaire.
+
+Participation volontaire. Une réponse institutionnelle, de service ou individuelle est recevable si son périmètre est précisé. Répondre directement à l’équipe de la mission, sans approbation préalable de l’INS relais. Les restitutions sont agrégées ou anonymisées par défaut ; attribution ou citation identifiable selon votre choix à la dernière rubrique. Les pièces remises au Client respectent ces autorisations. Un cas particulier peut rester reconnaissable. Les coordonnées facultatives sont séparées de l’analyse.
+
+Ne transmettre ni opinions politiques, données individuelles, coordonnées personnelles inutiles ni document confidentiel. Utiliser des liens publics ou extraits non confidentiels autorisés. Une contribution individuelle n’engage pas l’institution.
+
+Une réponse partielle est utile. Aucun choix substantiel n’est précoché. Un blanc ne signifie ni « non » ni zéro. « Aucun », « ne sait pas » et « non applicable » sont exclusifs des autres réponses lorsque le questionnaire le prévoit.
+
+Avant l’envoi, la saisie reste dans la session, pas dans la base. Elle peut être perdue à la fermeture : télécharger un brouillon pour reprendre. Un brouillon ne vaut pas envoi. Seul un accusé confirmé atteste l’enregistrement. Les réponses originales restent protégées ; seuls le consultant et les personnes habilitées y accèdent. La langue peut être changée sans créer une nouvelle contribution. En cas de difficulté, utiliser le formulaire de repli dans la même langue et l’envoyer au contact de la mission.
+Formulaire de repli : conserver les codes. Les conditions affichées traduisent les filtres : ∈ signifie « parmi », ∉ « différent de », ∩ ≠ ∅ « contient au moins un ». En cas de condition non remplie, ne pas répondre au champ. Une réponse partielle est admise. Après refus, arrêter sans autre réponse.
+
+RA01 — Participation et périmètre
+
+RA01_Participation — Acceptez-vous l’utilisation de votre contribution selon la notice ?
+[ ] 1 J’accepte
+[ ] 0 Je ne participe pas — fin du questionnaire
+____________________________
+RA01_Pays — Pays
+Condition d’affichage : (RA01_Participation ∈ {1})
+____________________________
+RA01_Institution — Institution ou type d’institution
+Condition d’affichage : (RA01_Participation ∈ {1})
+____________________________
+RA01_Fonction — Fonction
+Condition d’affichage : (RA01_Participation ∈ {1})
+____________________________
+RA01_Profil — Profil de la contribution
+Condition d’affichage : (RA01_Participation ∈ {1})
+[ ] 1 INS
+[ ] 2 Autre producteur de statistiques
+[ ] 3 Équipe préparant les discours
+[ ] 4 CER ou organisation internationale
+[ ] 97 Autre
+____________________________
+RA01_Profil_Autre — Autre : précisez
+Condition d’affichage : ((RA01_Participation ∈ {1} ET RA01_Profil ∈ {97}))
+____________________________
+RA01_Statut — Réponse institutionnelle, de service ou individuelle
+Condition d’affichage : (RA01_Participation ∈ {1})
+[ ] 1 Réponse institutionnelle consolidée
+[ ] 2 Contribution d’un service, non consolidée au niveau de l’institution
+[ ] 3 Contribution individuelle fondée sur ma pratique professionnelle
+____________________________
+RA01_Unite — Service ou unité concernée
+Condition d’affichage : (RA01_Participation ∈ {1})
+____________________________
+RA01_Domaine — Domaine ou secteur, facultatif
+Condition d’affichage : (RA01_Participation ∈ {1})
+____________________________
+RA01_Langue_texte — Langue principale de vos réponses libres
+Condition d’affichage : (RA01_Participation ∈ {1})
+[ ] fr Français
+[ ] en Anglais
+[ ] ar Arabe
+[ ] pt Portugais
+[ ] es Espagnol
+____________________________
+RA01_Origine_invitation — Origine de l’invitation ou du lien
+Condition d’affichage : (RA01_Participation ∈ {1})
+[ ] 1 INS
+[ ] 2 STATAFRIC ou consultant
+[ ] 3 Autre relais
+[ ] 4 Accès spontané
+[ ] 98 Ne sait pas
+____________________________
+RA01_INS_relais — INS ou organisme relais, facultatif
+Condition d’affichage : (RA01_Participation ∈ {1})
+____________________________
+RA01_Reference_precedente — Référence d’une contribution précédente, si connue
+Condition d’affichage : (RA01_Participation ∈ {1})
+____________________________
+
+RA02 — Dernière situation connue
+
+RA02_Cas — Décrivez une demande ou préparation de discours pendant la période : mois, thème, délai disponible, appui obtenu ou non. Si aucun cas n’est connu, l’indiquer. Trois lignes.
+Condition d’affichage : (RA01_Participation ∈ {1})
+____________________________
+
+RA03 — Source et contrôle
+
+RA03_Source — Pour ce cas, pouvait-on retrouver la source du chiffre ?
+Condition d’affichage : (RA01_Participation ∈ {1})
+[ ] 1 Oui
+[ ] 0 Non
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+RA03_Controle — Qui a vérifié le contenu avant transmission ? Fonction ou absence de contrôle connu.
+Condition d’affichage : (RA01_Participation ∈ {1})
+____________________________
+
+RA04 — Première amélioration
+
+RA04_Amelioration — Quelle difficulté faut-il résoudre en priorité ? Quelle action serait possible avec les moyens existants et quelle fonction pourrait la conduire ? Trois lignes.
+Condition d’affichage : (RA01_Participation ∈ {1})
+____________________________
+
+RA05 — Réutilisation et suite
+Les choix 1 et 2 supposent l’autorisation correspondante. Une contribution individuelle sans cette autorisation reste anonymisée. Sans choix explicite, la synthèse anonymisée (code 0) s’applique. L’absence de retour ne vaut jamais accord de citation.
+RA05_Attribution — Restitution autorisée
+Condition d’affichage : (RA01_Participation ∈ {1})
+[ ] 0 Synthèse anonymisée seulement, sans attribution identifiable
+[ ] 1 Attribution à l’institution, sans citation textuelle identifiable
+[ ] 2 Attribution à l’institution et citation textuelle
+[ ] 3 Me soumettre le passage avant toute attribution ou citation identifiable
+____________________________
+RA05_Lien — Lien public utile, facultatif
+Condition d’affichage : (RA01_Participation ∈ {1})
+____________________________
+RA05_Contact_fonction — Contact institutionnel pour un complément : fonction ou service, facultatif
+Condition d’affichage : (RA01_Participation ∈ {1})
+____________________________
+RA05_Contact_courriel — Contact institutionnel pour un complément, facultatif (courriel)
+Condition d’affichage : (RA01_Participation ∈ {1})
+____________________________
+La réception ne vaut ni validation du contenu ni approbation institutionnelle.

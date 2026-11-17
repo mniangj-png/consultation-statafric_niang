@@ -1,0 +1,627 @@
+﻿Otros productores de estadísticas
+2026-11-15.web-2
+Referencia : 01/11/2025–31/10/2026. Recogida : 19–26 de noviembre de 2026 inclusive.
+STATAFRIC y el consultor Mamadou Niang preparan herramientas prácticas de apoyo estadístico a los discursos y la toma de decisiones. Período de referencia : del 1 de noviembre de 2025 al 31 de octubre de 2026; feche los cambios posteriores por separado. Recogida : del 19 al 26 de noviembre de 2026 inclusive. Las respuestas reales alimentarán L3, nunca L2, que es exclusivamente documental.
+
+La participación es voluntaria. Se aceptan contribuciones institucionales, de servicios e individuales cuyo ámbito esté claro. Responda directamente al equipo de la misión, sin aprobación previa de la ONE que remitió la invitación. Los resultados se presentan agregados o anonimizados por defecto; la atribución o cita identificable sigue su elección en la última sección. Los documentos entregados al Cliente respetarán esas autorizaciones. Un caso singular puede seguir siendo reconocible. Los contactos opcionales se separan del análisis.
+
+No proporcione opiniones políticas, datos individuales, información personal innecesaria ni documentos confidenciales. Use enlaces públicos o extractos no confidenciales autorizados. Una contribución individual no compromete a la institución.
+
+Una respuesta parcial es útil. Ninguna opción sustantiva está preseleccionada. Un blanco no es un no ni un cero. « Ninguno », « No sabe » y « No aplicable » excluyen otras respuestas cuando así lo indica el cuestionario.
+
+Antes del envío, los datos permanecen en la sesión, no en la base. Pueden perderse al cerrar : descargue un borrador para continuar. Un borrador no constituye un envío. Solo un acuse confirmado acredita el registro. Las respuestas originales están protegidas y solo son accesibles al consultor y a las personas autorizadas. Cambiar de idioma no crea otra contribución. Si es necesario, use el formulario alternativo en el mismo idioma y envíelo por correo al contacto de la misión.
+Formulario alternativo: conserve los códigos. Las condiciones expresan los filtros: ∈ significa «entre», ∉ «no entre» y ∩ ≠ ∅ «contiene al menos uno». No responda si no se cumple la condición. Se aceptan respuestas parciales. Si rechaza participar, termine sin más respuestas.
+
+QP01 — Consentimiento, perfil y ámbito de la contribución
+Solo para productores externos a la ONE. Las unidades internas de la ONE usan QI. La simple transmisión de archivos administrativos sin tratamiento estadístico no basta. Si su organismo no produce estadísticas, use QU para su función de usuario o consulte al consultor. La participación no confiere carácter oficial a sus estadísticas.
+QP01_Participation — ¿Autoriza el uso de su contribución según el aviso de participación?
+[ ] 1 Acepto
+[ ] 0 No deseo participar — fin del cuestionario
+____________________________
+QP01_Produit — ¿Produce su organismo estadísticas o indicadores utilizables para la acción pública?
+Condición de visualización : (QP01_Participation ∈ {1})
+[ ] 1 Sí
+[ ] 0 No
+[ ] 98 No sabe
+____________________________
+QP01_Pays — País
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+____________________________
+QP01_Institution — Institución de adscripción
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+____________________________
+QP01_Unite — Servicio o unidad de producción
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+____________________________
+QP01_Type — Tipo principal de organismo
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Ministerio o servicio estadístico sectorial
+[ ] 2 Banco central o institución monetaria
+[ ] 3 Otra administración u organismo de datos administrativos
+[ ] 4 Agencia u observatorio público
+[ ] 5 Entidad local o servicio territorial
+[ ] 6 Organismo de investigación
+[ ] 7 Productor privado o asociativo
+[ ] 97 Otra
+____________________________
+QP01_Type_Autre — Otra : especifique
+Condición de visualización : ((QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP01_Type ∈ {97})))
+____________________________
+QP01_Domaine — Ámbito principal
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Economía, finanzas o moneda
+[ ] 2 Salud o protección social
+[ ] 3 Educación o formación
+[ ] 4 Agricultura o alimentación
+[ ] 5 Empleo o condiciones de vida
+[ ] 6 Medio ambiente, energía o infraestructuras
+[ ] 7 Población, registro civil o territorio
+[ ] 8 Varios ámbitos sin uno principal
+[ ] 97 Otra
+____________________________
+QP01_Domaine_Autre — Otra : especifique
+Condición de visualización : ((QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP01_Domaine ∈ {97})))
+____________________________
+QP01_Domaines_autres — Otros ámbitos, opcional
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+____________________________
+QP01_Statut — Carácter de la respuesta
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Respuesta institucional consolidada
+[ ] 2 Contribución de un servicio, no consolidada a nivel institucional
+[ ] 3 Contribución individual basada en mi práctica profesional
+____________________________
+QP01_Fonction — Función, sin nombre personal
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Producción
+[ ] 2 Métodos o calidad
+[ ] 3 Comunicación o difusión
+[ ] 4 Coordinación o dirección
+[ ] 97 Otra
+____________________________
+QP01_Fonction_Autre — Otra : especifique
+Condición de visualización : ((QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP01_Fonction ∈ {97})))
+____________________________
+QP01_Envoi — Tipo de envío
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Primera respuesta
+[ ] 2 Complemento
+____________________________
+QP01_Reference_precedente — Referencia o fecha del envío anterior, si se conoce
+Condición de visualización : ((QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP01_Envoi ∈ {2})))
+____________________________
+QP01_Origine_invitation — Origen del enlace
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 ONE
+[ ] 2 STATAFRIC o consultor
+[ ] 3 Otra entidad que transmitió la invitación
+[ ] 4 Acceso espontáneo
+[ ] 98 No sabe
+____________________________
+QP01_INS_relais — ONE o entidad que transmitió la invitación, opcional
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+____________________________
+QP01_Langue_texte — Idioma principal de sus respuestas abiertas
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] fr Francés
+[ ] en Inglés
+[ ] ar Árabe
+[ ] pt Portugués
+[ ] es Español
+____________________________
+
+QP02 — Solicitudes de apoyo recibidas durante el período de referencia
+La solicitud se refiere a un discurso o intervención oral, recibida directamente o por la ONE. Cuente una sola vez los intercambios del mismo apoyo. Excluya solicitudes generales sin vínculo conocido con un discurso. Si QP02a = 0, pase a QP08 después de QP02d. Puede describirse un caso real aunque el volumen sea desconocido. Varios productores pueden intervenir en el mismo discurso : no sume sus solicitudes para obtener un total nacional.
+QP02a — ¿Cuántas solicitudes distintas ha identificado en el ámbito de su respuesta?
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 0 Ninguna
+[ ] 1 De 1 a 5
+[ ] 2 De 6 a 20
+[ ] 3 De 21 a 50
+[ ] 4 Más de 50
+[ ] 98 No sabe
+____________________________
+QP02b — ¿Alguna de estas solicitudes exigía respuesta en las 24 horas siguientes a su recepción?
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Sí
+[ ] 0 No
+[ ] 98 No sabe
+[ ] 99 No aplicable, ninguna solicitud
+____________________________
+QP02c — ¿En qué se basa esta respuesta?
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Registro o inventario consultado
+[ ] 2 Estimación basada en la práctica conocida
+[ ] 98 No sabe
+____________________________
+QP02d — Por separado, ¿proporcionó su organismo estadísticas para una nota o decisión sin vínculo identificado con un discurso?
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Sí
+[ ] 0 No
+[ ] 98 No sabe
+____________________________
+QP02d_Theme — Si respondió sí, indique tema o tipo de decisión en una frase, sin detalles confidenciales. No añada estos apoyos al número de solicitudes de discursos.
+Condición de visualización : ((QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP02d ∈ {1})))
+____________________________
+
+QP03 — Última solicitud cerrada conocida
+Seleccione la solicitud cerrada más recientemente durante el período, se hayan facilitado cifras o no. No elija solo un caso exitoso. Las situaciones 3 y 98 llevan a QP08. La situación 2 lleva a QP04 y después a QP08.
+QP03_Situation — Situación
+Condición de visualización : (QP02a ∉ {0} Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Se proporcionaron cifras
+[ ] 2 La solicitud se cerró sin proporcionar cifras
+[ ] 3 Ninguna solicitud cerrada conocida durante el período
+[ ] 98 No dispongo de la información necesaria
+____________________________
+QP03_Mois — Mes y año de cierre, MM/AAAA
+Condición de visualización : (QP02a ∉ {0} Y (QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP03_Situation ∈ {1, 2})))
+____________________________
+QP03_Theme — Tema general, sin nombre de persona ni título confidencial del discurso
+Condición de visualización : (QP02a ∉ {0} Y (QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP03_Situation ∈ {1, 2})))
+____________________________
+QP03_Demandeur — Solicitante final conocido
+Condición de visualización : (QP02a ∉ {0} Y (QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP03_Situation ∈ {1, 2})))
+[ ] 1 Gabinete o equipo de un decisor nacional
+[ ] 2 Ministerio o administración sectorial
+[ ] 3 Autoridad territorial
+[ ] 4 Dirección de su organismo
+[ ] 5 ONE
+[ ] 6 Institución regional o internacional
+[ ] 97 Otra
+[ ] 98 No sabe
+____________________________
+QP03_Demandeur_Autre — Otra : especifique
+Condición de visualización : (QP02a ∉ {0} Y (QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP03_Demandeur ∈ {97})))
+____________________________
+QP03_Circuit — Circuito principal de la solicitud
+Condición de visualización : (QP02a ∉ {0} Y (QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP03_Situation ∈ {1, 2})))
+[ ] 1 Solicitud recibida directamente del usuario
+[ ] 2 Solicitud transmitida por la ONE
+[ ] 3 Solicitud transmitida por otro productor o servicio
+[ ] 97 Otra
+[ ] 98 No sabe
+____________________________
+QP03_Circuit_Autre — Otra : especifique
+Condición de visualización : (QP02a ∉ {0} Y (QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP03_Circuit ∈ {97})))
+____________________________
+QP03_Canal — Canal principal de recepción de la solicitud
+Condición de visualización : (QP02a ∉ {0} Y (QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP03_Situation ∈ {1, 2})))
+[ ] 1 Correo electrónico
+[ ] 2 Carta o nota oficial
+[ ] 3 Teléfono o intercambio oral
+[ ] 4 Mensajería instantánea
+[ ] 5 Formulario o plataforma
+[ ] 97 Otra
+[ ] 98 No sabe
+____________________________
+QP03_Canal_Autre — Otra : especifique
+Condición de visualización : (QP02a ∉ {0} Y (QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP03_Canal ∈ {97})))
+____________________________
+
+QP04 — Plazo y tratamiento de esta última solicitud
+Los plazos son naturales e incluyen noches y fines de semana. QP03 distingue la imposibilidad de facilitar cifras del suministro efectivo. Cumplir un plazo no demuestra por sí solo que se haya satisfecho la necesidad estadística.
+QP04a — ¿Cuánto tiempo se concedió a su organismo para responder desde la recepción de la solicitud?
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1, 2}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Menos de 6 horas
+[ ] 2 De 6 a 24 horas, inclusive
+[ ] 3 Más de 24 horas y hasta 3 días, inclusive
+[ ] 4 Más de 3 días
+[ ] 5 Sin plazo especificado
+[ ] 98 No sabe
+____________________________
+QP04b — ¿Se envió la respuesta de su organismo antes del plazo solicitado?
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1, 2}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Sí
+[ ] 0 No
+[ ] 98 No sabe
+[ ] 99 No aplicable, sin plazo especificado
+____________________________
+QP04c — Si no se proporcionaron cifras o se incumplió el plazo, ¿cuál fue el principal obstáculo?
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1, 2}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Datos adecuados no disponibles
+[ ] 2 Necesidad insuficientemente precisada
+[ ] 3 Plazo demasiado corto
+[ ] 4 Control o validación incompletos
+[ ] 5 Agente competente no disponible
+[ ] 6 Restricciones de difusión o acceso
+[ ] 7 Divergencia entre fuentes sin resolver
+[ ] 97 Otra
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+QP04c_Autre — Otra : especifique
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1, 2}) Y (QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP04c ∈ {97})))
+____________________________
+
+QP05 — Origen y documentación de la primera cifra facilitada
+Considere la primera cifra de la última respuesta enviada, no la mejor documentada. Indique qué información la acompañaba realmente. Mencionar solo el nombre de una entidad no basta para el código 2. No copie un valor no público.
+QP05_Origine — Origen principal de esta cifra
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Encuesta o censo producido por su organismo
+[ ] 2 Datos administrativos tratados por su organismo
+[ ] 3 Otro resultado estadístico producido por su organismo
+[ ] 4 Publicación de la ONE
+[ ] 5 Otra administración nacional
+[ ] 6 Organización regional o internacional
+[ ] 7 Investigación o fuente privada identificada
+[ ] 8 Documento anterior sin consultar la fuente estadística
+[ ] 9 Fuente no identificada
+[ ] 97 Otra
+[ ] 98 No sabe
+____________________________
+QP05_Origine_Autre — Otra : especifique
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP05_Origine ∈ {97})))
+____________________________
+QP05_S1 — Fuente precisa que permite localizar el resultado
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Incluida en la respuesta
+[ ] 2 Accesible mediante un enlace o referencia precisa enviados con la respuesta
+[ ] 0 Ausente
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+QP05_S2 — Fecha de publicación o versión de la fuente
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Incluida en la respuesta
+[ ] 2 Accesible mediante un enlace o referencia precisa enviados con la respuesta
+[ ] 0 Ausente
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+QP05_S3 — Período al que se refiere el valor
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Incluida en la respuesta
+[ ] 2 Accesible mediante un enlace o referencia precisa enviados con la respuesta
+[ ] 0 Ausente
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+QP05_S4 — Definición del indicador
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Incluida en la respuesta
+[ ] 2 Accesible mediante un enlace o referencia precisa enviados con la respuesta
+[ ] 0 Ausente
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+QP05_S5 — Unidad y base de cálculo, en particular el denominador de una tasa
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Incluida en la respuesta
+[ ] 2 Accesible mediante un enlace o referencia precisa enviados con la respuesta
+[ ] 0 Ausente
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+QP05_S6 — Población y territorio cubiertos
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Incluida en la respuesta
+[ ] 2 Accesible mediante un enlace o referencia precisa enviados con la respuesta
+[ ] 0 Ausente
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+QP05_S7 — Limitaciones pertinentes para interpretar o comparar
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Incluida en la respuesta
+[ ] 2 Accesible mediante un enlace o referencia precisa enviados con la respuesta
+[ ] 0 Ausente
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+QP05_S8 — Carácter provisional o revisado, cuando proceda
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Incluida en la respuesta
+[ ] 2 Accesible mediante un enlace o referencia precisa enviados con la respuesta
+[ ] 0 Ausente
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+QP05c — Para datos administrativos, ¿se especificó la unidad contada : personas distintas, actos, expedientes, establecimientos u otra unidad?
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP05_Origine ∈ {2})))
+[ ] 1 Sí
+[ ] 0 No
+[ ] 98 No sabe
+____________________________
+QP05c_Precision — Opcional : especifique la unidad y una limitación conocida de cobertura o duplicación, sin datos individuales
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP05_Origine ∈ {2})))
+____________________________
+
+QP06 — Comprobación y validación efectivamente realizadas
+Se trata del contenido estadístico, no de la aprobación política del discurso. La ausencia de intervención de la ONE no implica por sí sola ausencia de control.
+QP06a — ¿Quién comprobó el contenido estadístico antes de enviarlo? Se admiten varias respuestas.
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 El agente que lo preparó
+[ ] 2 Otro agente productor de los datos
+[ ] 3 Un responsable técnico o de calidad
+[ ] 4 El servicio de comunicación
+[ ] 5 La dirección o su delegado
+[ ] 0 Ningún control conocido
+[ ] 97 Otra función
+[ ] 98 No sabe
+[ ] 6 Agente de la ONE
+[ ] 7 Otro productor externo
+____________________________
+QP06a_Autre — Otra : especifique
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP06a ∩ ≠ ∅ {97})))
+____________________________
+QP06b — ¿Qué constancia existe de la validación estadística final de este envío?
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Constancia escrita, correo, visado o registro de validación
+[ ] 2 Solo acuerdo oral
+[ ] 0 Ninguna validación independiente conocida
+[ ] 98 No sabe
+____________________________
+
+QP07 — Formato facilitado y comprobación del pasaje del discurso
+Los comentarios documentan el uso de las cifras, no el efecto de la decisión.
+QP07a — ¿En qué formato se proporcionó el apoyo? Hasta tres respuestas.
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+Hasta 3 opciones.
+[ ] 1 Tabla o lista de cifras
+[ ] 2 Ficha con explicaciones
+[ ] 3 Propuesta de frases o párrafos
+[ ] 4 Gráfico o ilustración
+[ ] 5 Solo explicación oral
+[ ] 97 Otra
+[ ] 98 No sabe
+____________________________
+QP07a_Autre — Otra : especifique
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP07a ∩ ≠ ∅ {97})))
+____________________________
+QP07b — ¿Pudo su organismo comprobar el pasaje del discurso antes de su difusión?
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Sí
+[ ] 2 No, no se recibió el pasaje
+[ ] 3 No, se recibió el pasaje pero no se comprobó
+[ ] 4 El discurso no se difundió o esta etapa no tuvo lugar
+[ ] 98 No sabe
+____________________________
+QP07c — ¿Se recibieron comentarios sobre el uso de las cifras?
+Condición de visualización : ((QP02a ∉ {0} Y QP03_Situation ∈ {1}) Y (QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Texto o enlace al discurso
+[ ] 2 Comentario sin texto ni enlace
+[ ] 3 Ambos
+[ ] 0 Ninguno
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+
+QP08 — Corrección o actualización después del envío
+Puede incluirse un apoyo enviado antes del período si la corrección se produjo durante este. Esta pregunta sigue disponible aunque no se recibieran solicitudes nuevas.
+QP08_Situation — Durante el período de referencia, ¿conoce algún apoyo ya enviado que debiera corregirse o actualizarse?
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Sí, para corregir un error
+[ ] 2 Sí, para actualizar un dato
+[ ] 3 Se produjeron ambas situaciones
+[ ] 0 Ningún episodio conocido
+[ ] 98 No sabe
+[ ] 99 No aplicable, ningún apoyo pertinente
+____________________________
+QP08_Actions — En el caso más reciente, ¿qué acciones se realizaron? Se admiten varias respuestas.
+Condición de visualización : ((QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP08_Situation ∈ {1, 2, 3})))
+[ ] 1 Aviso al equipo que prepara el discurso
+[ ] 2 Envío de una versión corregida con su fuente
+[ ] 3 Conservación de las versiones y del motivo del cambio
+[ ] 4 Solicitud de corrección de un pasaje ya difundido
+[ ] 5 Verificación de que se incorporó la corrección
+[ ] 0 Ninguna acción conocida
+[ ] 97 Otra
+[ ] 98 No sabe
+[ ] 6 Información a la ONE o al intermediario correspondiente
+____________________________
+QP08_Actions_Autre — Otra : especifique
+Condición de visualización : ((QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP08_Actions ∩ ≠ ∅ {97})))
+____________________________
+
+QP09 — Organización y coordinación con la ONE
+
+QP09_D1 — Punto de contacto o función identificada para recibir solicitudes
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Existe y se utilizó para estos apoyos durante el período
+[ ] 2 Existe pero no se utilizó durante el período
+[ ] 0 No existe
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+QP09_D2 — Instrucciones escritas de tratamiento, incluidas las urgencias
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Existe y se utilizó para estos apoyos durante el período
+[ ] 2 Existe pero no se utilizó durante el período
+[ ] 0 No existe
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+QP09_D3 — Registro de solicitudes con plazo, responsable y estado de tramitación
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Existe y se utilizó para estos apoyos durante el período
+[ ] 2 Existe pero no se utilizó durante el período
+[ ] 0 No existe
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+QP09_D4 — Repositorio de cifras con fuentes e información de interpretación
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Existe y se utilizó para estos apoyos durante el período
+[ ] 2 Existe pero no se utilizó durante el período
+[ ] 0 No existe
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+QP09_D5 — Constancia del control y de la validación estadística
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Existe y se utilizó para estos apoyos durante el período
+[ ] 2 Existe pero no se utilizó durante el período
+[ ] 0 No existe
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+QP09_D6 — Conservación de versiones y correcciones
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Existe y se utilizó para estos apoyos durante el período
+[ ] 2 Existe pero no se utilizó durante el período
+[ ] 0 No existe
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+QP09_D7 — Examen de plazos, dificultades y comentarios de usuarios
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Existe y se utilizó para estos apoyos durante el período
+[ ] 2 Existe pero no se utilizó durante el período
+[ ] 0 No existe
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+QP09_Nouveaute — Práctica nueva después del 31 de octubre, opcional : dispositivo, fecha de implantación y una frase
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+____________________________
+QP09b — ¿Qué intercambios con la ONE contribuyeron efectivamente a estos apoyos durante el período?
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Orientación o transmisión de solicitudes
+[ ] 2 Transmisión de cifras y metadatos
+[ ] 3 Armonización de definiciones o métodos
+[ ] 4 Comprobación de un valor o comparación
+[ ] 5 Coordinación de correcciones o versiones
+[ ] 6 Formación o preparación de modelos
+[ ] 0 Ningún intercambio conocido
+[ ] 97 Otra
+[ ] 98 No sabe
+[ ] 99 Ningún apoyo pertinente
+____________________________
+QP09b_Autre — Otra : especifique
+Condición de visualización : ((QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP09b ∩ ≠ ∅ {97})))
+____________________________
+QP09c — ¿Exigieron aclaración para un discurso divergencias entre sus cifras y las de otro productor?
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Sí
+[ ] 0 Ningún caso conocido
+[ ] 98 No sabe
+[ ] 99 Ningún apoyo pertinente
+____________________________
+QP09c_Precision — Tipo de divergencia y tratamiento, en una frase sin información confidencial
+Condición de visualización : ((QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP09c ∈ {1})))
+____________________________
+
+QP10 — Necesidades prioritarias
+Clasifique hasta tres códigos distintos. Una o dos prioridades bastan. Los códigos 0 y 98 excluyen las demás prioridades. Escriba « por determinar » cuando sea necesario para la acción, función responsable, recursos u obstáculo.
+QP10_P1 — Prioridad 1
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Aclarar el punto de contacto y las responsabilidades
+[ ] 2 Precisar y priorizar las solicitudes urgentes
+[ ] 3 Disponer de un repositorio de cifras documentadas
+[ ] 4 Simplificar el control y la validación
+[ ] 5 Preparar mensajes y ejemplos de pasajes de discursos
+[ ] 6 Organizar las correcciones y las versiones
+[ ] 7 Formar al personal
+[ ] 8 Seguir los plazos y los comentarios sobre el uso
+[ ] 97 Otra
+[ ] 0 Ninguna necesidad expresada
+[ ] 98 No sabe
+[ ] 9 Mejorar la coordinación con la ONE y los demás productores
+[ ] 10 Aclarar la calidad y las limitaciones de las fuentes administrativas
+____________________________
+QP10_P2 — Prioridad 2
+Condición de visualización : ((QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP10_P1 ∈ {1, 2, 3, 4, 5, 6, 7, 8, 97, 9, 10})))
+[ ] 1 Aclarar el punto de contacto y las responsabilidades
+[ ] 2 Precisar y priorizar las solicitudes urgentes
+[ ] 3 Disponer de un repositorio de cifras documentadas
+[ ] 4 Simplificar el control y la validación
+[ ] 5 Preparar mensajes y ejemplos de pasajes de discursos
+[ ] 6 Organizar las correcciones y las versiones
+[ ] 7 Formar al personal
+[ ] 8 Seguir los plazos y los comentarios sobre el uso
+[ ] 97 Otra
+[ ] 9 Mejorar la coordinación con la ONE y los demás productores
+[ ] 10 Aclarar la calidad y las limitaciones de las fuentes administrativas
+____________________________
+QP10_P3 — Prioridad 3
+Condición de visualización : ((QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP10_P1 ∈ {1, 2, 3, 4, 5, 6, 7, 8, 97, 9, 10})))
+[ ] 1 Aclarar el punto de contacto y las responsabilidades
+[ ] 2 Precisar y priorizar las solicitudes urgentes
+[ ] 3 Disponer de un repositorio de cifras documentadas
+[ ] 4 Simplificar el control y la validación
+[ ] 5 Preparar mensajes y ejemplos de pasajes de discursos
+[ ] 6 Organizar las correcciones y las versiones
+[ ] 7 Formar al personal
+[ ] 8 Seguir los plazos y los comentarios sobre el uso
+[ ] 97 Otra
+[ ] 9 Mejorar la coordinación con la ONE y los demás productores
+[ ] 10 Aclarar la calidad y las limitaciones de las fuentes administrativas
+____________________________
+QP10_Autre — Otra prioridad : especifique
+Condición de visualización : ((QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y (QP10_P1 ∈ {97} O QP10_P2 ∈ {97} O QP10_P3 ∈ {97}))))
+____________________________
+QP10_Difficulte — Para la prioridad 1, ¿qué dificultad real se resolvería? Máximo 40 palabras; en su defecto, escriba « necesidad prevista ».
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+Orientación : hasta 40 palabras. Se conserva el original.
+____________________________
+QP10_Action — Primera acción posible con los recursos existentes
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+____________________________
+QP10_Responsable — Función que podría dirigir la acción
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+____________________________
+QP10_Moyen — Recurso ya disponible
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+____________________________
+QP10_Obstacle — Principal obstáculo
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+____________________________
+
+QP11 — Ejemplo compartible y vínculo con la decisión
+Opcional : procedimiento, ficha de cifra, control, corrección, discurso público o nota de decisión autorizada. No comparta contenido confidencial. Un ejemplo antiguo conserva su fecha y no cuenta como actividad del período. Un uso propuesto o un efecto supuesto no prueba una utilización real.
+QP11_Type — Ejemplo facilitado, opcional
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Enlace público
+[ ] 2 Extracto no confidencial cuya difusión está autorizada
+[ ] 0 No se comparte ningún ejemplo
+____________________________
+QP11_Reference — Título o descripción, fecha y enlace público si existe; extracto autorizado, si procede
+Condición de visualización : ((QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP11_Type ∈ {1, 2})))
+____________________________
+QP11_Apport — Qué demuestra el ejemplo y qué podría adaptarse en otro contexto, hasta 60 palabras
+Condición de visualización : ((QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP11_Type ∈ {1, 2})))
+Orientación : hasta 60 palabras. Se conserva el original.
+____________________________
+QP11_Usage — Uso ilustrado
+Condición de visualización : ((QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP11_Type ∈ {1, 2})))
+[ ] 1 Discurso
+[ ] 2 Decisión sin discurso identificado
+[ ] 3 Ambos
+[ ] 98 No sabe
+____________________________
+QP11_Preuve — Prueba de utilización
+Condición de visualización : ((QP01_Participation ∈ {1} Y (QP01_Produit ∉ {0} Y QP11_Type ∈ {1, 2})))
+[ ] 1 Documento accesible o extracto autorizado
+[ ] 2 Uso conocido pero no documentado aquí
+[ ] 98 No sabe
+____________________________
+
+QP12 — Atribución y contacto opcional
+Las opciones 1 y 2 exigen autorización. La contribución individual sin autorización permanece anonimizada. Sin elección explícita se aplica el código 0. El silencio nunca autoriza citas. La transmisión por la ONE no sustituye su autorización institucional.
+QP12_Attribution — Uso autorizado de la contribución y del ejemplo compartido
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 0 Solo síntesis anonimizada, sin atribución identificable
+[ ] 1 Atribución a la institución, sin cita textual identificable
+[ ] 2 Atribución a la institución y cita textual
+[ ] 3 Enviarme el pasaje antes de cualquier atribución o cita identificable
+____________________________
+QP12_Suite — ¿Aceptaría una breve aclaración o una prueba de herramienta?
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Complemento
+[ ] 2 Prueba de herramienta
+[ ] 3 Ambos
+[ ] 0 No
+[ ] 98 Por determinar
+____________________________
+QP12_Contact_fonction — Contacto opcional : función o servicio al que contactar
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+____________________________
+QP12_Contact_courriel — Correo institucional o genérico, opcional
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+____________________________
+QP12_Contact_relais — Preferir contacto a través de STATAFRIC, opcional
+Condición de visualización : ((QP01_Participation ∈ {1} Y QP01_Produit ∉ {0}))
+[ ] 1 Contacto a través de STATAFRIC
+[ ] 2 Autorizo a la ONE que me invitó a transmitir una solicitud de seguimiento, sin acceso a mi contribución
+____________________________
+La recepción no valida el contenido ni supone aprobación institucional.

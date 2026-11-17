@@ -1,0 +1,16 @@
+HISWACA — Démarrage rapide de la version 2.0.0
+
+1. Extraire le ZIP et déposer les fichiers à la racine du dépôt GitHub.
+2. Remplacer entièrement app.py ; conserver requirements.txt à côté.
+3. Créer/configurer Supabase : SQL 01, puis campagne de TEST distincte.
+4. Déployer app.py ; compléter les secrets de collecte TEST.
+5. Déployer admin.py séparément ; clé service_role uniquement dans cette application ; Google OIDC + liste des adresses autorisées.
+6. Ouvrir la campagne de test et contrôler les 25 combinaisons.
+7. Faire relire les traductions ; documenter droits, hébergement, conservation et sauvegardes.
+8. Après autorisation, configurer une autre campagne REELLE, son jeton distinct et les langues validées ; dates 19–26 novembre 2026.
+9. Copier les liens effectifs depuis l'administration. QP vers 3–8 producteurs par INS ; QU vers 4–6 équipes utilisatrices. Ne pas diffuser le lien d'administration.
+10. Utiliser les registres et exports pour le diagnostic. Les réponses réelles alimentent L3 ; L2 reste documentaire.
+
+Sans secrets, aucun enregistrement. SQLite est uniquement un mode de test local.
+Le dossier ne crée ni compte distant, ni déploiement, ni lien public.
+Le guide DEPLOIEMENT.md détaille les étapes et les limites de disponibilité des offres gratuites.

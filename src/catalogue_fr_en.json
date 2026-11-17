@@ -1,0 +1,2447 @@
+[
+  {
+    "id": 0,
+    "fr": "Instituts nationaux de la statistique",
+    "en": "National statistical offices"
+  },
+  {
+    "id": 1,
+    "fr": "15 à 20 minutes",
+    "en": "15 to 20 minutes"
+  },
+  {
+    "id": 2,
+    "fr": "Accord de participation et périmètre de la réponse",
+    "en": "Participation agreement and scope of the response"
+  },
+  {
+    "id": 3,
+    "fr": "Acceptez-vous l’utilisation de votre contribution selon la notice ?",
+    "en": "Do you agree to the use of your contribution as described in the notice?"
+  },
+  {
+    "id": 4,
+    "fr": "J’accepte",
+    "en": "I agree"
+  },
+  {
+    "id": 5,
+    "fr": "Je ne participe pas — fin du questionnaire",
+    "en": "I do not wish to participate — end of questionnaire"
+  },
+  {
+    "id": 6,
+    "fr": "Pays",
+    "en": "Country"
+  },
+  {
+    "id": 7,
+    "fr": "Nom ou sigle de l’INS",
+    "en": "Name or acronym of the NSO"
+  },
+  {
+    "id": 8,
+    "fr": "Statut de la réponse",
+    "en": "Response status"
+  },
+  {
+    "id": 9,
+    "fr": "Réponse institutionnelle consolidée",
+    "en": "Consolidated institutional response"
+  },
+  {
+    "id": 10,
+    "fr": "Contribution d’un service, non consolidée au niveau de l’institution",
+    "en": "Service-level contribution, not consolidated at institution level"
+  },
+  {
+    "id": 11,
+    "fr": "Contribution individuelle fondée sur ma pratique professionnelle",
+    "en": "Individual contribution based on my professional practice"
+  },
+  {
+    "id": 12,
+    "fr": "Fonction du répondant, sans nom personnel",
+    "en": "Respondent’s function, without a personal name"
+  },
+  {
+    "id": 13,
+    "fr": "Production statistique",
+    "en": "Statistical production"
+  },
+  {
+    "id": 14,
+    "fr": "Communication ou diffusion",
+    "en": "Communication or dissemination"
+  },
+  {
+    "id": 15,
+    "fr": "Coordination ou direction",
+    "en": "Coordination or management"
+  },
+  {
+    "id": 16,
+    "fr": "Méthodes ou qualité",
+    "en": "Methods or quality"
+  },
+  {
+    "id": 17,
+    "fr": "Autre",
+    "en": "Other"
+  },
+  {
+    "id": 18,
+    "fr": "Autre : précisez",
+    "en": "Other: please specify"
+  },
+  {
+    "id": 19,
+    "fr": "Nature de l’envoi",
+    "en": "Type of submission"
+  },
+  {
+    "id": 20,
+    "fr": "Première réponse",
+    "en": "First response"
+  },
+  {
+    "id": 21,
+    "fr": "Complément",
+    "en": "Supplement"
+  },
+  {
+    "id": 22,
+    "fr": "Référence ou date de l’envoi précédent, si connue",
+    "en": "Reference or date of the previous submission, if known"
+  },
+  {
+    "id": 23,
+    "fr": "Service ou unité concernée",
+    "en": "Service or unit concerned"
+  },
+  {
+    "id": 24,
+    "fr": "Domaine ou secteur, facultatif",
+    "en": "Domain or sector, optional"
+  },
+  {
+    "id": 25,
+    "fr": "Langue principale de vos réponses libres",
+    "en": "Main language of your free-text responses"
+  },
+  {
+    "id": 26,
+    "fr": "Français",
+    "en": "French"
+  },
+  {
+    "id": 27,
+    "fr": "Anglais",
+    "en": "English"
+  },
+  {
+    "id": 28,
+    "fr": "Arabe",
+    "en": "Arabic"
+  },
+  {
+    "id": 29,
+    "fr": "Portugais",
+    "en": "Portuguese"
+  },
+  {
+    "id": 30,
+    "fr": "Espagnol",
+    "en": "Spanish"
+  },
+  {
+    "id": 31,
+    "fr": "Origine de l’invitation ou du lien",
+    "en": "Origin of the invitation or link"
+  },
+  {
+    "id": 32,
+    "fr": "INS",
+    "en": "NSO"
+  },
+  {
+    "id": 33,
+    "fr": "STATAFRIC ou consultant",
+    "en": "STATAFRIC or consultant"
+  },
+  {
+    "id": 34,
+    "fr": "Autre relais",
+    "en": "Other forwarding organisation"
+  },
+  {
+    "id": 35,
+    "fr": "Accès spontané",
+    "en": "Unsolicited access"
+  },
+  {
+    "id": 36,
+    "fr": "Ne sait pas",
+    "en": "Do not know"
+  },
+  {
+    "id": 37,
+    "fr": "INS ou organisme relais, facultatif",
+    "en": "Forwarding NSO or organisation, optional"
+  },
+  {
+    "id": 38,
+    "fr": "Une réponse consolidée par INS est privilégiée. Pour une contribution de service ou individuelle, répondre sur le périmètre réellement connu et utiliser « ne sait pas » pour le reste de l’INS.",
+    "en": "A consolidated response per NSO is preferred. For a service-level or individual contribution, describe only the scope you actually know and use ‘Do not know’ for the rest of the NSO."
+  },
+  {
+    "id": 39,
+    "fr": "Demandes reçues pendant les douze mois de référence",
+    "en": "Requests received during the twelve-month reference period"
+  },
+  {
+    "id": 40,
+    "fr": "Combien de demandes distinctes avez-vous recensées dans le périmètre de votre réponse ?",
+    "en": "How many distinct requests did you identify within the scope of your response?"
+  },
+  {
+    "id": 41,
+    "fr": "Aucune / aucun",
+    "en": "None"
+  },
+  {
+    "id": 42,
+    "fr": "De 1 à 5",
+    "en": "1 to 5"
+  },
+  {
+    "id": 43,
+    "fr": "De 6 à 20",
+    "en": "6 to 20"
+  },
+  {
+    "id": 44,
+    "fr": "De 21 à 50",
+    "en": "21 to 50"
+  },
+  {
+    "id": 45,
+    "fr": "Plus de 50",
+    "en": "More than 50"
+  },
+  {
+    "id": 46,
+    "fr": "Certaines de ces demandes exigeaient-elles une réponse dans les 24 heures ou moins suivant leur réception ?",
+    "en": "Did any of these requests require a response within 24 hours of receipt?"
+  },
+  {
+    "id": 47,
+    "fr": "Oui",
+    "en": "Yes"
+  },
+  {
+    "id": 48,
+    "fr": "Non",
+    "en": "No"
+  },
+  {
+    "id": 49,
+    "fr": "Non applicable, aucune demande",
+    "en": "Not applicable, no requests"
+  },
+  {
+    "id": 50,
+    "fr": "Sur quoi repose cette réponse ?",
+    "en": "What is this response based on?"
+  },
+  {
+    "id": 51,
+    "fr": "Registre ou inventaire consulté",
+    "en": "Register or inventory consulted"
+  },
+  {
+    "id": 52,
+    "fr": "Estimation fondée sur la pratique connue",
+    "en": "Estimate based on known practice"
+  },
+  {
+    "id": 53,
+    "fr": "Une demande désigne un appui sollicité pour préparer un discours, une allocution ou une intervention orale d’un décideur. Plusieurs échanges ou versions concernant le même appui comptent comme une seule demande. Les demandes générales de données sans lien connu avec un discours sont exclues. Si aucune demande n’a été reçue, passer à QI08. Si le nombre est inconnu, QI03 peut être renseignée lorsqu’un cas réel est connu.",
+    "en": "A request means support requested to prepare a decision-maker’s speech, address or oral intervention. Multiple exchanges or versions for the same support count as one request. General data requests with no known link to a speech are excluded. If there were no requests, proceed to QI08. If the number is unknown, QI03 may still be completed when a real case is known."
+  },
+  {
+    "id": 54,
+    "fr": "Dernière demande clôturée connue",
+    "en": "Most recent known closed request"
+  },
+  {
+    "id": 55,
+    "fr": "Situation",
+    "en": "Situation"
+  },
+  {
+    "id": 56,
+    "fr": "Des chiffres ont été transmis",
+    "en": "Figures were provided"
+  },
+  {
+    "id": 57,
+    "fr": "La demande a été clôturée sans fourniture de chiffres",
+    "en": "The request was closed without providing figures"
+  },
+  {
+    "id": 58,
+    "fr": "Aucune demande clôturée connue pendant la période",
+    "en": "No known request closed during the period"
+  },
+  {
+    "id": 59,
+    "fr": "Je ne dispose pas des informations nécessaires",
+    "en": "I do not have the necessary information"
+  },
+  {
+    "id": 60,
+    "fr": "Mois et année de clôture, MM/AAAA",
+    "en": "Month and year of closure, MM/YYYY"
+  },
+  {
+    "id": 61,
+    "fr": "Thème général, sans nom de personne ni titre confidentiel du discours",
+    "en": "General topic, without a person’s name or a confidential speech title"
+  },
+  {
+    "id": 62,
+    "fr": "Service demandeur",
+    "en": "Requesting service"
+  },
+  {
+    "id": 63,
+    "fr": "Cabinet ou équipe d’un décideur national",
+    "en": "Office or team of a national decision-maker"
+  },
+  {
+    "id": 64,
+    "fr": "Ministère ou administration sectorielle",
+    "en": "Ministry or sectoral administration"
+  },
+  {
+    "id": 65,
+    "fr": "Autorité territoriale ou locale",
+    "en": "Subnational or local authority"
+  },
+  {
+    "id": 66,
+    "fr": "Direction de l’INS",
+    "en": "NSO management"
+  },
+  {
+    "id": 67,
+    "fr": "Institution régionale ou internationale",
+    "en": "Regional or international institution"
+  },
+  {
+    "id": 68,
+    "fr": "Canal principal de réception",
+    "en": "Main channel through which the request was received"
+  },
+  {
+    "id": 69,
+    "fr": "Courriel",
+    "en": "Email"
+  },
+  {
+    "id": 70,
+    "fr": "Courrier ou note officielle",
+    "en": "Letter or official memorandum"
+  },
+  {
+    "id": 71,
+    "fr": "Téléphone ou échange oral",
+    "en": "Telephone or oral exchange"
+  },
+  {
+    "id": 72,
+    "fr": "Messagerie instantanée",
+    "en": "Instant messaging"
+  },
+  {
+    "id": 73,
+    "fr": "Formulaire ou plateforme",
+    "en": "Form or platform"
+  },
+  {
+    "id": 74,
+    "fr": "Choisir la demande la plus récemment clôturée pendant la période de référence, qu’elle ait ou non abouti à la fourniture de chiffres. Ne pas sélectionner uniquement un exemple particulièrement réussi. Les situations 3 et 98 conduisent à QI08. La situation 2 conduit à QI04, puis QI08.",
+    "en": "Select the request most recently closed during the reference period, whether or not figures were provided. Do not select only a particularly successful example. Situations 3 and 98 lead to QI08. Situation 2 leads to QI04 and then QI08."
+  },
+  {
+    "id": 75,
+    "fr": "Délai et traitement de cette dernière demande",
+    "en": "Deadline and handling of this most recent request"
+  },
+  {
+    "id": 76,
+    "fr": "Quel délai était laissé à l’INS pour répondre, à partir de la réception de la demande ?",
+    "en": "How much time was the NSO given to respond from receipt of the request?"
+  },
+  {
+    "id": 77,
+    "fr": "Moins de 6 heures",
+    "en": "Less than 6 hours"
+  },
+  {
+    "id": 78,
+    "fr": "De 6 à 24 heures incluses",
+    "en": "6 to 24 hours inclusive"
+  },
+  {
+    "id": 79,
+    "fr": "Plus de 24 heures à 3 jours inclus",
+    "en": "More than 24 hours up to 3 days inclusive"
+  },
+  {
+    "id": 80,
+    "fr": "Plus de 3 jours",
+    "en": "More than 3 days"
+  },
+  {
+    "id": 81,
+    "fr": "Aucune échéance indiquée",
+    "en": "No deadline specified"
+  },
+  {
+    "id": 82,
+    "fr": "La réponse de l’INS a-t-elle été transmise avant l’échéance demandée ?",
+    "en": "Was the NSO’s response sent before the requested deadline?"
+  },
+  {
+    "id": 83,
+    "fr": "Non applicable, aucune échéance indiquée",
+    "en": "Not applicable, no deadline specified"
+  },
+  {
+    "id": 84,
+    "fr": "Si aucun chiffre n’a été fourni ou si le délai n’a pas été respecté, quel a été le principal obstacle ?",
+    "en": "If no figures were provided or the deadline was missed, what was the main obstacle?"
+  },
+  {
+    "id": 85,
+    "fr": "Donnée appropriée indisponible",
+    "en": "Suitable data unavailable"
+  },
+  {
+    "id": 86,
+    "fr": "Besoin insuffisamment précisé",
+    "en": "Need insufficiently specified"
+  },
+  {
+    "id": 87,
+    "fr": "Délai trop court",
+    "en": "Deadline too short"
+  },
+  {
+    "id": 88,
+    "fr": "Contrôle ou validation non terminé",
+    "en": "Checking or validation not completed"
+  },
+  {
+    "id": 89,
+    "fr": "Agent ou service compétent indisponible",
+    "en": "Responsible staff member or service unavailable"
+  },
+  {
+    "id": 90,
+    "fr": "Non applicable",
+    "en": "Not applicable"
+  },
+  {
+    "id": 91,
+    "fr": "Les durées sont calendaires, y compris les nuits et week-ends. Une réponse expliquant qu’aucun chiffre ne pouvait être fourni reste distinguée de la fourniture de chiffres par QI03. Le respect d’un délai ne suffit pas à conclure que le besoin statistique a été satisfait.",
+    "en": "Times are calendar durations, including nights and weekends. QI03 distinguishes a response explaining that no figures could be provided from an actual provision of figures. Meeting a deadline does not by itself establish that the statistical need was met."
+  },
+  {
+    "id": 92,
+    "fr": "Source et informations accompagnant le premier chiffre transmis",
+    "en": "Source and information accompanying the first figure provided"
+  },
+  {
+    "id": 93,
+    "fr": "Origine principale de ce chiffre",
+    "en": "Main origin of this figure"
+  },
+  {
+    "id": 94,
+    "fr": "Publication, base ou résultat produit par l’INS",
+    "en": "Publication, database or result produced by the NSO"
+  },
+  {
+    "id": 95,
+    "fr": "Source officielle d’une autre administration nationale",
+    "en": "Official source from another national administration"
+  },
+  {
+    "id": 96,
+    "fr": "Organisation régionale ou internationale",
+    "en": "Regional or international organisation"
+  },
+  {
+    "id": 97,
+    "fr": "Recherche ou source privée identifiée",
+    "en": "Identified research or private source"
+  },
+  {
+    "id": 98,
+    "fr": "Discours ou document antérieur sans retour à la source statistique",
+    "en": "Earlier speech or document, without consulting the statistical source"
+  },
+  {
+    "id": 99,
+    "fr": "Source non identifiée",
+    "en": "Unidentified source"
+  },
+  {
+    "id": 100,
+    "fr": "Source précise permettant de retrouver le résultat",
+    "en": "Specific source enabling the result to be located"
+  },
+  {
+    "id": 101,
+    "fr": "Présente dans la réponse",
+    "en": "Included in the response"
+  },
+  {
+    "id": 102,
+    "fr": "Accessible par un lien ou une référence précise transmis avec la réponse",
+    "en": "Available through a specific link or reference sent with the response"
+  },
+  {
+    "id": 103,
+    "fr": "Absente",
+    "en": "Absent"
+  },
+  {
+    "id": 104,
+    "fr": "Date de publication ou version de la source",
+    "en": "Publication date or source version"
+  },
+  {
+    "id": 105,
+    "fr": "Période à laquelle se rapporte la valeur",
+    "en": "Period to which the value relates"
+  },
+  {
+    "id": 106,
+    "fr": "Définition de l’indicateur",
+    "en": "Definition of the indicator"
+  },
+  {
+    "id": 107,
+    "fr": "Unité et base de calcul, notamment dénominateur d’un taux",
+    "en": "Unit and calculation basis, particularly the denominator of a rate"
+  },
+  {
+    "id": 108,
+    "fr": "Population et territoire couverts",
+    "en": "Population and geographical coverage"
+  },
+  {
+    "id": 109,
+    "fr": "Limites utiles à l’interprétation ou à la comparaison",
+    "en": "Limitations relevant to interpretation or comparison"
+  },
+  {
+    "id": 110,
+    "fr": "Statut provisoire ou révisé, lorsqu’il s’applique",
+    "en": "Provisional or revised status, where applicable"
+  },
+  {
+    "id": 111,
+    "fr": "Considérer le premier chiffre présenté dans la dernière réponse transmise, et non le mieux documenté. Indiquer les informations qui l’accompagnaient effectivement. Une simple mention du nom d’un organisme ne suffit pas pour le code 2. Ne pas recopier une valeur non publique.",
+    "en": "Consider the first figure presented in the most recent response, not the best-documented figure. Indicate the information that actually accompanied it. Merely naming an organisation does not qualify for code 2. Do not copy a non-public value."
+  },
+  {
+    "id": 112,
+    "fr": "Vérification et validation effectivement réalisées",
+    "en": "Checking and validation actually performed"
+  },
+  {
+    "id": 113,
+    "fr": "Qui a vérifié le contenu statistique avant son envoi ? Plusieurs réponses possibles.",
+    "en": "Who checked the statistical content before it was sent? Multiple answers allowed."
+  },
+  {
+    "id": 114,
+    "fr": "L’agent qui l’a préparé",
+    "en": "The staff member who prepared it"
+  },
+  {
+    "id": 115,
+    "fr": "Un autre agent producteur des données",
+    "en": "Another staff member producing the data"
+  },
+  {
+    "id": 116,
+    "fr": "Un responsable technique ou de qualité",
+    "en": "A technical or quality manager"
+  },
+  {
+    "id": 117,
+    "fr": "Le service de communication",
+    "en": "The communication service"
+  },
+  {
+    "id": 118,
+    "fr": "La direction ou son délégataire",
+    "en": "Management or its delegate"
+  },
+  {
+    "id": 119,
+    "fr": "Aucun contrôle connu",
+    "en": "No known check"
+  },
+  {
+    "id": 120,
+    "fr": "Autre fonction",
+    "en": "Other function"
+  },
+  {
+    "id": 121,
+    "fr": "Quelle trace de la validation statistique finale existe pour cet envoi ?",
+    "en": "What record exists of the final statistical validation for this submission?"
+  },
+  {
+    "id": 122,
+    "fr": "Trace écrite, courriel, visa ou journal de validation",
+    "en": "Written record, email, sign-off or validation log"
+  },
+  {
+    "id": 123,
+    "fr": "Accord oral seulement",
+    "en": "Oral agreement only"
+  },
+  {
+    "id": 124,
+    "fr": "Aucune validation distincte connue",
+    "en": "No separate validation known"
+  },
+  {
+    "id": 125,
+    "fr": "Il s’agit du contrôle du contenu statistique, pas de l’approbation politique du discours.",
+    "en": "This concerns checking statistical content, not political approval of the speech."
+  },
+  {
+    "id": 126,
+    "fr": "Format transmis et vérification du passage de discours",
+    "en": "Format provided and checking of the speech passage"
+  },
+  {
+    "id": 127,
+    "fr": "Sous quelle forme l’appui a-t-il été transmis ? Jusqu’à trois réponses.",
+    "en": "In what form was the support provided? Up to three answers."
+  },
+  {
+    "id": 128,
+    "fr": "Tableau ou liste de chiffres",
+    "en": "Table or list of figures"
+  },
+  {
+    "id": 129,
+    "fr": "Fiche accompagnée d’explications",
+    "en": "Fact sheet with explanations"
+  },
+  {
+    "id": 130,
+    "fr": "Proposition de phrases ou de paragraphes",
+    "en": "Suggested sentences or paragraphs"
+  },
+  {
+    "id": 131,
+    "fr": "Graphique ou illustration",
+    "en": "Chart or illustration"
+  },
+  {
+    "id": 132,
+    "fr": "Explication orale uniquement",
+    "en": "Oral explanation only"
+  },
+  {
+    "id": 133,
+    "fr": "L’INS a-t-il ensuite pu vérifier les chiffres dans le passage de discours préparé avant sa diffusion ?",
+    "en": "Was the NSO subsequently able to check the figures in the prepared speech passage before dissemination?"
+  },
+  {
+    "id": 134,
+    "fr": "Non, le passage n’a pas été reçu",
+    "en": "No, the passage was not received"
+  },
+  {
+    "id": 135,
+    "fr": "Non, le passage a été reçu mais n’a pas été vérifié",
+    "en": "No, the passage was received but not checked"
+  },
+  {
+    "id": 136,
+    "fr": "Le discours n’a pas été diffusé ou cette étape n’a pas eu lieu",
+    "en": "The speech was not delivered or this stage did not occur"
+  },
+  {
+    "id": 137,
+    "fr": "",
+    "en": ""
+  },
+  {
+    "id": 138,
+    "fr": "Correction ou actualisation après transmission",
+    "en": "Correction or updating after transmission"
+  },
+  {
+    "id": 139,
+    "fr": "Pendant la période de référence, avez-vous connaissance d’un appui déjà transmis qu’il a fallu corriger ou actualiser ?",
+    "en": "During the reference period, do you know of support already provided that had to be corrected or updated?"
+  },
+  {
+    "id": 140,
+    "fr": "Oui, pour corriger une erreur",
+    "en": "Yes, to correct an error"
+  },
+  {
+    "id": 141,
+    "fr": "Oui, pour actualiser une donnée",
+    "en": "Yes, to update data"
+  },
+  {
+    "id": 142,
+    "fr": "Les deux situations ont été rencontrées",
+    "en": "Both situations occurred"
+  },
+  {
+    "id": 143,
+    "fr": "Aucun épisode connu",
+    "en": "No known instance"
+  },
+  {
+    "id": 144,
+    "fr": "Non applicable, aucun appui concerné",
+    "en": "Not applicable, no relevant support"
+  },
+  {
+    "id": 145,
+    "fr": "Pour le cas le plus récent, quelles actions ont été réalisées ? Plusieurs réponses possibles.",
+    "en": "For the most recent case, what actions were taken? Multiple answers allowed."
+  },
+  {
+    "id": 146,
+    "fr": "Alerte de l’équipe préparant le discours",
+    "en": "Alerting the speech-preparation team"
+  },
+  {
+    "id": 147,
+    "fr": "Envoi d’une version corrigée avec sa source",
+    "en": "Sending a corrected version with its source"
+  },
+  {
+    "id": 148,
+    "fr": "Conservation des versions et du motif de changement",
+    "en": "Keeping versions and the reason for the change"
+  },
+  {
+    "id": 149,
+    "fr": "Demande de correction d’un passage déjà diffusé",
+    "en": "Requesting correction of a passage already disseminated"
+  },
+  {
+    "id": 150,
+    "fr": "Vérification de la prise en compte de la correction",
+    "en": "Checking that the correction was incorporated"
+  },
+  {
+    "id": 151,
+    "fr": "Aucune action connue",
+    "en": "No known action"
+  },
+  {
+    "id": 152,
+    "fr": "Un appui initialement fourni avant la période peut être pris en compte si la correction intervient pendant celle-ci. Cette question reste accessible même si aucune nouvelle demande n’a été reçue.",
+    "en": "Support originally provided before the period may be included if the correction occurred during the period. This question remains available even if no new request was received."
+  },
+  {
+    "id": 153,
+    "fr": "Organisation effectivement en place au 31 octobre 2026",
+    "en": "Arrangements actually in place on 31 October 2026"
+  },
+  {
+    "id": 154,
+    "fr": "Point d’entrée ou fonction identifiée pour recevoir les demandes",
+    "en": "Identified contact point or function for receiving requests"
+  },
+  {
+    "id": 155,
+    "fr": "Existe et a été utilisé pour ces appuis pendant la période",
+    "en": "Exists and was used for this support during the period"
+  },
+  {
+    "id": 156,
+    "fr": "Existe mais n’a pas été utilisé pendant la période",
+    "en": "Exists but was not used during the period"
+  },
+  {
+    "id": 157,
+    "fr": "N’existe pas",
+    "en": "Does not exist"
+  },
+  {
+    "id": 158,
+    "fr": "Consigne écrite de traitement, y compris des urgences",
+    "en": "Written handling instructions, including for urgent requests"
+  },
+  {
+    "id": 159,
+    "fr": "Registre des demandes avec échéance, responsable et état de traitement",
+    "en": "Request register with deadline, responsible officer and processing status"
+  },
+  {
+    "id": 160,
+    "fr": "Répertoire de chiffres avec sources et informations d’interprétation",
+    "en": "Repository of figures with sources and interpretation information"
+  },
+  {
+    "id": 161,
+    "fr": "Trace du contrôle et de la validation statistique",
+    "en": "Record of statistical checking and validation"
+  },
+  {
+    "id": 162,
+    "fr": "Conservation des versions et des corrections",
+    "en": "Retention of versions and corrections"
+  },
+  {
+    "id": 163,
+    "fr": "Examen des délais, difficultés et retours des utilisateurs",
+    "en": "Review of deadlines, difficulties and user feedback"
+  },
+  {
+    "id": 164,
+    "fr": "Pratique nouvelle après le 31 octobre, facultatif : dispositif, date de mise en place et une phrase",
+    "en": "New practice after 31 October, optional: arrangement, implementation date and one sentence"
+  },
+  {
+    "id": 165,
+    "fr": "Besoins prioritaires",
+    "en": "Priority needs"
+  },
+  {
+    "id": 166,
+    "fr": "Priorité 1",
+    "en": "Priority 1"
+  },
+  {
+    "id": 167,
+    "fr": "Clarifier le point d’entrée et les responsabilités",
+    "en": "Clarify the contact point and responsibilities"
+  },
+  {
+    "id": 168,
+    "fr": "Mieux préciser et prioriser les demandes urgentes",
+    "en": "Clarify and prioritise urgent requests"
+  },
+  {
+    "id": 169,
+    "fr": "Disposer d’un répertoire de chiffres documentés",
+    "en": "Have a repository of documented figures"
+  },
+  {
+    "id": 170,
+    "fr": "Simplifier le contrôle et la validation",
+    "en": "Simplify checking and validation"
+  },
+  {
+    "id": 171,
+    "fr": "Préparer des messages et exemples de passages de discours",
+    "en": "Prepare messages and examples of speech passages"
+  },
+  {
+    "id": 172,
+    "fr": "Organiser les corrections et versions",
+    "en": "Organise corrections and versions"
+  },
+  {
+    "id": 173,
+    "fr": "Former les agents",
+    "en": "Train staff"
+  },
+  {
+    "id": 174,
+    "fr": "Suivre les délais et les retours d’utilisation",
+    "en": "Monitor deadlines and user feedback"
+  },
+  {
+    "id": 175,
+    "fr": "Aucun besoin exprimé",
+    "en": "No need expressed"
+  },
+  {
+    "id": 176,
+    "fr": "Priorité 2",
+    "en": "Priority 2"
+  },
+  {
+    "id": 177,
+    "fr": "Priorité 3",
+    "en": "Priority 3"
+  },
+  {
+    "id": 178,
+    "fr": "Autre priorité : précisez",
+    "en": "Other priority: please specify"
+  },
+  {
+    "id": 179,
+    "fr": "Pour la priorité 1, quelle difficulté réelle cela permettrait-il de résoudre ? Au plus 40 mots ; sinon, écrire « besoin anticipé ».",
+    "en": "For priority 1, what actual difficulty would this resolve? Up to 40 words; otherwise write ‘anticipated need’."
+  },
+  {
+    "id": 180,
+    "fr": "Première action possible avec les moyens existants",
+    "en": "First action possible with existing resources"
+  },
+  {
+    "id": 181,
+    "fr": "Fonction pouvant la conduire",
+    "en": "Function that could lead the action"
+  },
+  {
+    "id": 182,
+    "fr": "Moyen déjà disponible",
+    "en": "Resource already available"
+  },
+  {
+    "id": 183,
+    "fr": "Principal obstacle",
+    "en": "Main obstacle"
+  },
+  {
+    "id": 184,
+    "fr": "Classer au plus trois codes différents. Une ou deux priorités suffisent. 0 et 98 sont exclusifs des autres priorités. Indiquer « à déterminer » si nécessaire pour l’action, le responsable, les moyens ou l’obstacle.",
+    "en": "Rank up to three different codes. One or two priorities are sufficient. Codes 0 and 98 exclude other priorities. Write ‘to be determined’ where necessary for the action, lead function, resources or obstacle."
+  },
+  {
+    "id": 185,
+    "fr": "Un exemple ou document partageable",
+    "en": "One shareable example or document"
+  },
+  {
+    "id": 186,
+    "fr": "Exemple proposé, facultatif",
+    "en": "Example provided, optional"
+  },
+  {
+    "id": 187,
+    "fr": "Lien public",
+    "en": "Public link"
+  },
+  {
+    "id": 188,
+    "fr": "Extrait non confidentiel dont le partage est autorisé",
+    "en": "Non-confidential extract authorised for sharing"
+  },
+  {
+    "id": 189,
+    "fr": "Aucun exemple partagé",
+    "en": "No example shared"
+  },
+  {
+    "id": 190,
+    "fr": "Titre ou description, date et lien public si disponible ; extrait autorisé le cas échéant",
+    "en": "Title or description, date and public link if available; authorised extract where relevant"
+  },
+  {
+    "id": 191,
+    "fr": "Ce que cet exemple montre et ce qui pourrait être adapté ailleurs, au plus 60 mots",
+    "en": "What this example demonstrates and what could be adapted elsewhere, up to 60 words"
+  },
+  {
+    "id": 192,
+    "fr": "Proposer un seul exemple : procédure, fiche de chiffres, modèle de demande, contrôle, correction ou discours public. Ne pas joindre de données individuelles, brouillon confidentiel, coordonnées personnelles ou contenu non autorisé. Un exemple antérieur peut illustrer une pratique, mais sa date doit rester visible.",
+    "en": "Provide only one example: procedure, fact sheet, request template, check, correction or public speech. Do not provide individual-level data, confidential drafts, personal contact details or unauthorised content. An older example can illustrate a practice, but its date must remain visible."
+  },
+  {
+    "id": 193,
+    "fr": "Attribution et contact facultatif",
+    "en": "Attribution and optional contact"
+  },
+  {
+    "id": 194,
+    "fr": "Modalité autorisée pour la contribution et l’exemple partagé",
+    "en": "Permitted use of the contribution and shared example"
+  },
+  {
+    "id": 195,
+    "fr": "Synthèse anonymisée seulement, sans attribution identifiable",
+    "en": "Anonymised summary only, with no identifiable attribution"
+  },
+  {
+    "id": 196,
+    "fr": "Attribution à l’institution, sans citation textuelle identifiable",
+    "en": "Attribution to the institution, without an identifiable quotation"
+  },
+  {
+    "id": 197,
+    "fr": "Attribution à l’institution et citation textuelle",
+    "en": "Attribution to the institution and direct quotation"
+  },
+  {
+    "id": 198,
+    "fr": "Me soumettre le passage avant toute attribution ou citation identifiable",
+    "en": "Submit the passage to me before any identifiable attribution or quotation"
+  },
+  {
+    "id": 199,
+    "fr": "Accepteriez-vous un bref complément ou un test d’outil ?",
+    "en": "Would you agree to a brief follow-up or a tool test?"
+  },
+  {
+    "id": 200,
+    "fr": "Test",
+    "en": "Tool test"
+  },
+  {
+    "id": 201,
+    "fr": "Les deux",
+    "en": "Both"
+  },
+  {
+    "id": 202,
+    "fr": "À déterminer",
+    "en": "To be determined"
+  },
+  {
+    "id": 203,
+    "fr": "Contact facultatif : fonction ou service à recontacter",
+    "en": "Optional contact: function or service to contact"
+  },
+  {
+    "id": 204,
+    "fr": "Courriel institutionnel ou générique, facultatif",
+    "en": "Institutional or generic email address, optional"
+  },
+  {
+    "id": 205,
+    "fr": "Préférer un relais par STATAFRIC, facultatif",
+    "en": "Prefer contact through STATAFRIC, optional"
+  },
+  {
+    "id": 206,
+    "fr": "Passer par STATAFRIC",
+    "en": "Contact through STATAFRIC"
+  },
+  {
+    "id": 207,
+    "fr": "Les choix 1 et 2 supposent l’autorisation correspondante. Une contribution individuelle sans cette autorisation reste anonymisée. Sans choix explicite, la synthèse anonymisée (code 0) s’applique. L’absence de retour ne vaut jamais accord de citation.",
+    "en": "Options 1 and 2 require the corresponding authorisation. An individual contribution without that authorisation remains anonymised. Without an explicit choice, an anonymised summary (code 0) applies. Silence never constitutes permission to quote."
+  },
+  {
+    "id": 208,
+    "fr": "INS : transmettre le lien producteurs à 3–8 organismes et le lien utilisateurs à 4–6 équipes. Ne pas collecter ni approuver leur réponse. Les autres producteurs répondent QP ; les équipes utilisatrices répondent QU.",
+    "en": "NSOs: forward the producer link to 3–8 organisations and the user link to 4–6 teams. Do not collect or approve their responses. Other producers complete QP; user teams complete QU."
+  },
+  {
+    "id": 209,
+    "fr": "Autres producteurs de statistiques",
+    "en": "Other producers of statistics"
+  },
+  {
+    "id": 210,
+    "fr": "Accord, profil et périmètre de la contribution",
+    "en": "Consent, profile and scope of the contribution"
+  },
+  {
+    "id": 211,
+    "fr": "Votre organisme produit-il des statistiques ou des indicateurs utilisables pour l’action publique ?",
+    "en": "Does your organisation produce statistics or indicators usable for public action?"
+  },
+  {
+    "id": 212,
+    "fr": "Institution de rattachement",
+    "en": "Parent institution"
+  },
+  {
+    "id": 213,
+    "fr": "Service ou unité de production",
+    "en": "Production service or unit"
+  },
+  {
+    "id": 214,
+    "fr": "Type principal d’organisme",
+    "en": "Main type of organisation"
+  },
+  {
+    "id": 215,
+    "fr": "Ministère ou service statistique sectoriel",
+    "en": "Ministry or sectoral statistical unit"
+  },
+  {
+    "id": 216,
+    "fr": "Banque centrale ou institution monétaire",
+    "en": "Central bank or monetary institution"
+  },
+  {
+    "id": 217,
+    "fr": "Autre administration ou organisme de données administratives",
+    "en": "Other administration or administrative-data body"
+  },
+  {
+    "id": 218,
+    "fr": "Agence ou observatoire public",
+    "en": "Public agency or observatory"
+  },
+  {
+    "id": 219,
+    "fr": "Collectivité ou service territorial",
+    "en": "Local authority or territorial service"
+  },
+  {
+    "id": 220,
+    "fr": "Organisme de recherche",
+    "en": "Research organisation"
+  },
+  {
+    "id": 221,
+    "fr": "Organisme privé ou associatif producteur",
+    "en": "Private or non-profit producer"
+  },
+  {
+    "id": 222,
+    "fr": "Domaine principal",
+    "en": "Main domain"
+  },
+  {
+    "id": 223,
+    "fr": "Économie, finances ou monnaie",
+    "en": "Economy, finance or monetary affairs"
+  },
+  {
+    "id": 224,
+    "fr": "Santé ou protection sociale",
+    "en": "Health or social protection"
+  },
+  {
+    "id": 225,
+    "fr": "Éducation ou formation",
+    "en": "Education or training"
+  },
+  {
+    "id": 226,
+    "fr": "Agriculture ou alimentation",
+    "en": "Agriculture or food"
+  },
+  {
+    "id": 227,
+    "fr": "Emploi ou conditions de vie",
+    "en": "Employment or living conditions"
+  },
+  {
+    "id": 228,
+    "fr": "Environnement, énergie ou infrastructures",
+    "en": "Environment, energy or infrastructure"
+  },
+  {
+    "id": 229,
+    "fr": "Population, état civil ou territoire",
+    "en": "Population, civil registration or territory"
+  },
+  {
+    "id": 230,
+    "fr": "Plusieurs domaines sans domaine principal",
+    "en": "Multiple domains with no main domain"
+  },
+  {
+    "id": 231,
+    "fr": "Autres domaines, facultatif",
+    "en": "Other domains, optional"
+  },
+  {
+    "id": 232,
+    "fr": "Fonction, sans nom personnel",
+    "en": "Function, without a personal name"
+  },
+  {
+    "id": 233,
+    "fr": "Production",
+    "en": "Production"
+  },
+  {
+    "id": 234,
+    "fr": "Origine du lien",
+    "en": "Origin of the link"
+  },
+  {
+    "id": 235,
+    "fr": "Producteurs hors INS uniquement. Les services internes de l’INS utilisent QI. Un simple transfert de fichiers administratifs sans traitement statistique ne suffit pas. Si votre organisme ne produit pas de statistiques, utilisez QU pour un rôle d’utilisateur ou demandez conseil au consultant. Une participation ne confère pas un statut officiel aux statistiques de l’organisme.",
+    "en": "For producers outside the NSO only. Internal NSO units use QI. Simply forwarding administrative files without statistical processing is not sufficient. If your organisation does not produce statistics, use QU for a user role or seek advice from the consultant. Participation does not confer official status on the organisation’s statistics."
+  },
+  {
+    "id": 236,
+    "fr": "Appuis reçus pendant la période de référence",
+    "en": "Support requests received during the reference period"
+  },
+  {
+    "id": 237,
+    "fr": "Séparément, votre organisme a-t-il fourni des statistiques pour une note ou un arbitrage de décision sans lien identifié avec un discours ?",
+    "en": "Separately, did your organisation provide statistics for a decision note or decision-making process with no identified link to a speech?"
+  },
+  {
+    "id": 238,
+    "fr": "Si oui, thème ou type de décision, sans détail confidentiel, une phrase. Ne pas ajouter ces appuis au nombre de demandes de discours.",
+    "en": "If yes, give the topic or type of decision, without confidential details, in one sentence. Do not add this support to the number of speech requests."
+  },
+  {
+    "id": 239,
+    "fr": "Une demande concerne un discours ou une intervention orale, reçue directement ou par l’INS. Compter une seule fois les échanges d’un même appui. Exclure les demandes générales sans lien connu avec un discours. Si QP02a = 0, passer à QP08 après QP02d. Si le volume est inconnu, un cas réel peut être décrit. Plusieurs producteurs peuvent participer au même discours : ne pas additionner leurs demandes en un total national.",
+    "en": "A request concerns a speech or oral intervention, received directly or through the NSO. Count exchanges for the same support only once. Exclude general requests with no known link to a speech. If QP02a = 0, go to QP08 after QP02d. A real case may be described when volume is unknown. Multiple producers may support the same speech: do not add their requests into a national total."
+  },
+  {
+    "id": 240,
+    "fr": "Demandeur final connu",
+    "en": "Known final requester"
+  },
+  {
+    "id": 241,
+    "fr": "Autorité territoriale",
+    "en": "Territorial authority"
+  },
+  {
+    "id": 242,
+    "fr": "Direction de votre organisme",
+    "en": "Your organisation’s management"
+  },
+  {
+    "id": 243,
+    "fr": "Circuit principal",
+    "en": "Main request pathway"
+  },
+  {
+    "id": 244,
+    "fr": "Demande reçue directement de l’utilisateur",
+    "en": "Request received directly from the user"
+  },
+  {
+    "id": 245,
+    "fr": "Demande transmise par l’INS",
+    "en": "Request forwarded by the NSO"
+  },
+  {
+    "id": 246,
+    "fr": "Demande transmise par un autre producteur ou service",
+    "en": "Request forwarded by another producer or service"
+  },
+  {
+    "id": 247,
+    "fr": "Choisir la demande la plus récemment clôturée pendant la période de référence, qu’elle ait ou non abouti à la fourniture de chiffres. Ne pas sélectionner uniquement un exemple particulièrement réussi. Les situations 3 et 98 conduisent à QP08. La situation 2 conduit à QP04, puis QP08.",
+    "en": "Select the request most recently closed during the reference period, whether or not figures were provided. Do not select only a particularly successful example. Situations 3 and 98 lead to QP08. Situation 2 leads to QP04 and then QP08."
+  },
+  {
+    "id": 248,
+    "fr": "Quel délai était laissé à votre organisme pour répondre, à partir de la réception de la demande ?",
+    "en": "How much time was your organisation given to respond from receipt of the request?"
+  },
+  {
+    "id": 249,
+    "fr": "La réponse de votre organisme a-t-elle été transmise avant l’échéance demandée ?",
+    "en": "Was your organisation’s response sent before the requested deadline?"
+  },
+  {
+    "id": 250,
+    "fr": "Contrôle ou validation inachevé",
+    "en": "Checking or validation incomplete"
+  },
+  {
+    "id": 251,
+    "fr": "Agent compétent indisponible",
+    "en": "Responsible staff member unavailable"
+  },
+  {
+    "id": 252,
+    "fr": "Restrictions de diffusion ou d’accès",
+    "en": "Dissemination or access restrictions"
+  },
+  {
+    "id": 253,
+    "fr": "Divergence entre sources non résolue",
+    "en": "Unresolved discrepancy between sources"
+  },
+  {
+    "id": 254,
+    "fr": "Les durées sont calendaires, y compris les nuits et week-ends. Une réponse expliquant qu’aucun chiffre ne pouvait être fourni reste distinguée de la fourniture de chiffres par QP03. Le respect d’un délai ne suffit pas à conclure que le besoin statistique a été satisfait.",
+    "en": "Times are calendar durations, including nights and weekends. QP03 distinguishes a response explaining that no figures could be provided from an actual provision of figures. Meeting a deadline does not by itself establish that the statistical need was met."
+  },
+  {
+    "id": 255,
+    "fr": "Origine et documentation du premier chiffre transmis",
+    "en": "Origin and documentation of the first figure provided"
+  },
+  {
+    "id": 256,
+    "fr": "Enquête ou recensement produit par votre organisme",
+    "en": "Survey or census produced by your organisation"
+  },
+  {
+    "id": 257,
+    "fr": "Données administratives traitées par votre organisme",
+    "en": "Administrative data processed by your organisation"
+  },
+  {
+    "id": 258,
+    "fr": "Autre résultat statistique produit par votre organisme",
+    "en": "Other statistical result produced by your organisation"
+  },
+  {
+    "id": 259,
+    "fr": "Publication de l’INS",
+    "en": "NSO publication"
+  },
+  {
+    "id": 260,
+    "fr": "Autre administration nationale",
+    "en": "Other national administration"
+  },
+  {
+    "id": 261,
+    "fr": "Document antérieur sans retour à la source statistique",
+    "en": "Earlier document without consulting the statistical source"
+  },
+  {
+    "id": 262,
+    "fr": "Pour les données administratives, l’unité comptée était-elle explicitement précisée : personnes distinctes, actes, dossiers, établissements ou autre unité ?",
+    "en": "For administrative data, was the counting unit explicitly stated: distinct persons, events, files, establishments or another unit?"
+  },
+  {
+    "id": 263,
+    "fr": "Facultatif : préciser l’unité et une limite connue de couverture ou de doublons, sans donnée individuelle",
+    "en": "Optional: specify the unit and a known coverage or duplication limitation, without individual-level data"
+  },
+  {
+    "id": 264,
+    "fr": "Agent de l’INS",
+    "en": "NSO staff member"
+  },
+  {
+    "id": 265,
+    "fr": "Autre producteur externe",
+    "en": "Another external producer"
+  },
+  {
+    "id": 266,
+    "fr": "Il s’agit du contenu statistique, pas de l’approbation politique du discours. L’absence d’intervention de l’INS ne signifie pas, à elle seule, absence de contrôle.",
+    "en": "This concerns statistical content, not political approval of the speech. The absence of NSO involvement does not by itself mean that there was no check."
+  },
+  {
+    "id": 267,
+    "fr": "Un retour sur l’utilisation des chiffres a-t-il été reçu ?",
+    "en": "Was feedback received on the use of the figures?"
+  },
+  {
+    "id": 268,
+    "fr": "Texte ou lien du discours",
+    "en": "Text or link to the speech"
+  },
+  {
+    "id": 269,
+    "fr": "Commentaire sans texte ni lien",
+    "en": "Comment without text or link"
+  },
+  {
+    "id": 270,
+    "fr": "Aucun",
+    "en": "None"
+  },
+  {
+    "id": 271,
+    "fr": "Le retour documente l’usage des chiffres, pas l’effet de la décision.",
+    "en": "Feedback documents the use of figures, not the effect of the decision."
+  },
+  {
+    "id": 272,
+    "fr": "Information de l’INS ou de l’intermédiaire concerné",
+    "en": "Informing the NSO or relevant intermediary"
+  },
+  {
+    "id": 273,
+    "fr": "Organisation et coordination avec l’INS",
+    "en": "Organisation and coordination with the NSO"
+  },
+  {
+    "id": 274,
+    "fr": "Quels échanges avec l’INS ont effectivement servi ces appuis pendant la période ?",
+    "en": "Which exchanges with the NSO actually supported this work during the period?"
+  },
+  {
+    "id": 275,
+    "fr": "Orientation ou transmission des demandes",
+    "en": "Routing or forwarding requests"
+  },
+  {
+    "id": 276,
+    "fr": "Transmission de chiffres et métadonnées",
+    "en": "Providing figures and metadata"
+  },
+  {
+    "id": 277,
+    "fr": "Harmonisation de définitions ou méthodes",
+    "en": "Harmonising definitions or methods"
+  },
+  {
+    "id": 278,
+    "fr": "Vérification d’une valeur ou comparaison",
+    "en": "Checking a value or comparison"
+  },
+  {
+    "id": 279,
+    "fr": "Coordination des corrections ou versions",
+    "en": "Coordinating corrections or versions"
+  },
+  {
+    "id": 280,
+    "fr": "Formation ou préparation de modèles",
+    "en": "Training or preparing templates"
+  },
+  {
+    "id": 281,
+    "fr": "Aucun échange connu",
+    "en": "No known exchange"
+  },
+  {
+    "id": 282,
+    "fr": "Aucun appui concerné",
+    "en": "No relevant support"
+  },
+  {
+    "id": 283,
+    "fr": "Des divergences entre vos chiffres et ceux d’un autre producteur ont-elles nécessité une clarification pour un discours ?",
+    "en": "Did discrepancies between your figures and another producer’s figures require clarification for a speech?"
+  },
+  {
+    "id": 284,
+    "fr": "Aucun cas connu",
+    "en": "No known case"
+  },
+  {
+    "id": 285,
+    "fr": "Type de divergence et traitement, en une phrase sans information confidentielle",
+    "en": "Type of discrepancy and how it was addressed, in one sentence without confidential information"
+  },
+  {
+    "id": 286,
+    "fr": "Améliorer la coordination avec l’INS et les autres producteurs",
+    "en": "Improve coordination with the NSO and other producers"
+  },
+  {
+    "id": 287,
+    "fr": "Clarifier la qualité et les limites des sources administratives",
+    "en": "Clarify the quality and limitations of administrative sources"
+  },
+  {
+    "id": 288,
+    "fr": "Exemple partageable et lien avec la décision",
+    "en": "Shareable example and link to decision-making"
+  },
+  {
+    "id": 289,
+    "fr": "Usage illustré",
+    "en": "Use illustrated"
+  },
+  {
+    "id": 290,
+    "fr": "Discours",
+    "en": "Speech"
+  },
+  {
+    "id": 291,
+    "fr": "Décision sans discours identifié",
+    "en": "Decision with no identified speech"
+  },
+  {
+    "id": 292,
+    "fr": "Preuve d’utilisation",
+    "en": "Evidence of use"
+  },
+  {
+    "id": 293,
+    "fr": "Document accessible ou extrait autorisé",
+    "en": "Accessible document or authorised extract"
+  },
+  {
+    "id": 294,
+    "fr": "Usage connu mais non documenté ici",
+    "en": "Known use, not documented here"
+  },
+  {
+    "id": 295,
+    "fr": "Facultatif : procédure, fiche chiffre, contrôle, correction, discours public ou note de décision autorisée. Ne pas partager de contenu confidentiel. Un exemple plus ancien conserve sa date et ne constitue pas une activité de la période. Une proposition d’usage ou un effet supposé ne prouve pas une utilisation réelle.",
+    "en": "Optional: procedure, figure fact sheet, check, correction, public speech or authorised decision note. Do not share confidential content. An older example retains its date and is not activity during the reference period. A proposed use or assumed effect does not prove actual use."
+  },
+  {
+    "id": 296,
+    "fr": "J’autorise l’INS invitant à transmettre une demande de suivi, sans accès à ma contribution",
+    "en": "I authorise the inviting NSO to forward a follow-up request, without access to my contribution"
+  },
+  {
+    "id": 297,
+    "fr": "Les choix 1 et 2 supposent l’autorisation correspondante. Une contribution individuelle sans cette autorisation reste anonymisée. Sans choix explicite, la synthèse anonymisée (code 0) s’applique. L’absence de retour ne vaut jamais accord de citation. Le relais par l’INS ne remplace pas votre autorisation institutionnelle.",
+    "en": "Options 1 and 2 require the corresponding authorisation. An individual contribution without that authorisation remains anonymised. Without an explicit choice, an anonymised summary (code 0) applies. Silence never constitutes permission to quote. Forwarding by the NSO does not replace your institutional authorisation."
+  },
+  {
+    "id": 298,
+    "fr": "Équipes préparant les discours",
+    "en": "Speech-preparation teams"
+  },
+  {
+    "id": 299,
+    "fr": "10 à 15 minutes",
+    "en": "10 to 15 minutes"
+  },
+  {
+    "id": 300,
+    "fr": "Accord de participation et profil",
+    "en": "Participation agreement and profile"
+  },
+  {
+    "id": 301,
+    "fr": "Institution ou type d’institution",
+    "en": "Institution or type of institution"
+  },
+  {
+    "id": 302,
+    "fr": "Périmètre",
+    "en": "Scope"
+  },
+  {
+    "id": 303,
+    "fr": "Réponse consolidée de l’équipe ou du service",
+    "en": "Consolidated team or service response"
+  },
+  {
+    "id": 304,
+    "fr": "Contribution individuelle fondée sur ma propre pratique",
+    "en": "Individual contribution based on my own practice"
+  },
+  {
+    "id": 305,
+    "fr": "Rédaction de discours ou conseil",
+    "en": "Speechwriting or advisory work"
+  },
+  {
+    "id": 306,
+    "fr": "Communication",
+    "en": "Communication"
+  },
+  {
+    "id": 307,
+    "fr": "Appui technique ou statistique",
+    "en": "Technical or statistical support"
+  },
+  {
+    "id": 308,
+    "fr": "Coordination d’équipe",
+    "en": "Team coordination"
+  },
+  {
+    "id": 309,
+    "fr": "Si cet envoi complète une réponse antérieure, indiquer sa référence ou sa date",
+    "en": "If this submission supplements an earlier response, give its reference or date"
+  },
+  {
+    "id": 310,
+    "fr": "Répondre pour une équipe ou un service préparant des discours, ou sur votre pratique personnelle si vous n’êtes pas mandaté pour l’équipe. Les informations portent sur les chiffres, sans évaluation politique des discours.",
+    "en": "Respond for a speech-preparation team or service, or describe your own practice if you are not mandated to respond for the team. Information concerns figures, without any political assessment of speeches."
+  },
+  {
+    "id": 311,
+    "fr": "Activité pendant les douze mois de référence",
+    "en": "Activity during the twelve-month reference period"
+  },
+  {
+    "id": 312,
+    "fr": "À combien de discours comportant des chiffres votre équipe ou vous-même avez-vous contribué ?",
+    "en": "How many speeches containing figures did your team or you contribute to?"
+  },
+  {
+    "id": 313,
+    "fr": "Avez-vous demandé un appui statistique à l’INS pour au moins un de ces discours ?",
+    "en": "Did you request statistical support from the NSO for at least one of these speeches?"
+  },
+  {
+    "id": 314,
+    "fr": "Non applicable, aucun discours concerné",
+    "en": "Not applicable, no relevant speech"
+  },
+  {
+    "id": 315,
+    "fr": "Base de la réponse",
+    "en": "Basis for the response"
+  },
+  {
+    "id": 316,
+    "fr": "Compter une intervention une seule fois, même si elle a fait l’objet de plusieurs versions. Si aucun discours n’est concerné, passer à QU07. Si le nombre est inconnu, poursuivre lorsqu’un cas réel est connu.",
+    "en": "Count an intervention only once, even if several versions were prepared. If there were no relevant speeches, proceed to QU07. If the number is unknown, continue when a real case is known."
+  },
+  {
+    "id": 317,
+    "fr": "Dernier discours préparé comportant des chiffres",
+    "en": "Most recent speech prepared containing figures"
+  },
+  {
+    "id": 318,
+    "fr": "Un tel cas peut-il être décrit ?",
+    "en": "Can such a case be described?"
+  },
+  {
+    "id": 319,
+    "fr": "Mois et année de fin de préparation, MM/AAAA",
+    "en": "Month and year preparation ended, MM/YYYY"
+  },
+  {
+    "id": 320,
+    "fr": "Thème général, sans nom de personne",
+    "en": "General topic, without a person’s name"
+  },
+  {
+    "id": 321,
+    "fr": "Public principal",
+    "en": "Main audience"
+  },
+  {
+    "id": 322,
+    "fr": "Grand public",
+    "en": "General public"
+  },
+  {
+    "id": 323,
+    "fr": "Parlement ou élus",
+    "en": "Parliament or elected representatives"
+  },
+  {
+    "id": 324,
+    "fr": "Public technique ou professionnel",
+    "en": "Technical or professional audience"
+  },
+  {
+    "id": 325,
+    "fr": "Communauté locale",
+    "en": "Local community"
+  },
+  {
+    "id": 326,
+    "fr": "Langue ou langues du discours",
+    "en": "Language(s) of the speech"
+  },
+  {
+    "id": 327,
+    "fr": "Origine du premier chiffre utilisé",
+    "en": "Origin of the first figure used"
+  },
+  {
+    "id": 328,
+    "fr": "Source publiée de l’INS consultée directement",
+    "en": "Published NSO source consulted directly"
+  },
+  {
+    "id": 329,
+    "fr": "Chiffre transmis directement par l’INS",
+    "en": "Figure supplied directly by the NSO"
+  },
+  {
+    "id": 330,
+    "fr": "Discours ou document précédent sans retour à la source statistique",
+    "en": "Previous speech or document, without consulting the statistical source"
+  },
+  {
+    "id": 331,
+    "fr": "Si un appui a été demandé à l’INS pour ce cas, délai demandé",
+    "en": "If NSO support was requested for this case, requested turnaround time"
+  },
+  {
+    "id": 332,
+    "fr": "Aucun appui demandé à l’INS pour ce cas",
+    "en": "No NSO support requested for this case"
+  },
+  {
+    "id": 333,
+    "fr": "Si un appui a été demandé, son issue",
+    "en": "If support was requested, its outcome"
+  },
+  {
+    "id": 334,
+    "fr": "Chiffres reçus à temps",
+    "en": "Figures received on time"
+  },
+  {
+    "id": 335,
+    "fr": "Chiffres reçus après l’échéance",
+    "en": "Figures received after the deadline"
+  },
+  {
+    "id": 336,
+    "fr": "Aucun chiffre reçu",
+    "en": "No figures received"
+  },
+  {
+    "id": 337,
+    "fr": "Chiffres reçus, sans échéance convenue",
+    "en": "Figures received, with no agreed deadline"
+  },
+  {
+    "id": 338,
+    "fr": "Aucun appui demandé",
+    "en": "No support requested"
+  },
+  {
+    "id": 339,
+    "fr": "Cas partageable, facultatif : lien vers le discours public ou bref extrait non confidentiel autorisé, avec sa date",
+    "en": "Shareable case, optional: link to the public speech or brief authorised non-confidential extract, with its date"
+  },
+  {
+    "id": 340,
+    "fr": "Considérer le discours comportant des chiffres dont la préparation s’est achevée le plus récemment pendant la période, et non un exemple sélectionné pour sa qualité. Si aucun cas n’est décrit, passer à QU07. L’absence de lien ne remet pas en cause votre réponse.",
+    "en": "Consider the speech containing figures whose preparation ended most recently during the period, rather than an example chosen for its quality. If no case can be described, proceed to QU07. The absence of a link does not invalidate your response."
+  },
+  {
+    "id": 341,
+    "fr": "Informations disponibles pour comprendre ce chiffre",
+    "en": "Information available to understand this figure"
+  },
+  {
+    "id": 342,
+    "fr": "Source permettant de retrouver le résultat",
+    "en": "Source enabling the result to be located"
+  },
+  {
+    "id": 343,
+    "fr": "Dans le document ou message utilisé",
+    "en": "In the document or message used"
+  },
+  {
+    "id": 344,
+    "fr": "Accessible par un lien ou une référence précise disponible",
+    "en": "Accessible through an available specific link or reference"
+  },
+  {
+    "id": 345,
+    "fr": "Date de publication ou version",
+    "en": "Publication date or version"
+  },
+  {
+    "id": 346,
+    "fr": "Période de la valeur",
+    "en": "Period of the value"
+  },
+  {
+    "id": 347,
+    "fr": "Unité et base de calcul du taux, le cas échéant",
+    "en": "Unit and calculation basis of the rate, where applicable"
+  },
+  {
+    "id": 348,
+    "fr": "Limites de comparaison, incertitudes ou précautions utiles",
+    "en": "Comparability limitations, uncertainties or relevant cautions"
+  },
+  {
+    "id": 349,
+    "fr": "Pour le premier chiffre indiqué en QU03, quelles informations aviez-vous effectivement à disposition lors de la préparation ?",
+    "en": "For the first figure identified in QU03, what information did you actually have available during preparation?"
+  },
+  {
+    "id": 350,
+    "fr": "Vérifications avant diffusion de ce discours",
+    "en": "Checks before dissemination of this speech"
+  },
+  {
+    "id": 351,
+    "fr": "Qui a effectivement vérifié les chiffres et leur interprétation ? Plusieurs réponses possibles.",
+    "en": "Who actually checked the figures and their interpretation? Multiple answers allowed."
+  },
+  {
+    "id": 352,
+    "fr": "Rédacteur ou équipe de communication",
+    "en": "Speechwriter or communication team"
+  },
+  {
+    "id": 353,
+    "fr": "Conseiller technique ou statisticien de l’institution",
+    "en": "Institution’s technical adviser or statistician"
+  },
+  {
+    "id": 354,
+    "fr": "Autre organisme producteur",
+    "en": "Other producing organisation"
+  },
+  {
+    "id": 355,
+    "fr": "L’INS a-t-il relu le passage contenant les chiffres dans le projet de discours ?",
+    "en": "Did the NSO review the passage containing figures in the draft speech?"
+  },
+  {
+    "id": 356,
+    "fr": "Non, il n’a pas été sollicité",
+    "en": "No, it was not asked"
+  },
+  {
+    "id": 357,
+    "fr": "Non, il a été sollicité mais la relecture n’a pas eu lieu à temps",
+    "en": "No, it was asked but the review did not take place in time"
+  },
+  {
+    "id": 358,
+    "fr": "Non applicable, cette étape n’a pas eu lieu",
+    "en": "Not applicable, this stage did not occur"
+  },
+  {
+    "id": 359,
+    "fr": "Une référence à la source statistique figurait-elle dans la version diffusée ?",
+    "en": "Did the disseminated version include a reference to the statistical source?"
+  },
+  {
+    "id": 360,
+    "fr": "Discours non diffusé ou version diffusée inconnue",
+    "en": "Speech not disseminated or disseminated version unknown"
+  },
+  {
+    "id": 361,
+    "fr": "Corrections et retour à l’INS",
+    "en": "Corrections and feedback to the NSO"
+  },
+  {
+    "id": 362,
+    "fr": "Pendant la période, avez-vous connaissance d’un chiffre ou d’une interprétation à corriger après finalisation d’un discours ?",
+    "en": "During the period, do you know of a figure or interpretation requiring correction after a speech was finalised?"
+  },
+  {
+    "id": 363,
+    "fr": "Oui, correction avant diffusion",
+    "en": "Yes, correction before dissemination"
+  },
+  {
+    "id": 364,
+    "fr": "Oui, correction après diffusion",
+    "en": "Yes, correction after dissemination"
+  },
+  {
+    "id": 365,
+    "fr": "Les deux situations",
+    "en": "Both situations"
+  },
+  {
+    "id": 366,
+    "fr": "Aucun discours concerné",
+    "en": "No relevant speech"
+  },
+  {
+    "id": 367,
+    "fr": "Retour à la source ou au producteur",
+    "en": "Returning to the source or producer"
+  },
+  {
+    "id": 368,
+    "fr": "Version corrigée transmise à l’équipe",
+    "en": "Corrected version sent to the team"
+  },
+  {
+    "id": 369,
+    "fr": "Conservation du changement et de son motif",
+    "en": "Keeping a record of the change and its reason"
+  },
+  {
+    "id": 370,
+    "fr": "Rectificatif diffusé pour une erreur déjà publique",
+    "en": "Correction issued for an already public error"
+  },
+  {
+    "id": 371,
+    "fr": "Vérification de la prise en compte",
+    "en": "Checking that the correction was incorporated"
+  },
+  {
+    "id": 372,
+    "fr": "Pour le dernier appui demandé à l’INS pendant la période, lui avez-vous transmis un retour sur l’utilisation des chiffres ?",
+    "en": "For the most recent support requested from the NSO during the period, did you provide feedback on the use of the figures?"
+  },
+  {
+    "id": 373,
+    "fr": "Oui, texte ou lien vers le discours",
+    "en": "Yes, text or a link to the speech"
+  },
+  {
+    "id": 374,
+    "fr": "Oui, commentaire sur l’appui, sans texte ni lien",
+    "en": "Yes, comments on the support, without text or link"
+  },
+  {
+    "id": 375,
+    "fr": "Appuis les plus utiles",
+    "en": "Most useful forms of support"
+  },
+  {
+    "id": 376,
+    "fr": "Contact clairement identifié à l’INS",
+    "en": "Clearly identified contact at the NSO"
+  },
+  {
+    "id": 377,
+    "fr": "Réponse dans un délai convenu, y compris en urgence",
+    "en": "Response within an agreed deadline, including urgent requests"
+  },
+  {
+    "id": 378,
+    "fr": "Fiche courte avec chiffre, source et période",
+    "en": "Short fact sheet with figure, source and period"
+  },
+  {
+    "id": 379,
+    "fr": "Explication des définitions et limites",
+    "en": "Explanation of definitions and limitations"
+  },
+  {
+    "id": 380,
+    "fr": "Proposition de phrases compréhensibles",
+    "en": "Suggested clear wording"
+  },
+  {
+    "id": 381,
+    "fr": "Relecture rapide du passage statistique",
+    "en": "Quick review of the statistical passage"
+  },
+  {
+    "id": 382,
+    "fr": "Alerte en cas de révision ou d’erreur",
+    "en": "Alert in the event of a revision or error"
+  },
+  {
+    "id": 383,
+    "fr": "Exemples et courte formation",
+    "en": "Examples and brief training"
+  },
+  {
+    "id": 384,
+    "fr": "Pour la priorité 1, citer une difficulté effectivement rencontrée, au plus 40 mots. À défaut, écrire « besoin anticipé ».",
+    "en": "For priority 1, describe a difficulty actually experienced, up to 40 words. Otherwise write ‘anticipated need’."
+  },
+  {
+    "id": 385,
+    "fr": "Contrainte particulière liée au public, à la langue ou au contexte de communication, facultatif ; au plus 40 mots, aucune opinion politique demandée",
+    "en": "Specific constraint related to the audience, language or communication context, optional; up to 40 words, no political opinion requested"
+  },
+  {
+    "id": 386,
+    "fr": "Pratique nouvelle après le 31 octobre, facultatif : changement et date",
+    "en": "New practice after 31 October, optional: change and date"
+  },
+  {
+    "id": 387,
+    "fr": "Classer au plus trois codes différents. Les choix 0 et 98 excluent les autres priorités.",
+    "en": "Rank up to three different codes. Options 0 and 98 exclude other priorities."
+  },
+  {
+    "id": 388,
+    "fr": "Modalité autorisée pour la contribution et le cas partagé",
+    "en": "Permitted use of the contribution and shared case"
+  },
+  {
+    "id": 389,
+    "fr": "Acceptez-vous un complément ou un test ?",
+    "en": "Do you agree to follow-up or a test?"
+  },
+  {
+    "id": 390,
+    "fr": "CER et organisations internationales",
+    "en": "RECs and international organisations"
+  },
+  {
+    "id": 391,
+    "fr": "Participation et champ de la contribution",
+    "en": "Participation and scope of the contribution"
+  },
+  {
+    "id": 392,
+    "fr": "Organisation",
+    "en": "Organisation"
+  },
+  {
+    "id": 393,
+    "fr": "Type d’organisation",
+    "en": "Type of organisation"
+  },
+  {
+    "id": 394,
+    "fr": "Communauté économique régionale (CER)",
+    "en": "Regional Economic Community (REC)"
+  },
+  {
+    "id": 395,
+    "fr": "Organisation internationale",
+    "en": "International organisation"
+  },
+  {
+    "id": 396,
+    "fr": "Fonction du service répondant, sans nom personnel",
+    "en": "Function of the responding service, without a personal name"
+  },
+  {
+    "id": 397,
+    "fr": "Statut de la contribution",
+    "en": "Contribution status"
+  },
+  {
+    "id": 398,
+    "fr": "Territoires ou institutions couverts par votre expérience, sans supposer la couverture de tous les membres",
+    "en": "Territories or institutions covered by your experience, without assuming coverage of all members"
+  },
+  {
+    "id": 399,
+    "fr": "Appuis effectivement réalisés pendant la période",
+    "en": "Support actually provided during the period"
+  },
+  {
+    "id": 400,
+    "fr": "Avez-vous réalisé ou suivi un appui lié à l’utilisation des statistiques dans les discours ?",
+    "en": "Have you provided or monitored support related to the use of statistics in speeches?"
+  },
+  {
+    "id": 401,
+    "fr": "Hors de votre champ d’activité",
+    "en": "Outside your area of activity"
+  },
+  {
+    "id": 402,
+    "fr": "Si oui, cocher les activités réellement connues",
+    "en": "If yes, select the activities actually known"
+  },
+  {
+    "id": 403,
+    "fr": "Guide ou modèle",
+    "en": "Guide or template"
+  },
+  {
+    "id": 404,
+    "fr": "Formation ou accompagnement",
+    "en": "Training or support"
+  },
+  {
+    "id": 405,
+    "fr": "Fourniture ou vérification de chiffres",
+    "en": "Providing or checking figures"
+  },
+  {
+    "id": 406,
+    "fr": "Appui à une procédure nationale",
+    "en": "Support for a national procedure"
+  },
+  {
+    "id": 407,
+    "fr": "Diffusion ou partage d’expériences",
+    "en": "Dissemination or sharing experiences"
+  },
+  {
+    "id": 408,
+    "fr": "Décrire un cas en deux phrases : période, type d’institution bénéficiaire et réalisation observable. Ajouter une référence publique si disponible.",
+    "en": "Describe one case in two sentences: period, type of beneficiary institution and observable output. Add a public reference if available."
+  },
+  {
+    "id": 409,
+    "fr": "Ne pas interpréter une participation à une formation comme la preuve d’une réforme appliquée.",
+    "en": "Participation in training must not be interpreted as proof that a reform has been implemented."
+  },
+  {
+    "id": 410,
+    "fr": "Pratiques transférables et conditions d’adaptation",
+    "en": "Transferable practices and conditions for adaptation"
+  },
+  {
+    "id": 411,
+    "fr": "Si vous ne proposez aucune pratique, indiquer la situation ; sinon laisser ce champ vide",
+    "en": "If you are not proposing a practice, indicate the situation; otherwise leave this field blank"
+  },
+  {
+    "id": 412,
+    "fr": "Aucune pratique documentée à proposer",
+    "en": "No documented practice to propose"
+  },
+  {
+    "id": 413,
+    "fr": "Au maximum deux pratiques : pratique ; source ou preuve ; contexte où elle a fonctionné ; condition nécessaire à son adaptation. Au plus 80 mots au total.",
+    "en": "Up to two practices: practice; source or evidence; context in which it worked; condition required for adaptation. Up to 80 words in total."
+  },
+  {
+    "id": 414,
+    "fr": "Citer seulement des pratiques effectivement observées ou documentées. Un exemple plus ancien peut être cité avec sa date ; il ne constitue pas un appui réalisé pendant la période.",
+    "en": "Cite only practices actually observed or documented. An older example may be cited with its date; it is not support provided during the reference period."
+  },
+  {
+    "id": 415,
+    "fr": "Normes et référentiels internationaux",
+    "en": "International standards and frameworks"
+  },
+  {
+    "id": 416,
+    "fr": "Quels textes internationaux ou régionaux utilisez-vous ou recommandez-vous pour la qualité et la bonne utilisation des statistiques dans les discours et la décision ?",
+    "en": "Which international or regional texts do you use or recommend for the quality and proper use of statistics in speeches and decision-making?"
+  },
+  {
+    "id": 417,
+    "fr": "Une ou plusieurs références à citer",
+    "en": "One or more references to cite"
+  },
+  {
+    "id": 418,
+    "fr": "Aucune référence à proposer",
+    "en": "No reference to propose"
+  },
+  {
+    "id": 419,
+    "fr": "Hors de mon champ",
+    "en": "Outside my remit"
+  },
+  {
+    "id": 420,
+    "fr": "Référence 1 : titre exact ; organisme auteur ; année ou version ; lien public ou repère ; principe utile ; usage pour le discours ou la décision ; condition d’adaptation à un INS.",
+    "en": "Reference 1: exact title; authoring organisation; year or version; public link or reference; useful principle; use for speeches or decisions; condition for adaptation to an NSO."
+  },
+  {
+    "id": 421,
+    "fr": "Statut de cette référence",
+    "en": "Status of this reference"
+  },
+  {
+    "id": 422,
+    "fr": "Utilisée pendant la période",
+    "en": "Used during the period"
+  },
+  {
+    "id": 423,
+    "fr": "Recommandée, sans usage observé",
+    "en": "Recommended, without observed use"
+  },
+  {
+    "id": 424,
+    "fr": "Utilisée et recommandée",
+    "en": "Used and recommended"
+  },
+  {
+    "id": 425,
+    "fr": "Type de référence",
+    "en": "Type of reference"
+  },
+  {
+    "id": 426,
+    "fr": "Texte normatif",
+    "en": "Normative text"
+  },
+  {
+    "id": 427,
+    "fr": "Guide ou manuel",
+    "en": "Guide or manual"
+  },
+  {
+    "id": 428,
+    "fr": "Recommandation institutionnelle",
+    "en": "Institutional recommendation"
+  },
+  {
+    "id": 429,
+    "fr": "Référence 2 (facultative) : titre exact ; organisme auteur ; année ou version ; lien public ou repère ; principe utile ; usage pour le discours ou la décision ; condition d’adaptation à un INS.",
+    "en": "Reference 2 (optional): exact title; authoring organisation; year or version; public link or reference; useful principle; use for speeches or decisions; condition for adaptation to an NSO."
+  },
+  {
+    "id": 430,
+    "fr": "Préciser une application concrète ou une limite connue, au plus 60 mots",
+    "en": "Specify a practical application or known limitation, up to 60 words"
+  },
+  {
+    "id": 431,
+    "fr": "Répondre à partir de votre pratique ; aucune recherche supplémentaire n’est demandée. Deux références au maximum. Citer un texte ne signifie ni qu’il s’applique juridiquement à tous les pays ni qu’il est mis en œuvre.",
+    "en": "Answer from your experience; no additional research is requested. At most two references. Citing a text does not mean that it legally applies to all countries or has been implemented."
+  },
+  {
+    "id": 432,
+    "fr": "Besoins prioritaires et contribution envisageable",
+    "en": "Priority needs and possible contribution"
+  },
+  {
+    "id": 433,
+    "fr": "Retenir au plus trois besoins",
+    "en": "Select up to three needs"
+  },
+  {
+    "id": 434,
+    "fr": "Procédures communes adaptables",
+    "en": "Adaptable common procedures"
+  },
+  {
+    "id": 435,
+    "fr": "Sources et fiches de chiffres",
+    "en": "Sources and fact sheets"
+  },
+  {
+    "id": 436,
+    "fr": "Contrôle et interprétation",
+    "en": "Checking and interpretation"
+  },
+  {
+    "id": 437,
+    "fr": "Communication et formulation",
+    "en": "Communication and wording"
+  },
+  {
+    "id": 438,
+    "fr": "Formation",
+    "en": "Training"
+  },
+  {
+    "id": 439,
+    "fr": "Partage d’expériences",
+    "en": "Sharing experiences"
+  },
+  {
+    "id": 440,
+    "fr": "Adaptation linguistique",
+    "en": "Language adaptation"
+  },
+  {
+    "id": 441,
+    "fr": "Aucun besoin identifié",
+    "en": "No identified need"
+  },
+  {
+    "id": 442,
+    "fr": "Quelle contribution votre organisation pourrait-elle envisager, sous réserve de sa décision interne ? Un choix.",
+    "en": "What contribution might your organisation consider, subject to its internal decision? Select one."
+  },
+  {
+    "id": 443,
+    "fr": "Relais de consultation",
+    "en": "Relaying the consultation"
+  },
+  {
+    "id": 444,
+    "fr": "Documents publics",
+    "en": "Public documents"
+  },
+  {
+    "id": 445,
+    "fr": "Commentaires techniques",
+    "en": "Technical comments"
+  },
+  {
+    "id": 446,
+    "fr": "Mise en relation avec des utilisateurs volontaires",
+    "en": "Contact with volunteer users"
+  },
+  {
+    "id": 447,
+    "fr": "Aucune contribution envisagée à ce stade",
+    "en": "No contribution envisaged at this stage"
+  },
+  {
+    "id": 448,
+    "fr": "Préciser une contrainte de moyens, de mandat ou de langue, si utile",
+    "en": "Specify a resource, mandate or language constraint, if useful"
+  },
+  {
+    "id": 449,
+    "fr": "Cette réponse ne constitue pas un engagement de financement ou de personnel.",
+    "en": "This response is not a commitment of funding or staff."
+  },
+  {
+    "id": 450,
+    "fr": "Recommandations des organisations internationales",
+    "en": "Recommendations from international organisations"
+  },
+  {
+    "id": 451,
+    "fr": "Quelles recommandations d’organisations internationales devraient être prises en compte dans le document stratégique ?",
+    "en": "Which recommendations from international organisations should be considered in the strategic document?"
+  },
+  {
+    "id": 452,
+    "fr": "Une ou plusieurs recommandations à proposer",
+    "en": "One or more recommendations to propose"
+  },
+  {
+    "id": 453,
+    "fr": "Aucune",
+    "en": "None"
+  },
+  {
+    "id": 454,
+    "fr": "Recommandation 1 : organisation d’origine ; document, date et lien ; action ; acteur ; niveau national, régional ou continental ; difficulté ; moyens et conditions ; preuve de réalisation.",
+    "en": "Recommendation 1: originating organisation; document, date and link; action; responsible actor; national, regional or continental level; difficulty; resources and conditions; evidence of implementation."
+  },
+  {
+    "id": 455,
+    "fr": "Nature de cette recommandation",
+    "en": "Nature of this recommendation"
+  },
+  {
+    "id": 456,
+    "fr": "Recommandation institutionnelle publiée",
+    "en": "Published institutional recommendation"
+  },
+  {
+    "id": 457,
+    "fr": "Recommandation institutionnelle non publiée, partage autorisé",
+    "en": "Unpublished institutional recommendation, authorised for sharing"
+  },
+  {
+    "id": 458,
+    "fr": "Proposition professionnelle personnelle",
+    "en": "Personal professional proposal"
+  },
+  {
+    "id": 459,
+    "fr": "À préciser",
+    "en": "To be clarified"
+  },
+  {
+    "id": 460,
+    "fr": "Recommandation 2 (facultative) : organisation d’origine ; document, date et lien ; action ; acteur ; niveau national, régional ou continental ; difficulté ; moyens et conditions ; preuve de réalisation.",
+    "en": "Recommendation 2 (optional): originating organisation; document, date and link; action; responsible actor; national, regional or continental level; difficulty; resources and conditions; evidence of implementation."
+  },
+  {
+    "id": 461,
+    "fr": "Quelle recommandation est prioritaire et pourquoi ? Au plus 40 mots.",
+    "en": "Which recommendation takes priority and why? Up to 40 words."
+  },
+  {
+    "id": 462,
+    "fr": "Deux recommandations au maximum. Distinguer la recommandation institutionnelle documentée de la proposition personnelle. Ces propositions ne constituent ni un engagement de financement ni une décision d’adoption.",
+    "en": "At most two recommendations. Distinguish a documented institutional recommendation from a personal proposal. These proposals are neither funding commitments nor adoption decisions."
+  },
+  {
+    "id": 463,
+    "fr": "Attribution et suite éventuelle",
+    "en": "Attribution and possible follow-up"
+  },
+  {
+    "id": 464,
+    "fr": "Réutilisation autorisée",
+    "en": "Authorised reuse"
+  },
+  {
+    "id": 465,
+    "fr": "Pratique nouvelle après le 31 octobre, facultatif : description courte et date",
+    "en": "New practice after 31 October, optional: brief description and date"
+  },
+  {
+    "id": 466,
+    "fr": "Réponse abrégée",
+    "en": "Short response"
+  },
+  {
+    "id": 467,
+    "fr": "5 à 10 minutes",
+    "en": "5 to 10 minutes"
+  },
+  {
+    "id": 468,
+    "fr": "Participation et périmètre",
+    "en": "Participation and scope"
+  },
+  {
+    "id": 469,
+    "fr": "Fonction",
+    "en": "Function"
+  },
+  {
+    "id": 470,
+    "fr": "Profil de la contribution",
+    "en": "Contribution profile"
+  },
+  {
+    "id": 471,
+    "fr": "Autre producteur de statistiques",
+    "en": "Other producer of statistics"
+  },
+  {
+    "id": 472,
+    "fr": "Équipe préparant les discours",
+    "en": "Speech-preparation team"
+  },
+  {
+    "id": 473,
+    "fr": "CER ou organisation internationale",
+    "en": "REC or international organisation"
+  },
+  {
+    "id": 474,
+    "fr": "Réponse institutionnelle, de service ou individuelle",
+    "en": "Institutional, service-level or individual response"
+  },
+  {
+    "id": 475,
+    "fr": "Référence d’une contribution précédente, si connue",
+    "en": "Reference of an earlier contribution, if known"
+  },
+  {
+    "id": 476,
+    "fr": "Dernière situation connue",
+    "en": "Most recent known situation"
+  },
+  {
+    "id": 477,
+    "fr": "Décrivez une demande ou préparation de discours pendant la période : mois, thème, délai disponible, appui obtenu ou non. Si aucun cas n’est connu, l’indiquer. Trois lignes.",
+    "en": "Describe a request or speech preparation during the period: month, topic, time available, support obtained or not. If no case is known, say so. Three lines."
+  },
+  {
+    "id": 478,
+    "fr": "Source et contrôle",
+    "en": "Source and checking"
+  },
+  {
+    "id": 479,
+    "fr": "Pour ce cas, pouvait-on retrouver la source du chiffre ?",
+    "en": "For this case, could the source of the figure be located?"
+  },
+  {
+    "id": 480,
+    "fr": "Qui a vérifié le contenu avant transmission ? Fonction ou absence de contrôle connu.",
+    "en": "Who checked the content before transmission? Function or absence of a known check."
+  },
+  {
+    "id": 481,
+    "fr": "Première amélioration",
+    "en": "First improvement"
+  },
+  {
+    "id": 482,
+    "fr": "Quelle difficulté faut-il résoudre en priorité ? Quelle action serait possible avec les moyens existants et quelle fonction pourrait la conduire ? Trois lignes.",
+    "en": "Which difficulty should be addressed first? What action would be possible with existing resources and which function could lead it? Three lines."
+  },
+  {
+    "id": 483,
+    "fr": "Réutilisation et suite",
+    "en": "Reuse and follow-up"
+  },
+  {
+    "id": 484,
+    "fr": "Restitution autorisée",
+    "en": "Authorised reporting"
+  },
+  {
+    "id": 485,
+    "fr": "Lien public utile, facultatif",
+    "en": "Useful public link, optional"
+  },
+  {
+    "id": 486,
+    "fr": "Contact institutionnel pour un complément : fonction ou service, facultatif",
+    "en": "Institutional follow-up contact: function or service, optional"
+  },
+  {
+    "id": 487,
+    "fr": "Contact institutionnel pour un complément, facultatif (courriel)",
+    "en": "Institutional contact for follow-up, optional (email)"
+  },
+  {
+    "id": 488,
+    "fr": "STATAFRIC et le consultant Mamadou Niang préparent des outils pratiques pour l’appui statistique aux discours et à la décision. Référence des pratiques : du 1er novembre 2025 au 31 octobre 2026 ; dater séparément les évolutions ultérieures. Collecte : du 19 au 26 novembre 2026 inclus. Les réponses réelles alimenteront L3, jamais L2 qui reste documentaire.\n\nParticipation volontaire. Une réponse institutionnelle, de service ou individuelle est recevable si son périmètre est précisé. Répondre directement à l’équipe de la mission, sans approbation préalable de l’INS relais. Les restitutions sont agrégées ou anonymisées par défaut ; attribution ou citation identifiable selon votre choix à la dernière rubrique. Les pièces remises au Client respectent ces autorisations. Un cas particulier peut rester reconnaissable. Les coordonnées facultatives sont séparées de l’analyse.\n\nNe transmettre ni opinions politiques, données individuelles, coordonnées personnelles inutiles ni document confidentiel. Utiliser des liens publics ou extraits non confidentiels autorisés. Une contribution individuelle n’engage pas l’institution.\n\nUne réponse partielle est utile. Aucun choix substantiel n’est précoché. Un blanc ne signifie ni « non » ni zéro. « Aucun », « ne sait pas » et « non applicable » sont exclusifs des autres réponses lorsque le questionnaire le prévoit.\n\nAvant l’envoi, la saisie reste dans la session, pas dans la base. Elle peut être perdue à la fermeture : télécharger un brouillon pour reprendre. Un brouillon ne vaut pas envoi. Seul un accusé confirmé atteste l’enregistrement. Les réponses originales restent protégées ; seuls le consultant et les personnes habilitées y accèdent. La langue peut être changée sans créer une nouvelle contribution. En cas de difficulté, utiliser le formulaire de repli dans la même langue et l’envoyer au contact de la mission.",
+    "en": "STATAFRIC and consultant Mamadou Niang are preparing practical tools for statistical support to speeches and decision-making. Reference period for practices: 1 November 2025 to 31 October 2026; date subsequent changes separately. Collection: 19 to 26 November 2026 inclusive. Actual responses will inform L3, never the exclusively desk-based L2.\n\nParticipation is voluntary. Institutional, service-level and individual contributions are accepted when their scope is clear. Respond directly to the assignment team, without prior approval by the forwarding NSO. Reporting is aggregated or anonymised by default; identifiable attribution or quotation follows your choice in the last section. Materials handed to the Client respect these permissions. A distinctive case may remain recognisable. Optional contact details are separate from analysis.\n\nDo not provide political opinions, individual-level data, unnecessary personal details or confidential documents. Use public links or authorised non-confidential extracts. An individual contribution does not commit the institution.\n\nA partial response is useful. No substantive option is preselected. A blank is neither no nor zero. None, do not know and not applicable exclude other answers where the questionnaire specifies.\n\nBefore submission, entries remain in the session, not in the database. They may be lost on closing: download a draft to resume. A draft is not a submission. Only a confirmed receipt attests to recording. Original responses are protected; only the consultant and authorised persons can access them. Changing language does not create a new contribution. If needed, use the fallback form in the same language and email it to the assignment contact."
+  }
+]

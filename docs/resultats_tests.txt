@@ -1,0 +1,5 @@
+........................................................................ [ 51%]
+....................................................................     [100%]
+=========================== short test summary info ============================
+SKIPPED [1] tests/test_streamlit.py:4: could not import 'streamlit': No module named 'streamlit'
+140 passed, 1 skipped in 0.85s

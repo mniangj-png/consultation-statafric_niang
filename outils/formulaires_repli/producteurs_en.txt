@@ -1,0 +1,627 @@
+﻿Other producers of statistics
+2026-11-15.web-2
+Reference: 1 Nov 2025–31 Oct 2026. Collection: 19–26 November 2026 inclusive.
+STATAFRIC and consultant Mamadou Niang are preparing practical tools for statistical support to speeches and decision-making. Reference period for practices: 1 November 2025 to 31 October 2026; date subsequent changes separately. Collection: 19 to 26 November 2026 inclusive. Actual responses will inform L3, never the exclusively desk-based L2.
+
+Participation is voluntary. Institutional, service-level and individual contributions are accepted when their scope is clear. Respond directly to the assignment team, without prior approval by the forwarding NSO. Reporting is aggregated or anonymised by default; identifiable attribution or quotation follows your choice in the last section. Materials handed to the Client respect these permissions. A distinctive case may remain recognisable. Optional contact details are separate from analysis.
+
+Do not provide political opinions, individual-level data, unnecessary personal details or confidential documents. Use public links or authorised non-confidential extracts. An individual contribution does not commit the institution.
+
+A partial response is useful. No substantive option is preselected. A blank is neither no nor zero. None, do not know and not applicable exclude other answers where the questionnaire specifies.
+
+Before submission, entries remain in the session, not in the database. They may be lost on closing: download a draft to resume. A draft is not a submission. Only a confirmed receipt attests to recording. Original responses are protected; only the consultant and authorised persons can access them. Changing language does not create a new contribution. If needed, use the fallback form in the same language and email it to the assignment contact.
+Fallback form: retain the codes. Display conditions express routing: ∈ means “among”, ∉ “not among”, ∩ ≠ ∅ “contains at least one”. Do not answer fields whose conditions are not met. Partial responses are accepted. After refusing participation, stop without further answers.
+
+QP01 — Consent, profile and scope of the contribution
+For producers outside the NSO only. Internal NSO units use QI. Simply forwarding administrative files without statistical processing is not sufficient. If your organisation does not produce statistics, use QU for a user role or seek advice from the consultant. Participation does not confer official status on the organisation’s statistics.
+QP01_Participation — Do you agree to the use of your contribution as described in the notice?
+[ ] 1 I agree
+[ ] 0 I do not wish to participate — end of questionnaire
+____________________________
+QP01_Produit — Does your organisation produce statistics or indicators usable for public action?
+Display condition : (QP01_Participation ∈ {1})
+[ ] 1 Yes
+[ ] 0 No
+[ ] 98 Do not know
+____________________________
+QP01_Pays — Country
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+____________________________
+QP01_Institution — Parent institution
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+____________________________
+QP01_Unite — Production service or unit
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+____________________________
+QP01_Type — Main type of organisation
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Ministry or sectoral statistical unit
+[ ] 2 Central bank or monetary institution
+[ ] 3 Other administration or administrative-data body
+[ ] 4 Public agency or observatory
+[ ] 5 Local authority or territorial service
+[ ] 6 Research organisation
+[ ] 7 Private or non-profit producer
+[ ] 97 Other
+____________________________
+QP01_Type_Autre — Other: please specify
+Display condition : ((QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP01_Type ∈ {97})))
+____________________________
+QP01_Domaine — Main domain
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Economy, finance or monetary affairs
+[ ] 2 Health or social protection
+[ ] 3 Education or training
+[ ] 4 Agriculture or food
+[ ] 5 Employment or living conditions
+[ ] 6 Environment, energy or infrastructure
+[ ] 7 Population, civil registration or territory
+[ ] 8 Multiple domains with no main domain
+[ ] 97 Other
+____________________________
+QP01_Domaine_Autre — Other: please specify
+Display condition : ((QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP01_Domaine ∈ {97})))
+____________________________
+QP01_Domaines_autres — Other domains, optional
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+____________________________
+QP01_Statut — Response status
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Consolidated institutional response
+[ ] 2 Service-level contribution, not consolidated at institution level
+[ ] 3 Individual contribution based on my professional practice
+____________________________
+QP01_Fonction — Function, without a personal name
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Production
+[ ] 2 Methods or quality
+[ ] 3 Communication or dissemination
+[ ] 4 Coordination or management
+[ ] 97 Other
+____________________________
+QP01_Fonction_Autre — Other: please specify
+Display condition : ((QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP01_Fonction ∈ {97})))
+____________________________
+QP01_Envoi — Type of submission
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Initial response
+[ ] 2 Supplement
+____________________________
+QP01_Reference_precedente — Reference or date of the previous submission, if known
+Display condition : ((QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP01_Envoi ∈ {2})))
+____________________________
+QP01_Origine_invitation — Origin of the link
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 NSO
+[ ] 2 STATAFRIC or consultant
+[ ] 3 Other forwarding organisation
+[ ] 4 Unsolicited access
+[ ] 98 Do not know
+____________________________
+QP01_INS_relais — Forwarding NSO or organisation, optional
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+____________________________
+QP01_Langue_texte — Main language of your free-text responses
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] fr French
+[ ] en English
+[ ] ar Arabic
+[ ] pt Portuguese
+[ ] es Spanish
+____________________________
+
+QP02 — Support requests received during the reference period
+A request concerns a speech or oral intervention, received directly or through the NSO. Count exchanges for the same support only once. Exclude general requests with no known link to a speech. If QP02a = 0, go to QP08 after QP02d. A real case may be described when volume is unknown. Multiple producers may support the same speech: do not add their requests into a national total.
+QP02a — How many distinct requests did you identify within the scope of your response?
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 0 None
+[ ] 1 1 to 5
+[ ] 2 6 to 20
+[ ] 3 21 to 50
+[ ] 4 More than 50
+[ ] 98 Do not know
+____________________________
+QP02b — Did any of these requests require a response within 24 hours of receipt?
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Yes
+[ ] 0 No
+[ ] 98 Do not know
+[ ] 99 Not applicable, no requests
+____________________________
+QP02c — What is this response based on?
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Register or inventory consulted
+[ ] 2 Estimate based on known practice
+[ ] 98 Do not know
+____________________________
+QP02d — Separately, did your organisation provide statistics for a decision note or decision-making process with no identified link to a speech?
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Yes
+[ ] 0 No
+[ ] 98 Do not know
+____________________________
+QP02d_Theme — If yes, give the topic or type of decision, without confidential details, in one sentence. Do not add this support to the number of speech requests.
+Display condition : ((QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP02d ∈ {1})))
+____________________________
+
+QP03 — Most recent known closed request
+Select the request most recently closed during the reference period, whether or not figures were provided. Do not select only a particularly successful example. Situations 3 and 98 lead to QP08. Situation 2 leads to QP04 and then QP08.
+QP03_Situation — Situation
+Display condition : (QP02a ∉ {0} AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Figures were provided
+[ ] 2 The request was closed without providing figures
+[ ] 3 No known request closed during the period
+[ ] 98 I do not have the necessary information
+____________________________
+QP03_Mois — Month and year of closure, MM/YYYY
+Display condition : (QP02a ∉ {0} AND (QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP03_Situation ∈ {1, 2})))
+____________________________
+QP03_Theme — General topic, without a person’s name or a confidential speech title
+Display condition : (QP02a ∉ {0} AND (QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP03_Situation ∈ {1, 2})))
+____________________________
+QP03_Demandeur — Known final requester
+Display condition : (QP02a ∉ {0} AND (QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP03_Situation ∈ {1, 2})))
+[ ] 1 Office or team of a national decision-maker
+[ ] 2 Ministry or sectoral administration
+[ ] 3 Territorial authority
+[ ] 4 Your organisation’s management
+[ ] 5 NSO
+[ ] 6 Regional or international institution
+[ ] 97 Other
+[ ] 98 Do not know
+____________________________
+QP03_Demandeur_Autre — Other: please specify
+Display condition : (QP02a ∉ {0} AND (QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP03_Demandeur ∈ {97})))
+____________________________
+QP03_Circuit — Main request pathway
+Display condition : (QP02a ∉ {0} AND (QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP03_Situation ∈ {1, 2})))
+[ ] 1 Request received directly from the user
+[ ] 2 Request forwarded by the NSO
+[ ] 3 Request forwarded by another producer or service
+[ ] 97 Other
+[ ] 98 Do not know
+____________________________
+QP03_Circuit_Autre — Other: please specify
+Display condition : (QP02a ∉ {0} AND (QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP03_Circuit ∈ {97})))
+____________________________
+QP03_Canal — Main channel through which the request was received
+Display condition : (QP02a ∉ {0} AND (QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP03_Situation ∈ {1, 2})))
+[ ] 1 Email
+[ ] 2 Letter or official memorandum
+[ ] 3 Telephone or oral exchange
+[ ] 4 Instant messaging
+[ ] 5 Form or platform
+[ ] 97 Other
+[ ] 98 Do not know
+____________________________
+QP03_Canal_Autre — Other: please specify
+Display condition : (QP02a ∉ {0} AND (QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP03_Canal ∈ {97})))
+____________________________
+
+QP04 — Deadline and handling of this most recent request
+Times are calendar durations, including nights and weekends. QP03 distinguishes a response explaining that no figures could be provided from an actual provision of figures. Meeting a deadline does not by itself establish that the statistical need was met.
+QP04a — How much time was your organisation given to respond from receipt of the request?
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1, 2}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Less than 6 hours
+[ ] 2 6 to 24 hours inclusive
+[ ] 3 More than 24 hours up to 3 days inclusive
+[ ] 4 More than 3 days
+[ ] 5 No deadline specified
+[ ] 98 Do not know
+____________________________
+QP04b — Was your organisation’s response sent before the requested deadline?
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1, 2}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Yes
+[ ] 0 No
+[ ] 98 Do not know
+[ ] 99 Not applicable, no deadline specified
+____________________________
+QP04c — If no figures were provided or the deadline was missed, what was the main obstacle?
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1, 2}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Suitable data unavailable
+[ ] 2 Need insufficiently specified
+[ ] 3 Deadline too short
+[ ] 4 Checking or validation incomplete
+[ ] 5 Responsible staff member unavailable
+[ ] 6 Dissemination or access restrictions
+[ ] 7 Unresolved discrepancy between sources
+[ ] 97 Other
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QP04c_Autre — Other: please specify
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1, 2}) AND (QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP04c ∈ {97})))
+____________________________
+
+QP05 — Origin and documentation of the first figure provided
+Consider the first figure presented in the most recent response, not the best-documented figure. Indicate the information that actually accompanied it. Merely naming an organisation does not qualify for code 2. Do not copy a non-public value.
+QP05_Origine — Main origin of this figure
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Survey or census produced by your organisation
+[ ] 2 Administrative data processed by your organisation
+[ ] 3 Other statistical result produced by your organisation
+[ ] 4 NSO publication
+[ ] 5 Other national administration
+[ ] 6 Regional or international organisation
+[ ] 7 Identified research or private source
+[ ] 8 Earlier document without consulting the statistical source
+[ ] 9 Unidentified source
+[ ] 97 Other
+[ ] 98 Do not know
+____________________________
+QP05_Origine_Autre — Other: please specify
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP05_Origine ∈ {97})))
+____________________________
+QP05_S1 — Specific source enabling the result to be located
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Included in the response
+[ ] 2 Available through a specific link or reference sent with the response
+[ ] 0 Absent
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QP05_S2 — Publication date or source version
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Included in the response
+[ ] 2 Available through a specific link or reference sent with the response
+[ ] 0 Absent
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QP05_S3 — Period to which the value relates
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Included in the response
+[ ] 2 Available through a specific link or reference sent with the response
+[ ] 0 Absent
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QP05_S4 — Definition of the indicator
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Included in the response
+[ ] 2 Available through a specific link or reference sent with the response
+[ ] 0 Absent
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QP05_S5 — Unit and calculation basis, particularly the denominator of a rate
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Included in the response
+[ ] 2 Available through a specific link or reference sent with the response
+[ ] 0 Absent
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QP05_S6 — Population and geographical coverage
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Included in the response
+[ ] 2 Available through a specific link or reference sent with the response
+[ ] 0 Absent
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QP05_S7 — Limitations relevant to interpretation or comparison
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Included in the response
+[ ] 2 Available through a specific link or reference sent with the response
+[ ] 0 Absent
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QP05_S8 — Provisional or revised status, where applicable
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Included in the response
+[ ] 2 Available through a specific link or reference sent with the response
+[ ] 0 Absent
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QP05c — For administrative data, was the counting unit explicitly stated: distinct persons, events, files, establishments or another unit?
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP05_Origine ∈ {2})))
+[ ] 1 Yes
+[ ] 0 No
+[ ] 98 Do not know
+____________________________
+QP05c_Precision — Optional: specify the unit and a known coverage or duplication limitation, without individual-level data
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP05_Origine ∈ {2})))
+____________________________
+
+QP06 — Checking and validation actually performed
+This concerns statistical content, not political approval of the speech. The absence of NSO involvement does not by itself mean that there was no check.
+QP06a — Who checked the statistical content before it was sent? Multiple answers allowed.
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 The staff member who prepared it
+[ ] 2 Another staff member producing the data
+[ ] 3 A technical or quality manager
+[ ] 4 The communication service
+[ ] 5 Management or its delegate
+[ ] 0 No known check
+[ ] 97 Other function
+[ ] 98 Do not know
+[ ] 6 NSO staff member
+[ ] 7 Another external producer
+____________________________
+QP06a_Autre — Other: please specify
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP06a ∩ ≠ ∅ {97})))
+____________________________
+QP06b — What record exists of the final statistical validation for this submission?
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Written record, email, sign-off or validation log
+[ ] 2 Oral agreement only
+[ ] 0 No separate validation known
+[ ] 98 Do not know
+____________________________
+
+QP07 — Format provided and checking of the speech passage
+Feedback documents the use of figures, not the effect of the decision.
+QP07a — In what form was the support provided? Up to three answers.
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+Up to 3 choices.
+[ ] 1 Table or list of figures
+[ ] 2 Fact sheet with explanations
+[ ] 3 Suggested sentences or paragraphs
+[ ] 4 Chart or illustration
+[ ] 5 Oral explanation only
+[ ] 97 Other
+[ ] 98 Do not know
+____________________________
+QP07a_Autre — Other: please specify
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP07a ∩ ≠ ∅ {97})))
+____________________________
+QP07b — Was your organisation able to check the speech passage before dissemination?
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Yes
+[ ] 2 No, the passage was not received
+[ ] 3 No, the passage was received but not checked
+[ ] 4 The speech was not delivered or this stage did not occur
+[ ] 98 Do not know
+____________________________
+QP07c — Was feedback received on the use of the figures?
+Display condition : ((QP02a ∉ {0} AND QP03_Situation ∈ {1}) AND (QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Text or link to the speech
+[ ] 2 Comment without text or link
+[ ] 3 Both
+[ ] 0 None
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+
+QP08 — Correction or updating after transmission
+Support originally provided before the period may be included if the correction occurred during the period. This question remains available even if no new request was received.
+QP08_Situation — During the reference period, do you know of support already provided that had to be corrected or updated?
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Yes, to correct an error
+[ ] 2 Yes, to update data
+[ ] 3 Both situations occurred
+[ ] 0 No known instance
+[ ] 98 Do not know
+[ ] 99 Not applicable, no relevant support
+____________________________
+QP08_Actions — For the most recent case, what actions were taken? Multiple answers allowed.
+Display condition : ((QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP08_Situation ∈ {1, 2, 3})))
+[ ] 1 Alerting the speech-preparation team
+[ ] 2 Sending a corrected version with its source
+[ ] 3 Keeping versions and the reason for the change
+[ ] 4 Requesting correction of a passage already disseminated
+[ ] 5 Checking that the correction was incorporated
+[ ] 0 No known action
+[ ] 97 Other
+[ ] 98 Do not know
+[ ] 6 Informing the NSO or relevant intermediary
+____________________________
+QP08_Actions_Autre — Other: please specify
+Display condition : ((QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP08_Actions ∩ ≠ ∅ {97})))
+____________________________
+
+QP09 — Organisation and coordination with the NSO
+
+QP09_D1 — Identified contact point or function for receiving requests
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Exists and was used for this support during the period
+[ ] 2 Exists but was not used during the period
+[ ] 0 Does not exist
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QP09_D2 — Written handling instructions, including for urgent requests
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Exists and was used for this support during the period
+[ ] 2 Exists but was not used during the period
+[ ] 0 Does not exist
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QP09_D3 — Request register with deadline, responsible officer and processing status
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Exists and was used for this support during the period
+[ ] 2 Exists but was not used during the period
+[ ] 0 Does not exist
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QP09_D4 — Repository of figures with sources and interpretation information
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Exists and was used for this support during the period
+[ ] 2 Exists but was not used during the period
+[ ] 0 Does not exist
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QP09_D5 — Record of statistical checking and validation
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Exists and was used for this support during the period
+[ ] 2 Exists but was not used during the period
+[ ] 0 Does not exist
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QP09_D6 — Retention of versions and corrections
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Exists and was used for this support during the period
+[ ] 2 Exists but was not used during the period
+[ ] 0 Does not exist
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QP09_D7 — Review of deadlines, difficulties and user feedback
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Exists and was used for this support during the period
+[ ] 2 Exists but was not used during the period
+[ ] 0 Does not exist
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QP09_Nouveaute — New practice after 31 October, optional: arrangement, implementation date and one sentence
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+____________________________
+QP09b — Which exchanges with the NSO actually supported this work during the period?
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Routing or forwarding requests
+[ ] 2 Providing figures and metadata
+[ ] 3 Harmonising definitions or methods
+[ ] 4 Checking a value or comparison
+[ ] 5 Coordinating corrections or versions
+[ ] 6 Training or preparing templates
+[ ] 0 No known exchange
+[ ] 97 Other
+[ ] 98 Do not know
+[ ] 99 No relevant support
+____________________________
+QP09b_Autre — Other: please specify
+Display condition : ((QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP09b ∩ ≠ ∅ {97})))
+____________________________
+QP09c — Did discrepancies between your figures and another producer’s figures require clarification for a speech?
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Yes
+[ ] 0 No known case
+[ ] 98 Do not know
+[ ] 99 No relevant support
+____________________________
+QP09c_Precision — Type of discrepancy and how it was addressed, in one sentence without confidential information
+Display condition : ((QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP09c ∈ {1})))
+____________________________
+
+QP10 — Priority needs
+Rank up to three different codes. One or two priorities are sufficient. Codes 0 and 98 exclude other priorities. Write ‘to be determined’ where necessary for the action, lead function, resources or obstacle.
+QP10_P1 — Priority 1
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Clarify the contact point and responsibilities
+[ ] 2 Clarify and prioritise urgent requests
+[ ] 3 Have a repository of documented figures
+[ ] 4 Simplify checking and validation
+[ ] 5 Prepare messages and examples of speech passages
+[ ] 6 Organise corrections and versions
+[ ] 7 Train staff
+[ ] 8 Monitor deadlines and user feedback
+[ ] 97 Other
+[ ] 0 No need expressed
+[ ] 98 Do not know
+[ ] 9 Improve coordination with the NSO and other producers
+[ ] 10 Clarify the quality and limitations of administrative sources
+____________________________
+QP10_P2 — Priority 2
+Display condition : ((QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP10_P1 ∈ {1, 2, 3, 4, 5, 6, 7, 8, 97, 9, 10})))
+[ ] 1 Clarify the contact point and responsibilities
+[ ] 2 Clarify and prioritise urgent requests
+[ ] 3 Have a repository of documented figures
+[ ] 4 Simplify checking and validation
+[ ] 5 Prepare messages and examples of speech passages
+[ ] 6 Organise corrections and versions
+[ ] 7 Train staff
+[ ] 8 Monitor deadlines and user feedback
+[ ] 97 Other
+[ ] 9 Improve coordination with the NSO and other producers
+[ ] 10 Clarify the quality and limitations of administrative sources
+____________________________
+QP10_P3 — Priority 3
+Display condition : ((QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP10_P1 ∈ {1, 2, 3, 4, 5, 6, 7, 8, 97, 9, 10})))
+[ ] 1 Clarify the contact point and responsibilities
+[ ] 2 Clarify and prioritise urgent requests
+[ ] 3 Have a repository of documented figures
+[ ] 4 Simplify checking and validation
+[ ] 5 Prepare messages and examples of speech passages
+[ ] 6 Organise corrections and versions
+[ ] 7 Train staff
+[ ] 8 Monitor deadlines and user feedback
+[ ] 97 Other
+[ ] 9 Improve coordination with the NSO and other producers
+[ ] 10 Clarify the quality and limitations of administrative sources
+____________________________
+QP10_Autre — Other priority: please specify
+Display condition : ((QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND (QP10_P1 ∈ {97} OR QP10_P2 ∈ {97} OR QP10_P3 ∈ {97}))))
+____________________________
+QP10_Difficulte — For priority 1, what actual difficulty would this resolve? Up to 40 words; otherwise write ‘anticipated need’.
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+Guideline: up to 40 words. Original text is retained.
+____________________________
+QP10_Action — First action possible with existing resources
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+____________________________
+QP10_Responsable — Function that could lead the action
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+____________________________
+QP10_Moyen — Resource already available
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+____________________________
+QP10_Obstacle — Main obstacle
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+____________________________
+
+QP11 — Shareable example and link to decision-making
+Optional: procedure, figure fact sheet, check, correction, public speech or authorised decision note. Do not share confidential content. An older example retains its date and is not activity during the reference period. A proposed use or assumed effect does not prove actual use.
+QP11_Type — Example provided, optional
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Public link
+[ ] 2 Non-confidential extract authorised for sharing
+[ ] 0 No example shared
+____________________________
+QP11_Reference — Title or description, date and public link if available; authorised extract where relevant
+Display condition : ((QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP11_Type ∈ {1, 2})))
+____________________________
+QP11_Apport — What this example demonstrates and what could be adapted elsewhere, up to 60 words
+Display condition : ((QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP11_Type ∈ {1, 2})))
+Guideline: up to 60 words. Original text is retained.
+____________________________
+QP11_Usage — Use illustrated
+Display condition : ((QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP11_Type ∈ {1, 2})))
+[ ] 1 Speech
+[ ] 2 Decision with no identified speech
+[ ] 3 Both
+[ ] 98 Do not know
+____________________________
+QP11_Preuve — Evidence of use
+Display condition : ((QP01_Participation ∈ {1} AND (QP01_Produit ∉ {0} AND QP11_Type ∈ {1, 2})))
+[ ] 1 Accessible document or authorised extract
+[ ] 2 Known use, not documented here
+[ ] 98 Do not know
+____________________________
+
+QP12 — Attribution and optional contact
+Options 1 and 2 require the corresponding authorisation. An individual contribution without that authorisation remains anonymised. Without an explicit choice, an anonymised summary (code 0) applies. Silence never constitutes permission to quote. Forwarding by the NSO does not replace your institutional authorisation.
+QP12_Attribution — Permitted use of the contribution and shared example
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 0 Anonymised summary only, with no identifiable attribution
+[ ] 1 Attribution to the institution, without an identifiable quotation
+[ ] 2 Attribution to the institution and direct quotation
+[ ] 3 Submit the passage to me before any identifiable attribution or quotation
+____________________________
+QP12_Suite — Would you agree to a brief follow-up or a tool test?
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Follow-up clarification
+[ ] 2 Tool test
+[ ] 3 Both
+[ ] 0 No
+[ ] 98 To be determined
+____________________________
+QP12_Contact_fonction — Optional contact: function or service to contact
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+____________________________
+QP12_Contact_courriel — Institutional or generic email address, optional
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+____________________________
+QP12_Contact_relais — Prefer contact through STATAFRIC, optional
+Display condition : ((QP01_Participation ∈ {1} AND QP01_Produit ∉ {0}))
+[ ] 1 Contact through STATAFRIC
+[ ] 2 I authorise the inviting NSO to forward a follow-up request, without access to my contribution
+____________________________
+Receipt is neither content validation nor institutional approval.

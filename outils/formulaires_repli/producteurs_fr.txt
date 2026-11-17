@@ -1,0 +1,627 @@
+﻿Autres producteurs de statistiques
+2026-11-15.web-2
+Référence : 01/11/2025–31/10/2026. Collecte : 19–26 novembre 2026 inclus.
+STATAFRIC et le consultant Mamadou Niang préparent des outils pratiques pour l’appui statistique aux discours et à la décision. Référence des pratiques : du 1er novembre 2025 au 31 octobre 2026 ; dater séparément les évolutions ultérieures. Collecte : du 19 au 26 novembre 2026 inclus. Les réponses réelles alimenteront L3, jamais L2 qui reste documentaire.
+
+Participation volontaire. Une réponse institutionnelle, de service ou individuelle est recevable si son périmètre est précisé. Répondre directement à l’équipe de la mission, sans approbation préalable de l’INS relais. Les restitutions sont agrégées ou anonymisées par défaut ; attribution ou citation identifiable selon votre choix à la dernière rubrique. Les pièces remises au Client respectent ces autorisations. Un cas particulier peut rester reconnaissable. Les coordonnées facultatives sont séparées de l’analyse.
+
+Ne transmettre ni opinions politiques, données individuelles, coordonnées personnelles inutiles ni document confidentiel. Utiliser des liens publics ou extraits non confidentiels autorisés. Une contribution individuelle n’engage pas l’institution.
+
+Une réponse partielle est utile. Aucun choix substantiel n’est précoché. Un blanc ne signifie ni « non » ni zéro. « Aucun », « ne sait pas » et « non applicable » sont exclusifs des autres réponses lorsque le questionnaire le prévoit.
+
+Avant l’envoi, la saisie reste dans la session, pas dans la base. Elle peut être perdue à la fermeture : télécharger un brouillon pour reprendre. Un brouillon ne vaut pas envoi. Seul un accusé confirmé atteste l’enregistrement. Les réponses originales restent protégées ; seuls le consultant et les personnes habilitées y accèdent. La langue peut être changée sans créer une nouvelle contribution. En cas de difficulté, utiliser le formulaire de repli dans la même langue et l’envoyer au contact de la mission.
+Formulaire de repli : conserver les codes. Les conditions affichées traduisent les filtres : ∈ signifie « parmi », ∉ « différent de », ∩ ≠ ∅ « contient au moins un ». En cas de condition non remplie, ne pas répondre au champ. Une réponse partielle est admise. Après refus, arrêter sans autre réponse.
+
+QP01 — Accord, profil et périmètre de la contribution
+Producteurs hors INS uniquement. Les services internes de l’INS utilisent QI. Un simple transfert de fichiers administratifs sans traitement statistique ne suffit pas. Si votre organisme ne produit pas de statistiques, utilisez QU pour un rôle d’utilisateur ou demandez conseil au consultant. Une participation ne confère pas un statut officiel aux statistiques de l’organisme.
+QP01_Participation — Acceptez-vous l’utilisation de votre contribution selon la notice ?
+[ ] 1 J’accepte
+[ ] 0 Je ne participe pas — fin du questionnaire
+____________________________
+QP01_Produit — Votre organisme produit-il des statistiques ou des indicateurs utilisables pour l’action publique ?
+Condition d’affichage : (QP01_Participation ∈ {1})
+[ ] 1 Oui
+[ ] 0 Non
+[ ] 98 Ne sait pas
+____________________________
+QP01_Pays — Pays
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+____________________________
+QP01_Institution — Institution de rattachement
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+____________________________
+QP01_Unite — Service ou unité de production
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+____________________________
+QP01_Type — Type principal d’organisme
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Ministère ou service statistique sectoriel
+[ ] 2 Banque centrale ou institution monétaire
+[ ] 3 Autre administration ou organisme de données administratives
+[ ] 4 Agence ou observatoire public
+[ ] 5 Collectivité ou service territorial
+[ ] 6 Organisme de recherche
+[ ] 7 Organisme privé ou associatif producteur
+[ ] 97 Autre
+____________________________
+QP01_Type_Autre — Autre : précisez
+Condition d’affichage : ((QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP01_Type ∈ {97})))
+____________________________
+QP01_Domaine — Domaine principal
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Économie, finances ou monnaie
+[ ] 2 Santé ou protection sociale
+[ ] 3 Éducation ou formation
+[ ] 4 Agriculture ou alimentation
+[ ] 5 Emploi ou conditions de vie
+[ ] 6 Environnement, énergie ou infrastructures
+[ ] 7 Population, état civil ou territoire
+[ ] 8 Plusieurs domaines sans domaine principal
+[ ] 97 Autre
+____________________________
+QP01_Domaine_Autre — Autre : précisez
+Condition d’affichage : ((QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP01_Domaine ∈ {97})))
+____________________________
+QP01_Domaines_autres — Autres domaines, facultatif
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+____________________________
+QP01_Statut — Statut de la réponse
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Réponse institutionnelle consolidée
+[ ] 2 Contribution d’un service, non consolidée au niveau de l’institution
+[ ] 3 Contribution individuelle fondée sur ma pratique professionnelle
+____________________________
+QP01_Fonction — Fonction, sans nom personnel
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Production
+[ ] 2 Méthodes ou qualité
+[ ] 3 Communication ou diffusion
+[ ] 4 Coordination ou direction
+[ ] 97 Autre
+____________________________
+QP01_Fonction_Autre — Autre : précisez
+Condition d’affichage : ((QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP01_Fonction ∈ {97})))
+____________________________
+QP01_Envoi — Nature de l’envoi
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Première réponse
+[ ] 2 Complément
+____________________________
+QP01_Reference_precedente — Référence ou date de l’envoi précédent, si connue
+Condition d’affichage : ((QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP01_Envoi ∈ {2})))
+____________________________
+QP01_Origine_invitation — Origine du lien
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 INS
+[ ] 2 STATAFRIC ou consultant
+[ ] 3 Autre relais
+[ ] 4 Accès spontané
+[ ] 98 Ne sait pas
+____________________________
+QP01_INS_relais — INS ou organisme relais, facultatif
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+____________________________
+QP01_Langue_texte — Langue principale de vos réponses libres
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] fr Français
+[ ] en Anglais
+[ ] ar Arabe
+[ ] pt Portugais
+[ ] es Espagnol
+____________________________
+
+QP02 — Appuis reçus pendant la période de référence
+Une demande concerne un discours ou une intervention orale, reçue directement ou par l’INS. Compter une seule fois les échanges d’un même appui. Exclure les demandes générales sans lien connu avec un discours. Si QP02a = 0, passer à QP08 après QP02d. Si le volume est inconnu, un cas réel peut être décrit. Plusieurs producteurs peuvent participer au même discours : ne pas additionner leurs demandes en un total national.
+QP02a — Combien de demandes distinctes avez-vous recensées dans le périmètre de votre réponse ?
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 0 Aucune / aucun
+[ ] 1 De 1 à 5
+[ ] 2 De 6 à 20
+[ ] 3 De 21 à 50
+[ ] 4 Plus de 50
+[ ] 98 Ne sait pas
+____________________________
+QP02b — Certaines de ces demandes exigeaient-elles une réponse dans les 24 heures ou moins suivant leur réception ?
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Oui
+[ ] 0 Non
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable, aucune demande
+____________________________
+QP02c — Sur quoi repose cette réponse ?
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Registre ou inventaire consulté
+[ ] 2 Estimation fondée sur la pratique connue
+[ ] 98 Ne sait pas
+____________________________
+QP02d — Séparément, votre organisme a-t-il fourni des statistiques pour une note ou un arbitrage de décision sans lien identifié avec un discours ?
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Oui
+[ ] 0 Non
+[ ] 98 Ne sait pas
+____________________________
+QP02d_Theme — Si oui, thème ou type de décision, sans détail confidentiel, une phrase. Ne pas ajouter ces appuis au nombre de demandes de discours.
+Condition d’affichage : ((QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP02d ∈ {1})))
+____________________________
+
+QP03 — Dernière demande clôturée connue
+Choisir la demande la plus récemment clôturée pendant la période de référence, qu’elle ait ou non abouti à la fourniture de chiffres. Ne pas sélectionner uniquement un exemple particulièrement réussi. Les situations 3 et 98 conduisent à QP08. La situation 2 conduit à QP04, puis QP08.
+QP03_Situation — Situation
+Condition d’affichage : (QP02a ∉ {0} ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Des chiffres ont été transmis
+[ ] 2 La demande a été clôturée sans fourniture de chiffres
+[ ] 3 Aucune demande clôturée connue pendant la période
+[ ] 98 Je ne dispose pas des informations nécessaires
+____________________________
+QP03_Mois — Mois et année de clôture, MM/AAAA
+Condition d’affichage : (QP02a ∉ {0} ET (QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP03_Situation ∈ {1, 2})))
+____________________________
+QP03_Theme — Thème général, sans nom de personne ni titre confidentiel du discours
+Condition d’affichage : (QP02a ∉ {0} ET (QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP03_Situation ∈ {1, 2})))
+____________________________
+QP03_Demandeur — Demandeur final connu
+Condition d’affichage : (QP02a ∉ {0} ET (QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP03_Situation ∈ {1, 2})))
+[ ] 1 Cabinet ou équipe d’un décideur national
+[ ] 2 Ministère ou administration sectorielle
+[ ] 3 Autorité territoriale
+[ ] 4 Direction de votre organisme
+[ ] 5 INS
+[ ] 6 Institution régionale ou internationale
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+____________________________
+QP03_Demandeur_Autre — Autre : précisez
+Condition d’affichage : (QP02a ∉ {0} ET (QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP03_Demandeur ∈ {97})))
+____________________________
+QP03_Circuit — Circuit principal
+Condition d’affichage : (QP02a ∉ {0} ET (QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP03_Situation ∈ {1, 2})))
+[ ] 1 Demande reçue directement de l’utilisateur
+[ ] 2 Demande transmise par l’INS
+[ ] 3 Demande transmise par un autre producteur ou service
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+____________________________
+QP03_Circuit_Autre — Autre : précisez
+Condition d’affichage : (QP02a ∉ {0} ET (QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP03_Circuit ∈ {97})))
+____________________________
+QP03_Canal — Canal principal de réception
+Condition d’affichage : (QP02a ∉ {0} ET (QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP03_Situation ∈ {1, 2})))
+[ ] 1 Courriel
+[ ] 2 Courrier ou note officielle
+[ ] 3 Téléphone ou échange oral
+[ ] 4 Messagerie instantanée
+[ ] 5 Formulaire ou plateforme
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+____________________________
+QP03_Canal_Autre — Autre : précisez
+Condition d’affichage : (QP02a ∉ {0} ET (QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP03_Canal ∈ {97})))
+____________________________
+
+QP04 — Délai et traitement de cette dernière demande
+Les durées sont calendaires, y compris les nuits et week-ends. Une réponse expliquant qu’aucun chiffre ne pouvait être fourni reste distinguée de la fourniture de chiffres par QP03. Le respect d’un délai ne suffit pas à conclure que le besoin statistique a été satisfait.
+QP04a — Quel délai était laissé à votre organisme pour répondre, à partir de la réception de la demande ?
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1, 2}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Moins de 6 heures
+[ ] 2 De 6 à 24 heures incluses
+[ ] 3 Plus de 24 heures à 3 jours inclus
+[ ] 4 Plus de 3 jours
+[ ] 5 Aucune échéance indiquée
+[ ] 98 Ne sait pas
+____________________________
+QP04b — La réponse de votre organisme a-t-elle été transmise avant l’échéance demandée ?
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1, 2}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Oui
+[ ] 0 Non
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable, aucune échéance indiquée
+____________________________
+QP04c — Si aucun chiffre n’a été fourni ou si le délai n’a pas été respecté, quel a été le principal obstacle ?
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1, 2}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Donnée appropriée indisponible
+[ ] 2 Besoin insuffisamment précisé
+[ ] 3 Délai trop court
+[ ] 4 Contrôle ou validation inachevé
+[ ] 5 Agent compétent indisponible
+[ ] 6 Restrictions de diffusion ou d’accès
+[ ] 7 Divergence entre sources non résolue
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QP04c_Autre — Autre : précisez
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1, 2}) ET (QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP04c ∈ {97})))
+____________________________
+
+QP05 — Origine et documentation du premier chiffre transmis
+Considérer le premier chiffre présenté dans la dernière réponse transmise, et non le mieux documenté. Indiquer les informations qui l’accompagnaient effectivement. Une simple mention du nom d’un organisme ne suffit pas pour le code 2. Ne pas recopier une valeur non publique.
+QP05_Origine — Origine principale de ce chiffre
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Enquête ou recensement produit par votre organisme
+[ ] 2 Données administratives traitées par votre organisme
+[ ] 3 Autre résultat statistique produit par votre organisme
+[ ] 4 Publication de l’INS
+[ ] 5 Autre administration nationale
+[ ] 6 Organisation régionale ou internationale
+[ ] 7 Recherche ou source privée identifiée
+[ ] 8 Document antérieur sans retour à la source statistique
+[ ] 9 Source non identifiée
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+____________________________
+QP05_Origine_Autre — Autre : précisez
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP05_Origine ∈ {97})))
+____________________________
+QP05_S1 — Source précise permettant de retrouver le résultat
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Présente dans la réponse
+[ ] 2 Accessible par un lien ou une référence précise transmis avec la réponse
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QP05_S2 — Date de publication ou version de la source
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Présente dans la réponse
+[ ] 2 Accessible par un lien ou une référence précise transmis avec la réponse
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QP05_S3 — Période à laquelle se rapporte la valeur
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Présente dans la réponse
+[ ] 2 Accessible par un lien ou une référence précise transmis avec la réponse
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QP05_S4 — Définition de l’indicateur
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Présente dans la réponse
+[ ] 2 Accessible par un lien ou une référence précise transmis avec la réponse
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QP05_S5 — Unité et base de calcul, notamment dénominateur d’un taux
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Présente dans la réponse
+[ ] 2 Accessible par un lien ou une référence précise transmis avec la réponse
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QP05_S6 — Population et territoire couverts
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Présente dans la réponse
+[ ] 2 Accessible par un lien ou une référence précise transmis avec la réponse
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QP05_S7 — Limites utiles à l’interprétation ou à la comparaison
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Présente dans la réponse
+[ ] 2 Accessible par un lien ou une référence précise transmis avec la réponse
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QP05_S8 — Statut provisoire ou révisé, lorsqu’il s’applique
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Présente dans la réponse
+[ ] 2 Accessible par un lien ou une référence précise transmis avec la réponse
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QP05c — Pour les données administratives, l’unité comptée était-elle explicitement précisée : personnes distinctes, actes, dossiers, établissements ou autre unité ?
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP05_Origine ∈ {2})))
+[ ] 1 Oui
+[ ] 0 Non
+[ ] 98 Ne sait pas
+____________________________
+QP05c_Precision — Facultatif : préciser l’unité et une limite connue de couverture ou de doublons, sans donnée individuelle
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP05_Origine ∈ {2})))
+____________________________
+
+QP06 — Vérification et validation effectivement réalisées
+Il s’agit du contenu statistique, pas de l’approbation politique du discours. L’absence d’intervention de l’INS ne signifie pas, à elle seule, absence de contrôle.
+QP06a — Qui a vérifié le contenu statistique avant son envoi ? Plusieurs réponses possibles.
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 L’agent qui l’a préparé
+[ ] 2 Un autre agent producteur des données
+[ ] 3 Un responsable technique ou de qualité
+[ ] 4 Le service de communication
+[ ] 5 La direction ou son délégataire
+[ ] 0 Aucun contrôle connu
+[ ] 97 Autre fonction
+[ ] 98 Ne sait pas
+[ ] 6 Agent de l’INS
+[ ] 7 Autre producteur externe
+____________________________
+QP06a_Autre — Autre : précisez
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP06a ∩ ≠ ∅ {97})))
+____________________________
+QP06b — Quelle trace de la validation statistique finale existe pour cet envoi ?
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Trace écrite, courriel, visa ou journal de validation
+[ ] 2 Accord oral seulement
+[ ] 0 Aucune validation distincte connue
+[ ] 98 Ne sait pas
+____________________________
+
+QP07 — Format transmis et vérification du passage de discours
+Le retour documente l’usage des chiffres, pas l’effet de la décision.
+QP07a — Sous quelle forme l’appui a-t-il été transmis ? Jusqu’à trois réponses.
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+Au plus 3 choix.
+[ ] 1 Tableau ou liste de chiffres
+[ ] 2 Fiche accompagnée d’explications
+[ ] 3 Proposition de phrases ou de paragraphes
+[ ] 4 Graphique ou illustration
+[ ] 5 Explication orale uniquement
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+____________________________
+QP07a_Autre — Autre : précisez
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP07a ∩ ≠ ∅ {97})))
+____________________________
+QP07b — Votre organisme a-t-il pu vérifier le passage de discours avant diffusion ?
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Oui
+[ ] 2 Non, le passage n’a pas été reçu
+[ ] 3 Non, le passage a été reçu mais n’a pas été vérifié
+[ ] 4 Le discours n’a pas été diffusé ou cette étape n’a pas eu lieu
+[ ] 98 Ne sait pas
+____________________________
+QP07c — Un retour sur l’utilisation des chiffres a-t-il été reçu ?
+Condition d’affichage : ((QP02a ∉ {0} ET QP03_Situation ∈ {1}) ET (QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Texte ou lien du discours
+[ ] 2 Commentaire sans texte ni lien
+[ ] 3 Les deux
+[ ] 0 Aucun
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+
+QP08 — Correction ou actualisation après transmission
+Un appui initialement fourni avant la période peut être pris en compte si la correction intervient pendant celle-ci. Cette question reste accessible même si aucune nouvelle demande n’a été reçue.
+QP08_Situation — Pendant la période de référence, avez-vous connaissance d’un appui déjà transmis qu’il a fallu corriger ou actualiser ?
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Oui, pour corriger une erreur
+[ ] 2 Oui, pour actualiser une donnée
+[ ] 3 Les deux situations ont été rencontrées
+[ ] 0 Aucun épisode connu
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable, aucun appui concerné
+____________________________
+QP08_Actions — Pour le cas le plus récent, quelles actions ont été réalisées ? Plusieurs réponses possibles.
+Condition d’affichage : ((QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP08_Situation ∈ {1, 2, 3})))
+[ ] 1 Alerte de l’équipe préparant le discours
+[ ] 2 Envoi d’une version corrigée avec sa source
+[ ] 3 Conservation des versions et du motif de changement
+[ ] 4 Demande de correction d’un passage déjà diffusé
+[ ] 5 Vérification de la prise en compte de la correction
+[ ] 0 Aucune action connue
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+[ ] 6 Information de l’INS ou de l’intermédiaire concerné
+____________________________
+QP08_Actions_Autre — Autre : précisez
+Condition d’affichage : ((QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP08_Actions ∩ ≠ ∅ {97})))
+____________________________
+
+QP09 — Organisation et coordination avec l’INS
+
+QP09_D1 — Point d’entrée ou fonction identifiée pour recevoir les demandes
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Existe et a été utilisé pour ces appuis pendant la période
+[ ] 2 Existe mais n’a pas été utilisé pendant la période
+[ ] 0 N’existe pas
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QP09_D2 — Consigne écrite de traitement, y compris des urgences
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Existe et a été utilisé pour ces appuis pendant la période
+[ ] 2 Existe mais n’a pas été utilisé pendant la période
+[ ] 0 N’existe pas
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QP09_D3 — Registre des demandes avec échéance, responsable et état de traitement
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Existe et a été utilisé pour ces appuis pendant la période
+[ ] 2 Existe mais n’a pas été utilisé pendant la période
+[ ] 0 N’existe pas
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QP09_D4 — Répertoire de chiffres avec sources et informations d’interprétation
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Existe et a été utilisé pour ces appuis pendant la période
+[ ] 2 Existe mais n’a pas été utilisé pendant la période
+[ ] 0 N’existe pas
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QP09_D5 — Trace du contrôle et de la validation statistique
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Existe et a été utilisé pour ces appuis pendant la période
+[ ] 2 Existe mais n’a pas été utilisé pendant la période
+[ ] 0 N’existe pas
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QP09_D6 — Conservation des versions et des corrections
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Existe et a été utilisé pour ces appuis pendant la période
+[ ] 2 Existe mais n’a pas été utilisé pendant la période
+[ ] 0 N’existe pas
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QP09_D7 — Examen des délais, difficultés et retours des utilisateurs
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Existe et a été utilisé pour ces appuis pendant la période
+[ ] 2 Existe mais n’a pas été utilisé pendant la période
+[ ] 0 N’existe pas
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QP09_Nouveaute — Pratique nouvelle après le 31 octobre, facultatif : dispositif, date de mise en place et une phrase
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+____________________________
+QP09b — Quels échanges avec l’INS ont effectivement servi ces appuis pendant la période ?
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Orientation ou transmission des demandes
+[ ] 2 Transmission de chiffres et métadonnées
+[ ] 3 Harmonisation de définitions ou méthodes
+[ ] 4 Vérification d’une valeur ou comparaison
+[ ] 5 Coordination des corrections ou versions
+[ ] 6 Formation ou préparation de modèles
+[ ] 0 Aucun échange connu
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+[ ] 99 Aucun appui concerné
+____________________________
+QP09b_Autre — Autre : précisez
+Condition d’affichage : ((QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP09b ∩ ≠ ∅ {97})))
+____________________________
+QP09c — Des divergences entre vos chiffres et ceux d’un autre producteur ont-elles nécessité une clarification pour un discours ?
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Oui
+[ ] 0 Aucun cas connu
+[ ] 98 Ne sait pas
+[ ] 99 Aucun appui concerné
+____________________________
+QP09c_Precision — Type de divergence et traitement, en une phrase sans information confidentielle
+Condition d’affichage : ((QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP09c ∈ {1})))
+____________________________
+
+QP10 — Besoins prioritaires
+Classer au plus trois codes différents. Une ou deux priorités suffisent. 0 et 98 sont exclusifs des autres priorités. Indiquer « à déterminer » si nécessaire pour l’action, le responsable, les moyens ou l’obstacle.
+QP10_P1 — Priorité 1
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Clarifier le point d’entrée et les responsabilités
+[ ] 2 Mieux préciser et prioriser les demandes urgentes
+[ ] 3 Disposer d’un répertoire de chiffres documentés
+[ ] 4 Simplifier le contrôle et la validation
+[ ] 5 Préparer des messages et exemples de passages de discours
+[ ] 6 Organiser les corrections et versions
+[ ] 7 Former les agents
+[ ] 8 Suivre les délais et les retours d’utilisation
+[ ] 97 Autre
+[ ] 0 Aucun besoin exprimé
+[ ] 98 Ne sait pas
+[ ] 9 Améliorer la coordination avec l’INS et les autres producteurs
+[ ] 10 Clarifier la qualité et les limites des sources administratives
+____________________________
+QP10_P2 — Priorité 2
+Condition d’affichage : ((QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP10_P1 ∈ {1, 2, 3, 4, 5, 6, 7, 8, 97, 9, 10})))
+[ ] 1 Clarifier le point d’entrée et les responsabilités
+[ ] 2 Mieux préciser et prioriser les demandes urgentes
+[ ] 3 Disposer d’un répertoire de chiffres documentés
+[ ] 4 Simplifier le contrôle et la validation
+[ ] 5 Préparer des messages et exemples de passages de discours
+[ ] 6 Organiser les corrections et versions
+[ ] 7 Former les agents
+[ ] 8 Suivre les délais et les retours d’utilisation
+[ ] 97 Autre
+[ ] 9 Améliorer la coordination avec l’INS et les autres producteurs
+[ ] 10 Clarifier la qualité et les limites des sources administratives
+____________________________
+QP10_P3 — Priorité 3
+Condition d’affichage : ((QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP10_P1 ∈ {1, 2, 3, 4, 5, 6, 7, 8, 97, 9, 10})))
+[ ] 1 Clarifier le point d’entrée et les responsabilités
+[ ] 2 Mieux préciser et prioriser les demandes urgentes
+[ ] 3 Disposer d’un répertoire de chiffres documentés
+[ ] 4 Simplifier le contrôle et la validation
+[ ] 5 Préparer des messages et exemples de passages de discours
+[ ] 6 Organiser les corrections et versions
+[ ] 7 Former les agents
+[ ] 8 Suivre les délais et les retours d’utilisation
+[ ] 97 Autre
+[ ] 9 Améliorer la coordination avec l’INS et les autres producteurs
+[ ] 10 Clarifier la qualité et les limites des sources administratives
+____________________________
+QP10_Autre — Autre priorité : précisez
+Condition d’affichage : ((QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET (QP10_P1 ∈ {97} OU QP10_P2 ∈ {97} OU QP10_P3 ∈ {97}))))
+____________________________
+QP10_Difficulte — Pour la priorité 1, quelle difficulté réelle cela permettrait-il de résoudre ? Au plus 40 mots ; sinon, écrire « besoin anticipé ».
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+Repère : 40 mots au plus. Le texte original est conservé.
+____________________________
+QP10_Action — Première action possible avec les moyens existants
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+____________________________
+QP10_Responsable — Fonction pouvant la conduire
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+____________________________
+QP10_Moyen — Moyen déjà disponible
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+____________________________
+QP10_Obstacle — Principal obstacle
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+____________________________
+
+QP11 — Exemple partageable et lien avec la décision
+Facultatif : procédure, fiche chiffre, contrôle, correction, discours public ou note de décision autorisée. Ne pas partager de contenu confidentiel. Un exemple plus ancien conserve sa date et ne constitue pas une activité de la période. Une proposition d’usage ou un effet supposé ne prouve pas une utilisation réelle.
+QP11_Type — Exemple proposé, facultatif
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Lien public
+[ ] 2 Extrait non confidentiel dont le partage est autorisé
+[ ] 0 Aucun exemple partagé
+____________________________
+QP11_Reference — Titre ou description, date et lien public si disponible ; extrait autorisé le cas échéant
+Condition d’affichage : ((QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP11_Type ∈ {1, 2})))
+____________________________
+QP11_Apport — Ce que cet exemple montre et ce qui pourrait être adapté ailleurs, au plus 60 mots
+Condition d’affichage : ((QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP11_Type ∈ {1, 2})))
+Repère : 60 mots au plus. Le texte original est conservé.
+____________________________
+QP11_Usage — Usage illustré
+Condition d’affichage : ((QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP11_Type ∈ {1, 2})))
+[ ] 1 Discours
+[ ] 2 Décision sans discours identifié
+[ ] 3 Les deux
+[ ] 98 Ne sait pas
+____________________________
+QP11_Preuve — Preuve d’utilisation
+Condition d’affichage : ((QP01_Participation ∈ {1} ET (QP01_Produit ∉ {0} ET QP11_Type ∈ {1, 2})))
+[ ] 1 Document accessible ou extrait autorisé
+[ ] 2 Usage connu mais non documenté ici
+[ ] 98 Ne sait pas
+____________________________
+
+QP12 — Attribution et contact facultatif
+Les choix 1 et 2 supposent l’autorisation correspondante. Une contribution individuelle sans cette autorisation reste anonymisée. Sans choix explicite, la synthèse anonymisée (code 0) s’applique. L’absence de retour ne vaut jamais accord de citation. Le relais par l’INS ne remplace pas votre autorisation institutionnelle.
+QP12_Attribution — Modalité autorisée pour la contribution et l’exemple partagé
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 0 Synthèse anonymisée seulement, sans attribution identifiable
+[ ] 1 Attribution à l’institution, sans citation textuelle identifiable
+[ ] 2 Attribution à l’institution et citation textuelle
+[ ] 3 Me soumettre le passage avant toute attribution ou citation identifiable
+____________________________
+QP12_Suite — Accepteriez-vous un bref complément ou un test d’outil ?
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Complément
+[ ] 2 Test
+[ ] 3 Les deux
+[ ] 0 Non
+[ ] 98 À déterminer
+____________________________
+QP12_Contact_fonction — Contact facultatif : fonction ou service à recontacter
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+____________________________
+QP12_Contact_courriel — Courriel institutionnel ou générique, facultatif
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+____________________________
+QP12_Contact_relais — Préférer un relais par STATAFRIC, facultatif
+Condition d’affichage : ((QP01_Participation ∈ {1} ET QP01_Produit ∉ {0}))
+[ ] 1 Passer par STATAFRIC
+[ ] 2 J’autorise l’INS invitant à transmettre une demande de suivi, sans accès à ma contribution
+____________________________
+La réception ne vaut ni validation du contenu ni approbation institutionnelle.

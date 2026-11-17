@@ -1,184 +1,150 @@
-# Déployer les applications HISWACA
+# Déploiement et ouverture de la consultation
 
-## 1. Résultat attendu
+**Version 2.0.0 — 16 novembre 2026.** Le dossier ne constitue pas une preuve de déploiement. Il faut un dépôt GitHub accessible au compte Streamlit, un projet Supabase autorisé et un fournisseur d'identité pour l'administration.
 
-À l’issue des opérations, vous disposerez d’une URL de collecte pour les répondants et d’une URL d’administration distincte, réservée aux personnes autorisées. Une seule application de collecte distribue les quatre questionnaires et leurs deux langues. Il n’est pas nécessaire de créer huit applications.
+## 1. Sauvegarder l'existant
 
-Les comptes GitHub, Streamlit et Supabase ainsi que la configuration d’identité restent à créer ou à choisir par les personnes habilitées. Utiliser des comptes institutionnels lorsque cela est possible. Les conditions d’hébergement, d’accès et de conservation doivent être convenues avec STATAFRIC avant toute réponse réelle.
+Exporter la base et noter les paramètres de l'application actuellement déployée. Fermer l'ancienne collecte pendant la migration. Ne supprimer aucune table ni aucune réponse. Conserver l'ancien code dans une branche ou une étiquette Git. Le script `sql/01_install_or_upgrade.sql` est prévu pour les tables `diag_*` de la version antérieure fournie ; une autre structure de base exige une vérification préalable.
 
-## 2. Mettre le code dans GitHub
+Les réponses anciennes ne sont pas transformées en nouvelles réponses et ne reçoivent pas les réponses aux nouvelles questions. Les brouillons v1 sont refusés par la collecte v2. `scripts/migrate_legacy_draft.py ancien.json rapprochement.json` produit, hors ligne, un relevé de champs à relire et reporter manuellement ; il ne reconduit pas le consentement et ne soumet rien.
 
-1. Décompresser l’archive et créer un dépôt, de préférence privé si les habilitations et le service retenu le permettent.
-2. Déposer le **contenu** du dossier à la racine : `app.py`, `admin.py`, `requirements.txt`, `diagnostic/`, `sql/`, `docs/`, `scripts/`, `tests/`, `.streamlit/config.toml` et `.github/workflows/tests.yml`.
-3. Vérifier la présence des dossiers commençant par un point, parfois masqués par l’explorateur de fichiers.
-4. Ne déposer ni `.streamlit/secrets.toml`, ni fichier `.private.*`, ni contrat, questionnaire rempli, export, base SQLite ou fichier de contacts. Le `.gitignore` est un garde-fou ; il ne retire pas un secret déjà publié.
-5. Laisser GitHub Actions exécuter les tests. Examiner toute erreur avant de poursuivre. L’installation des dépendances requiert un accès réseau aux paquets Python.
+## 2. Déposer les fichiers dans GitHub
 
-Le dossier ne contient aucun secret réel. Les modèles de secrets portent des valeurs `A_COMPLETER` ou descriptives, à remplacer uniquement dans un fichier local privé ou dans l’interface des secrets du service d’hébergement.
+Extraire l'archive. À la racine du dépôt utilisé par Streamlit, placer au minimum :
+
+```text
+app.py
+admin.py
+relais_ins.py
+requirements.txt
+.streamlit/config.toml
+```
+
+Pour disposer des tests et outils, déposer également `src/`, `scripts/`, `tests/`, `sql/`, `config/`, `outils/`, `docs/`, `.github/`, `.gitignore`, les guides et `pytest.ini`.
+
+**Ne pas déposer le ZIP à la place des fichiers.** Dans la branche effectivement déployée, remplacer intégralement l'ancien `app.py`. Les fichiers autonomes ne requièrent aucun module local `diagnostic`. Éviter un chemin supplémentaire involontaire tel que `mon_dossier/app.py` si le point d'entrée Streamlit est configuré sur `app.py`.
+
+Ne jamais déposer `.streamlit/secrets.toml`, `private_config/`, les bases SQLite, les réponses, les contacts ou les exports réels. Le dépôt privé est préférable ; il ne remplace pas la protection des secrets. Une clé déjà publiée doit être révoquée, pas seulement supprimée du dernier commit.
 
 ## 3. Préparer la base Supabase
 
-### 3.1 Projet dédié
+Utiliser un projet dédié dont le propriétaire, la région d'hébergement, les personnes autorisées et la conservation sont convenus avec STATAFRIC. Dans l'éditeur SQL :
 
-Créer un projet Supabase dédié à la mission. Choisir sa région et ses modalités de sauvegarde selon les décisions institutionnelles. Noter dans un espace sécurisé : l’URL HTTPS du projet, la clé publique `publishable` ou `anon`, et la clé serveur `secret` ou `service_role`.
+1. Exécuter `sql/01_install_or_upgrade.sql` après sauvegarde. Il crée ou adapte les tables, ajoute le profil producteurs et les registres, protège les tables et limite l'écriture publique à des fonctions contrôlées.
+2. Exécuter `sql/03_security_checks.sql`. Les droits de lecture directe des rôles `anon` et `authenticated` sur les réponses et contacts doivent être absents.
+3. Exécuter `sql/04_transactional_test.sql` pour une recette technique : les données fictives sont créées dans une transaction terminée par `ROLLBACK`. Ce script doit réussir sur le projet de test avant la collecte réelle.
 
-La clé serveur donne des pouvoirs importants. **Elle est réservée à l’application d’administration.** L’application de collecte utilise uniquement une clé publique plus un jeton serveur limité aux fonctions de dépôt.
+Ne pas ajouter de règle RLS autorisant « SELECT pour tous » pour résoudre une erreur. Ne pas donner la clé `service_role` à l'application de collecte.
 
-### 3.2 Installer les tables et les fonctions
+### Générer le jeton de campagne
 
-Dans le SQL Editor du projet, exécuter intégralement `sql/01_schema.sql`. Il crée quatre tables : campagne, réponses, contacts et décisions de contrôle. Il active la sécurité par lignes, retire les accès directs aux rôles publics et crée deux fonctions limitées : lire l’état de campagne et déposer une réponse.
-
-Exécuter ensuite `sql/03_security_checks.sql`. Résultats attendus : quatre sécurités par lignes activées, aucun droit de table ni règle permissive pour `anon` ou `authenticated`, et deux fonctions avec un chemin de recherche fixé à vide.
-
-Exécuter `sql/04_recette_transactionnelle.sql` en entier. Il utilise des données fictives et termine par `ROLLBACK`. Il doit produire le message `RECETTE SQL RÉUSSIE`. En cas d’erreur, exécuter `ROLLBACK`, corriger et rejouer. Ce script n’a pas été exécuté sur un serveur distant lors de la préparation du dossier.
-
-### 3.3 Créer les secrets de campagne
-
-Sur un ordinateur de confiance, depuis la racine du projet :
+Sur votre poste, à la racine du dossier :
 
 ```bash
-python scripts/generate_secrets.py
+python scripts/generate_secrets.py --mode test
 ```
 
-Pour ajouter un code d’accès facultatif à communiquer séparément aux destinataires :
+Le dossier privé `private_config/discours-2026-v2-test` contient un modèle de secrets, un SQL de création de campagne et un secret de cookie d'administration. Le jeton aléatoire est enregistré localement ; seule son empreinte est conservée dans la table des campagnes. Aucune base n'est modifiée par ce script.
+
+Exécuter le fichier `campagne.sql` généré dans Supabase. La campagne de test est **fermée** par défaut. Ses bornes couvrent le 16 novembre–31 décembre 2026 ; ses réponses ont obligatoirement `is_test=true`.
+
+Pour le réel, générer séparément :
 
 ```bash
-python scripts/generate_secrets.py --access-code
+python scripts/generate_secrets.py --mode reel
 ```
 
-Choisir une seule des deux commandes. Le script refuse de remplacer des fichiers existants. Il crée, dans `.local/` :
+Créer ensuite cette campagne avec son **autre jeton**. Ses bornes sont le **19 novembre 00:00 UTC–26 novembre 23:59:59.999999 UTC**, limite technique choisie et à confirmer avant diffusion. Le SQL impose `is_test=false`. Ne pas transformer une campagne de test en campagne réelle.
 
-- `collecte.secrets.private.toml`, avec le jeton serveur généré ;
-- `campaign.private.sql`, avec l’empreinte du même jeton ;
-- `oidc_cookie.private.txt`, secret distinct pour l’authentification ;
-- éventuellement `invitation_code.private.txt`, code destiné aux répondants.
+## 4. Déployer la collecte
 
-Ne jamais transmettre le jeton serveur aux répondants. Ne pas le mettre dans une URL. Ne pas déposer ces fichiers dans GitHub. Sous Windows, vérifier les permissions du dossier ; une restriction Unix `chmod` ne suffit pas à garantir les permissions Windows.
+Dans Streamlit Community Cloud, créer ou modifier l'application avec : dépôt réel, branche réelle, fichier `app.py`, Python **3.12**. Les dépendances de `requirements.txt` sont installées par la plateforme.
 
-Exécuter `campaign.private.sql` dans le SQL Editor. La campagne `discours-2026` est créée **fermée**. La borne de début est le 10 novembre 2026 et la borne de fin proposée le 14 décembre 2026 à 23:59:59 UTC. Cette dernière est une fermeture technique modifiable, **pas** la date souhaitée de retour des questionnaires, fixée au 17 novembre. Les compléments du 24 et du 25 novembre restent possibles.
+Dans les secrets de cette application, copier le modèle généré ou `config/collecte_test.example.toml` et renseigner :
 
-Ne pas régénérer le jeton sans mettre à jour simultanément les secrets de collecte et l’empreinte en base. Ne pas réexécuter le SQL de création sur une campagne existante sans examiner son état.
+- `SUPABASE_URL` : URL HTTPS du projet, sans `/rest/v1` ;
+- `SUPABASE_PUBLIC_KEY` : **clé anon publique historique JWT** du projet ;
+- `WRITER_TOKEN` : jeton aléatoire correspondant à l'empreinte de la campagne ;
+- `CAMPAIGN_ID`, `TEST_MODE` : identiques au mode de la campagne SQL ;
+- `CONTACT_EMAIL`, `NOTICE_CONTROLLER`, `RETENTION_NOTICE` : valeurs autorisées ;
+- `DEPLOYMENT_APPROVED` : `true` seulement après vérification de la configuration.
 
-## 4. Déployer l’application de collecte
+Cette version utilise la clé anon JWT dans `apikey` et `Authorization`. Ne pas substituer une nouvelle clé `sb_publishable_*` sans adapter et tester le mode d'authentification REST.
 
-Dans Streamlit Community Cloud, créer une application reliée au dépôt GitHub. Sélectionner la branche voulue et **`app.py` comme fichier d’entrée**. Choisir Python **3.12** dans les paramètres avancés. Les bibliothèques sont définies dans `requirements.txt`.
+En mode réel, remplir `[notice]` dans toutes les langues autorisées : responsable de traitement opérationnel, hébergeur, localisation, accès, durée de conservation et contact. Après recette, renseigner `APPROVED_LANGUAGES` avec les seules versions linguistiques effectivement autorisées. La cible reste les cinq langues. Une langue non autorisée ne peut pas envoyer une réponse réelle ; son repli dans la même langue doit être prêt et relu.
 
-Dans les secrets de cette application, coller le contenu de `collecte.secrets.private.toml`, puis compléter :
+**Ne jamais mettre `SUPABASE_ADMIN_KEY` dans ces secrets.** L'application le refuse. Sans secrets, elle reste en prévisualisation sans envoi.
 
-| Paramètre | Valeur à renseigner |
-|---|---|
-| `SUPABASE_URL` | URL réelle du projet, sous la forme `https://...supabase.co`. |
-| `SUPABASE_PUBLIC_KEY` | Clé publique Supabase, pas la clé serveur. |
-| `WRITER_TOKEN` | Jeton généré correspondant à l’empreinte enregistrée en base. |
-| `CONTACT_EMAIL` | Adresse institutionnelle/générique réellement suivie pour la mission. |
-| `RETENTION_NOTICE` | Information convenue sur hébergement, accès, conservation, suppression et contact. Prévoir aussi l’anglais. |
-| `DEPLOYMENT_APPROVED` | `true` seulement après accord sur les dispositions de collecte. |
-| `TEST_MODE` | Conserver `true` pendant toute la recette. |
+## 5. Déployer l'administration privée
 
-**Ne jamais ajouter `SUPABASE_ADMIN_KEY` ici.** Le programme refuse une configuration de collecte de production contenant cette clé.
+Créer une seconde application Streamlit pointant sur `admin.py`, même dépôt et même branche. Ne pas l'ajouter comme page publique du questionnaire. Utiliser `config/admin.example.toml` :
 
-L’application peut être publique pour permettre aux parties prenantes de répondre sans compte. Un code de campagne facultatif réduit les réponses hors cible ; ce code ne constitue ni une identification individuelle ni une preuve de mandat.
+- `SUPABASE_ADMIN_KEY` : clé JWT **service_role**, uniquement ici ;
+- `CAMPAIGN_ID` : campagne à administrer ;
+- `TEST_MODE` : `true` pour la campagne de test, `false` pour la campagne réelle ;
+- `COLLECTION_URL` : URL effective de la collecte ;
+- `ADMIN_ALLOWED_EMAILS` : adresses Google précises des personnes habilitées.
 
-Noter l’URL réelle attribuée par Streamlit. Aucun lien proposé dans les exemples du dossier n’est une URL déployée.
+Configurer un client OAuth/OIDC de type application Web chez Google Identity. Le fournisseur doit autoriser l'adresse de redirection exacte `https://VOTRE-ADMIN.streamlit.app/oauth2callback`. Compléter `[auth]` : `client_id`, `client_secret`, `cookie_secret` aléatoire, `redirect_uri` et `server_metadata_url`.
 
-## 5. Déployer l’administration
+La connexion ne suffit pas : l'adresse doit être vérifiée et appartenir à la liste d'autorisation. Un compte différent doit être refusé avant lecture de la base. Les paramètres généraux TOML sont placés **avant** `[auth]`. L'exemple est prévu pour Google ; un autre fournisseur doit être testé, notamment sur `email_verified`.
 
-Créer une seconde application Streamlit depuis le même dépôt et la même branche, avec **`admin.py` comme fichier d’entrée**. Utiliser Python 3.12. Restreindre en plus les visiteurs dans les paramètres de partage lorsque le service le permet.
+L'application d'administration est en français, pour le consultant. Les textes des répondants restent dans leur langue d'origine. Restreindre également sa visibilité côté hébergeur quand cette fonction est disponible. Aucune valeur de secret ne doit apparaître dans les logs publics ou les captures partagées.
 
-### 5.1 Configurer l’identité
+## 6. Ouvrir d'abord la campagne de test
 
-L’administration utilise OpenID Connect, puis une liste explicite de courriels autorisés. L’exemple fourni utilise Google Identity. Dans le compte d’administration du fournisseur :
-
-1. Créer un client OAuth/OIDC de type application web.
-2. Enregistrer exactement l’URL de retour de l’administration : `https://VOTRE-ADMIN.streamlit.app/oauth2callback`.
-3. Configurer les utilisateurs autorisés et l’écran de consentement selon le mode retenu ; en mode de test du fournisseur, inscrire les personnes habilitées comme testeurs.
-4. Obtenir le `client_id` et le `client_secret`.
-
-Le code exige les attributs `email`, `email_verified` et `exp`. Il refuse l’accès si l’adresse n’est pas dans la liste, si elle n’est pas vérifiée ou si le jeton est expiré. Un autre fournisseur peut être utilisé, mais sa correspondance d’attributs doit être vérifiée avant déploiement.
-
-### 5.2 Secrets séparés
-
-Copier `docs/admin.secrets.example.toml` dans les secrets **de l’administration uniquement**, puis remplacer les valeurs : URL Supabase, clé serveur, liste des courriels habilités, URL réelle de collecte et paramètres `[auth]`. Utiliser le secret de `oidc_cookie.private.txt` pour `cookie_secret`.
-
-Aucune clé serveur n’apparaît dans un formulaire ou dans un lien transmis aux répondants. Activer l’authentification multifacteur du compte administrateur auprès du fournisseur lorsque disponible.
-
-Se connecter avec un compte autorisé, puis vérifier qu’un autre compte est refusé. Une connexion Google réussie ne suffit pas à autoriser l’accès aux réponses.
-
-## 6. Faire la recette avant diffusion
-
-Dans le SQL Editor, ouvrir la campagne tout en gardant `TEST_MODE=true` dans les secrets de collecte :
+Dans l'administration, « Préparation et campagne » permet d'afficher et d'ouvrir la campagne identifiée dans les secrets. Ou exécuter explicitement :
 
 ```sql
-UPDATE public.diag_campaigns
-SET active=true
-WHERE id='discours-2026';
+UPDATE public.diag_campaigns SET active=true WHERE id='discours-2026-v2-test';
 ```
 
-Les bornes de dates restent applicables. Pour un essai hors période, les modifier temporairement dans un projet de recette et rétablir les dates convenues avant diffusion ; ne pas changer la période statistique des questionnaires.
+Exécuter la recette décrite dans `docs/RECETTE.md`. Renseigner les 25 combinaisons ; tester l'accès non autorisé à l'administration, les envois, les réessais et les exports. Un accusé doit correspondre à une seule ligne en base. Redémarrer l'application et vérifier que les réponses transmises sont toujours présentes. Les brouillons non transmis ne sont pas sauvegardés automatiquement.
 
-Exécuter la liste complète de `docs/RECETTE.md`. Vérifier les quatre parcours, les deux langues, les filtres, les retours en arrière, les brouillons, les accusés, l’administration, les droits d’accès et les exports. Redémarrer l’application puis retrouver les réponses fictives dans la base.
-
-Les tests locaux fournis ne dispensent pas de cette recette. Ne pas envoyer les liens aux parties prenantes tant que ces opérations n’ont pas abouti.
+Les tests GitHub Actions s'exécutent à chaque commit. Vérifier l'onglet **Actions** ; la suite Streamlit s'y exécute seulement si les dépendances ont été installées. Un test vert de logique ne prouve ni l'accès Supabase ni la qualité de traduction.
 
 ## 7. Passer à la collecte réelle
 
-Une fois la recette consignée et les dispositions approuvées :
+Après autorisation et recette : créer la campagne réelle avec jeton distinct, renseigner les secrets réels de collecte et d'administration, autoriser les versions linguistiques relues, activer la campagne réelle et vérifier les bornes. Ne pas envoyer de réponse fictive dans cette campagne.
 
-1. Conserver les réponses fictives avec `is_test=true`, sans les intégrer au diagnostic.
-2. Dans les secrets de collecte, mettre `TEST_MODE=false`, sans changer les identifiants de campagne.
-3. Vérifier que la campagne est ouverte, que la notice et le contact sont corrects et que le bandeau de test a disparu.
-4. Ne pas utiliser une vraie réponse pour tester un envoi. Conserver les tests techniques identifiés comme tels.
-5. Dans l’administration, ouvrir « Liens à transmettre aux parties prenantes » et copier les liens générés à partir de l’URL réelle.
+L'ouverture SQL n'annule pas les dates : une campagne active reste fermée avant le 19 novembre et après le 26 novembre. Une reprise identique d'un envoi déjà enregistré conserve son reçu, même après fermeture ; un nouvel envoi tardif est refusé sans réouverture explicite. Toute réception de complément par e-mail est horodatée et gérée séparément pour L3.
 
-Exemples de suffixes :
+À partir de l'URL réelle de la collecte, les suffixes sont :
 
 ```text
-/?form=ins&lang=fr
-/?form=ins&lang=en
-/?form=utilisateurs&lang=fr
-/?form=utilisateurs&lang=en
-/?form=partenaires&lang=fr
-/?form=partenaires&lang=en
-/?form=abrege&lang=fr
-/?form=abrege&lang=en
+?form=ins&lang=fr
+?form=producteurs&lang=ar
+?form=utilisateurs&lang=pt
+?form=partenaires&lang=es
+?form=abrege&lang=en
 ```
 
-Ne jamais envoyer l’URL d’administration ou une clé d’accès serveur dans les invitations. Le formulaire abrégé est un outil de relance ; il ne remplace pas automatiquement un formulaire complet déjà reçu.
+Le menu permet de choisir les cinq langues ; aucun pays ne détermine automatiquement la langue. Les identifiants `relay` et `inv` sont facultatifs, non secrets, sans droit d'accès ni réponse préremplie.
 
-## 8. Suivre et exporter
+## 8. Relais INS et exploitation
 
-Dans l’administration, cliquer sur « Charger ou actualiser les réponses ». Les tests sont masqués par défaut. Les compteurs indiquent des contributions, et non des INS distincts.
+`relais_ins.py` peut être une troisième application ou un outil local. Elle ne nécessite pas de base ni de clé Supabase. L'INS prépare séparément QP pour les producteurs et QU pour les utilisateurs, copie les messages dans sa messagerie et enregistre la **date réelle** d'envoi. Le CSV peut être sauvegardé, réimporté et transmis au consultant. La préparation d'un message ne vaut pas envoi.
 
-Qualifier les contributions et les doublons en conservant les originaux. Télécharger régulièrement un export analytique dans un espace de travail restreint. Télécharger les contacts séparément uniquement lorsque le suivi l’exige. Les sauvegardes de la base et leur restauration relèvent également de la procédure d’hébergement retenue ; les exports ponctuels ne la remplacent pas.
+Le consultant importe le relevé dans « Invitations et relais ». Le relais ne permet pas de lire les réponses. Les statuts sont rapprochés par le consultant ; aucune validation des réponses par l'INS n'est créée. Relances coordonnées les 23 et 25 ; contrôle interne de couverture le 24. Aucune réunion périodique STATAFRIC ajoutée.
 
-Importer les CSV dans Excel en UTF-8, séparateur point-virgule. Les rubriques `Contributions` et `Réponses` correspondent au classeur source. Aucun compteur ne remplace l’examen des réponses manquantes, des périmètres ni des permissions de citation.
+## 9. Disponibilité et sauvegarde
 
-## 9. Fermer et remettre
+La persistance Supabase est distincte de la disponibilité de Streamlit. Streamlit Community Cloud peut mettre en veille une application sans trafic ; la documentation indique 12 heures d'inactivité. Un projet Supabase gratuit peut également être suspendu en cas de faible activité sur sept jours. Aucun contournement artificiel de ces limites ni garantie de disponibilité continue n'est fourni.
 
-Fermer la campagne dans l’administration ou par SQL (`active=false`). Conserver une trace datée de cette décision. Une réémission strictement identique d’une réponse déjà reçue peut encore retrouver son accusé ; une nouvelle réponse est refusée.
+Pour une exigence de service sans mise en veille, retenir un hébergement explicitement sans veille et un service de base adapté, après décision du Client. Le `Dockerfile` fourni permet un hébergement permanent choisi par l'administrateur ; il faut y ajouter HTTPS, supervision, gestion des secrets et stratégie de sauvegarde. Ce choix n'est pas un déploiement effectué.
 
-Remettre au Client les données, contacts séparés, décisions de contrôle, dictionnaire, code, versions et procédure d’accès dans un canal sécurisé. Appliquer la décision de conservation/suppression, y compris pour les exports locaux et les sauvegardes. Retirer les accès devenus inutiles et faire tourner les clés lors d’un transfert de responsabilité.
-
-## 10. Aide au diagnostic technique
-
-| Symptôme | Vérification |
-|---|---|
-| Bandeau « prévisualisation » | Secrets absents ou `APP_MODE` non configuré pour la production. |
-| Bouton d’envoi inactif | Consentement, relecture, erreurs, confirmation finale, autorisation de citation ou état de campagne. |
-| Campagne fermée | `active`, bornes UTC, identifiant de campagne et date système. |
-| Erreur de jeton | Correspondance entre `WRITER_TOKEN` et son empreinte en base ; ne pas publier le jeton pour demander de l’aide. |
-| Envoi incertain | Réessayer le même envoi sans changer de contenu ; ne pas créer immédiatement une autre réponse. |
-| Administration refusée | Compte habilité, adresse vérifiée, expiration, secrets OIDC et URL exacte de retour. |
-| Aucune réponse visible | Actualiser, sélectionner le bon parcours et, pour la recette, inclure les tests. |
-| Échec de lecture ou quotas | Vérifier le projet Supabase, les journaux expurgés et les conditions du service ; aucun repli silencieux vers SQLite n’est prévu. |
+Exporter et sauvegarder les réponses, contacts autorisés et registres à chaque journée de collecte selon les règles approuvées. Tester la restauration avant diffusion. Un redémarrage Streamlit ne doit pas servir de sauvegarde. Ne pas publier les archives analytiques : retirer les coordonnées ne rend pas les récits anonymes.
 
 ## Références techniques consultées
 
-Documentation officielle, consultée pour cette version. Les interfaces et conditions des services peuvent évoluer ; rejouer les tests après toute mise à niveau.
+Documentation officielle, vérification technique du 16 novembre 2026 :
+- https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/file-organization
+- https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/secrets-management
+- https://docs.streamlit.io/develop/api-reference/user/st.login
+- https://docs.streamlit.io/develop/concepts/architecture/widget-behavior
+- https://docs.streamlit.io/deploy/streamlit-community-cloud/manage-your-app/app-settings
+- https://supabase.com/docs/guides/database/postgres/row-level-security
+- https://supabase.com/docs/guides/database/functions
+- https://supabase.com/docs/guides/deployment/going-into-prod
 
-- Streamlit — déploiement : https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app
-- Streamlit — secrets : https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/secrets-management
-- Streamlit — authentification : https://docs.streamlit.io/develop/concepts/connections/authentication
-- Streamlit — tests : https://docs.streamlit.io/develop/api-reference/app-testing/st.testing.v1.apptest
-- Supabase — fonctions : https://supabase.com/docs/guides/database/functions
-- Supabase — sécurité par lignes : https://supabase.com/docs/guides/database/postgres/row-level-security
+Les procédures et options d'hébergement peuvent évoluer. Les exemples utilisent une architecture précise ; contrôler les intitulés dans les comptes effectifs.

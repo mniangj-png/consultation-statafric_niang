@@ -1,111 +1,65 @@
-# Diagnostic HISWACA — applications de collecte et d’administration
+# Diagnostic HISWACA — version 2.0.0
 
-**Version 1.0.0 — 10 novembre 2026**  
-Mission : appui statistique aux discours des décideurs. HISWACA – SOP 1, P178497, ET-AUC-478525-CS-INDV. Consultant : Mamadou Niang.
+Dossier de code pour la méthodologie française du **15 novembre 2026**, fichier source `Rapport_methodologique_HISWACA_FR_revise_inclusif_20261115(3).docx`. Collecte prévue du **19 au 26 novembre 2026 inclus** ; période des pratiques **1er novembre 2025–31 octobre 2026**.
 
-## Ce que contient le dépôt
+## Trois applications
 
-Deux applications Python distinctes, alimentées par le même schéma de questionnaires :
+| Fichier | Public | Fonction |
+|---|---|---|
+| `app.py` | Répondants | Cinq questionnaires, cinq langues, filtres, brouillon, confirmation d'enregistrement. |
+| `admin.py` | Consultant et personnes explicitement habilitées | Contributions, décisions de contrôle, huit registres, exports et liens. Authentification Google OIDC et liste d'adresses autorisées en production. |
+| `relais_ins.py` | Relais INS, facultatif | Préparer les invitations QP et QU et un relevé CSV. Aucun accès aux réponses ; aucun courriel envoyé par l'application. |
 
-| Application | Fichier d’entrée | Utilisateurs | Fonction |
-|---|---|---|---|
-| Collecte | `app.py` | Parties prenantes | Quatre parcours, interface et questionnaires en français et en anglais, filtres, relecture, brouillon, envoi et accusé. |
-| Administration | `admin.py` | Consultant et personnes habilitées | Authentification, contrôle des contributions, qualification des doublons, exports, contacts séparés et ouverture/fermeture. |
+**Les trois fichiers sont autonomes : aucun dossier `diagnostic` n'est nécessaire au démarrage.** Le dossier `src` contient les sources éditables et les catalogues, pas une dépendance des fichiers déployés. Remplacer le contenu de l'ancien `app.py`, ne pas ajouter le nouveau code à sa fin.
 
-| Parcours | Codes conservés | Paramètre du lien | Durée indicative de l’instrument source |
-|---|---|---|---|
-| Instituts nationaux de la statistique | QI01–QI12 | `?form=ins&lang=fr` | 15–20 minutes |
-| Équipes préparant les discours | QU01–QU08 | `?form=utilisateurs&lang=fr` | 10–15 minutes |
-| CER et organisations internationales | QR01–QR05 | `?form=partenaires&lang=fr` | Environ 10 minutes |
-| Réponse abrégée | RA01–RA05 | `?form=abrege&lang=fr` | 5–10 minutes |
+## Premier essai
 
-Remplacer `fr` par `en` pour l’anglais. Ces durées n’ont pas été remesurées auprès de répondants. Les liens ne vérifient ni l’identité du répondant ni son mandat institutionnel.
-
-## Architecture retenue
-
-```text
-GitHub : code et versions, SANS réponses, contacts ni secrets
-  ├── Streamlit / app.py : collecte publique, clé publique + jeton serveur limité
-  └── Streamlit / admin.py : OIDC + liste des personnes autorisées, clé d’administration
-                  │
-                  └── Supabase / PostgreSQL : réponses et coordonnées dans des tables distinctes
-```
-
-**GitHub n’héberge pas le processus Python.** Le scénario documenté utilise Streamlit Community Cloud, connecté au dépôt GitHub. La base externe assure la persistance indépendamment des redémarrages de l’application. Supabase est une proposition technique de ce dossier, pas une décision institutionnelle déjà acquise.
-
-Avant toute collecte réelle, confirmer avec STATAFRIC les comptes propriétaires, les personnes habilitées, les lieux d’hébergement, la durée de conservation et la procédure de remise/suppression. Vérifier les conditions et quotas des services choisis. Le dossier n’atteste pas une homologation de sécurité ou une conformité réglementaire.
-
-## Démarrer
-
-**Pour un déploiement réel, suivre `DEPLOIEMENT.md`.** Il couvre l’installation SQL, les secrets séparés, les deux applications, l’authentification et la recette.
-
-Pour prévisualiser localement, depuis le dossier du projet :
+Avec Python 3.12, installer `requirements.txt`, puis lancer :
 
 ```bash
-python -m venv .venv
-# Windows PowerShell : .venv\Scripts\Activate.ps1
-# macOS / Linux : source .venv/bin/activate
 python -m pip install -r requirements.txt
-streamlit run app.py
+python -m streamlit run app.py
 ```
 
-Sans secrets, l’application s’ouvre en **prévisualisation** et ne permet aucun enregistrement.
+Sans secrets, l'application est en **prévisualisation**, sans envoi. Pour les essais locaux, copier `config/local_test.example.toml` vers `.streamlit/secrets.toml`. Toute réponse locale est alors fictive. Ne jamais déployer cette configuration sur un site public.
 
-Pour des essais locaux exclusivement fictifs : copier `docs/local.secrets.example.toml` vers `.streamlit/secrets.toml`, puis lancer la collecte et, dans un second terminal, l’administration :
-
+Pour l'administration locale :
 ```bash
-streamlit run app.py --server.address 127.0.0.1 --server.port 8501
-streamlit run admin.py --server.address 127.0.0.1 --server.port 8502
+python -m streamlit run admin.py --server.port 8502
 ```
 
-Ne pas partager ces URL locales ni publier cette configuration. SQLite local n’est pas le stockage de production. Toutes les réponses locales sont marquées comme tests.
+## Déploiement GitHub
 
-## Fonctionnalités de collecte
+Lire **DEPLOIEMENT.md**. Le chemin Streamlit est `app.py` pour la collecte et `admin.py` pour l'administration, dans deux applications distinctes. Conserver `requirements.txt` à la racine. La troisième application peut être lancée localement ou déployée séparément. Ne créer aucun dossier `pages/` exposant l'administration dans la collecte publique.
 
-Les 30 rubriques et 150 champs/sous-champs reprennent les quatre instruments français. Les champs de contact sont facultatifs. Les codes de réponse, dont `0`, `97`, `98`, `99`, restent distincts des blancs et des sauts par filtre. Une réponse abrégée est toujours qualifiée de partielle.
+Stockage retenu : Supabase/PostgreSQL. Le code et les secrets restent distincts ; les réponses ne sont pas dans GitHub. Les scripts SQL sont dans `sql/`. Commencer par une campagne de test distincte ; la campagne réelle est fermée par défaut. Aucun compte, projet distant ni lien public n'est créé par ce dossier.
 
-La navigation est organisée par rubrique. Une réponse rendue inapplicable par un changement de parcours est retirée ; elle n’est pas réutilisée si le répondant revient ensuite au parcours initial. Si un filtre dépend d’une question non renseignée, l’export porte un état distinct : `FILTRE_INDETERMINE`, et non un faux `NF`.
+## Outils fournis
 
-Les contrôles portent sur les choix exclusifs, les limites de choix, les priorités classées, les longueurs, le format des mois et des courriels, ainsi que quelques contradictions. Les incohérences bloquantes sont signalées ; les situations à clarifier restent dans une liste d’alertes. Le logiciel ne certifie pas la véracité des déclarations.
+`outils/` contient les 25 formulaires de repli UTF-8, le dictionnaire des cinq langues, les modèles CSV des huit registres, la matrice de préparation des 25 combinaisons et le journal de traduction. Le classeur vierge fourni sert à la tenue hors ligne ; les exports CSV de l'application restent la source de transfert. Aucun résultat de consultation réelle ou fictive n'est préchargé.
 
-Une réponse partielle est recevable, sous réserve du consentement et d’au moins une information autre que le consentement. Un profil seul reste « À examiner », jamais automatiquement « Exploitable ».
+Les opérations GitHub et Streamlit ne mettent pas automatiquement les 25 cases de recette au statut « vérifié ». Les traductions sont rédigées ; leur relecture indépendante et les tests distants restent à documenter avant autorisation de diffusion.
 
-Le brouillon JSON est téléchargé par le répondant et peut être réimporté. **Il n’existe pas de sauvegarde automatique permanente du brouillon sur le serveur.** Un rafraîchissement ou une rupture de session peut faire perdre une saisie non téléchargée. Le fichier de brouillon peut contenir les coordonnées facultatives ; il doit être protégé.
+## Périmètre et garde-fous
 
-L’envoi utilise un identifiant stable. Un nouvel essai avec le même identifiant et le même contenu renvoie le même accusé, sans nouvelle réponse. Un contenu différent ne remplace pas une réponse reçue. Un complément doit rappeler la référence de la contribution précédente.
+- QI pour les INS ; QP pour les autres producteurs ; QU pour les utilisateurs préparant les discours ; QR pour les partenaires ; RA pour les réponses abrégées.
+- Français, anglais, arabe, portugais et espagnol pour les questionnaires. Kiswahili uniquement dans le registre de recherche documentaire.
+- Chaque INS relaie QP à 3–8 producteurs distincts et QU à 4–6 équipes utilisatrices. Ce sont des cibles d'invitations, pas des quotas de réponses.
+- Participation volontaire, sans réponse présélectionnée. Coordonnées facultatives séparées. Réponses brutes non écrasées.
+- L2 exclusivement documentaire ; réponses réelles destinées à L3 ; tests et revue documentés pour L4.
+- Pas de classement des pays, pas de score de maturité, pas d'extrapolation statistique ni de taux de réponse sans liste connue.
+- Les brouillons ne sont pas sauvegardés automatiquement dans la base : les télécharger avant de quitter. Les reçus sont générés seulement après confirmation du stockage.
 
-## Données, administration et exports
-
-Les données de collecte sont enregistrées en JSON versionné avec l’empreinte du questionnaire, la langue, les états des questions et l’indicateur de test. Les contacts structurés sont séparés. Les données brutes ne sont pas réécrites par l’administration ; les décisions de contrôle sont ajoutées à un historique.
-
-L’export analytique ZIP comprend `Contributions.csv`, `Reponses.csv`, `Metadonnees.csv`, `Dictionnaire.csv` et les originaux analytiques JSON. Les en-têtes des deux premiers CSV reprennent les onglets correspondants du classeur source. Le dossier ne modifie pas automatiquement ce classeur et ne reconstitue pas les autres registres documentaires.
-
-Les CSV utilisent UTF-8 avec BOM et le séparateur point-virgule. Les textes susceptibles d’être interprétés comme des formules sont neutralisés dans les CSV ; le texte original reste dans le JSON. Pour Excel : importer les identifiants, les codes et les références comme du texte.
-
-**Sans contacts ne signifie pas anonyme.** Les noms d’institutions, récits et liens peuvent être identifiants. Les permissions de citation et une revue humaine s’appliquent avant toute diffusion externe. Aucun score de maturité, classement d’INS, taux de représentativité ou décompte automatique d’institutions dédoublonnées n’est produit.
-
-## Tests et limites de validation
+## Vérifications locales et reconstruction
 
 ```bash
-python -m pip install -r requirements-dev.txt
+python scripts/preflight.py
 python -m pytest -q
+python scripts/compile_catalogue.py
+python scripts/build_standalone.py
+python scripts/export_tools.py
 ```
 
-À la construction du dossier : **126 tests exécutés avec succès** ; le module de tests Streamlit est ignoré faute de bibliothèque Streamlit disponible dans l’environnement d’exécution. La compilation Python a réussi. Les tests de logique, stockage SQLite, concurrence locale, export et erreurs HTTP simulées ne constituent pas un test en ligne.
+Après modification du catalogue ou des sources, reconstruire les trois applications et exécuter les tests avant dépôt. Les changements d'instrument exigent une nouvelle version et un nouveau contrôle de traduction ; ne pas changer le sens d'une variable au milieu d'une collecte sans traçabilité.
 
-Les tests `AppTest` sont fournis pour GitHub Actions et un poste équipé. Les scripts SQL ont été contrôlés statiquement, **pas exécutés sur un projet Supabase réel**. L’authentification réelle, la navigation web et la persistance distante doivent être validées selon `docs/RECETTE.md` avant transmission des liens.
-
-## Repères du dépôt
-
-- `diagnostic/schema.py` : libellés FR/EN, options, filtres et références des instruments.
-- `diagnostic/engine.py` : validation, normalisation, brouillons et accusés.
-- `diagnostic/storage.py` : accès Supabase et mode local de test.
-- `diagnostic/exports.py` : exports analytiques et dictionnaire.
-- `sql/` : installation, campagne et scripts de recette.
-- `scripts/generate_secrets.py` : préparation locale des secrets et du SQL de campagne.
-- `docs/FIDELITE_ET_ADAPTATIONS.md` : sources et adaptations explicites.
-- `docs/SECURITE.md` : accès, sauvegardes, limites et clôture.
-- `docs/EMAIL_INVITATION_FR_EN.md` : messages à adapter.
-- `.github/workflows/tests.yml` : tests automatiques à chaque poussée et demande de fusion.
-
-Aucun compte, dépôt distant, application hébergée ou URL de production n’a été créé par la génération de ce dossier. Aucun questionnaire n’a été envoyé et aucune réponse réelle n’a été collectée.
+Voir `docs/CONCORDANCE.md`, `docs/SECURITE.md`, `docs/RECETTE.md` et `docs/EXPLOITATION.md`.

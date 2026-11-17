@@ -1,0 +1,14 @@
+# COPIER DANS LES SECRETS DE L'APPLICATION app.py, pas dans GitHub.
+APP_MODE = "production"
+TEST_MODE = true
+CAMPAIGN_ID = "discours-2026-v2-test"
+SUPABASE_URL = "https://REMPLACER.supabase.co"
+SUPABASE_PUBLIC_KEY = "REMPLACER_PAR_LA_CLE_ANON"
+WRITER_TOKEN = "REMPLACER_PAR_LE_JETON_TEST_GENERE"
+CONTACT_EMAIL = "REMPLACER_PAR_LE_CONTACT_INSTITUTIONNEL"
+NOTICE_CONTROLLER = "STATAFRIC et consultant — personnes habilitées"
+RETENTION_NOTICE = "Campagne technique sans données réelles ; durée à préciser."
+DEPLOYMENT_APPROVED = false
+APPROVED_LANGUAGES = []
+# Après configuration vérifiée, DEPLOYMENT_APPROVED=true autorise les essais
+# dans cette campagne de test seulement. Le SQL impose aussi test_mode=true.

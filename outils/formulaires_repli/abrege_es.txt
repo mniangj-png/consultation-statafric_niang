@@ -1,0 +1,119 @@
+﻿Respuesta abreviada
+2026-11-15.web-2
+Referencia : 01/11/2025–31/10/2026. Recogida : 19–26 de noviembre de 2026 inclusive.
+STATAFRIC y el consultor Mamadou Niang preparan herramientas prácticas de apoyo estadístico a los discursos y la toma de decisiones. Período de referencia : del 1 de noviembre de 2025 al 31 de octubre de 2026; feche los cambios posteriores por separado. Recogida : del 19 al 26 de noviembre de 2026 inclusive. Las respuestas reales alimentarán L3, nunca L2, que es exclusivamente documental.
+
+La participación es voluntaria. Se aceptan contribuciones institucionales, de servicios e individuales cuyo ámbito esté claro. Responda directamente al equipo de la misión, sin aprobación previa de la ONE que remitió la invitación. Los resultados se presentan agregados o anonimizados por defecto; la atribución o cita identificable sigue su elección en la última sección. Los documentos entregados al Cliente respetarán esas autorizaciones. Un caso singular puede seguir siendo reconocible. Los contactos opcionales se separan del análisis.
+
+No proporcione opiniones políticas, datos individuales, información personal innecesaria ni documentos confidenciales. Use enlaces públicos o extractos no confidenciales autorizados. Una contribución individual no compromete a la institución.
+
+Una respuesta parcial es útil. Ninguna opción sustantiva está preseleccionada. Un blanco no es un no ni un cero. « Ninguno », « No sabe » y « No aplicable » excluyen otras respuestas cuando así lo indica el cuestionario.
+
+Antes del envío, los datos permanecen en la sesión, no en la base. Pueden perderse al cerrar : descargue un borrador para continuar. Un borrador no constituye un envío. Solo un acuse confirmado acredita el registro. Las respuestas originales están protegidas y solo son accesibles al consultor y a las personas autorizadas. Cambiar de idioma no crea otra contribución. Si es necesario, use el formulario alternativo en el mismo idioma y envíelo por correo al contacto de la misión.
+Formulario alternativo: conserve los códigos. Las condiciones expresan los filtros: ∈ significa «entre», ∉ «no entre» y ∩ ≠ ∅ «contiene al menos uno». No responda si no se cumple la condición. Se aceptan respuestas parciales. Si rechaza participar, termine sin más respuestas.
+
+RA01 — Participación y ámbito
+
+RA01_Participation — ¿Autoriza el uso de su contribución según el aviso de participación?
+[ ] 1 Acepto
+[ ] 0 No deseo participar — fin del cuestionario
+____________________________
+RA01_Pays — País
+Condición de visualización : (RA01_Participation ∈ {1})
+____________________________
+RA01_Institution — Institución o tipo de institución
+Condición de visualización : (RA01_Participation ∈ {1})
+____________________________
+RA01_Fonction — Función
+Condición de visualización : (RA01_Participation ∈ {1})
+____________________________
+RA01_Profil — Perfil de la contribución
+Condición de visualización : (RA01_Participation ∈ {1})
+[ ] 1 ONE
+[ ] 2 Otro productor de estadísticas
+[ ] 3 Equipo que prepara discursos
+[ ] 4 CER u organización internacional
+[ ] 97 Otra
+____________________________
+RA01_Profil_Autre — Otra : especifique
+Condición de visualización : ((RA01_Participation ∈ {1} Y RA01_Profil ∈ {97}))
+____________________________
+RA01_Statut — Respuesta institucional, de servicio o individual
+Condición de visualización : (RA01_Participation ∈ {1})
+[ ] 1 Respuesta institucional consolidada
+[ ] 2 Contribución de un servicio, no consolidada a nivel institucional
+[ ] 3 Contribución individual basada en mi práctica profesional
+____________________________
+RA01_Unite — Servicio o unidad correspondiente
+Condición de visualización : (RA01_Participation ∈ {1})
+____________________________
+RA01_Domaine — Ámbito o sector, opcional
+Condición de visualización : (RA01_Participation ∈ {1})
+____________________________
+RA01_Langue_texte — Idioma principal de sus respuestas abiertas
+Condición de visualización : (RA01_Participation ∈ {1})
+[ ] fr Francés
+[ ] en Inglés
+[ ] ar Árabe
+[ ] pt Portugués
+[ ] es Español
+____________________________
+RA01_Origine_invitation — Origen de la invitación o del enlace
+Condición de visualización : (RA01_Participation ∈ {1})
+[ ] 1 ONE
+[ ] 2 STATAFRIC o consultor
+[ ] 3 Otra entidad que transmitió la invitación
+[ ] 4 Acceso espontáneo
+[ ] 98 No sabe
+____________________________
+RA01_INS_relais — ONE o entidad que transmitió la invitación, opcional
+Condición de visualización : (RA01_Participation ∈ {1})
+____________________________
+RA01_Reference_precedente — Referencia de una contribución anterior, si se conoce
+Condición de visualización : (RA01_Participation ∈ {1})
+____________________________
+
+RA02 — Última situación conocida
+
+RA02_Cas — Describa una solicitud o preparación de discurso durante el período : mes, tema, plazo disponible y apoyo obtenido o no. Si no conoce un caso, indíquelo. Tres líneas.
+Condición de visualización : (RA01_Participation ∈ {1})
+____________________________
+
+RA03 — Fuente y control
+
+RA03_Source — Para este caso, ¿se podía localizar la fuente de la cifra?
+Condición de visualización : (RA01_Participation ∈ {1})
+[ ] 1 Sí
+[ ] 0 No
+[ ] 98 No sabe
+[ ] 99 No aplicable
+____________________________
+RA03_Controle — ¿Quién comprobó el contenido antes de enviarlo? Indique la función o la ausencia de control conocido.
+Condición de visualización : (RA01_Participation ∈ {1})
+____________________________
+
+RA04 — Primera mejora
+
+RA04_Amelioration — ¿Qué dificultad debe resolverse primero? ¿Qué acción sería posible con los recursos existentes y qué función podría dirigirla? Tres líneas.
+Condición de visualización : (RA01_Participation ∈ {1})
+____________________________
+
+RA05 — Reutilización y seguimiento
+Las opciones 1 y 2 requieren la autorización correspondiente. Una contribución individual sin esa autorización permanece anonimizada. Sin selección explícita, se aplica la síntesis anonimizada (código 0). El silencio nunca autoriza una cita.
+RA05_Attribution — Presentación de resultados autorizada
+Condición de visualización : (RA01_Participation ∈ {1})
+[ ] 0 Solo síntesis anonimizada, sin atribución identificable
+[ ] 1 Atribución a la institución, sin cita textual identificable
+[ ] 2 Atribución a la institución y cita textual
+[ ] 3 Enviarme el pasaje antes de cualquier atribución o cita identificable
+____________________________
+RA05_Lien — Enlace público útil, opcional
+Condición de visualización : (RA01_Participation ∈ {1})
+____________________________
+RA05_Contact_fonction — Contacto institucional para aclaraciones : función o servicio, opcional
+Condición de visualización : (RA01_Participation ∈ {1})
+____________________________
+RA05_Contact_courriel — Contacto institucional para aclaraciones, opcional (correo electrónico)
+Condición de visualización : (RA01_Participation ∈ {1})
+____________________________
+La recepción no valida el contenido ni supone aprobación institucional.

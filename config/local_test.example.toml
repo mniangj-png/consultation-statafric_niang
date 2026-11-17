@@ -1,0 +1,5 @@
+# Uniquement sur un poste local. Aucune réponse réelle.
+APP_MODE = "local"
+TEST_MODE = true
+LOCAL_DB_PATH = ".local/diagnostic_v2_test.sqlite3"
+ALLOW_LOCAL_ADMIN = true

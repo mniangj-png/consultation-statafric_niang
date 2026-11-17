@@ -1,0 +1,250 @@
+﻿RECs and international organisations
+2026-11-15.web-2
+Reference: 1 Nov 2025–31 Oct 2026. Collection: 19–26 November 2026 inclusive.
+STATAFRIC and consultant Mamadou Niang are preparing practical tools for statistical support to speeches and decision-making. Reference period for practices: 1 November 2025 to 31 October 2026; date subsequent changes separately. Collection: 19 to 26 November 2026 inclusive. Actual responses will inform L3, never the exclusively desk-based L2.
+
+Participation is voluntary. Institutional, service-level and individual contributions are accepted when their scope is clear. Respond directly to the assignment team, without prior approval by the forwarding NSO. Reporting is aggregated or anonymised by default; identifiable attribution or quotation follows your choice in the last section. Materials handed to the Client respect these permissions. A distinctive case may remain recognisable. Optional contact details are separate from analysis.
+
+Do not provide political opinions, individual-level data, unnecessary personal details or confidential documents. Use public links or authorised non-confidential extracts. An individual contribution does not commit the institution.
+
+A partial response is useful. No substantive option is preselected. A blank is neither no nor zero. None, do not know and not applicable exclude other answers where the questionnaire specifies.
+
+Before submission, entries remain in the session, not in the database. They may be lost on closing: download a draft to resume. A draft is not a submission. Only a confirmed receipt attests to recording. Original responses are protected; only the consultant and authorised persons can access them. Changing language does not create a new contribution. If needed, use the fallback form in the same language and email it to the assignment contact.
+Fallback form: retain the codes. Display conditions express routing: ∈ means “among”, ∉ “not among”, ∩ ≠ ∅ “contains at least one”. Do not answer fields whose conditions are not met. Partial responses are accepted. After refusing participation, stop without further answers.
+
+QR01 — Participation and scope of the contribution
+
+QR01_Participation — Do you agree to the use of your contribution as described in the notice?
+[ ] 1 I agree
+[ ] 0 I do not wish to participate — end of questionnaire
+____________________________
+QR01_Organisation — Organisation
+Display condition : (QR01_Participation ∈ {1})
+____________________________
+QR01_Type — Type of organisation
+Display condition : (QR01_Participation ∈ {1})
+[ ] 1 Regional Economic Community (REC)
+[ ] 2 International organisation
+[ ] 97 Other
+____________________________
+QR01_Type_Autre — Other: please specify
+Display condition : ((QR01_Participation ∈ {1} AND QR01_Type ∈ {97}))
+____________________________
+QR01_Fonction — Function of the responding service, without a personal name
+Display condition : (QR01_Participation ∈ {1})
+____________________________
+QR01_Statut — Contribution status
+Display condition : (QR01_Participation ∈ {1})
+[ ] 1 Consolidated institutional response
+[ ] 2 Service-level contribution, not consolidated at institution level
+[ ] 3 Individual contribution based on my professional practice
+____________________________
+QR01_Champ — Territories or institutions covered by your experience, without assuming coverage of all members
+Display condition : (QR01_Participation ∈ {1})
+____________________________
+QR01_Unite — Service or unit concerned
+Display condition : (QR01_Participation ∈ {1})
+____________________________
+QR01_Domaine — Domain or sector, optional
+Display condition : (QR01_Participation ∈ {1})
+____________________________
+QR01_Langue_texte — Main language of your free-text responses
+Display condition : (QR01_Participation ∈ {1})
+[ ] fr French
+[ ] en English
+[ ] ar Arabic
+[ ] pt Portuguese
+[ ] es Spanish
+____________________________
+QR01_Origine_invitation — Origin of the invitation or link
+Display condition : (QR01_Participation ∈ {1})
+[ ] 1 NSO
+[ ] 2 STATAFRIC or consultant
+[ ] 3 Other forwarding organisation
+[ ] 4 Unsolicited access
+[ ] 98 Do not know
+____________________________
+QR01_INS_relais — Forwarding NSO or organisation, optional
+Display condition : (QR01_Participation ∈ {1})
+____________________________
+
+QR02 — Support actually provided during the period
+Participation in training must not be interpreted as proof that a reform has been implemented.
+QR02_Appui — Have you provided or monitored support related to the use of statistics in speeches?
+Display condition : (QR01_Participation ∈ {1})
+[ ] 1 Yes
+[ ] 0 No
+[ ] 98 Do not know
+[ ] 99 Outside your area of activity
+____________________________
+QR02_Activites — If yes, select the activities actually known
+Display condition : ((QR01_Participation ∈ {1} AND QR02_Appui ∈ {1}))
+[ ] 1 Guide or template
+[ ] 2 Training or support
+[ ] 3 Providing or checking figures
+[ ] 4 Support for a national procedure
+[ ] 5 Dissemination or sharing experiences
+[ ] 97 Other
+____________________________
+QR02_Activites_Autre — Other: please specify
+Display condition : ((QR01_Participation ∈ {1} AND QR02_Activites ∩ ≠ ∅ {97}))
+____________________________
+QR02_Cas — Describe one case in two sentences: period, type of beneficiary institution and observable output. Add a public reference if available.
+Display condition : ((QR01_Participation ∈ {1} AND QR02_Appui ∈ {1}))
+____________________________
+
+QR03 — Transferable practices and conditions for adaptation
+Cite only practices actually observed or documented. An older example may be cited with its date; it is not support provided during the reference period.
+QR03_Absence — If you are not proposing a practice, indicate the situation; otherwise leave this field blank
+Display condition : (QR01_Participation ∈ {1})
+[ ] 0 No documented practice to propose
+[ ] 98 Do not know
+____________________________
+QR03_Pratiques — Up to two practices: practice; source or evidence; context in which it worked; condition required for adaptation. Up to 80 words in total.
+Display condition : ((QR01_Participation ∈ {1} AND QR03_Absence ∉ {0, 98}))
+Guideline: up to 80 words. Original text is retained.
+____________________________
+
+QR03bis — International standards and frameworks
+Answer from your experience; no additional research is requested. At most two references. Citing a text does not mean that it legally applies to all countries or has been implemented.
+QR03bis_Presence — Which international or regional texts do you use or recommend for the quality and proper use of statistics in speeches and decision-making?
+Display condition : (QR01_Participation ∈ {1})
+[ ] 1 One or more references to cite
+[ ] 0 No reference to propose
+[ ] 98 Do not know
+[ ] 99 Outside my remit
+____________________________
+QR03bis_R1 — Reference 1: exact title; authoring organisation; year or version; public link or reference; useful principle; use for speeches or decisions; condition for adaptation to an NSO.
+Display condition : ((QR01_Participation ∈ {1} AND QR03bis_Presence ∈ {1}))
+____________________________
+QR03bis_R1_Statut — Status of this reference
+Display condition : ((QR01_Participation ∈ {1} AND QR03bis_Presence ∈ {1}))
+[ ] 1 Used during the period
+[ ] 2 Recommended, without observed use
+[ ] 3 Used and recommended
+[ ] 98 Do not know
+____________________________
+QR03bis_R1_Type — Type of reference
+Display condition : ((QR01_Participation ∈ {1} AND QR03bis_Presence ∈ {1}))
+[ ] 1 Normative text
+[ ] 2 Guide or manual
+[ ] 3 Institutional recommendation
+[ ] 97 Other
+[ ] 98 Do not know
+____________________________
+QR03bis_R2 — Reference 2 (optional): exact title; authoring organisation; year or version; public link or reference; useful principle; use for speeches or decisions; condition for adaptation to an NSO.
+Display condition : ((QR01_Participation ∈ {1} AND QR03bis_Presence ∈ {1}))
+____________________________
+QR03bis_R2_Statut — Status of this reference
+Display condition : ((QR01_Participation ∈ {1} AND QR03bis_Presence ∈ {1}))
+[ ] 1 Used during the period
+[ ] 2 Recommended, without observed use
+[ ] 3 Used and recommended
+[ ] 98 Do not know
+____________________________
+QR03bis_R2_Type — Type of reference
+Display condition : ((QR01_Participation ∈ {1} AND QR03bis_Presence ∈ {1}))
+[ ] 1 Normative text
+[ ] 2 Guide or manual
+[ ] 3 Institutional recommendation
+[ ] 97 Other
+[ ] 98 Do not know
+____________________________
+QR03bis_Application — Specify a practical application or known limitation, up to 60 words
+Display condition : ((QR01_Participation ∈ {1} AND QR03bis_Presence ∈ {1}))
+Guideline: up to 60 words. Original text is retained.
+____________________________
+
+QR04 — Priority needs and possible contribution
+This response is not a commitment of funding or staff.
+QR04_Besoins — Select up to three needs
+Display condition : (QR01_Participation ∈ {1})
+Up to 3 choices.
+[ ] 1 Adaptable common procedures
+[ ] 2 Sources and fact sheets
+[ ] 3 Checking and interpretation
+[ ] 4 Communication and wording
+[ ] 5 Training
+[ ] 6 Sharing experiences
+[ ] 7 Language adaptation
+[ ] 97 Other
+[ ] 0 No identified need
+[ ] 98 Do not know
+____________________________
+QR04_Besoins_Autre — Other: please specify
+Display condition : ((QR01_Participation ∈ {1} AND QR04_Besoins ∩ ≠ ∅ {97}))
+____________________________
+QR04_Contribution — What contribution might your organisation consider, subject to its internal decision? Select one.
+Display condition : (QR01_Participation ∈ {1})
+[ ] 1 Relaying the consultation
+[ ] 2 Public documents
+[ ] 3 Technical comments
+[ ] 4 Contact with volunteer users
+[ ] 5 No contribution envisaged at this stage
+[ ] 97 Other
+[ ] 98 Do not know
+____________________________
+QR04_Contribution_Autre — Other: please specify
+Display condition : ((QR01_Participation ∈ {1} AND QR04_Contribution ∈ {97}))
+____________________________
+QR04_Contrainte — Specify a resource, mandate or language constraint, if useful
+Display condition : (QR01_Participation ∈ {1})
+____________________________
+
+QR04bis — Recommendations from international organisations
+At most two recommendations. Distinguish a documented institutional recommendation from a personal proposal. These proposals are neither funding commitments nor adoption decisions.
+QR04bis_Presence — Which recommendations from international organisations should be considered in the strategic document?
+Display condition : (QR01_Participation ∈ {1})
+[ ] 1 One or more recommendations to propose
+[ ] 0 None
+[ ] 98 Do not know
+[ ] 99 Outside my remit
+____________________________
+QR04bis_R1 — Recommendation 1: originating organisation; document, date and link; action; responsible actor; national, regional or continental level; difficulty; resources and conditions; evidence of implementation.
+Display condition : ((QR01_Participation ∈ {1} AND QR04bis_Presence ∈ {1}))
+____________________________
+QR04bis_R1_Nature — Nature of this recommendation
+Display condition : ((QR01_Participation ∈ {1} AND QR04bis_Presence ∈ {1}))
+[ ] 1 Published institutional recommendation
+[ ] 2 Unpublished institutional recommendation, authorised for sharing
+[ ] 3 Personal professional proposal
+[ ] 98 To be clarified
+____________________________
+QR04bis_R2 — Recommendation 2 (optional): originating organisation; document, date and link; action; responsible actor; national, regional or continental level; difficulty; resources and conditions; evidence of implementation.
+Display condition : ((QR01_Participation ∈ {1} AND QR04bis_Presence ∈ {1}))
+____________________________
+QR04bis_R2_Nature — Nature of this recommendation
+Display condition : ((QR01_Participation ∈ {1} AND QR04bis_Presence ∈ {1}))
+[ ] 1 Published institutional recommendation
+[ ] 2 Unpublished institutional recommendation, authorised for sharing
+[ ] 3 Personal professional proposal
+[ ] 98 To be clarified
+____________________________
+QR04bis_Priorite — Which recommendation takes priority and why? Up to 40 words.
+Display condition : ((QR01_Participation ∈ {1} AND QR04bis_Presence ∈ {1}))
+Guideline: up to 40 words. Original text is retained.
+____________________________
+
+QR05 — Attribution and possible follow-up
+Options 1 and 2 require the corresponding authorisation. An individual contribution without that authorisation remains anonymised. Without an explicit choice, an anonymised summary (code 0) applies. Silence never constitutes permission to quote.
+QR05_Attribution — Authorised reuse
+Display condition : (QR01_Participation ∈ {1})
+[ ] 0 Anonymised summary only, with no identifiable attribution
+[ ] 1 Attribution to the institution, without an identifiable quotation
+[ ] 2 Attribution to the institution and direct quotation
+[ ] 3 Submit the passage to me before any identifiable attribution or quotation
+____________________________
+QR05_Contact_fonction — Optional contact: function or service to contact
+Display condition : (QR01_Participation ∈ {1})
+____________________________
+QR05_Contact_courriel — Institutional or generic email address, optional
+Display condition : (QR01_Participation ∈ {1})
+____________________________
+QR05_Contact_relais — Prefer contact through STATAFRIC, optional
+Display condition : (QR01_Participation ∈ {1})
+[ ] 1 Contact through STATAFRIC
+____________________________
+QR05_Nouveaute — New practice after 31 October, optional: brief description and date
+Display condition : (QR01_Participation ∈ {1})
+____________________________
+Receipt is neither content validation nor institutional approval.

@@ -1,0 +1,371 @@
+﻿Equipas que preparam discursos
+2026-11-15.web-2
+Referência : 01/11/2025–31/10/2026. Recolha : 19–26 de novembro de 2026 inclusive.
+O STATAFRIC e o consultor Mamadou Niang preparam ferramentas práticas de apoio estatístico aos discursos e à decisão. Período de referência : de 1 de novembro de 2025 a 31 de outubro de 2026; date separadamente as alterações posteriores. Recolha : de 19 a 26 de novembro de 2026, inclusive. As respostas reais alimentarão L3, nunca L2, que é exclusivamente documental.
+
+A participação é voluntária. Aceitam-se contribuições institucionais, de serviços e individuais com âmbito claro. Responda diretamente à equipa da missão, sem aprovação prévia do INE que encaminhou o convite. Os resultados são agregados ou anonimizados por defeito; a atribuição ou citação identificável segue a escolha na última secção. As peças entregues ao Cliente respeitam essas autorizações. Um caso singular pode continuar reconhecível. Os contactos facultativos são separados da análise.
+
+Não forneça opiniões políticas, dados individuais, dados pessoais desnecessários nem documentos confidenciais. Use ligações públicas ou excertos não confidenciais autorizados. Uma contribuição individual não compromete a instituição.
+
+Uma resposta parcial é útil. Nenhuma opção substantiva está pré-selecionada. Um campo vazio não significa não nem zero. « Nenhum », « Não sabe » e « Não aplicável » excluem outras respostas quando o questionário o indica.
+
+Antes do envio, os dados permanecem na sessão, não na base. Podem perder-se ao fechar : descarregue um rascunho para retomar. Um rascunho não constitui envio. Apenas um recibo confirmado comprova o registo. As respostas originais são protegidas; só o consultor e pessoas autorizadas lhes acedem. Mudar de língua não cria nova contribuição. Se necessário, use o formulário alternativo na mesma língua e envie-o por correio ao contacto da missão.
+Formulário alternativo: mantenha os códigos. As condições exprimem os filtros: ∈ significa «entre», ∉ «não entre» e ∩ ≠ ∅ «contém pelo menos um». Não responda se a condição não for cumprida. Aceitam-se respostas parciais. Se recusar participar, termine sem outras respostas.
+
+QU01 — Consentimento de participação e perfil
+Responda por uma equipa ou serviço que prepara discursos, ou descreva a sua prática se não tiver mandato para responder em seu nome. A informação refere-se aos números, sem avaliação política dos discursos.
+QU01_Participation — Autoriza a utilização da sua contribuição conforme o aviso de participação?
+[ ] 1 Aceito
+[ ] 0 Não desejo participar — fim do questionário
+____________________________
+QU01_Pays — País
+Condição de apresentação : (QU01_Participation ∈ {1})
+____________________________
+QU01_Institution — Instituição ou tipo de instituição
+Condição de apresentação : (QU01_Participation ∈ {1})
+____________________________
+QU01_Statut — Âmbito
+Condição de apresentação : (QU01_Participation ∈ {1})
+[ ] 1 Resposta consolidada da equipa ou serviço
+[ ] 2 Contribuição individual baseada na minha prática
+____________________________
+QU01_Fonction — Função, sem nome pessoal
+Condição de apresentação : (QU01_Participation ∈ {1})
+[ ] 1 Redação de discursos ou assessoria
+[ ] 2 Comunicação
+[ ] 3 Apoio técnico ou estatístico
+[ ] 4 Coordenação da equipa
+[ ] 97 Outra
+____________________________
+QU01_Fonction_Autre — Outra : especifique
+Condição de apresentação : ((QU01_Participation ∈ {1} E QU01_Fonction ∈ {97}))
+____________________________
+QU01_Reference_precedente — Se este envio complementa uma resposta anterior, indique a referência ou data
+Condição de apresentação : (QU01_Participation ∈ {1})
+____________________________
+QU01_Unite — Serviço ou unidade em causa
+Condição de apresentação : (QU01_Participation ∈ {1})
+____________________________
+QU01_Domaine — Domínio ou setor, facultativo
+Condição de apresentação : (QU01_Participation ∈ {1})
+____________________________
+QU01_Langue_texte — Língua principal das suas respostas abertas
+Condição de apresentação : (QU01_Participation ∈ {1})
+[ ] fr Francês
+[ ] en Inglês
+[ ] ar Árabe
+[ ] pt Português
+[ ] es Espanhol
+____________________________
+QU01_Origine_invitation — Origem do convite ou da ligação
+Condição de apresentação : (QU01_Participation ∈ {1})
+[ ] 1 INE
+[ ] 2 STATAFRIC ou consultor
+[ ] 3 Outra entidade que encaminhou o convite
+[ ] 4 Acesso espontâneo
+[ ] 98 Não sabe
+____________________________
+QU01_INS_relais — INE ou entidade que encaminhou o convite, facultativo
+Condição de apresentação : (QU01_Participation ∈ {1})
+____________________________
+
+QU02 — Atividade nos doze meses de referência
+Conte cada intervenção uma só vez, mesmo com várias versões. Se não houve discursos em causa, avance para QU07. Se desconhece o número, continue quando conhece um caso real.
+QU02a — Em quantos discursos com números participou a sua equipa ou você?
+Condição de apresentação : (QU01_Participation ∈ {1})
+[ ] 0 Nenhum
+[ ] 1 De 1 a 5
+[ ] 2 De 6 a 20
+[ ] 3 De 21 a 50
+[ ] 4 Mais de 50
+[ ] 98 Não sabe
+____________________________
+QU02b — Solicitou apoio estatístico ao INE para pelo menos um desses discursos?
+Condição de apresentação : (QU01_Participation ∈ {1})
+[ ] 1 Sim
+[ ] 0 Não
+[ ] 98 Não sabe
+[ ] 99 Não aplicável, nenhum discurso em causa
+____________________________
+QU02_Base — Base da resposta
+Condição de apresentação : (QU01_Participation ∈ {1})
+[ ] 1 Registo ou inventário consultado
+[ ] 2 Estimativa baseada na prática conhecida
+[ ] 98 Não sabe
+____________________________
+
+QU03 — Último discurso preparado com números
+Considere o discurso com números cuja preparação terminou mais recentemente no período, não um caso escolhido pela qualidade. Se não puder descrever um caso, avance para QU07. A falta de ligação não invalida a resposta.
+QU03_Cas — Pode descrever um caso deste tipo?
+Condição de apresentação : (QU02a ∉ {0} E QU01_Participation ∈ {1})
+[ ] 1 Sim
+[ ] 0 Não
+[ ] 98 Não sabe
+____________________________
+QU03_Mois — Mês e ano do fim da preparação, MM/AAAA
+Condição de apresentação : (QU02a ∉ {0} E (QU01_Participation ∈ {1} E QU03_Cas ∈ {1}))
+____________________________
+QU03_Theme — Tema geral, sem nome de pessoa
+Condição de apresentação : (QU02a ∉ {0} E (QU01_Participation ∈ {1} E QU03_Cas ∈ {1}))
+____________________________
+QU03_Public — Público principal
+Condição de apresentação : (QU02a ∉ {0} E (QU01_Participation ∈ {1} E QU03_Cas ∈ {1}))
+[ ] 1 Público em geral
+[ ] 2 Parlamento ou eleitos
+[ ] 3 Público técnico ou profissional
+[ ] 4 Comunidade local
+[ ] 97 Outra
+[ ] 98 Não sabe
+____________________________
+QU03_Public_Autre — Outra : especifique
+Condição de apresentação : (QU02a ∉ {0} E (QU01_Participation ∈ {1} E QU03_Public ∈ {97}))
+____________________________
+QU03_Langues — Língua ou línguas do discurso
+Condição de apresentação : (QU02a ∉ {0} E (QU01_Participation ∈ {1} E QU03_Cas ∈ {1}))
+____________________________
+QU03_Origine — Origem do primeiro número utilizado
+Condição de apresentação : (QU02a ∉ {0} E (QU01_Participation ∈ {1} E QU03_Cas ∈ {1}))
+[ ] 1 Fonte publicada pelo INE consultada diretamente
+[ ] 2 Número transmitido diretamente pelo INE
+[ ] 3 Outra administração nacional
+[ ] 4 Organização regional ou internacional
+[ ] 5 Investigação ou fonte privada identificada
+[ ] 6 Discurso ou documento anterior sem consultar a fonte estatística
+[ ] 7 Fonte não identificada
+[ ] 97 Outra
+[ ] 98 Não sabe
+____________________________
+QU03_Origine_Autre — Outra : especifique
+Condição de apresentação : (QU02a ∉ {0} E (QU01_Participation ∈ {1} E QU03_Origine ∈ {97}))
+____________________________
+QU03_Delai — Se foi solicitado apoio ao INE para este caso, prazo solicitado
+Condição de apresentação : (QU02a ∉ {0} E (QU01_Participation ∈ {1} E QU03_Cas ∈ {1}))
+[ ] 1 Menos de 6 horas
+[ ] 2 De 6 a 24 horas, inclusive
+[ ] 3 Mais de 24 horas até 3 dias, inclusive
+[ ] 4 Mais de 3 dias
+[ ] 5 Sem prazo indicado
+[ ] 98 Não sabe
+[ ] 99 Não foi solicitado apoio ao INE para este caso
+____________________________
+QU03_Issue — Se foi solicitado apoio, resultado obtido
+Condição de apresentação : (QU02a ∉ {0} E (QU01_Participation ∈ {1} E QU03_Cas ∈ {1}))
+[ ] 1 Números recebidos a tempo
+[ ] 2 Números recebidos após o prazo
+[ ] 3 Não foram recebidos números
+[ ] 4 Números recebidos sem prazo acordado
+[ ] 98 Não sabe
+[ ] 99 Não foi solicitado apoio
+____________________________
+QU03_Exemple — Caso partilhável, facultativo : ligação ao discurso público ou breve excerto autorizado não confidencial, com data
+Condição de apresentação : (QU02a ∉ {0} E (QU01_Participation ∈ {1} E QU03_Cas ∈ {1}))
+____________________________
+
+QU04 — Informações disponíveis para compreender este número
+Para o primeiro número de QU03, que informações tinha efetivamente disponíveis durante a preparação?
+QU04_M1 — Fonte que permite localizar o resultado
+Condição de apresentação : ((QU02a ∉ {0} E QU03_Cas ∈ {1}) E QU01_Participation ∈ {1})
+[ ] 1 No documento ou mensagem utilizados
+[ ] 2 Acessível por uma ligação ou referência precisa disponível
+[ ] 0 Ausente
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QU04_M2 — Data de publicação ou versão
+Condição de apresentação : ((QU02a ∉ {0} E QU03_Cas ∈ {1}) E QU01_Participation ∈ {1})
+[ ] 1 No documento ou mensagem utilizados
+[ ] 2 Acessível por uma ligação ou referência precisa disponível
+[ ] 0 Ausente
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QU04_M3 — Período do valor
+Condição de apresentação : ((QU02a ∉ {0} E QU03_Cas ∈ {1}) E QU01_Participation ∈ {1})
+[ ] 1 No documento ou mensagem utilizados
+[ ] 2 Acessível por uma ligação ou referência precisa disponível
+[ ] 0 Ausente
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QU04_M4 — Definição do indicador
+Condição de apresentação : ((QU02a ∉ {0} E QU03_Cas ∈ {1}) E QU01_Participation ∈ {1})
+[ ] 1 No documento ou mensagem utilizados
+[ ] 2 Acessível por uma ligação ou referência precisa disponível
+[ ] 0 Ausente
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QU04_M5 — Unidade e base de cálculo da taxa, se aplicável
+Condição de apresentação : ((QU02a ∉ {0} E QU03_Cas ∈ {1}) E QU01_Participation ∈ {1})
+[ ] 1 No documento ou mensagem utilizados
+[ ] 2 Acessível por uma ligação ou referência precisa disponível
+[ ] 0 Ausente
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QU04_M6 — População e território abrangidos
+Condição de apresentação : ((QU02a ∉ {0} E QU03_Cas ∈ {1}) E QU01_Participation ∈ {1})
+[ ] 1 No documento ou mensagem utilizados
+[ ] 2 Acessível por uma ligação ou referência precisa disponível
+[ ] 0 Ausente
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QU04_M7 — Limitações de comparação, incertezas ou precauções relevantes
+Condição de apresentação : ((QU02a ∉ {0} E QU03_Cas ∈ {1}) E QU01_Participation ∈ {1})
+[ ] 1 No documento ou mensagem utilizados
+[ ] 2 Acessível por uma ligação ou referência precisa disponível
+[ ] 0 Ausente
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+
+QU05 — Verificações antes da divulgação deste discurso
+
+QU05a — Quem verificou efetivamente os números e a sua interpretação? Várias respostas possíveis.
+Condição de apresentação : ((QU02a ∉ {0} E QU03_Cas ∈ {1}) E QU01_Participation ∈ {1})
+[ ] 1 Redator ou equipa de comunicação
+[ ] 2 Assessor técnico ou estatístico da instituição
+[ ] 3 Agente do INE
+[ ] 4 Outro organismo produtor
+[ ] 0 Nenhum controlo conhecido
+[ ] 97 Outra função
+[ ] 98 Não sabe
+____________________________
+QU05a_Autre — Outra : especifique
+Condição de apresentação : ((QU02a ∉ {0} E QU03_Cas ∈ {1}) E (QU01_Participation ∈ {1} E QU05a ∩ ≠ ∅ {97}))
+____________________________
+QU05b — O INE reviu o trecho com números no projeto de discurso?
+Condição de apresentação : ((QU02a ∉ {0} E QU03_Cas ∈ {1}) E QU01_Participation ∈ {1})
+[ ] 1 Sim
+[ ] 2 Não, não foi solicitado
+[ ] 3 Não, foi solicitado mas a revisão não ocorreu a tempo
+[ ] 98 Não sabe
+[ ] 99 Não aplicável, esta etapa não ocorreu
+____________________________
+QU05c — A versão divulgada incluía uma referência à fonte estatística?
+Condição de apresentação : ((QU02a ∉ {0} E QU03_Cas ∈ {1}) E QU01_Participation ∈ {1})
+[ ] 1 Sim
+[ ] 0 Não
+[ ] 98 Não sabe
+[ ] 99 Discurso não divulgado ou versão divulgada desconhecida
+____________________________
+
+QU06 — Correções e retorno ao INE
+
+QU06a — Durante o período, conhece algum número ou interpretação que exigisse correção após a finalização de um discurso?
+Condição de apresentação : ((QU02a ∉ {0} E QU03_Cas ∈ {1}) E QU01_Participation ∈ {1})
+[ ] 1 Sim, correção antes da divulgação
+[ ] 2 Sim, correção após a divulgação
+[ ] 3 Ambas as situações
+[ ] 0 Nenhum episódio conhecido
+[ ] 98 Não sabe
+[ ] 99 Nenhum discurso em causa
+____________________________
+QU06_Actions — No caso mais recente, que ações foram realizadas? São admitidas várias respostas.
+Condição de apresentação : ((QU02a ∉ {0} E QU03_Cas ∈ {1}) E (QU01_Participation ∈ {1} E QU06a ∈ {1, 2, 3}))
+[ ] 1 Consulta da fonte ou do produtor
+[ ] 2 Versão corrigida enviada à equipa
+[ ] 3 Conservação da alteração e do motivo
+[ ] 4 Retificação divulgada de um erro já público
+[ ] 5 Verificação da incorporação da correção
+[ ] 0 Nenhuma ação conhecida
+[ ] 97 Outra
+[ ] 98 Não sabe
+____________________________
+QU06_Actions_Autre — Outra : especifique
+Condição de apresentação : ((QU02a ∉ {0} E QU03_Cas ∈ {1}) E (QU01_Participation ∈ {1} E QU06_Actions ∩ ≠ ∅ {97}))
+____________________________
+QU06b — Para o último apoio solicitado ao INE durante o período, transmitiu-lhe retorno sobre a utilização dos números?
+Condição de apresentação : ((QU02a ∉ {0} E QU03_Cas ∈ {1}) E QU01_Participation ∈ {1})
+[ ] 1 Sim, texto ou ligação para o discurso
+[ ] 2 Sim, comentário sobre o apoio, sem texto nem ligação
+[ ] 3 Ambos
+[ ] 0 Não
+[ ] 98 Não sabe
+[ ] 99 Não foi solicitado apoio
+____________________________
+
+QU07 — Apoios mais úteis
+Ordene até três códigos distintos. As opções 0 e 98 excluem as restantes prioridades.
+QU07_P1 — Prioridade 1
+Condição de apresentação : (QU01_Participation ∈ {1})
+[ ] 1 Contacto claramente identificado no INE
+[ ] 2 Resposta num prazo acordado, incluindo urgências
+[ ] 3 Ficha breve com número, fonte e período
+[ ] 4 Explicação de definições e limitações
+[ ] 5 Proposta de frases compreensíveis
+[ ] 6 Revisão rápida do trecho estatístico
+[ ] 7 Alerta em caso de revisão ou erro
+[ ] 8 Exemplos e formação breve
+[ ] 97 Outra
+[ ] 0 Nenhuma necessidade expressa
+[ ] 98 Não sabe
+____________________________
+QU07_P2 — Prioridade 2
+Condição de apresentação : ((QU01_Participation ∈ {1} E QU07_P1 ∈ {1, 2, 3, 4, 5, 6, 7, 8, 97}))
+[ ] 1 Contacto claramente identificado no INE
+[ ] 2 Resposta num prazo acordado, incluindo urgências
+[ ] 3 Ficha breve com número, fonte e período
+[ ] 4 Explicação de definições e limitações
+[ ] 5 Proposta de frases compreensíveis
+[ ] 6 Revisão rápida do trecho estatístico
+[ ] 7 Alerta em caso de revisão ou erro
+[ ] 8 Exemplos e formação breve
+[ ] 97 Outra
+____________________________
+QU07_P3 — Prioridade 3
+Condição de apresentação : ((QU01_Participation ∈ {1} E QU07_P1 ∈ {1, 2, 3, 4, 5, 6, 7, 8, 97}))
+[ ] 1 Contacto claramente identificado no INE
+[ ] 2 Resposta num prazo acordado, incluindo urgências
+[ ] 3 Ficha breve com número, fonte e período
+[ ] 4 Explicação de definições e limitações
+[ ] 5 Proposta de frases compreensíveis
+[ ] 6 Revisão rápida do trecho estatístico
+[ ] 7 Alerta em caso de revisão ou erro
+[ ] 8 Exemplos e formação breve
+[ ] 97 Outra
+____________________________
+QU07_Autre — Outra prioridade : especifique
+Condição de apresentação : ((QU01_Participation ∈ {1} E (QU07_P1 ∈ {97} OU QU07_P2 ∈ {97} OU QU07_P3 ∈ {97})))
+____________________________
+QU07_Difficulte — Para a prioridade 1, descreva uma dificuldade real em até 40 palavras. Caso contrário, escreva « necessidade prevista ».
+Condição de apresentação : (QU01_Participation ∈ {1})
+Referência : até 40 palavras. O original é conservado.
+____________________________
+QU07_Contrainte — Restrição ligada ao público, à língua ou ao contexto de comunicação, facultativa; máximo de 40 palavras, sem opinião política
+Condição de apresentação : (QU01_Participation ∈ {1})
+Referência : até 40 palavras. O original é conservado.
+____________________________
+QU07_Nouveaute — Prática nova após 31 de outubro, facultativo : alteração e data
+Condição de apresentação : (QU01_Participation ∈ {1})
+____________________________
+
+QU08 — Atribuição e contacto facultativo
+As opções 1 e 2 exigem a autorização correspondente. Uma contribuição individual sem essa autorização mantém-se anonimizada. Sem escolha explícita, aplica-se a síntese anonimizada (código 0). O silêncio nunca autoriza uma citação.
+QU08_Attribution — Utilização autorizada da contribuição e do caso partilhado
+Condição de apresentação : (QU01_Participation ∈ {1})
+[ ] 0 Apenas síntese anonimizada, sem atribuição identificável
+[ ] 1 Atribuição à instituição, sem citação textual identificável
+[ ] 2 Atribuição à instituição e citação textual
+[ ] 3 Enviar-me o trecho antes de qualquer atribuição ou citação identificável
+____________________________
+QU08_Suite — Aceita um esclarecimento ou um teste?
+Condição de apresentação : (QU01_Participation ∈ {1})
+[ ] 1 Complemento
+[ ] 2 Teste de ferramenta
+[ ] 3 Ambos
+[ ] 0 Não
+[ ] 98 A determinar
+____________________________
+QU08_Contact_fonction — Contacto facultativo : função ou serviço a contactar
+Condição de apresentação : (QU01_Participation ∈ {1})
+____________________________
+QU08_Contact_courriel — Correio institucional ou genérico, facultativo
+Condição de apresentação : (QU01_Participation ∈ {1})
+____________________________
+QU08_Contact_relais — Preferir contacto através do STATAFRIC, facultativo
+Condição de apresentação : (QU01_Participation ∈ {1})
+[ ] 1 Contacto através do STATAFRIC
+____________________________
+A receção não valida o conteúdo nem constitui aprovação institucional.

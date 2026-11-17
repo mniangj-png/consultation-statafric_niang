@@ -1,0 +1,499 @@
+﻿Instituts nationaux de la statistique
+2026-11-15.web-2
+Référence : 01/11/2025–31/10/2026. Collecte : 19–26 novembre 2026 inclus.
+STATAFRIC et le consultant Mamadou Niang préparent des outils pratiques pour l’appui statistique aux discours et à la décision. Référence des pratiques : du 1er novembre 2025 au 31 octobre 2026 ; dater séparément les évolutions ultérieures. Collecte : du 19 au 26 novembre 2026 inclus. Les réponses réelles alimenteront L3, jamais L2 qui reste documentaire.
+
+Participation volontaire. Une réponse institutionnelle, de service ou individuelle est recevable si son périmètre est précisé. Répondre directement à l’équipe de la mission, sans approbation préalable de l’INS relais. Les restitutions sont agrégées ou anonymisées par défaut ; attribution ou citation identifiable selon votre choix à la dernière rubrique. Les pièces remises au Client respectent ces autorisations. Un cas particulier peut rester reconnaissable. Les coordonnées facultatives sont séparées de l’analyse.
+
+Ne transmettre ni opinions politiques, données individuelles, coordonnées personnelles inutiles ni document confidentiel. Utiliser des liens publics ou extraits non confidentiels autorisés. Une contribution individuelle n’engage pas l’institution.
+
+Une réponse partielle est utile. Aucun choix substantiel n’est précoché. Un blanc ne signifie ni « non » ni zéro. « Aucun », « ne sait pas » et « non applicable » sont exclusifs des autres réponses lorsque le questionnaire le prévoit.
+
+Avant l’envoi, la saisie reste dans la session, pas dans la base. Elle peut être perdue à la fermeture : télécharger un brouillon pour reprendre. Un brouillon ne vaut pas envoi. Seul un accusé confirmé atteste l’enregistrement. Les réponses originales restent protégées ; seuls le consultant et les personnes habilitées y accèdent. La langue peut être changée sans créer une nouvelle contribution. En cas de difficulté, utiliser le formulaire de repli dans la même langue et l’envoyer au contact de la mission.
+Formulaire de repli : conserver les codes. Les conditions affichées traduisent les filtres : ∈ signifie « parmi », ∉ « différent de », ∩ ≠ ∅ « contient au moins un ». En cas de condition non remplie, ne pas répondre au champ. Une réponse partielle est admise. Après refus, arrêter sans autre réponse.
+
+QI01 — Accord de participation et périmètre de la réponse
+Une réponse consolidée par INS est privilégiée. Pour une contribution de service ou individuelle, répondre sur le périmètre réellement connu et utiliser « ne sait pas » pour le reste de l’INS.
+QI01_Participation — Acceptez-vous l’utilisation de votre contribution selon la notice ?
+[ ] 1 J’accepte
+[ ] 0 Je ne participe pas — fin du questionnaire
+____________________________
+QI01_Pays — Pays
+Condition d’affichage : (QI01_Participation ∈ {1})
+____________________________
+QI01_INS — Nom ou sigle de l’INS
+Condition d’affichage : (QI01_Participation ∈ {1})
+____________________________
+QI01_Statut — Statut de la réponse
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Réponse institutionnelle consolidée
+[ ] 2 Contribution d’un service, non consolidée au niveau de l’institution
+[ ] 3 Contribution individuelle fondée sur ma pratique professionnelle
+____________________________
+QI01_Fonction — Fonction du répondant, sans nom personnel
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Production statistique
+[ ] 2 Communication ou diffusion
+[ ] 3 Coordination ou direction
+[ ] 4 Méthodes ou qualité
+[ ] 97 Autre
+____________________________
+QI01_Fonction_Autre — Autre : précisez
+Condition d’affichage : ((QI01_Participation ∈ {1} ET QI01_Fonction ∈ {97}))
+____________________________
+QI01_Envoi — Nature de l’envoi
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Première réponse
+[ ] 2 Complément
+____________________________
+QI01_Reference_precedente — Référence ou date de l’envoi précédent, si connue
+Condition d’affichage : ((QI01_Participation ∈ {1} ET QI01_Envoi ∈ {2}))
+____________________________
+QI01_Unite — Service ou unité concernée
+Condition d’affichage : (QI01_Participation ∈ {1})
+____________________________
+QI01_Domaine — Domaine ou secteur, facultatif
+Condition d’affichage : (QI01_Participation ∈ {1})
+____________________________
+QI01_Langue_texte — Langue principale de vos réponses libres
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] fr Français
+[ ] en Anglais
+[ ] ar Arabe
+[ ] pt Portugais
+[ ] es Espagnol
+____________________________
+QI01_Origine_invitation — Origine de l’invitation ou du lien
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 INS
+[ ] 2 STATAFRIC ou consultant
+[ ] 3 Autre relais
+[ ] 4 Accès spontané
+[ ] 98 Ne sait pas
+____________________________
+QI01_INS_relais — INS ou organisme relais, facultatif
+Condition d’affichage : (QI01_Participation ∈ {1})
+____________________________
+
+QI02 — Demandes reçues pendant les douze mois de référence
+Une demande désigne un appui sollicité pour préparer un discours, une allocution ou une intervention orale d’un décideur. Plusieurs échanges ou versions concernant le même appui comptent comme une seule demande. Les demandes générales de données sans lien connu avec un discours sont exclues. Si aucune demande n’a été reçue, passer à QI08. Si le nombre est inconnu, QI03 peut être renseignée lorsqu’un cas réel est connu.
+QI02a — Combien de demandes distinctes avez-vous recensées dans le périmètre de votre réponse ?
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 0 Aucune / aucun
+[ ] 1 De 1 à 5
+[ ] 2 De 6 à 20
+[ ] 3 De 21 à 50
+[ ] 4 Plus de 50
+[ ] 98 Ne sait pas
+____________________________
+QI02b — Certaines de ces demandes exigeaient-elles une réponse dans les 24 heures ou moins suivant leur réception ?
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Oui
+[ ] 0 Non
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable, aucune demande
+____________________________
+QI02c — Sur quoi repose cette réponse ?
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Registre ou inventaire consulté
+[ ] 2 Estimation fondée sur la pratique connue
+[ ] 98 Ne sait pas
+____________________________
+
+QI03 — Dernière demande clôturée connue
+Choisir la demande la plus récemment clôturée pendant la période de référence, qu’elle ait ou non abouti à la fourniture de chiffres. Ne pas sélectionner uniquement un exemple particulièrement réussi. Les situations 3 et 98 conduisent à QI08. La situation 2 conduit à QI04, puis QI08.
+QI03_Situation — Situation
+Condition d’affichage : (QI02a ∉ {0} ET QI01_Participation ∈ {1})
+[ ] 1 Des chiffres ont été transmis
+[ ] 2 La demande a été clôturée sans fourniture de chiffres
+[ ] 3 Aucune demande clôturée connue pendant la période
+[ ] 98 Je ne dispose pas des informations nécessaires
+____________________________
+QI03_Mois — Mois et année de clôture, MM/AAAA
+Condition d’affichage : (QI02a ∉ {0} ET (QI01_Participation ∈ {1} ET QI03_Situation ∈ {1, 2}))
+____________________________
+QI03_Theme — Thème général, sans nom de personne ni titre confidentiel du discours
+Condition d’affichage : (QI02a ∉ {0} ET (QI01_Participation ∈ {1} ET QI03_Situation ∈ {1, 2}))
+____________________________
+QI03_Demandeur — Service demandeur
+Condition d’affichage : (QI02a ∉ {0} ET (QI01_Participation ∈ {1} ET QI03_Situation ∈ {1, 2}))
+[ ] 1 Cabinet ou équipe d’un décideur national
+[ ] 2 Ministère ou administration sectorielle
+[ ] 3 Autorité territoriale ou locale
+[ ] 4 Direction de l’INS
+[ ] 5 Institution régionale ou internationale
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+____________________________
+QI03_Demandeur_Autre — Autre : précisez
+Condition d’affichage : (QI02a ∉ {0} ET (QI01_Participation ∈ {1} ET QI03_Demandeur ∈ {97}))
+____________________________
+QI03_Canal — Canal principal de réception
+Condition d’affichage : (QI02a ∉ {0} ET (QI01_Participation ∈ {1} ET QI03_Situation ∈ {1, 2}))
+[ ] 1 Courriel
+[ ] 2 Courrier ou note officielle
+[ ] 3 Téléphone ou échange oral
+[ ] 4 Messagerie instantanée
+[ ] 5 Formulaire ou plateforme
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+____________________________
+QI03_Canal_Autre — Autre : précisez
+Condition d’affichage : (QI02a ∉ {0} ET (QI01_Participation ∈ {1} ET QI03_Canal ∈ {97}))
+____________________________
+
+QI04 — Délai et traitement de cette dernière demande
+Les durées sont calendaires, y compris les nuits et week-ends. Une réponse expliquant qu’aucun chiffre ne pouvait être fourni reste distinguée de la fourniture de chiffres par QI03. Le respect d’un délai ne suffit pas à conclure que le besoin statistique a été satisfait.
+QI04a — Quel délai était laissé à l’INS pour répondre, à partir de la réception de la demande ?
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1, 2}) ET QI01_Participation ∈ {1})
+[ ] 1 Moins de 6 heures
+[ ] 2 De 6 à 24 heures incluses
+[ ] 3 Plus de 24 heures à 3 jours inclus
+[ ] 4 Plus de 3 jours
+[ ] 5 Aucune échéance indiquée
+[ ] 98 Ne sait pas
+____________________________
+QI04b — La réponse de l’INS a-t-elle été transmise avant l’échéance demandée ?
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1, 2}) ET QI01_Participation ∈ {1})
+[ ] 1 Oui
+[ ] 0 Non
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable, aucune échéance indiquée
+____________________________
+QI04c — Si aucun chiffre n’a été fourni ou si le délai n’a pas été respecté, quel a été le principal obstacle ?
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1, 2}) ET QI01_Participation ∈ {1})
+[ ] 1 Donnée appropriée indisponible
+[ ] 2 Besoin insuffisamment précisé
+[ ] 3 Délai trop court
+[ ] 4 Contrôle ou validation non terminé
+[ ] 5 Agent ou service compétent indisponible
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QI04c_Autre — Autre : précisez
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1, 2}) ET (QI01_Participation ∈ {1} ET QI04c ∈ {97}))
+____________________________
+
+QI05 — Source et informations accompagnant le premier chiffre transmis
+Considérer le premier chiffre présenté dans la dernière réponse transmise, et non le mieux documenté. Indiquer les informations qui l’accompagnaient effectivement. Une simple mention du nom d’un organisme ne suffit pas pour le code 2. Ne pas recopier une valeur non publique.
+QI05_Origine — Origine principale de ce chiffre
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1}) ET QI01_Participation ∈ {1})
+[ ] 1 Publication, base ou résultat produit par l’INS
+[ ] 2 Source officielle d’une autre administration nationale
+[ ] 3 Organisation régionale ou internationale
+[ ] 4 Recherche ou source privée identifiée
+[ ] 5 Discours ou document antérieur sans retour à la source statistique
+[ ] 6 Source non identifiée
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+____________________________
+QI05_Origine_Autre — Autre : précisez
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1}) ET (QI01_Participation ∈ {1} ET QI05_Origine ∈ {97}))
+____________________________
+QI05_S1 — Source précise permettant de retrouver le résultat
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1}) ET QI01_Participation ∈ {1})
+[ ] 1 Présente dans la réponse
+[ ] 2 Accessible par un lien ou une référence précise transmis avec la réponse
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QI05_S2 — Date de publication ou version de la source
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1}) ET QI01_Participation ∈ {1})
+[ ] 1 Présente dans la réponse
+[ ] 2 Accessible par un lien ou une référence précise transmis avec la réponse
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QI05_S3 — Période à laquelle se rapporte la valeur
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1}) ET QI01_Participation ∈ {1})
+[ ] 1 Présente dans la réponse
+[ ] 2 Accessible par un lien ou une référence précise transmis avec la réponse
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QI05_S4 — Définition de l’indicateur
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1}) ET QI01_Participation ∈ {1})
+[ ] 1 Présente dans la réponse
+[ ] 2 Accessible par un lien ou une référence précise transmis avec la réponse
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QI05_S5 — Unité et base de calcul, notamment dénominateur d’un taux
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1}) ET QI01_Participation ∈ {1})
+[ ] 1 Présente dans la réponse
+[ ] 2 Accessible par un lien ou une référence précise transmis avec la réponse
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QI05_S6 — Population et territoire couverts
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1}) ET QI01_Participation ∈ {1})
+[ ] 1 Présente dans la réponse
+[ ] 2 Accessible par un lien ou une référence précise transmis avec la réponse
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QI05_S7 — Limites utiles à l’interprétation ou à la comparaison
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1}) ET QI01_Participation ∈ {1})
+[ ] 1 Présente dans la réponse
+[ ] 2 Accessible par un lien ou une référence précise transmis avec la réponse
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QI05_S8 — Statut provisoire ou révisé, lorsqu’il s’applique
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1}) ET QI01_Participation ∈ {1})
+[ ] 1 Présente dans la réponse
+[ ] 2 Accessible par un lien ou une référence précise transmis avec la réponse
+[ ] 0 Absente
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+
+QI06 — Vérification et validation effectivement réalisées
+Il s’agit du contrôle du contenu statistique, pas de l’approbation politique du discours.
+QI06a — Qui a vérifié le contenu statistique avant son envoi ? Plusieurs réponses possibles.
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1}) ET QI01_Participation ∈ {1})
+[ ] 1 L’agent qui l’a préparé
+[ ] 2 Un autre agent producteur des données
+[ ] 3 Un responsable technique ou de qualité
+[ ] 4 Le service de communication
+[ ] 5 La direction ou son délégataire
+[ ] 0 Aucun contrôle connu
+[ ] 97 Autre fonction
+[ ] 98 Ne sait pas
+____________________________
+QI06a_Autre — Autre : précisez
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1}) ET (QI01_Participation ∈ {1} ET QI06a ∩ ≠ ∅ {97}))
+____________________________
+QI06b — Quelle trace de la validation statistique finale existe pour cet envoi ?
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1}) ET QI01_Participation ∈ {1})
+[ ] 1 Trace écrite, courriel, visa ou journal de validation
+[ ] 2 Accord oral seulement
+[ ] 0 Aucune validation distincte connue
+[ ] 98 Ne sait pas
+____________________________
+
+QI07 — Format transmis et vérification du passage de discours
+
+QI07a — Sous quelle forme l’appui a-t-il été transmis ? Jusqu’à trois réponses.
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1}) ET QI01_Participation ∈ {1})
+Au plus 3 choix.
+[ ] 1 Tableau ou liste de chiffres
+[ ] 2 Fiche accompagnée d’explications
+[ ] 3 Proposition de phrases ou de paragraphes
+[ ] 4 Graphique ou illustration
+[ ] 5 Explication orale uniquement
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+____________________________
+QI07a_Autre — Autre : précisez
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1}) ET (QI01_Participation ∈ {1} ET QI07a ∩ ≠ ∅ {97}))
+____________________________
+QI07b — L’INS a-t-il ensuite pu vérifier les chiffres dans le passage de discours préparé avant sa diffusion ?
+Condition d’affichage : ((QI02a ∉ {0} ET QI03_Situation ∈ {1}) ET QI01_Participation ∈ {1})
+[ ] 1 Oui
+[ ] 2 Non, le passage n’a pas été reçu
+[ ] 3 Non, le passage a été reçu mais n’a pas été vérifié
+[ ] 4 Le discours n’a pas été diffusé ou cette étape n’a pas eu lieu
+[ ] 98 Ne sait pas
+____________________________
+
+QI08 — Correction ou actualisation après transmission
+Un appui initialement fourni avant la période peut être pris en compte si la correction intervient pendant celle-ci. Cette question reste accessible même si aucune nouvelle demande n’a été reçue.
+QI08_Situation — Pendant la période de référence, avez-vous connaissance d’un appui déjà transmis qu’il a fallu corriger ou actualiser ?
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Oui, pour corriger une erreur
+[ ] 2 Oui, pour actualiser une donnée
+[ ] 3 Les deux situations ont été rencontrées
+[ ] 0 Aucun épisode connu
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable, aucun appui concerné
+____________________________
+QI08_Actions — Pour le cas le plus récent, quelles actions ont été réalisées ? Plusieurs réponses possibles.
+Condition d’affichage : ((QI01_Participation ∈ {1} ET QI08_Situation ∈ {1, 2, 3}))
+[ ] 1 Alerte de l’équipe préparant le discours
+[ ] 2 Envoi d’une version corrigée avec sa source
+[ ] 3 Conservation des versions et du motif de changement
+[ ] 4 Demande de correction d’un passage déjà diffusé
+[ ] 5 Vérification de la prise en compte de la correction
+[ ] 0 Aucune action connue
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+____________________________
+QI08_Actions_Autre — Autre : précisez
+Condition d’affichage : ((QI01_Participation ∈ {1} ET QI08_Actions ∩ ≠ ∅ {97}))
+____________________________
+
+QI09 — Organisation effectivement en place au 31 octobre 2026
+
+QI09_D1 — Point d’entrée ou fonction identifiée pour recevoir les demandes
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Existe et a été utilisé pour ces appuis pendant la période
+[ ] 2 Existe mais n’a pas été utilisé pendant la période
+[ ] 0 N’existe pas
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QI09_D2 — Consigne écrite de traitement, y compris des urgences
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Existe et a été utilisé pour ces appuis pendant la période
+[ ] 2 Existe mais n’a pas été utilisé pendant la période
+[ ] 0 N’existe pas
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QI09_D3 — Registre des demandes avec échéance, responsable et état de traitement
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Existe et a été utilisé pour ces appuis pendant la période
+[ ] 2 Existe mais n’a pas été utilisé pendant la période
+[ ] 0 N’existe pas
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QI09_D4 — Répertoire de chiffres avec sources et informations d’interprétation
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Existe et a été utilisé pour ces appuis pendant la période
+[ ] 2 Existe mais n’a pas été utilisé pendant la période
+[ ] 0 N’existe pas
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QI09_D5 — Trace du contrôle et de la validation statistique
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Existe et a été utilisé pour ces appuis pendant la période
+[ ] 2 Existe mais n’a pas été utilisé pendant la période
+[ ] 0 N’existe pas
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QI09_D6 — Conservation des versions et des corrections
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Existe et a été utilisé pour ces appuis pendant la période
+[ ] 2 Existe mais n’a pas été utilisé pendant la période
+[ ] 0 N’existe pas
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QI09_D7 — Examen des délais, difficultés et retours des utilisateurs
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Existe et a été utilisé pour ces appuis pendant la période
+[ ] 2 Existe mais n’a pas été utilisé pendant la période
+[ ] 0 N’existe pas
+[ ] 98 Ne sait pas
+[ ] 99 Non applicable
+____________________________
+QI09_Nouveaute — Pratique nouvelle après le 31 octobre, facultatif : dispositif, date de mise en place et une phrase
+Condition d’affichage : (QI01_Participation ∈ {1})
+____________________________
+
+QI10 — Besoins prioritaires
+Classer au plus trois codes différents. Une ou deux priorités suffisent. 0 et 98 sont exclusifs des autres priorités. Indiquer « à déterminer » si nécessaire pour l’action, le responsable, les moyens ou l’obstacle.
+QI10_P1 — Priorité 1
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Clarifier le point d’entrée et les responsabilités
+[ ] 2 Mieux préciser et prioriser les demandes urgentes
+[ ] 3 Disposer d’un répertoire de chiffres documentés
+[ ] 4 Simplifier le contrôle et la validation
+[ ] 5 Préparer des messages et exemples de passages de discours
+[ ] 6 Organiser les corrections et versions
+[ ] 7 Former les agents
+[ ] 8 Suivre les délais et les retours d’utilisation
+[ ] 97 Autre
+[ ] 0 Aucun besoin exprimé
+[ ] 98 Ne sait pas
+____________________________
+QI10_P2 — Priorité 2
+Condition d’affichage : ((QI01_Participation ∈ {1} ET QI10_P1 ∈ {1, 2, 3, 4, 5, 6, 7, 8, 97}))
+[ ] 1 Clarifier le point d’entrée et les responsabilités
+[ ] 2 Mieux préciser et prioriser les demandes urgentes
+[ ] 3 Disposer d’un répertoire de chiffres documentés
+[ ] 4 Simplifier le contrôle et la validation
+[ ] 5 Préparer des messages et exemples de passages de discours
+[ ] 6 Organiser les corrections et versions
+[ ] 7 Former les agents
+[ ] 8 Suivre les délais et les retours d’utilisation
+[ ] 97 Autre
+____________________________
+QI10_P3 — Priorité 3
+Condition d’affichage : ((QI01_Participation ∈ {1} ET QI10_P1 ∈ {1, 2, 3, 4, 5, 6, 7, 8, 97}))
+[ ] 1 Clarifier le point d’entrée et les responsabilités
+[ ] 2 Mieux préciser et prioriser les demandes urgentes
+[ ] 3 Disposer d’un répertoire de chiffres documentés
+[ ] 4 Simplifier le contrôle et la validation
+[ ] 5 Préparer des messages et exemples de passages de discours
+[ ] 6 Organiser les corrections et versions
+[ ] 7 Former les agents
+[ ] 8 Suivre les délais et les retours d’utilisation
+[ ] 97 Autre
+____________________________
+QI10_Autre — Autre priorité : précisez
+Condition d’affichage : ((QI01_Participation ∈ {1} ET (QI10_P1 ∈ {97} OU QI10_P2 ∈ {97} OU QI10_P3 ∈ {97})))
+____________________________
+QI10_Difficulte — Pour la priorité 1, quelle difficulté réelle cela permettrait-il de résoudre ? Au plus 40 mots ; sinon, écrire « besoin anticipé ».
+Condition d’affichage : (QI01_Participation ∈ {1})
+Repère : 40 mots au plus. Le texte original est conservé.
+____________________________
+QI10_Action — Première action possible avec les moyens existants
+Condition d’affichage : (QI01_Participation ∈ {1})
+____________________________
+QI10_Responsable — Fonction pouvant la conduire
+Condition d’affichage : (QI01_Participation ∈ {1})
+____________________________
+QI10_Moyen — Moyen déjà disponible
+Condition d’affichage : (QI01_Participation ∈ {1})
+____________________________
+QI10_Obstacle — Principal obstacle
+Condition d’affichage : (QI01_Participation ∈ {1})
+____________________________
+
+QI11 — Un exemple ou document partageable
+Proposer un seul exemple : procédure, fiche de chiffres, modèle de demande, contrôle, correction ou discours public. Ne pas joindre de données individuelles, brouillon confidentiel, coordonnées personnelles ou contenu non autorisé. Un exemple antérieur peut illustrer une pratique, mais sa date doit rester visible.
+QI11_Type — Exemple proposé, facultatif
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Lien public
+[ ] 2 Extrait non confidentiel dont le partage est autorisé
+[ ] 0 Aucun exemple partagé
+____________________________
+QI11_Reference — Titre ou description, date et lien public si disponible ; extrait autorisé le cas échéant
+Condition d’affichage : ((QI01_Participation ∈ {1} ET QI11_Type ∈ {1, 2}))
+____________________________
+QI11_Apport — Ce que cet exemple montre et ce qui pourrait être adapté ailleurs, au plus 60 mots
+Condition d’affichage : ((QI01_Participation ∈ {1} ET QI11_Type ∈ {1, 2}))
+Repère : 60 mots au plus. Le texte original est conservé.
+____________________________
+
+QI12 — Attribution et contact facultatif
+Les choix 1 et 2 supposent l’autorisation correspondante. Une contribution individuelle sans cette autorisation reste anonymisée. Sans choix explicite, la synthèse anonymisée (code 0) s’applique. L’absence de retour ne vaut jamais accord de citation.
+QI12_Attribution — Modalité autorisée pour la contribution et l’exemple partagé
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 0 Synthèse anonymisée seulement, sans attribution identifiable
+[ ] 1 Attribution à l’institution, sans citation textuelle identifiable
+[ ] 2 Attribution à l’institution et citation textuelle
+[ ] 3 Me soumettre le passage avant toute attribution ou citation identifiable
+____________________________
+QI12_Suite — Accepteriez-vous un bref complément ou un test d’outil ?
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Complément
+[ ] 2 Test
+[ ] 3 Les deux
+[ ] 0 Non
+[ ] 98 À déterminer
+____________________________
+QI12_Contact_fonction — Contact facultatif : fonction ou service à recontacter
+Condition d’affichage : (QI01_Participation ∈ {1})
+____________________________
+QI12_Contact_courriel — Courriel institutionnel ou générique, facultatif
+Condition d’affichage : (QI01_Participation ∈ {1})
+____________________________
+QI12_Contact_relais — Préférer un relais par STATAFRIC, facultatif
+Condition d’affichage : (QI01_Participation ∈ {1})
+[ ] 1 Passer par STATAFRIC
+____________________________
+La réception ne vaut ni validation du contenu ni approbation institutionnelle.

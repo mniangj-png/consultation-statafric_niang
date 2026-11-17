@@ -1,0 +1,499 @@
+﻿National statistical offices
+2026-11-15.web-2
+Reference: 1 Nov 2025–31 Oct 2026. Collection: 19–26 November 2026 inclusive.
+STATAFRIC and consultant Mamadou Niang are preparing practical tools for statistical support to speeches and decision-making. Reference period for practices: 1 November 2025 to 31 October 2026; date subsequent changes separately. Collection: 19 to 26 November 2026 inclusive. Actual responses will inform L3, never the exclusively desk-based L2.
+
+Participation is voluntary. Institutional, service-level and individual contributions are accepted when their scope is clear. Respond directly to the assignment team, without prior approval by the forwarding NSO. Reporting is aggregated or anonymised by default; identifiable attribution or quotation follows your choice in the last section. Materials handed to the Client respect these permissions. A distinctive case may remain recognisable. Optional contact details are separate from analysis.
+
+Do not provide political opinions, individual-level data, unnecessary personal details or confidential documents. Use public links or authorised non-confidential extracts. An individual contribution does not commit the institution.
+
+A partial response is useful. No substantive option is preselected. A blank is neither no nor zero. None, do not know and not applicable exclude other answers where the questionnaire specifies.
+
+Before submission, entries remain in the session, not in the database. They may be lost on closing: download a draft to resume. A draft is not a submission. Only a confirmed receipt attests to recording. Original responses are protected; only the consultant and authorised persons can access them. Changing language does not create a new contribution. If needed, use the fallback form in the same language and email it to the assignment contact.
+Fallback form: retain the codes. Display conditions express routing: ∈ means “among”, ∉ “not among”, ∩ ≠ ∅ “contains at least one”. Do not answer fields whose conditions are not met. Partial responses are accepted. After refusing participation, stop without further answers.
+
+QI01 — Participation agreement and scope of the response
+A consolidated response per NSO is preferred. For a service-level or individual contribution, describe only the scope you actually know and use ‘Do not know’ for the rest of the NSO.
+QI01_Participation — Do you agree to the use of your contribution as described in the notice?
+[ ] 1 I agree
+[ ] 0 I do not wish to participate — end of questionnaire
+____________________________
+QI01_Pays — Country
+Display condition : (QI01_Participation ∈ {1})
+____________________________
+QI01_INS — Name or acronym of the NSO
+Display condition : (QI01_Participation ∈ {1})
+____________________________
+QI01_Statut — Response status
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 Consolidated institutional response
+[ ] 2 Service-level contribution, not consolidated at institution level
+[ ] 3 Individual contribution based on my professional practice
+____________________________
+QI01_Fonction — Respondent’s function, without a personal name
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 Statistical production
+[ ] 2 Communication or dissemination
+[ ] 3 Coordination or management
+[ ] 4 Methods or quality
+[ ] 97 Other
+____________________________
+QI01_Fonction_Autre — Other: please specify
+Display condition : ((QI01_Participation ∈ {1} AND QI01_Fonction ∈ {97}))
+____________________________
+QI01_Envoi — Type of submission
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 First response
+[ ] 2 Supplement
+____________________________
+QI01_Reference_precedente — Reference or date of the previous submission, if known
+Display condition : ((QI01_Participation ∈ {1} AND QI01_Envoi ∈ {2}))
+____________________________
+QI01_Unite — Service or unit concerned
+Display condition : (QI01_Participation ∈ {1})
+____________________________
+QI01_Domaine — Domain or sector, optional
+Display condition : (QI01_Participation ∈ {1})
+____________________________
+QI01_Langue_texte — Main language of your free-text responses
+Display condition : (QI01_Participation ∈ {1})
+[ ] fr French
+[ ] en English
+[ ] ar Arabic
+[ ] pt Portuguese
+[ ] es Spanish
+____________________________
+QI01_Origine_invitation — Origin of the invitation or link
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 NSO
+[ ] 2 STATAFRIC or consultant
+[ ] 3 Other forwarding organisation
+[ ] 4 Unsolicited access
+[ ] 98 Do not know
+____________________________
+QI01_INS_relais — Forwarding NSO or organisation, optional
+Display condition : (QI01_Participation ∈ {1})
+____________________________
+
+QI02 — Requests received during the twelve-month reference period
+A request means support requested to prepare a decision-maker’s speech, address or oral intervention. Multiple exchanges or versions for the same support count as one request. General data requests with no known link to a speech are excluded. If there were no requests, proceed to QI08. If the number is unknown, QI03 may still be completed when a real case is known.
+QI02a — How many distinct requests did you identify within the scope of your response?
+Display condition : (QI01_Participation ∈ {1})
+[ ] 0 None
+[ ] 1 1 to 5
+[ ] 2 6 to 20
+[ ] 3 21 to 50
+[ ] 4 More than 50
+[ ] 98 Do not know
+____________________________
+QI02b — Did any of these requests require a response within 24 hours of receipt?
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 Yes
+[ ] 0 No
+[ ] 98 Do not know
+[ ] 99 Not applicable, no requests
+____________________________
+QI02c — What is this response based on?
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 Register or inventory consulted
+[ ] 2 Estimate based on known practice
+[ ] 98 Do not know
+____________________________
+
+QI03 — Most recent known closed request
+Select the request most recently closed during the reference period, whether or not figures were provided. Do not select only a particularly successful example. Situations 3 and 98 lead to QI08. Situation 2 leads to QI04 and then QI08.
+QI03_Situation — Situation
+Display condition : (QI02a ∉ {0} AND QI01_Participation ∈ {1})
+[ ] 1 Figures were provided
+[ ] 2 The request was closed without providing figures
+[ ] 3 No known request closed during the period
+[ ] 98 I do not have the necessary information
+____________________________
+QI03_Mois — Month and year of closure, MM/YYYY
+Display condition : (QI02a ∉ {0} AND (QI01_Participation ∈ {1} AND QI03_Situation ∈ {1, 2}))
+____________________________
+QI03_Theme — General topic, without a person’s name or a confidential speech title
+Display condition : (QI02a ∉ {0} AND (QI01_Participation ∈ {1} AND QI03_Situation ∈ {1, 2}))
+____________________________
+QI03_Demandeur — Requesting service
+Display condition : (QI02a ∉ {0} AND (QI01_Participation ∈ {1} AND QI03_Situation ∈ {1, 2}))
+[ ] 1 Office or team of a national decision-maker
+[ ] 2 Ministry or sectoral administration
+[ ] 3 Subnational or local authority
+[ ] 4 NSO management
+[ ] 5 Regional or international institution
+[ ] 97 Other
+[ ] 98 Do not know
+____________________________
+QI03_Demandeur_Autre — Other: please specify
+Display condition : (QI02a ∉ {0} AND (QI01_Participation ∈ {1} AND QI03_Demandeur ∈ {97}))
+____________________________
+QI03_Canal — Main channel through which the request was received
+Display condition : (QI02a ∉ {0} AND (QI01_Participation ∈ {1} AND QI03_Situation ∈ {1, 2}))
+[ ] 1 Email
+[ ] 2 Letter or official memorandum
+[ ] 3 Telephone or oral exchange
+[ ] 4 Instant messaging
+[ ] 5 Form or platform
+[ ] 97 Other
+[ ] 98 Do not know
+____________________________
+QI03_Canal_Autre — Other: please specify
+Display condition : (QI02a ∉ {0} AND (QI01_Participation ∈ {1} AND QI03_Canal ∈ {97}))
+____________________________
+
+QI04 — Deadline and handling of this most recent request
+Times are calendar durations, including nights and weekends. QI03 distinguishes a response explaining that no figures could be provided from an actual provision of figures. Meeting a deadline does not by itself establish that the statistical need was met.
+QI04a — How much time was the NSO given to respond from receipt of the request?
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1, 2}) AND QI01_Participation ∈ {1})
+[ ] 1 Less than 6 hours
+[ ] 2 6 to 24 hours inclusive
+[ ] 3 More than 24 hours up to 3 days inclusive
+[ ] 4 More than 3 days
+[ ] 5 No deadline specified
+[ ] 98 Do not know
+____________________________
+QI04b — Was the NSO’s response sent before the requested deadline?
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1, 2}) AND QI01_Participation ∈ {1})
+[ ] 1 Yes
+[ ] 0 No
+[ ] 98 Do not know
+[ ] 99 Not applicable, no deadline specified
+____________________________
+QI04c — If no figures were provided or the deadline was missed, what was the main obstacle?
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1, 2}) AND QI01_Participation ∈ {1})
+[ ] 1 Suitable data unavailable
+[ ] 2 Need insufficiently specified
+[ ] 3 Deadline too short
+[ ] 4 Checking or validation not completed
+[ ] 5 Responsible staff member or service unavailable
+[ ] 97 Other
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QI04c_Autre — Other: please specify
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1, 2}) AND (QI01_Participation ∈ {1} AND QI04c ∈ {97}))
+____________________________
+
+QI05 — Source and information accompanying the first figure provided
+Consider the first figure presented in the most recent response, not the best-documented figure. Indicate the information that actually accompanied it. Merely naming an organisation does not qualify for code 2. Do not copy a non-public value.
+QI05_Origine — Main origin of this figure
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1}) AND QI01_Participation ∈ {1})
+[ ] 1 Publication, database or result produced by the NSO
+[ ] 2 Official source from another national administration
+[ ] 3 Regional or international organisation
+[ ] 4 Identified research or private source
+[ ] 5 Earlier speech or document, without consulting the statistical source
+[ ] 6 Unidentified source
+[ ] 97 Other
+[ ] 98 Do not know
+____________________________
+QI05_Origine_Autre — Other: please specify
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1}) AND (QI01_Participation ∈ {1} AND QI05_Origine ∈ {97}))
+____________________________
+QI05_S1 — Specific source enabling the result to be located
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1}) AND QI01_Participation ∈ {1})
+[ ] 1 Included in the response
+[ ] 2 Available through a specific link or reference sent with the response
+[ ] 0 Absent
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QI05_S2 — Publication date or source version
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1}) AND QI01_Participation ∈ {1})
+[ ] 1 Included in the response
+[ ] 2 Available through a specific link or reference sent with the response
+[ ] 0 Absent
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QI05_S3 — Period to which the value relates
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1}) AND QI01_Participation ∈ {1})
+[ ] 1 Included in the response
+[ ] 2 Available through a specific link or reference sent with the response
+[ ] 0 Absent
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QI05_S4 — Definition of the indicator
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1}) AND QI01_Participation ∈ {1})
+[ ] 1 Included in the response
+[ ] 2 Available through a specific link or reference sent with the response
+[ ] 0 Absent
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QI05_S5 — Unit and calculation basis, particularly the denominator of a rate
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1}) AND QI01_Participation ∈ {1})
+[ ] 1 Included in the response
+[ ] 2 Available through a specific link or reference sent with the response
+[ ] 0 Absent
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QI05_S6 — Population and geographical coverage
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1}) AND QI01_Participation ∈ {1})
+[ ] 1 Included in the response
+[ ] 2 Available through a specific link or reference sent with the response
+[ ] 0 Absent
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QI05_S7 — Limitations relevant to interpretation or comparison
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1}) AND QI01_Participation ∈ {1})
+[ ] 1 Included in the response
+[ ] 2 Available through a specific link or reference sent with the response
+[ ] 0 Absent
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QI05_S8 — Provisional or revised status, where applicable
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1}) AND QI01_Participation ∈ {1})
+[ ] 1 Included in the response
+[ ] 2 Available through a specific link or reference sent with the response
+[ ] 0 Absent
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+
+QI06 — Checking and validation actually performed
+This concerns checking statistical content, not political approval of the speech.
+QI06a — Who checked the statistical content before it was sent? Multiple answers allowed.
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1}) AND QI01_Participation ∈ {1})
+[ ] 1 The staff member who prepared it
+[ ] 2 Another staff member producing the data
+[ ] 3 A technical or quality manager
+[ ] 4 The communication service
+[ ] 5 Management or its delegate
+[ ] 0 No known check
+[ ] 97 Other function
+[ ] 98 Do not know
+____________________________
+QI06a_Autre — Other: please specify
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1}) AND (QI01_Participation ∈ {1} AND QI06a ∩ ≠ ∅ {97}))
+____________________________
+QI06b — What record exists of the final statistical validation for this submission?
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1}) AND QI01_Participation ∈ {1})
+[ ] 1 Written record, email, sign-off or validation log
+[ ] 2 Oral agreement only
+[ ] 0 No separate validation known
+[ ] 98 Do not know
+____________________________
+
+QI07 — Format provided and checking of the speech passage
+
+QI07a — In what form was the support provided? Up to three answers.
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1}) AND QI01_Participation ∈ {1})
+Up to 3 choices.
+[ ] 1 Table or list of figures
+[ ] 2 Fact sheet with explanations
+[ ] 3 Suggested sentences or paragraphs
+[ ] 4 Chart or illustration
+[ ] 5 Oral explanation only
+[ ] 97 Other
+[ ] 98 Do not know
+____________________________
+QI07a_Autre — Other: please specify
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1}) AND (QI01_Participation ∈ {1} AND QI07a ∩ ≠ ∅ {97}))
+____________________________
+QI07b — Was the NSO subsequently able to check the figures in the prepared speech passage before dissemination?
+Display condition : ((QI02a ∉ {0} AND QI03_Situation ∈ {1}) AND QI01_Participation ∈ {1})
+[ ] 1 Yes
+[ ] 2 No, the passage was not received
+[ ] 3 No, the passage was received but not checked
+[ ] 4 The speech was not delivered or this stage did not occur
+[ ] 98 Do not know
+____________________________
+
+QI08 — Correction or updating after transmission
+Support originally provided before the period may be included if the correction occurred during the period. This question remains available even if no new request was received.
+QI08_Situation — During the reference period, do you know of support already provided that had to be corrected or updated?
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 Yes, to correct an error
+[ ] 2 Yes, to update data
+[ ] 3 Both situations occurred
+[ ] 0 No known instance
+[ ] 98 Do not know
+[ ] 99 Not applicable, no relevant support
+____________________________
+QI08_Actions — For the most recent case, what actions were taken? Multiple answers allowed.
+Display condition : ((QI01_Participation ∈ {1} AND QI08_Situation ∈ {1, 2, 3}))
+[ ] 1 Alerting the speech-preparation team
+[ ] 2 Sending a corrected version with its source
+[ ] 3 Keeping versions and the reason for the change
+[ ] 4 Requesting correction of a passage already disseminated
+[ ] 5 Checking that the correction was incorporated
+[ ] 0 No known action
+[ ] 97 Other
+[ ] 98 Do not know
+____________________________
+QI08_Actions_Autre — Other: please specify
+Display condition : ((QI01_Participation ∈ {1} AND QI08_Actions ∩ ≠ ∅ {97}))
+____________________________
+
+QI09 — Arrangements actually in place on 31 October 2026
+
+QI09_D1 — Identified contact point or function for receiving requests
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 Exists and was used for this support during the period
+[ ] 2 Exists but was not used during the period
+[ ] 0 Does not exist
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QI09_D2 — Written handling instructions, including for urgent requests
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 Exists and was used for this support during the period
+[ ] 2 Exists but was not used during the period
+[ ] 0 Does not exist
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QI09_D3 — Request register with deadline, responsible officer and processing status
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 Exists and was used for this support during the period
+[ ] 2 Exists but was not used during the period
+[ ] 0 Does not exist
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QI09_D4 — Repository of figures with sources and interpretation information
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 Exists and was used for this support during the period
+[ ] 2 Exists but was not used during the period
+[ ] 0 Does not exist
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QI09_D5 — Record of statistical checking and validation
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 Exists and was used for this support during the period
+[ ] 2 Exists but was not used during the period
+[ ] 0 Does not exist
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QI09_D6 — Retention of versions and corrections
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 Exists and was used for this support during the period
+[ ] 2 Exists but was not used during the period
+[ ] 0 Does not exist
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QI09_D7 — Review of deadlines, difficulties and user feedback
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 Exists and was used for this support during the period
+[ ] 2 Exists but was not used during the period
+[ ] 0 Does not exist
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+QI09_Nouveaute — New practice after 31 October, optional: arrangement, implementation date and one sentence
+Display condition : (QI01_Participation ∈ {1})
+____________________________
+
+QI10 — Priority needs
+Rank up to three different codes. One or two priorities are sufficient. Codes 0 and 98 exclude other priorities. Write ‘to be determined’ where necessary for the action, lead function, resources or obstacle.
+QI10_P1 — Priority 1
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 Clarify the contact point and responsibilities
+[ ] 2 Clarify and prioritise urgent requests
+[ ] 3 Have a repository of documented figures
+[ ] 4 Simplify checking and validation
+[ ] 5 Prepare messages and examples of speech passages
+[ ] 6 Organise corrections and versions
+[ ] 7 Train staff
+[ ] 8 Monitor deadlines and user feedback
+[ ] 97 Other
+[ ] 0 No need expressed
+[ ] 98 Do not know
+____________________________
+QI10_P2 — Priority 2
+Display condition : ((QI01_Participation ∈ {1} AND QI10_P1 ∈ {1, 2, 3, 4, 5, 6, 7, 8, 97}))
+[ ] 1 Clarify the contact point and responsibilities
+[ ] 2 Clarify and prioritise urgent requests
+[ ] 3 Have a repository of documented figures
+[ ] 4 Simplify checking and validation
+[ ] 5 Prepare messages and examples of speech passages
+[ ] 6 Organise corrections and versions
+[ ] 7 Train staff
+[ ] 8 Monitor deadlines and user feedback
+[ ] 97 Other
+____________________________
+QI10_P3 — Priority 3
+Display condition : ((QI01_Participation ∈ {1} AND QI10_P1 ∈ {1, 2, 3, 4, 5, 6, 7, 8, 97}))
+[ ] 1 Clarify the contact point and responsibilities
+[ ] 2 Clarify and prioritise urgent requests
+[ ] 3 Have a repository of documented figures
+[ ] 4 Simplify checking and validation
+[ ] 5 Prepare messages and examples of speech passages
+[ ] 6 Organise corrections and versions
+[ ] 7 Train staff
+[ ] 8 Monitor deadlines and user feedback
+[ ] 97 Other
+____________________________
+QI10_Autre — Other priority: please specify
+Display condition : ((QI01_Participation ∈ {1} AND (QI10_P1 ∈ {97} OR QI10_P2 ∈ {97} OR QI10_P3 ∈ {97})))
+____________________________
+QI10_Difficulte — For priority 1, what actual difficulty would this resolve? Up to 40 words; otherwise write ‘anticipated need’.
+Display condition : (QI01_Participation ∈ {1})
+Guideline: up to 40 words. Original text is retained.
+____________________________
+QI10_Action — First action possible with existing resources
+Display condition : (QI01_Participation ∈ {1})
+____________________________
+QI10_Responsable — Function that could lead the action
+Display condition : (QI01_Participation ∈ {1})
+____________________________
+QI10_Moyen — Resource already available
+Display condition : (QI01_Participation ∈ {1})
+____________________________
+QI10_Obstacle — Main obstacle
+Display condition : (QI01_Participation ∈ {1})
+____________________________
+
+QI11 — One shareable example or document
+Provide only one example: procedure, fact sheet, request template, check, correction or public speech. Do not provide individual-level data, confidential drafts, personal contact details or unauthorised content. An older example can illustrate a practice, but its date must remain visible.
+QI11_Type — Example provided, optional
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 Public link
+[ ] 2 Non-confidential extract authorised for sharing
+[ ] 0 No example shared
+____________________________
+QI11_Reference — Title or description, date and public link if available; authorised extract where relevant
+Display condition : ((QI01_Participation ∈ {1} AND QI11_Type ∈ {1, 2}))
+____________________________
+QI11_Apport — What this example demonstrates and what could be adapted elsewhere, up to 60 words
+Display condition : ((QI01_Participation ∈ {1} AND QI11_Type ∈ {1, 2}))
+Guideline: up to 60 words. Original text is retained.
+____________________________
+
+QI12 — Attribution and optional contact
+Options 1 and 2 require the corresponding authorisation. An individual contribution without that authorisation remains anonymised. Without an explicit choice, an anonymised summary (code 0) applies. Silence never constitutes permission to quote.
+QI12_Attribution — Permitted use of the contribution and shared example
+Display condition : (QI01_Participation ∈ {1})
+[ ] 0 Anonymised summary only, with no identifiable attribution
+[ ] 1 Attribution to the institution, without an identifiable quotation
+[ ] 2 Attribution to the institution and direct quotation
+[ ] 3 Submit the passage to me before any identifiable attribution or quotation
+____________________________
+QI12_Suite — Would you agree to a brief follow-up or a tool test?
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 Follow-up clarification
+[ ] 2 Tool test
+[ ] 3 Both
+[ ] 0 No
+[ ] 98 To be determined
+____________________________
+QI12_Contact_fonction — Optional contact: function or service to contact
+Display condition : (QI01_Participation ∈ {1})
+____________________________
+QI12_Contact_courriel — Institutional or generic email address, optional
+Display condition : (QI01_Participation ∈ {1})
+____________________________
+QI12_Contact_relais — Prefer contact through STATAFRIC, optional
+Display condition : (QI01_Participation ∈ {1})
+[ ] 1 Contact through STATAFRIC
+____________________________
+Receipt is neither content validation nor institutional approval.

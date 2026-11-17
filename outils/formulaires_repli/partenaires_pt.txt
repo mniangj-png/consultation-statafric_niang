@@ -1,0 +1,250 @@
+﻿CER e organizações internacionais
+2026-11-15.web-2
+Referência : 01/11/2025–31/10/2026. Recolha : 19–26 de novembro de 2026 inclusive.
+O STATAFRIC e o consultor Mamadou Niang preparam ferramentas práticas de apoio estatístico aos discursos e à decisão. Período de referência : de 1 de novembro de 2025 a 31 de outubro de 2026; date separadamente as alterações posteriores. Recolha : de 19 a 26 de novembro de 2026, inclusive. As respostas reais alimentarão L3, nunca L2, que é exclusivamente documental.
+
+A participação é voluntária. Aceitam-se contribuições institucionais, de serviços e individuais com âmbito claro. Responda diretamente à equipa da missão, sem aprovação prévia do INE que encaminhou o convite. Os resultados são agregados ou anonimizados por defeito; a atribuição ou citação identificável segue a escolha na última secção. As peças entregues ao Cliente respeitam essas autorizações. Um caso singular pode continuar reconhecível. Os contactos facultativos são separados da análise.
+
+Não forneça opiniões políticas, dados individuais, dados pessoais desnecessários nem documentos confidenciais. Use ligações públicas ou excertos não confidenciais autorizados. Uma contribuição individual não compromete a instituição.
+
+Uma resposta parcial é útil. Nenhuma opção substantiva está pré-selecionada. Um campo vazio não significa não nem zero. « Nenhum », « Não sabe » e « Não aplicável » excluem outras respostas quando o questionário o indica.
+
+Antes do envio, os dados permanecem na sessão, não na base. Podem perder-se ao fechar : descarregue um rascunho para retomar. Um rascunho não constitui envio. Apenas um recibo confirmado comprova o registo. As respostas originais são protegidas; só o consultor e pessoas autorizadas lhes acedem. Mudar de língua não cria nova contribuição. Se necessário, use o formulário alternativo na mesma língua e envie-o por correio ao contacto da missão.
+Formulário alternativo: mantenha os códigos. As condições exprimem os filtros: ∈ significa «entre», ∉ «não entre» e ∩ ≠ ∅ «contém pelo menos um». Não responda se a condição não for cumprida. Aceitam-se respostas parciais. Se recusar participar, termine sem outras respostas.
+
+QR01 — Participação e âmbito da contribuição
+
+QR01_Participation — Autoriza a utilização da sua contribuição conforme o aviso de participação?
+[ ] 1 Aceito
+[ ] 0 Não desejo participar — fim do questionário
+____________________________
+QR01_Organisation — Organização
+Condição de apresentação : (QR01_Participation ∈ {1})
+____________________________
+QR01_Type — Tipo de organização
+Condição de apresentação : (QR01_Participation ∈ {1})
+[ ] 1 Comunidade económica regional (CER)
+[ ] 2 Organização internacional
+[ ] 97 Outra
+____________________________
+QR01_Type_Autre — Outra : especifique
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR01_Type ∈ {97}))
+____________________________
+QR01_Fonction — Função do serviço que responde, sem nome pessoal
+Condição de apresentação : (QR01_Participation ∈ {1})
+____________________________
+QR01_Statut — Estatuto da contribuição
+Condição de apresentação : (QR01_Participation ∈ {1})
+[ ] 1 Resposta institucional consolidada
+[ ] 2 Contribuição de um serviço, não consolidada ao nível da instituição
+[ ] 3 Contribuição individual baseada na minha prática profissional
+____________________________
+QR01_Champ — Territórios ou instituições abrangidos pela sua experiência, sem pressupor todos os membros
+Condição de apresentação : (QR01_Participation ∈ {1})
+____________________________
+QR01_Unite — Serviço ou unidade em causa
+Condição de apresentação : (QR01_Participation ∈ {1})
+____________________________
+QR01_Domaine — Domínio ou setor, facultativo
+Condição de apresentação : (QR01_Participation ∈ {1})
+____________________________
+QR01_Langue_texte — Língua principal das suas respostas abertas
+Condição de apresentação : (QR01_Participation ∈ {1})
+[ ] fr Francês
+[ ] en Inglês
+[ ] ar Árabe
+[ ] pt Português
+[ ] es Espanhol
+____________________________
+QR01_Origine_invitation — Origem do convite ou da ligação
+Condição de apresentação : (QR01_Participation ∈ {1})
+[ ] 1 INE
+[ ] 2 STATAFRIC ou consultor
+[ ] 3 Outra entidade que encaminhou o convite
+[ ] 4 Acesso espontâneo
+[ ] 98 Não sabe
+____________________________
+QR01_INS_relais — INE ou entidade que encaminhou o convite, facultativo
+Condição de apresentação : (QR01_Participation ∈ {1})
+____________________________
+
+QR02 — Apoios efetivamente realizados durante o período
+Participar numa formação não demonstra que uma reforma foi implementada.
+QR02_Appui — Realizou ou acompanhou um apoio relacionado com a utilização de estatísticas em discursos?
+Condição de apresentação : (QR01_Participation ∈ {1})
+[ ] 1 Sim
+[ ] 0 Não
+[ ] 98 Não sabe
+[ ] 99 Fora do seu âmbito de atividade
+____________________________
+QR02_Activites — Se sim, selecione as atividades efetivamente conhecidas
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR02_Appui ∈ {1}))
+[ ] 1 Guia ou modelo
+[ ] 2 Formação ou acompanhamento
+[ ] 3 Fornecimento ou verificação de números
+[ ] 4 Apoio a um procedimento nacional
+[ ] 5 Divulgação ou partilha de experiências
+[ ] 97 Outra
+____________________________
+QR02_Activites_Autre — Outra : especifique
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR02_Activites ∩ ≠ ∅ {97}))
+____________________________
+QR02_Cas — Descreva um caso em duas frases : período, tipo de instituição beneficiária e realização observável. Acrescente uma referência pública se disponível.
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR02_Appui ∈ {1}))
+____________________________
+
+QR03 — Práticas transferíveis e condições de adaptação
+Cite apenas práticas realmente observadas ou documentadas. Pode citar um exemplo anterior com a data, sem o apresentar como apoio realizado no período.
+QR03_Absence — Se não propõe uma prática, indique a situação; caso contrário, deixe este campo vazio
+Condição de apresentação : (QR01_Participation ∈ {1})
+[ ] 0 Nenhuma prática documentada a propor
+[ ] 98 Não sabe
+____________________________
+QR03_Pratiques — Até duas práticas : prática; fonte ou prova; contexto em que funcionou; condição para adaptação. Máximo de 80 palavras no total.
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR03_Absence ∉ {0, 98}))
+Referência : até 80 palavras. O original é conservado.
+____________________________
+
+QR03bis — Normas e referenciais internacionais
+Responda a partir da sua experiência, sem investigação adicional. Máximo de duas referências. Citar um texto não significa que se aplique juridicamente a todos os países nem que tenha sido implementado.
+QR03bis_Presence — Que textos internacionais ou regionais utiliza ou recomenda para a qualidade e boa utilização das estatísticas nos discursos e na decisão?
+Condição de apresentação : (QR01_Participation ∈ {1})
+[ ] 1 Uma ou várias referências a citar
+[ ] 0 Nenhuma referência a propor
+[ ] 98 Não sabe
+[ ] 99 Fora do meu âmbito
+____________________________
+QR03bis_R1 — Referência 1 : título exato; organismo autor; ano ou versão; ligação pública ou referência; princípio útil; uso em discursos ou decisões; condição de adaptação a um INE.
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR03bis_Presence ∈ {1}))
+____________________________
+QR03bis_R1_Statut — Situação desta referência
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR03bis_Presence ∈ {1}))
+[ ] 1 Utilizada durante o período
+[ ] 2 Recomendada, sem utilização observada
+[ ] 3 Utilizada e recomendada
+[ ] 98 Não sabe
+____________________________
+QR03bis_R1_Type — Tipo de referência
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR03bis_Presence ∈ {1}))
+[ ] 1 Texto normativo
+[ ] 2 Guia ou manual
+[ ] 3 Recomendação institucional
+[ ] 97 Outra
+[ ] 98 Não sabe
+____________________________
+QR03bis_R2 — Referência 2 (facultativa) : título exato; organismo autor; ano ou versão; ligação pública ou referência; princípio útil; uso em discursos ou decisões; condição de adaptação a um INE.
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR03bis_Presence ∈ {1}))
+____________________________
+QR03bis_R2_Statut — Situação desta referência
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR03bis_Presence ∈ {1}))
+[ ] 1 Utilizada durante o período
+[ ] 2 Recomendada, sem utilização observada
+[ ] 3 Utilizada e recomendada
+[ ] 98 Não sabe
+____________________________
+QR03bis_R2_Type — Tipo de referência
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR03bis_Presence ∈ {1}))
+[ ] 1 Texto normativo
+[ ] 2 Guia ou manual
+[ ] 3 Recomendação institucional
+[ ] 97 Outra
+[ ] 98 Não sabe
+____________________________
+QR03bis_Application — Indique uma aplicação concreta ou uma limitação conhecida, máximo de 60 palavras
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR03bis_Presence ∈ {1}))
+Referência : até 60 palavras. O original é conservado.
+____________________________
+
+QR04 — Necessidades prioritárias e contribuição possível
+Esta resposta não constitui compromisso de financiamento nem de pessoal.
+QR04_Besoins — Selecione até três necessidades
+Condição de apresentação : (QR01_Participation ∈ {1})
+Até 3 escolhas.
+[ ] 1 Procedimentos comuns adaptáveis
+[ ] 2 Fontes e fichas de números
+[ ] 3 Controlo e interpretação
+[ ] 4 Comunicação e formulação
+[ ] 5 Formação
+[ ] 6 Partilha de experiências
+[ ] 7 Adaptação linguística
+[ ] 97 Outra
+[ ] 0 Nenhuma necessidade identificada
+[ ] 98 Não sabe
+____________________________
+QR04_Besoins_Autre — Outra : especifique
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR04_Besoins ∩ ≠ ∅ {97}))
+____________________________
+QR04_Contribution — Que contribuição poderia considerar a sua organização, mediante decisão interna? Uma opção.
+Condição de apresentação : (QR01_Participation ∈ {1})
+[ ] 1 Encaminhar a consulta
+[ ] 2 Documentos públicos
+[ ] 3 Comentários técnicos
+[ ] 4 Contacto com utilizadores voluntários
+[ ] 5 Nenhuma contribuição prevista nesta fase
+[ ] 97 Outra
+[ ] 98 Não sabe
+____________________________
+QR04_Contribution_Autre — Outra : especifique
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR04_Contribution ∈ {97}))
+____________________________
+QR04_Contrainte — Indique uma restrição de recursos, mandato ou língua, se útil
+Condição de apresentação : (QR01_Participation ∈ {1})
+____________________________
+
+QR04bis — Recomendações de organizações internacionais
+Máximo de duas recomendações. Distinga uma recomendação institucional documentada de uma proposta pessoal. Não constituem compromissos de financiamento nem decisões de adoção.
+QR04bis_Presence — Que recomendações de organizações internacionais devem ser consideradas no documento estratégico?
+Condição de apresentação : (QR01_Participation ∈ {1})
+[ ] 1 Uma ou várias recomendações a propor
+[ ] 0 Nenhuma
+[ ] 98 Não sabe
+[ ] 99 Fora do meu âmbito
+____________________________
+QR04bis_R1 — Recomendação 1 : organização de origem; documento, data e ligação; ação; ator responsável; nível nacional, regional ou continental; dificuldade; recursos e condições; prova de realização.
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR04bis_Presence ∈ {1}))
+____________________________
+QR04bis_R1_Nature — Natureza desta recomendação
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR04bis_Presence ∈ {1}))
+[ ] 1 Recomendação institucional publicada
+[ ] 2 Recomendação institucional não publicada, com partilha autorizada
+[ ] 3 Proposta profissional pessoal
+[ ] 98 A esclarecer
+____________________________
+QR04bis_R2 — Recomendação 2 (facultativa) : organização de origem; documento, data e ligação; ação; ator responsável; nível nacional, regional ou continental; dificuldade; recursos e condições; prova de realização.
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR04bis_Presence ∈ {1}))
+____________________________
+QR04bis_R2_Nature — Natureza desta recomendação
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR04bis_Presence ∈ {1}))
+[ ] 1 Recomendação institucional publicada
+[ ] 2 Recomendação institucional não publicada, com partilha autorizada
+[ ] 3 Proposta profissional pessoal
+[ ] 98 A esclarecer
+____________________________
+QR04bis_Priorite — Que recomendação é prioritária e porquê? Máximo de 40 palavras.
+Condição de apresentação : ((QR01_Participation ∈ {1} E QR04bis_Presence ∈ {1}))
+Referência : até 40 palavras. O original é conservado.
+____________________________
+
+QR05 — Atribuição e possível seguimento
+As opções 1 e 2 exigem a autorização correspondente. Uma contribuição individual sem essa autorização mantém-se anonimizada. Sem escolha explícita, aplica-se a síntese anonimizada (código 0). O silêncio nunca autoriza uma citação.
+QR05_Attribution — Reutilização autorizada
+Condição de apresentação : (QR01_Participation ∈ {1})
+[ ] 0 Apenas síntese anonimizada, sem atribuição identificável
+[ ] 1 Atribuição à instituição, sem citação textual identificável
+[ ] 2 Atribuição à instituição e citação textual
+[ ] 3 Enviar-me o trecho antes de qualquer atribuição ou citação identificável
+____________________________
+QR05_Contact_fonction — Contacto facultativo : função ou serviço a contactar
+Condição de apresentação : (QR01_Participation ∈ {1})
+____________________________
+QR05_Contact_courriel — Correio institucional ou genérico, facultativo
+Condição de apresentação : (QR01_Participation ∈ {1})
+____________________________
+QR05_Contact_relais — Preferir contacto através do STATAFRIC, facultativo
+Condição de apresentação : (QR01_Participation ∈ {1})
+[ ] 1 Contacto através do STATAFRIC
+____________________________
+QR05_Nouveaute — Prática nova após 31 de outubro, facultativo : descrição breve e data
+Condição de apresentação : (QR01_Participation ∈ {1})
+____________________________
+A receção não valida o conteúdo nem constitui aprovação institucional.

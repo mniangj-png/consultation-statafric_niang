@@ -1,0 +1,20 @@
+APP_MODE = "production"
+TEST_MODE = false
+CAMPAIGN_ID = "discours-2026-v2"
+SUPABASE_URL = "https://REMPLACER.supabase.co"
+SUPABASE_PUBLIC_KEY = "REMPLACER_PAR_LA_CLE_ANON"
+WRITER_TOKEN = "REMPLACER_PAR_LE_JETON_REEL_DISTINCT"
+CONTACT_EMAIL = "REMPLACER_PAR_LE_CONTACT_INSTITUTIONNEL"
+NOTICE_CONTROLLER = "À confirmer avec STATAFRIC"
+RETENTION_NOTICE = "À confirmer : hébergement, accès et conservation."
+DEPLOYMENT_APPROVED = false
+APPROVED_LANGUAGES = []
+# Après contrôle et autorisation uniquement : DEPLOYMENT_APPROVED=true et
+# APPROVED_LANGUAGES=["fr","en","ar","pt","es"] si les cinq sont prêtes.
+# Les textes ci-dessous doivent devenir les notices effectives, relues.
+[notice]
+fr = "À compléter : responsable, hébergeur, localisation, accès autorisés, durée de conservation et contact."
+en = "To complete: controller, hosting provider, location, authorised access, retention period and contact."
+ar = "يستكمل: المسؤول ومقدم الاستضافة وموقعها والصلاحيات المصرح بها وفترة الاحتفاظ وجهة الاتصال."
+pt = "Completar: responsável, alojamento, localização, acessos autorizados, prazo de conservação e contacto."
+es = "Completar: responsable, alojamiento, ubicación, accesos autorizados, plazo de conservación y contacto."

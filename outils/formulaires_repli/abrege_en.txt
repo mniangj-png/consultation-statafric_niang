@@ -1,0 +1,119 @@
+﻿Short response
+2026-11-15.web-2
+Reference: 1 Nov 2025–31 Oct 2026. Collection: 19–26 November 2026 inclusive.
+STATAFRIC and consultant Mamadou Niang are preparing practical tools for statistical support to speeches and decision-making. Reference period for practices: 1 November 2025 to 31 October 2026; date subsequent changes separately. Collection: 19 to 26 November 2026 inclusive. Actual responses will inform L3, never the exclusively desk-based L2.
+
+Participation is voluntary. Institutional, service-level and individual contributions are accepted when their scope is clear. Respond directly to the assignment team, without prior approval by the forwarding NSO. Reporting is aggregated or anonymised by default; identifiable attribution or quotation follows your choice in the last section. Materials handed to the Client respect these permissions. A distinctive case may remain recognisable. Optional contact details are separate from analysis.
+
+Do not provide political opinions, individual-level data, unnecessary personal details or confidential documents. Use public links or authorised non-confidential extracts. An individual contribution does not commit the institution.
+
+A partial response is useful. No substantive option is preselected. A blank is neither no nor zero. None, do not know and not applicable exclude other answers where the questionnaire specifies.
+
+Before submission, entries remain in the session, not in the database. They may be lost on closing: download a draft to resume. A draft is not a submission. Only a confirmed receipt attests to recording. Original responses are protected; only the consultant and authorised persons can access them. Changing language does not create a new contribution. If needed, use the fallback form in the same language and email it to the assignment contact.
+Fallback form: retain the codes. Display conditions express routing: ∈ means “among”, ∉ “not among”, ∩ ≠ ∅ “contains at least one”. Do not answer fields whose conditions are not met. Partial responses are accepted. After refusing participation, stop without further answers.
+
+RA01 — Participation and scope
+
+RA01_Participation — Do you agree to the use of your contribution as described in the notice?
+[ ] 1 I agree
+[ ] 0 I do not wish to participate — end of questionnaire
+____________________________
+RA01_Pays — Country
+Display condition : (RA01_Participation ∈ {1})
+____________________________
+RA01_Institution — Institution or type of institution
+Display condition : (RA01_Participation ∈ {1})
+____________________________
+RA01_Fonction — Function
+Display condition : (RA01_Participation ∈ {1})
+____________________________
+RA01_Profil — Contribution profile
+Display condition : (RA01_Participation ∈ {1})
+[ ] 1 NSO
+[ ] 2 Other producer of statistics
+[ ] 3 Speech-preparation team
+[ ] 4 REC or international organisation
+[ ] 97 Other
+____________________________
+RA01_Profil_Autre — Other: please specify
+Display condition : ((RA01_Participation ∈ {1} AND RA01_Profil ∈ {97}))
+____________________________
+RA01_Statut — Institutional, service-level or individual response
+Display condition : (RA01_Participation ∈ {1})
+[ ] 1 Consolidated institutional response
+[ ] 2 Service-level contribution, not consolidated at institution level
+[ ] 3 Individual contribution based on my professional practice
+____________________________
+RA01_Unite — Service or unit concerned
+Display condition : (RA01_Participation ∈ {1})
+____________________________
+RA01_Domaine — Domain or sector, optional
+Display condition : (RA01_Participation ∈ {1})
+____________________________
+RA01_Langue_texte — Main language of your free-text responses
+Display condition : (RA01_Participation ∈ {1})
+[ ] fr French
+[ ] en English
+[ ] ar Arabic
+[ ] pt Portuguese
+[ ] es Spanish
+____________________________
+RA01_Origine_invitation — Origin of the invitation or link
+Display condition : (RA01_Participation ∈ {1})
+[ ] 1 NSO
+[ ] 2 STATAFRIC or consultant
+[ ] 3 Other forwarding organisation
+[ ] 4 Unsolicited access
+[ ] 98 Do not know
+____________________________
+RA01_INS_relais — Forwarding NSO or organisation, optional
+Display condition : (RA01_Participation ∈ {1})
+____________________________
+RA01_Reference_precedente — Reference of an earlier contribution, if known
+Display condition : (RA01_Participation ∈ {1})
+____________________________
+
+RA02 — Most recent known situation
+
+RA02_Cas — Describe a request or speech preparation during the period: month, topic, time available, support obtained or not. If no case is known, say so. Three lines.
+Display condition : (RA01_Participation ∈ {1})
+____________________________
+
+RA03 — Source and checking
+
+RA03_Source — For this case, could the source of the figure be located?
+Display condition : (RA01_Participation ∈ {1})
+[ ] 1 Yes
+[ ] 0 No
+[ ] 98 Do not know
+[ ] 99 Not applicable
+____________________________
+RA03_Controle — Who checked the content before transmission? Function or absence of a known check.
+Display condition : (RA01_Participation ∈ {1})
+____________________________
+
+RA04 — First improvement
+
+RA04_Amelioration — Which difficulty should be addressed first? What action would be possible with existing resources and which function could lead it? Three lines.
+Display condition : (RA01_Participation ∈ {1})
+____________________________
+
+RA05 — Reuse and follow-up
+Options 1 and 2 require the corresponding authorisation. An individual contribution without that authorisation remains anonymised. Without an explicit choice, an anonymised summary (code 0) applies. Silence never constitutes permission to quote.
+RA05_Attribution — Authorised reporting
+Display condition : (RA01_Participation ∈ {1})
+[ ] 0 Anonymised summary only, with no identifiable attribution
+[ ] 1 Attribution to the institution, without an identifiable quotation
+[ ] 2 Attribution to the institution and direct quotation
+[ ] 3 Submit the passage to me before any identifiable attribution or quotation
+____________________________
+RA05_Lien — Useful public link, optional
+Display condition : (RA01_Participation ∈ {1})
+____________________________
+RA05_Contact_fonction — Institutional follow-up contact: function or service, optional
+Display condition : (RA01_Participation ∈ {1})
+____________________________
+RA05_Contact_courriel — Institutional contact for follow-up, optional (email)
+Display condition : (RA01_Participation ∈ {1})
+____________________________
+Receipt is neither content validation nor institutional approval.

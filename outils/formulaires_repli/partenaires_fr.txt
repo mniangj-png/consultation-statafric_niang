@@ -1,0 +1,250 @@
+﻿CER et organisations internationales
+2026-11-15.web-2
+Référence : 01/11/2025–31/10/2026. Collecte : 19–26 novembre 2026 inclus.
+STATAFRIC et le consultant Mamadou Niang préparent des outils pratiques pour l’appui statistique aux discours et à la décision. Référence des pratiques : du 1er novembre 2025 au 31 octobre 2026 ; dater séparément les évolutions ultérieures. Collecte : du 19 au 26 novembre 2026 inclus. Les réponses réelles alimenteront L3, jamais L2 qui reste documentaire.
+
+Participation volontaire. Une réponse institutionnelle, de service ou individuelle est recevable si son périmètre est précisé. Répondre directement à l’équipe de la mission, sans approbation préalable de l’INS relais. Les restitutions sont agrégées ou anonymisées par défaut ; attribution ou citation identifiable selon votre choix à la dernière rubrique. Les pièces remises au Client respectent ces autorisations. Un cas particulier peut rester reconnaissable. Les coordonnées facultatives sont séparées de l’analyse.
+
+Ne transmettre ni opinions politiques, données individuelles, coordonnées personnelles inutiles ni document confidentiel. Utiliser des liens publics ou extraits non confidentiels autorisés. Une contribution individuelle n’engage pas l’institution.
+
+Une réponse partielle est utile. Aucun choix substantiel n’est précoché. Un blanc ne signifie ni « non » ni zéro. « Aucun », « ne sait pas » et « non applicable » sont exclusifs des autres réponses lorsque le questionnaire le prévoit.
+
+Avant l’envoi, la saisie reste dans la session, pas dans la base. Elle peut être perdue à la fermeture : télécharger un brouillon pour reprendre. Un brouillon ne vaut pas envoi. Seul un accusé confirmé atteste l’enregistrement. Les réponses originales restent protégées ; seuls le consultant et les personnes habilitées y accèdent. La langue peut être changée sans créer une nouvelle contribution. En cas de difficulté, utiliser le formulaire de repli dans la même langue et l’envoyer au contact de la mission.
+Formulaire de repli : conserver les codes. Les conditions affichées traduisent les filtres : ∈ signifie « parmi », ∉ « différent de », ∩ ≠ ∅ « contient au moins un ». En cas de condition non remplie, ne pas répondre au champ. Une réponse partielle est admise. Après refus, arrêter sans autre réponse.
+
+QR01 — Participation et champ de la contribution
+
+QR01_Participation — Acceptez-vous l’utilisation de votre contribution selon la notice ?
+[ ] 1 J’accepte
+[ ] 0 Je ne participe pas — fin du questionnaire
+____________________________
+QR01_Organisation — Organisation
+Condition d’affichage : (QR01_Participation ∈ {1})
+____________________________
+QR01_Type — Type d’organisation
+Condition d’affichage : (QR01_Participation ∈ {1})
+[ ] 1 Communauté économique régionale (CER)
+[ ] 2 Organisation internationale
+[ ] 97 Autre
+____________________________
+QR01_Type_Autre — Autre : précisez
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR01_Type ∈ {97}))
+____________________________
+QR01_Fonction — Fonction du service répondant, sans nom personnel
+Condition d’affichage : (QR01_Participation ∈ {1})
+____________________________
+QR01_Statut — Statut de la contribution
+Condition d’affichage : (QR01_Participation ∈ {1})
+[ ] 1 Réponse institutionnelle consolidée
+[ ] 2 Contribution d’un service, non consolidée au niveau de l’institution
+[ ] 3 Contribution individuelle fondée sur ma pratique professionnelle
+____________________________
+QR01_Champ — Territoires ou institutions couverts par votre expérience, sans supposer la couverture de tous les membres
+Condition d’affichage : (QR01_Participation ∈ {1})
+____________________________
+QR01_Unite — Service ou unité concernée
+Condition d’affichage : (QR01_Participation ∈ {1})
+____________________________
+QR01_Domaine — Domaine ou secteur, facultatif
+Condition d’affichage : (QR01_Participation ∈ {1})
+____________________________
+QR01_Langue_texte — Langue principale de vos réponses libres
+Condition d’affichage : (QR01_Participation ∈ {1})
+[ ] fr Français
+[ ] en Anglais
+[ ] ar Arabe
+[ ] pt Portugais
+[ ] es Espagnol
+____________________________
+QR01_Origine_invitation — Origine de l’invitation ou du lien
+Condition d’affichage : (QR01_Participation ∈ {1})
+[ ] 1 INS
+[ ] 2 STATAFRIC ou consultant
+[ ] 3 Autre relais
+[ ] 4 Accès spontané
+[ ] 98 Ne sait pas
+____________________________
+QR01_INS_relais — INS ou organisme relais, facultatif
+Condition d’affichage : (QR01_Participation ∈ {1})
+____________________________
+
+QR02 — Appuis effectivement réalisés pendant la période
+Ne pas interpréter une participation à une formation comme la preuve d’une réforme appliquée.
+QR02_Appui — Avez-vous réalisé ou suivi un appui lié à l’utilisation des statistiques dans les discours ?
+Condition d’affichage : (QR01_Participation ∈ {1})
+[ ] 1 Oui
+[ ] 0 Non
+[ ] 98 Ne sait pas
+[ ] 99 Hors de votre champ d’activité
+____________________________
+QR02_Activites — Si oui, cocher les activités réellement connues
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR02_Appui ∈ {1}))
+[ ] 1 Guide ou modèle
+[ ] 2 Formation ou accompagnement
+[ ] 3 Fourniture ou vérification de chiffres
+[ ] 4 Appui à une procédure nationale
+[ ] 5 Diffusion ou partage d’expériences
+[ ] 97 Autre
+____________________________
+QR02_Activites_Autre — Autre : précisez
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR02_Activites ∩ ≠ ∅ {97}))
+____________________________
+QR02_Cas — Décrire un cas en deux phrases : période, type d’institution bénéficiaire et réalisation observable. Ajouter une référence publique si disponible.
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR02_Appui ∈ {1}))
+____________________________
+
+QR03 — Pratiques transférables et conditions d’adaptation
+Citer seulement des pratiques effectivement observées ou documentées. Un exemple plus ancien peut être cité avec sa date ; il ne constitue pas un appui réalisé pendant la période.
+QR03_Absence — Si vous ne proposez aucune pratique, indiquer la situation ; sinon laisser ce champ vide
+Condition d’affichage : (QR01_Participation ∈ {1})
+[ ] 0 Aucune pratique documentée à proposer
+[ ] 98 Ne sait pas
+____________________________
+QR03_Pratiques — Au maximum deux pratiques : pratique ; source ou preuve ; contexte où elle a fonctionné ; condition nécessaire à son adaptation. Au plus 80 mots au total.
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR03_Absence ∉ {0, 98}))
+Repère : 80 mots au plus. Le texte original est conservé.
+____________________________
+
+QR03bis — Normes et référentiels internationaux
+Répondre à partir de votre pratique ; aucune recherche supplémentaire n’est demandée. Deux références au maximum. Citer un texte ne signifie ni qu’il s’applique juridiquement à tous les pays ni qu’il est mis en œuvre.
+QR03bis_Presence — Quels textes internationaux ou régionaux utilisez-vous ou recommandez-vous pour la qualité et la bonne utilisation des statistiques dans les discours et la décision ?
+Condition d’affichage : (QR01_Participation ∈ {1})
+[ ] 1 Une ou plusieurs références à citer
+[ ] 0 Aucune référence à proposer
+[ ] 98 Ne sait pas
+[ ] 99 Hors de mon champ
+____________________________
+QR03bis_R1 — Référence 1 : titre exact ; organisme auteur ; année ou version ; lien public ou repère ; principe utile ; usage pour le discours ou la décision ; condition d’adaptation à un INS.
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR03bis_Presence ∈ {1}))
+____________________________
+QR03bis_R1_Statut — Statut de cette référence
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR03bis_Presence ∈ {1}))
+[ ] 1 Utilisée pendant la période
+[ ] 2 Recommandée, sans usage observé
+[ ] 3 Utilisée et recommandée
+[ ] 98 Ne sait pas
+____________________________
+QR03bis_R1_Type — Type de référence
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR03bis_Presence ∈ {1}))
+[ ] 1 Texte normatif
+[ ] 2 Guide ou manuel
+[ ] 3 Recommandation institutionnelle
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+____________________________
+QR03bis_R2 — Référence 2 (facultative) : titre exact ; organisme auteur ; année ou version ; lien public ou repère ; principe utile ; usage pour le discours ou la décision ; condition d’adaptation à un INS.
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR03bis_Presence ∈ {1}))
+____________________________
+QR03bis_R2_Statut — Statut de cette référence
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR03bis_Presence ∈ {1}))
+[ ] 1 Utilisée pendant la période
+[ ] 2 Recommandée, sans usage observé
+[ ] 3 Utilisée et recommandée
+[ ] 98 Ne sait pas
+____________________________
+QR03bis_R2_Type — Type de référence
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR03bis_Presence ∈ {1}))
+[ ] 1 Texte normatif
+[ ] 2 Guide ou manuel
+[ ] 3 Recommandation institutionnelle
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+____________________________
+QR03bis_Application — Préciser une application concrète ou une limite connue, au plus 60 mots
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR03bis_Presence ∈ {1}))
+Repère : 60 mots au plus. Le texte original est conservé.
+____________________________
+
+QR04 — Besoins prioritaires et contribution envisageable
+Cette réponse ne constitue pas un engagement de financement ou de personnel.
+QR04_Besoins — Retenir au plus trois besoins
+Condition d’affichage : (QR01_Participation ∈ {1})
+Au plus 3 choix.
+[ ] 1 Procédures communes adaptables
+[ ] 2 Sources et fiches de chiffres
+[ ] 3 Contrôle et interprétation
+[ ] 4 Communication et formulation
+[ ] 5 Formation
+[ ] 6 Partage d’expériences
+[ ] 7 Adaptation linguistique
+[ ] 97 Autre
+[ ] 0 Aucun besoin identifié
+[ ] 98 Ne sait pas
+____________________________
+QR04_Besoins_Autre — Autre : précisez
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR04_Besoins ∩ ≠ ∅ {97}))
+____________________________
+QR04_Contribution — Quelle contribution votre organisation pourrait-elle envisager, sous réserve de sa décision interne ? Un choix.
+Condition d’affichage : (QR01_Participation ∈ {1})
+[ ] 1 Relais de consultation
+[ ] 2 Documents publics
+[ ] 3 Commentaires techniques
+[ ] 4 Mise en relation avec des utilisateurs volontaires
+[ ] 5 Aucune contribution envisagée à ce stade
+[ ] 97 Autre
+[ ] 98 Ne sait pas
+____________________________
+QR04_Contribution_Autre — Autre : précisez
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR04_Contribution ∈ {97}))
+____________________________
+QR04_Contrainte — Préciser une contrainte de moyens, de mandat ou de langue, si utile
+Condition d’affichage : (QR01_Participation ∈ {1})
+____________________________
+
+QR04bis — Recommandations des organisations internationales
+Deux recommandations au maximum. Distinguer la recommandation institutionnelle documentée de la proposition personnelle. Ces propositions ne constituent ni un engagement de financement ni une décision d’adoption.
+QR04bis_Presence — Quelles recommandations d’organisations internationales devraient être prises en compte dans le document stratégique ?
+Condition d’affichage : (QR01_Participation ∈ {1})
+[ ] 1 Une ou plusieurs recommandations à proposer
+[ ] 0 Aucune
+[ ] 98 Ne sait pas
+[ ] 99 Hors de mon champ
+____________________________
+QR04bis_R1 — Recommandation 1 : organisation d’origine ; document, date et lien ; action ; acteur ; niveau national, régional ou continental ; difficulté ; moyens et conditions ; preuve de réalisation.
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR04bis_Presence ∈ {1}))
+____________________________
+QR04bis_R1_Nature — Nature de cette recommandation
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR04bis_Presence ∈ {1}))
+[ ] 1 Recommandation institutionnelle publiée
+[ ] 2 Recommandation institutionnelle non publiée, partage autorisé
+[ ] 3 Proposition professionnelle personnelle
+[ ] 98 À préciser
+____________________________
+QR04bis_R2 — Recommandation 2 (facultative) : organisation d’origine ; document, date et lien ; action ; acteur ; niveau national, régional ou continental ; difficulté ; moyens et conditions ; preuve de réalisation.
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR04bis_Presence ∈ {1}))
+____________________________
+QR04bis_R2_Nature — Nature de cette recommandation
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR04bis_Presence ∈ {1}))
+[ ] 1 Recommandation institutionnelle publiée
+[ ] 2 Recommandation institutionnelle non publiée, partage autorisé
+[ ] 3 Proposition professionnelle personnelle
+[ ] 98 À préciser
+____________________________
+QR04bis_Priorite — Quelle recommandation est prioritaire et pourquoi ? Au plus 40 mots.
+Condition d’affichage : ((QR01_Participation ∈ {1} ET QR04bis_Presence ∈ {1}))
+Repère : 40 mots au plus. Le texte original est conservé.
+____________________________
+
+QR05 — Attribution et suite éventuelle
+Les choix 1 et 2 supposent l’autorisation correspondante. Une contribution individuelle sans cette autorisation reste anonymisée. Sans choix explicite, la synthèse anonymisée (code 0) s’applique. L’absence de retour ne vaut jamais accord de citation.
+QR05_Attribution — Réutilisation autorisée
+Condition d’affichage : (QR01_Participation ∈ {1})
+[ ] 0 Synthèse anonymisée seulement, sans attribution identifiable
+[ ] 1 Attribution à l’institution, sans citation textuelle identifiable
+[ ] 2 Attribution à l’institution et citation textuelle
+[ ] 3 Me soumettre le passage avant toute attribution ou citation identifiable
+____________________________
+QR05_Contact_fonction — Contact facultatif : fonction ou service à recontacter
+Condition d’affichage : (QR01_Participation ∈ {1})
+____________________________
+QR05_Contact_courriel — Courriel institutionnel ou générique, facultatif
+Condition d’affichage : (QR01_Participation ∈ {1})
+____________________________
+QR05_Contact_relais — Préférer un relais par STATAFRIC, facultatif
+Condition d’affichage : (QR01_Participation ∈ {1})
+[ ] 1 Passer par STATAFRIC
+____________________________
+QR05_Nouveaute — Pratique nouvelle après le 31 octobre, facultatif : description courte et date
+Condition d’affichage : (QR01_Participation ∈ {1})
+____________________________
+La réception ne vaut ni validation du contenu ni approbation institutionnelle.

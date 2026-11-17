@@ -1,3 +1,2 @@
-# Version publiée vérifiée ; ne pas mettre à niveau sans rejouer les tests.
 streamlit[auth]==1.62.0
 requests>=2.32.3,<3

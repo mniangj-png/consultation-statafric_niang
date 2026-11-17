@@ -1,0 +1,489 @@
+0	Oficinas nacionales de estadística	Institutos nacionais de estatística	الأجهزة الوطنية للإحصاء
+1	De 15 a 20 minutos	15 a 20 minutos	من 15 إلى 20 دقيقة
+2	Consentimiento y ámbito de la respuesta	Consentimento e âmbito da resposta	الموافقة على المشاركة ونطاق الإجابة
+3	¿Autoriza el uso de su contribución según el aviso de participación?	Autoriza a utilização da sua contribuição conforme o aviso de participação?	هل توافق على استخدام مساهمتك وفق إشعار المشاركة؟
+4	Acepto	Aceito	أوافق
+5	No deseo participar — fin del cuestionario	Não desejo participar — fim do questionário	لا أرغب في المشاركة — نهاية الاستبيان
+6	País	País	البلد
+7	Nombre o sigla de la ONE	Nome ou sigla do INE	اسم الجهاز الوطني للإحصاء أو اختصاره
+8	Carácter de la respuesta	Estatuto da resposta	صفة الإجابة
+9	Respuesta institucional consolidada	Resposta institucional consolidada	إجابة مؤسسية موحدة
+10	Contribución de un servicio, no consolidada a nivel institucional	Contribuição de um serviço, não consolidada ao nível da instituição	مساهمة من إدارة، غير موحدة على مستوى المؤسسة
+11	Contribución individual basada en mi práctica profesional	Contribuição individual baseada na minha prática profissional	مساهمة فردية تستند إلى ممارستي المهنية
+12	Función de quien responde, sin nombre personal	Função de quem responde, sem nome pessoal	وظيفة المجيب، دون ذكر اسمه
+13	Producción estadística	Produção estatística	الإنتاج الإحصائي
+14	Comunicación o difusión	Comunicação ou divulgação	الاتصال أو النشر
+15	Coordinación o dirección	Coordenação ou direção	التنسيق أو الإدارة العليا
+16	Métodos o calidad	Métodos ou qualidade	المنهجيات أو الجودة
+17	Otra	Outra	أخرى
+18	Otra : especifique	Outra : especifique	أخرى : يرجى التحديد
+19	Tipo de envío	Tipo de envio	نوع الإرسال
+20	Primera respuesta	Primeira resposta	الإجابة الأولى
+21	Complemento	Complemento	استكمال
+22	Referencia o fecha del envío anterior, si se conoce	Referência ou data do envio anterior, se conhecida	مرجع الإرسال السابق أو تاريخه، إن كان معروفا
+23	Servicio o unidad correspondiente	Serviço ou unidade em causa	الإدارة أو الوحدة المعنية
+24	Ámbito o sector, opcional	Domínio ou setor, facultativo	المجال أو القطاع، اختياري
+25	Idioma principal de sus respuestas abiertas	Língua principal das suas respostas abertas	اللغة الأساسية لإجاباتك الحرة
+26	Francés	Francês	الفرنسية
+27	Inglés	Inglês	الإنجليزية
+28	Árabe	Árabe	العربية
+29	Portugués	Português	البرتغالية
+30	Español	Espanhol	الإسبانية
+31	Origen de la invitación o del enlace	Origem do convite ou da ligação	مصدر الدعوة أو الرابط
+32	ONE	INE	الجهاز الوطني للإحصاء
+33	STATAFRIC o consultor	STATAFRIC ou consultor	STATAFRIC أو الاستشاري
+34	Otra entidad que transmitió la invitación	Outra entidade que encaminhou o convite	جهة أخرى أحالت الدعوة
+35	Acceso espontáneo	Acesso espontâneo	وصول تلقائي دون دعوة مباشرة
+36	No sabe	Não sabe	لا أعرف
+37	ONE o entidad que transmitió la invitación, opcional	INE ou entidade que encaminhou o convite, facultativo	الجهاز الوطني للإحصاء أو الجهة المحيلة، اختياري
+38	Se prefiere una respuesta consolidada por ONE. En una contribución de servicio o individual, describa únicamente el ámbito que conoce y utilice « No sabe » para el resto de la ONE.	É preferível uma resposta consolidada por INE. Numa contribuição de serviço ou individual, descreva apenas o âmbito que conhece e use « Não sabe » para o restante INE.	يفضل تقديم إجابة موحدة لكل جهاز وطني للإحصاء. عند تقديم مساهمة من إدارة أو فرد، صف فقط النطاق الذي تعرفه فعليا، واختر « لا أعرف » فيما يتعلق ببقية الجهاز.
+39	Solicitudes recibidas durante los doce meses de referencia	Pedidos recebidos nos doze meses de referência	الطلبات المستلمة خلال الاثني عشر شهرا المرجعية
+40	¿Cuántas solicitudes distintas ha identificado en el ámbito de su respuesta?	Quantos pedidos distintos identificou no âmbito da sua resposta?	كم طلبا منفصلا أحصيتم ضمن نطاق إجابتكم؟
+41	Ninguna	Nenhum	لا يوجد
+42	De 1 a 5	De 1 a 5	من 1 إلى 5
+43	De 6 a 20	De 6 a 20	من 6 إلى 20
+44	De 21 a 50	De 21 a 50	من 21 إلى 50
+45	Más de 50	Mais de 50	أكثر من 50
+46	¿Alguna de estas solicitudes exigía respuesta en las 24 horas siguientes a su recepción?	Algum destes pedidos exigia resposta nas 24 horas seguintes à receção?	هل تطلب أي من هذه الطلبات إجابة خلال 24 ساعة أو أقل من استلامه؟
+47	Sí	Sim	نعم
+48	No	Não	لا
+49	No aplicable, ninguna solicitud	Não aplicável, nenhum pedido	لا ينطبق، لا توجد طلبات
+50	¿En qué se basa esta respuesta?	Em que se baseia esta resposta?	على ماذا تستند هذه الإجابة؟
+51	Registro o inventario consultado	Registo ou inventário consultado	سجل أو حصر تمت مراجعته
+52	Estimación basada en la práctica conocida	Estimativa baseada na prática conhecida	تقدير يستند إلى الممارسة المعروفة
+53	Una solicitud es un apoyo requerido para preparar un discurso, una alocución o una intervención oral de un decisor. Los intercambios o versiones del mismo apoyo cuentan como una sola solicitud. Se excluyen las peticiones generales de datos sin vínculo conocido con un discurso. Si no hubo solicitudes, pase a QI08. Si desconoce el número, puede responder QI03 cuando conozca un caso real.	Um pedido é um apoio solicitado para preparar um discurso, uma alocução ou uma intervenção oral de um decisor. Várias trocas ou versões do mesmo apoio contam como um único pedido. Excluem-se pedidos gerais de dados sem ligação conhecida a um discurso. Se não houve pedidos, avance para QI08. Se o número for desconhecido, QI03 pode ser preenchida quando se conhece um caso real.	الطلب هو دعم مطلوب لإعداد خطاب أو كلمة أو مداخلة شفهية لصانع قرار. تعد المراسلات أو النسخ المتعلقة بالدعم نفسه طلبا واحدا. تستبعد طلبات البيانات العامة غير المرتبطة بخطاب معروف. إذا لم توجد طلبات، انتقل إلى QI08. وإذا كان العدد مجهولا، يمكن الإجابة عن QI03 عند معرفة حالة فعلية.
+54	Última solicitud cerrada conocida	Último pedido encerrado conhecido	أحدث طلب مغلق معروف
+55	Situación	Situação	الحالة
+56	Se proporcionaron cifras	Foram fornecidos números	تم تقديم أرقام
+57	La solicitud se cerró sin proporcionar cifras	O pedido foi encerrado sem fornecimento de números	أغلق الطلب دون تقديم أرقام
+58	Ninguna solicitud cerrada conocida durante el período	Nenhum pedido encerrado conhecido durante o período	لا أعرف طلبا أغلق خلال الفترة
+59	No dispongo de la información necesaria	Não disponho das informações necessárias	لا تتوفر لدي المعلومات اللازمة
+60	Mes y año de cierre, MM/AAAA	Mês e ano do encerramento, MM/AAAA	شهر وسنة الإغلاق، MM/YYYY
+61	Tema general, sin nombre de persona ni título confidencial del discurso	Tema geral, sem nome de pessoa nem título confidencial do discurso	الموضوع العام، دون اسم شخص أو عنوان سري للخطاب
+62	Servicio solicitante	Serviço requerente	الإدارة الطالبة
+63	Gabinete o equipo de un decisor nacional	Gabinete ou equipa de um decisor nacional	مكتب أو فريق صانع قرار وطني
+64	Ministerio o administración sectorial	Ministério ou administração setorial	وزارة أو إدارة قطاعية
+65	Autoridad territorial o local	Autoridade territorial ou local	سلطة إقليمية أو محلية
+66	Dirección de la ONE	Direção do INE	إدارة الجهاز الوطني للإحصاء
+67	Institución regional o internacional	Instituição regional ou internacional	مؤسسة إقليمية أو دولية
+68	Canal principal de recepción de la solicitud	Principal canal de receção do pedido	القناة الرئيسية لاستلام الطلب
+69	Correo electrónico	Correio eletrónico	البريد الإلكتروني
+70	Carta o nota oficial	Carta ou nota oficial	رسالة أو مذكرة رسمية
+71	Teléfono o intercambio oral	Telefone ou troca oral	الهاتف أو التواصل الشفهي
+72	Mensajería instantánea	Mensagens instantâneas	المراسلة الفورية
+73	Formulario o plataforma	Formulário ou plataforma	استمارة أو منصة
+74	Seleccione la solicitud cerrada más recientemente durante el período de referencia, se hayan proporcionado cifras o no. No elija únicamente un caso especialmente exitoso. Las situaciones 3 y 98 llevan a QI08. La situación 2 lleva a QI04 y después a QI08.	Selecione o pedido encerrado mais recentemente no período de referência, tenham sido fornecidos números ou não. Não escolha apenas um caso particularmente bem-sucedido. As situações 3 e 98 levam a QI08. A situação 2 leva a QI04 e depois a QI08.	اختر أحدث طلب أغلق خلال الفترة المرجعية، سواء قدمت أرقام أم لا. لا تختَر حالة ناجحة بشكل خاص فقط. تؤدي الحالتان 3 و98 إلى QI08، وتؤدي الحالة 2 إلى QI04 ثم QI08.
+75	Plazo y tratamiento de esta última solicitud	Prazo e tratamento deste último pedido	مهلة هذا الطلب الأخير ومعالجته
+76	¿Cuánto tiempo se concedió a la ONE para responder desde la recepción de la solicitud?	Quanto tempo foi concedido ao INE para responder a partir da receção do pedido?	ما المهلة التي أتيحت للجهاز الوطني للإحصاء للإجابة منذ استلام الطلب؟
+77	Menos de 6 horas	Menos de 6 horas	أقل من 6 ساعات
+78	De 6 a 24 horas, inclusive	De 6 a 24 horas, inclusive	من 6 إلى 24 ساعة شاملة
+79	Más de 24 horas y hasta 3 días, inclusive	Mais de 24 horas até 3 dias, inclusive	أكثر من 24 ساعة وحتى 3 أيام شاملة
+80	Más de 3 días	Mais de 3 dias	أكثر من 3 أيام
+81	Sin plazo especificado	Sem prazo indicado	لم تحدد مهلة
+82	¿Se envió la respuesta de la ONE antes del plazo solicitado?	A resposta do INE foi enviada antes do prazo solicitado?	هل أرسلت إجابة الجهاز الوطني للإحصاء قبل الموعد المطلوب؟
+83	No aplicable, sin plazo especificado	Não aplicável, sem prazo indicado	لا ينطبق، لم تحدد مهلة
+84	Si no se proporcionaron cifras o se incumplió el plazo, ¿cuál fue el principal obstáculo?	Se não foram fornecidos números ou se o prazo não foi cumprido, qual foi o principal obstáculo?	إذا لم تقدم أرقام أو لم تحترم المهلة، فما العائق الرئيسي؟
+85	Datos adecuados no disponibles	Dados adequados indisponíveis	عدم توفر بيانات مناسبة
+86	Necesidad insuficientemente precisada	Necessidade insuficientemente especificada	عدم تحديد الحاجة بما يكفي
+87	Plazo demasiado corto	Prazo demasiado curto	قصر المهلة الشديد
+88	Control o validación sin finalizar	Controlo ou validação não concluídos	عدم اكتمال المراجعة أو التحقق
+89	Agente o servicio competente no disponible	Agente ou serviço competente indisponível	عدم توفر الموظف أو الإدارة المختصة
+90	No aplicable	Não aplicável	لا ينطبق
+91	Los plazos son naturales e incluyen noches y fines de semana. QI03 distingue una respuesta que explica que no se podían facilitar cifras de una entrega efectiva de cifras. Cumplir un plazo no demuestra por sí solo que se haya satisfecho la necesidad estadística.	Os prazos são de calendário e incluem noites e fins de semana. QI03 distingue uma resposta explicando a impossibilidade de fornecer números do fornecimento efetivo. Cumprir um prazo não demonstra, por si só, que a necessidade estatística foi satisfeita.	المهل تقويمية وتشمل الليالي وعطلات نهاية الأسبوع. يميز QI03 بين الإجابة التي توضح تعذر تقديم أرقام وبين تقديم أرقام فعليا. لا يكفي احترام المهلة وحده للاستنتاج بأن الحاجة الإحصائية قد لبيت.
+92	Fuente e información que acompañan a la primera cifra facilitada	Fonte e informações que acompanham o primeiro número fornecido	مصدر أول رقم مقدم والمعلومات المصاحبة له
+93	Origen principal de esta cifra	Origem principal deste número	المصدر الرئيسي لهذا الرقم
+94	Publicación, base o resultado producido por la ONE	Publicação, base ou resultado produzido pelo INE	منشور أو قاعدة بيانات أو نتيجة أنتجها الجهاز الوطني للإحصاء
+95	Fuente oficial de otra administración nacional	Fonte oficial de outra administração nacional	مصدر رسمي لإدارة وطنية أخرى
+96	Organización regional o internacional	Organização regional ou internacional	منظمة إقليمية أو دولية
+97	Investigación o fuente privada identificada	Investigação ou fonte privada identificada	بحث أو مصدر خاص محدد
+98	Discurso o documento anterior sin consultar la fuente estadística	Discurso ou documento anterior sem consultar a fonte estatística	خطاب أو وثيقة سابقة دون الرجوع إلى المصدر الإحصائي
+99	Fuente no identificada	Fonte não identificada	مصدر غير محدد
+100	Fuente precisa que permite localizar el resultado	Fonte precisa que permite localizar o resultado	مصدر دقيق يتيح العثور على النتيجة
+101	Incluida en la respuesta	Presente na resposta	واردة في الإجابة
+102	Accesible mediante un enlace o referencia precisa enviados con la respuesta	Acessível por uma ligação ou referência precisa enviada com a resposta	متاحة عبر رابط أو مرجع دقيق أرفق بالإجابة
+103	Ausente	Ausente	غير موجودة
+104	Fecha de publicación o versión de la fuente	Data de publicação ou versão da fonte	تاريخ النشر أو نسخة المصدر
+105	Período al que se refiere el valor	Período a que se refere o valor	الفترة التي تتعلق بها القيمة
+106	Definición del indicador	Definição do indicador	تعريف المؤشر
+107	Unidad y base de cálculo, en particular el denominador de una tasa	Unidade e base de cálculo, nomeadamente o denominador de uma taxa	الوحدة وأساس الحساب، ولا سيما مقام المعدل
+108	Población y territorio cubiertos	População e território abrangidos	السكان والنطاق الجغرافي المشمولان
+109	Limitaciones pertinentes para interpretar o comparar	Limitações relevantes para interpretar ou comparar	القيود المفيدة للتفسير أو المقارنة
+110	Carácter provisional o revisado, cuando proceda	Caráter provisório ou revisto, quando aplicável	صفة مؤقتة أو منقحة، عند الاقتضاء
+111	Considere la primera cifra de la última respuesta enviada, no la mejor documentada. Indique qué información la acompañaba realmente. Mencionar solo el nombre de una entidad no basta para el código 2. No copie un valor no público.	Considere o primeiro número da última resposta enviada, não o mais bem documentado. Indique as informações que o acompanhavam efetivamente. Mencionar apenas o nome de uma entidade não basta para o código 2. Não copie um valor não público.	اعتمد أول رقم ورد في آخر إجابة مرسلة، لا الرقم الأفضل توثيقا. حدد المعلومات التي رافقته فعليا. لا يكفي ذكر اسم جهة فقط لاختيار الرمز 2. لا تنقل قيمة غير متاحة للعموم.
+112	Comprobación y validación efectivamente realizadas	Verificação e validação efetivamente realizadas	المراجعة والتحقق المنجزان فعليا
+113	¿Quién comprobó el contenido estadístico antes de enviarlo? Se admiten varias respuestas.	Quem verificou o conteúdo estatístico antes do envio? São admitidas várias respostas.	من راجع المحتوى الإحصائي قبل إرساله؟ يمكن اختيار عدة إجابات.
+114	El agente que lo preparó	O agente que o preparou	الموظف الذي أعده
+115	Otro agente productor de los datos	Outro agente produtor dos dados	موظف آخر منتج للبيانات
+116	Un responsable técnico o de calidad	Um responsável técnico ou de qualidade	مسؤول فني أو مسؤول جودة
+117	El servicio de comunicación	O serviço de comunicação	إدارة الاتصال
+118	La dirección o su delegado	A direção ou o seu delegado	الإدارة العليا أو من تفوضه
+119	Ningún control conocido	Nenhum controlo conhecido	لا أعرف أي مراجعة
+120	Otra función	Outra função	وظيفة أخرى
+121	¿Qué constancia existe de la validación estadística final de este envío?	Que registo existe da validação estatística final deste envio?	ما الإثبات الموجود للتحقق الإحصائي النهائي لهذا الإرسال؟
+122	Constancia escrita, correo, visado o registro de validación	Registo escrito, correio, visto ou diário de validação	إثبات كتابي أو بريد أو تأشيرة اعتماد أو سجل تحقق
+123	Solo acuerdo oral	Apenas acordo oral	موافقة شفهية فقط
+124	Ninguna validación independiente conocida	Nenhuma validação distinta conhecida	لا أعرف تحققا منفصلا
+125	Se trata del control del contenido estadístico, no de la aprobación política del discurso.	Trata-se do controlo do conteúdo estatístico, não da aprovação política do discurso.	المقصود مراجعة المحتوى الإحصائي، وليس الموافقة السياسية على الخطاب.
+126	Formato facilitado y comprobación del pasaje del discurso	Formato fornecido e verificação do trecho do discurso	صيغة الدعم المقدم ومراجعة مقطع الخطاب
+127	¿En qué formato se proporcionó el apoyo? Hasta tres respuestas.	Em que formato foi fornecido o apoio? Até três respostas.	بأي صيغة قدم الدعم؟ ثلاث إجابات كحد أقصى.
+128	Tabla o lista de cifras	Tabela ou lista de números	جدول أو قائمة أرقام
+129	Ficha con explicaciones	Ficha com explicações	بطاقة مع توضيحات
+130	Propuesta de frases o párrafos	Proposta de frases ou parágrafos	اقتراح جمل أو فقرات
+131	Gráfico o ilustración	Gráfico ou ilustração	رسم بياني أو توضيحي
+132	Solo explicación oral	Apenas explicação oral	شرح شفهي فقط
+133	¿Pudo la ONE comprobar posteriormente las cifras en el pasaje preparado antes de su difusión?	O INE pôde posteriormente verificar os números no trecho preparado antes da divulgação?	هل تمكن الجهاز الوطني للإحصاء لاحقا من مراجعة الأرقام في مقطع الخطاب المعد قبل نشره؟
+134	No, no se recibió el pasaje	Não, o trecho não foi recebido	لا، لم يستلم المقطع
+135	No, se recibió el pasaje pero no se comprobó	Não, o trecho foi recebido mas não foi verificado	لا، استلم المقطع لكنه لم يراجع
+136	El discurso no se difundió o esta etapa no tuvo lugar	O discurso não foi divulgado ou esta etapa não ocorreu	لم ينشر الخطاب أو لم تتم هذه المرحلة
+137			
+138	Corrección o actualización después del envío	Correção ou atualização após o envio	التصحيح أو التحديث بعد الإرسال
+139	Durante el período de referencia, ¿conoce algún apoyo ya enviado que debiera corregirse o actualizarse?	Durante o período de referência, conhece algum apoio já enviado que tenha exigido correção ou atualização?	هل تعرف دعما سبق إرساله واستلزم التصحيح أو التحديث خلال الفترة المرجعية؟
+140	Sí, para corregir un error	Sim, para corrigir um erro	نعم، لتصحيح خطأ
+141	Sí, para actualizar un dato	Sim, para atualizar um dado	نعم، لتحديث بيانات
+142	Se produjeron ambas situaciones	Ocorreram ambas as situações	حدثت الحالتان
+143	Ningún episodio conocido	Nenhum episódio conhecido	لا أعرف أي حالة
+144	No aplicable, ningún apoyo pertinente	Não aplicável, nenhum apoio em causa	لا ينطبق، لا يوجد دعم معني
+145	En el caso más reciente, ¿qué acciones se realizaron? Se admiten varias respuestas.	No caso mais recente, que ações foram realizadas? São admitidas várias respostas.	ما الإجراءات المتخذة في أحدث حالة؟ يمكن اختيار عدة إجابات.
+146	Aviso al equipo que prepara el discurso	Alerta à equipa que prepara o discurso	تنبيه فريق إعداد الخطاب
+147	Envío de una versión corregida con su fuente	Envio de uma versão corrigida com a fonte	إرسال نسخة مصححة مع مصدرها
+148	Conservación de las versiones y del motivo del cambio	Conservação das versões e do motivo da alteração	حفظ النسخ وسبب التغيير
+149	Solicitud de corrección de un pasaje ya difundido	Pedido de correção de um trecho já divulgado	طلب تصحيح مقطع سبق نشره
+150	Verificación de que se incorporó la corrección	Verificação de que a correção foi incorporada	التحقق من أخذ التصحيح في الاعتبار
+151	Ninguna acción conocida	Nenhuma ação conhecida	لا أعرف أي إجراء
+152	Puede incluirse un apoyo enviado antes del período si la corrección se produjo durante este. Esta pregunta sigue disponible aunque no se recibieran solicitudes nuevas.	Pode incluir-se um apoio enviado antes do período se a correção ocorreu durante o mesmo. Esta pergunta mantém-se disponível mesmo sem novos pedidos.	يمكن إدراج دعم قدم قبل الفترة إذا جرى تصحيحه خلالها. يبقى هذا السؤال متاحا حتى عند عدم استلام طلب جديد.
+153	Dispositivos efectivamente existentes al 31 de octubre de 2026	Dispositivos efetivamente existentes em 31 de outubro de 2026	الترتيبات القائمة فعليا في 31 أكتوبر 2026
+154	Punto de contacto o función identificada para recibir solicitudes	Ponto de contacto ou função identificada para receber pedidos	نقطة اتصال أو وظيفة محددة لاستلام الطلبات
+155	Existe y se utilizó para estos apoyos durante el período	Existe e foi utilizado para estes apoios durante o período	موجود واستخدم لهذا الدعم خلال الفترة
+156	Existe pero no se utilizó durante el período	Existe mas não foi utilizado durante o período	موجود لكنه لم يستخدم خلال الفترة
+157	No existe	Não existe	غير موجود
+158	Instrucciones escritas de tratamiento, incluidas las urgencias	Instruções escritas de tratamento, incluindo urgências	تعليمات معالجة مكتوبة، بما فيها الحالات العاجلة
+159	Registro de solicitudes con plazo, responsable y estado de tramitación	Registo de pedidos com prazo, responsável e estado de tratamento	سجل للطلبات يتضمن المهلة والمسؤول وحالة المعالجة
+160	Repositorio de cifras con fuentes e información de interpretación	Repositório de números com fontes e informações de interpretação	دليل أرقام مع مصادر ومعلومات تفسيرية
+161	Constancia del control y de la validación estadística	Registo do controlo e da validação estatística	إثبات المراجعة والتحقق الإحصائي
+162	Conservación de versiones y correcciones	Conservação de versões e correções	حفظ النسخ والتصحيحات
+163	Examen de plazos, dificultades y comentarios de usuarios	Análise dos prazos, dificuldades e comentários dos utilizadores	مراجعة المهل والصعوبات وملاحظات المستخدمين
+164	Práctica nueva después del 31 de octubre, opcional : dispositivo, fecha de implantación y una frase	Prática nova após 31 de outubro, facultativo : dispositivo, data de implementação e uma frase	ممارسة جديدة بعد 31 أكتوبر، اختياري : الترتيب وتاريخ تطبيقه وجملة توضيحية
+165	Necesidades prioritarias	Necessidades prioritárias	الاحتياجات ذات الأولوية
+166	Prioridad 1	Prioridade 1	الأولوية 1
+167	Aclarar el punto de contacto y las responsabilidades	Clarificar o ponto de contacto e as responsabilidades	توضيح نقطة الاتصال والمسؤوليات
+168	Precisar y priorizar las solicitudes urgentes	Precisar e priorizar os pedidos urgentes	تحديد الطلبات العاجلة وترتيب أولوياتها
+169	Disponer de un repositorio de cifras documentadas	Dispor de um repositório de números documentados	توفير دليل أرقام موثقة
+170	Simplificar el control y la validación	Simplificar o controlo e a validação	تبسيط المراجعة والتحقق
+171	Preparar mensajes y ejemplos de pasajes de discursos	Preparar mensagens e exemplos de trechos de discursos	إعداد رسائل وأمثلة لمقاطع الخطابات
+172	Organizar las correcciones y las versiones	Organizar as correções e as versões	تنظيم التصحيحات والنسخ
+173	Formar al personal	Formar os agentes	تدريب الموظفين
+174	Seguir los plazos y los comentarios sobre el uso	Acompanhar os prazos e os comentários sobre a utilização	متابعة المهل والملاحظات حول الاستخدام
+175	Ninguna necesidad expresada	Nenhuma necessidade expressa	لم يعبر عن أي احتياج
+176	Prioridad 2	Prioridade 2	الأولوية 2
+177	Prioridad 3	Prioridade 3	الأولوية 3
+178	Otra prioridad : especifique	Outra prioridade : especifique	أولوية أخرى : يرجى التحديد
+179	Para la prioridad 1, ¿qué dificultad real se resolvería? Máximo 40 palabras; en su defecto, escriba « necesidad prevista ».	Para a prioridade 1, que dificuldade real seria resolvida? Máximo de 40 palavras; caso contrário, escreva « necessidade prevista ».	بالنسبة للأولوية 1، ما الصعوبة الفعلية التي ستحل؟ في حدود 40 كلمة، أو اكتب « احتياج متوقع ».
+180	Primera acción posible con los recursos existentes	Primeira ação possível com os recursos existentes	أول إجراء ممكن بالموارد المتاحة
+181	Función que podría dirigir la acción	Função que poderia conduzir a ação	الوظيفة التي يمكن أن تقود الإجراء
+182	Recurso ya disponible	Recurso já disponível	المورد المتاح بالفعل
+183	Principal obstáculo	Principal obstáculo	العائق الرئيسي
+184	Clasifique hasta tres códigos distintos. Una o dos prioridades bastan. Los códigos 0 y 98 excluyen las demás prioridades. Escriba « por determinar » cuando sea necesario para la acción, función responsable, recursos u obstáculo.	Ordene até três códigos distintos. Uma ou duas prioridades bastam. Os códigos 0 e 98 excluem as restantes prioridades. Escreva « a determinar » quando necessário para a ação, função responsável, recursos ou obstáculo.	رتب ثلاثة رموز مختلفة كحد أقصى. تكفي أولوية أو أولويتان. يستبعد الرمزان 0 و98 بقية الأولويات. اكتب « يحدد لاحقا » عند الحاجة للإجراء أو الوظيفة المسؤولة أو الموارد أو العائق.
+185	Un ejemplo o documento que pueda compartirse	Um exemplo ou documento que possa ser partilhado	مثال أو وثيقة قابلة للمشاركة
+186	Ejemplo facilitado, opcional	Exemplo fornecido, facultativo	المثال المقدم، اختياري
+187	Enlace público	Ligação pública	رابط متاح للعموم
+188	Extracto no confidencial cuya difusión está autorizada	Excerto não confidencial cuja partilha está autorizada	مقتطف غير سري مصرح بمشاركته
+189	No se comparte ningún ejemplo	Nenhum exemplo partilhado	لم يشارك أي مثال
+190	Título o descripción, fecha y enlace público si existe; extracto autorizado, si procede	Título ou descrição, data e ligação pública se disponível; excerto autorizado, se aplicável	العنوان أو الوصف والتاريخ والرابط العام إن وجد، ومقتطف مصرح به عند الاقتضاء
+191	Qué demuestra el ejemplo y qué podría adaptarse en otro contexto, hasta 60 palabras	O que o exemplo demonstra e o que poderia ser adaptado noutro contexto, até 60 palavras	ما الذي يوضحه المثال وما الذي يمكن تكييفه في سياق آخر، حتى 60 كلمة
+192	Proporcione un solo ejemplo : procedimiento, ficha, modelo de solicitud, control, corrección o discurso público. No incluya datos individuales, borradores confidenciales, contactos personales ni contenido no autorizado. Un ejemplo antiguo puede ilustrar una práctica, pero su fecha debe quedar visible.	Forneça apenas um exemplo : procedimento, ficha, modelo de pedido, controlo, correção ou discurso público. Não inclua dados individuais, rascunhos confidenciais, contactos pessoais ou conteúdo não autorizado. Um exemplo antigo pode ilustrar uma prática, mas a data deve ficar visível.	قدم مثالا واحدا فقط : إجراء أو بطاقة أو نموذج طلب أو مراجعة أو تصحيح أو خطاب عام. لا تقدم بيانات فردية أو مسودات سرية أو بيانات اتصال شخصية أو محتوى غير مصرح به. يمكن لمثال قديم توضيح ممارسة، لكن يجب إبقاء تاريخه ظاهرا.
+193	Atribución y contacto opcional	Atribuição e contacto facultativo	الإسناد وبيانات الاتصال الاختيارية
+194	Uso autorizado de la contribución y del ejemplo compartido	Utilização autorizada da contribuição e do exemplo partilhado	الاستخدام المصرح به للمساهمة والمثال المشترك
+195	Solo síntesis anonimizada, sin atribución identificable	Apenas síntese anonimizada, sem atribuição identificável	ملخص دون تحديد الهوية فقط، دون إسناد كاشف للهوية
+196	Atribución a la institución, sin cita textual identificable	Atribuição à instituição, sem citação textual identificável	الإسناد إلى المؤسسة دون اقتباس نصي كاشف للهوية
+197	Atribución a la institución y cita textual	Atribuição à instituição e citação textual	الإسناد إلى المؤسسة والاقتباس النصي
+198	Enviarme el pasaje antes de cualquier atribución o cita identificable	Enviar-me o trecho antes de qualquer atribuição ou citação identificável	اعرض علي المقطع قبل أي إسناد أو اقتباس كاشف للهوية
+199	¿Aceptaría una breve aclaración o una prueba de herramienta?	Aceitaria um breve esclarecimento ou um teste de ferramenta?	هل تقبل استكمالا موجزا أو اختبار أداة؟
+200	Prueba de herramienta	Teste de ferramenta	اختبار أداة
+201	Ambos	Ambos	كلاهما
+202	Por determinar	A determinar	يحدد لاحقا
+203	Contacto opcional : función o servicio al que contactar	Contacto facultativo : função ou serviço a contactar	جهة اتصال اختيارية : الوظيفة أو الإدارة التي يمكن التواصل معها
+204	Correo institucional o genérico, opcional	Correio institucional ou genérico, facultativo	بريد مؤسسي أو عام، اختياري
+205	Preferir contacto a través de STATAFRIC, opcional	Preferir contacto através do STATAFRIC, facultativo	تفضيل التواصل عبر STATAFRIC، اختياري
+206	Contacto a través de STATAFRIC	Contacto através do STATAFRIC	التواصل عبر STATAFRIC
+207	Las opciones 1 y 2 requieren la autorización correspondiente. Una contribución individual sin esa autorización permanece anonimizada. Sin selección explícita, se aplica la síntesis anonimizada (código 0). El silencio nunca autoriza una cita.	As opções 1 e 2 exigem a autorização correspondente. Uma contribuição individual sem essa autorização mantém-se anonimizada. Sem escolha explícita, aplica-se a síntese anonimizada (código 0). O silêncio nunca autoriza uma citação.	يتطلب الخياران 1 و2 التصريح المناسب. تبقى المساهمة الفردية دون هذا التصريح مجهولة الهوية. عند غياب اختيار صريح، يطبق الملخص دون تحديد الهوية (الرمز 0). الصمت لا يعني أبدا الإذن بالاقتباس.
+208	ONE : transmita el enlace de productores a 3–8 organismos y el de usuarios a 4–6 equipos. No recoja ni apruebe sus respuestas. Los otros productores completan QP; los equipos usuarios completan QU.	INE : encaminhe a ligação dos produtores a 3–8 organismos e a dos utilizadores a 4–6 equipas. Não recolha nem aprove as respostas. Os outros produtores preenchem QP; as equipas utilizadoras preenchem QU.	للأجهزة الوطنية للإحصاء : أحيلوا رابط المنتجين إلى 3–8 جهات ورابط المستخدمين إلى 4–6 فرق. لا تجمعوا إجاباتهم ولا تعتمدوا محتواها. يجيب المنتجون الآخرون عن QP وفرق المستخدمين عن QU.
+209	Otros productores de estadísticas	Outros produtores de estatísticas	الجهات الأخرى المنتجة للإحصاءات
+210	Consentimiento, perfil y ámbito de la contribución	Consentimento, perfil e âmbito da contribuição	الموافقة والصفة ونطاق المساهمة
+211	¿Produce su organismo estadísticas o indicadores utilizables para la acción pública?	O seu organismo produz estatísticas ou indicadores utilizáveis na ação pública?	هل تنتج مؤسستكم إحصاءات أو مؤشرات قابلة للاستخدام في العمل العام؟
+212	Institución de adscripción	Instituição de tutela	المؤسسة التي تتبعها الجهة
+213	Servicio o unidad de producción	Serviço ou unidade de produção	إدارة أو وحدة الإنتاج
+214	Tipo principal de organismo	Tipo principal de organismo	النوع الرئيسي للجهة
+215	Ministerio o servicio estadístico sectorial	Ministério ou serviço estatístico setorial	وزارة أو إدارة إحصائية قطاعية
+216	Banco central o institución monetaria	Banco central ou instituição monetária	بنك مركزي أو مؤسسة نقدية
+217	Otra administración u organismo de datos administrativos	Outra administração ou organismo de dados administrativos	إدارة أخرى أو جهة بيانات إدارية
+218	Agencia u observatorio público	Agência ou observatório público	وكالة أو مرصد عام
+219	Entidad local o servicio territorial	Autarquia ou serviço territorial	جماعة محلية أو إدارة إقليمية
+220	Organismo de investigación	Organismo de investigação	جهة بحثية
+221	Productor privado o asociativo	Produtor privado ou associativo	جهة منتجة خاصة أو أهلية
+222	Ámbito principal	Domínio principal	المجال الرئيسي
+223	Economía, finanzas o moneda	Economia, finanças ou moeda	الاقتصاد أو المالية أو النقد
+224	Salud o protección social	Saúde ou proteção social	الصحة أو الحماية الاجتماعية
+225	Educación o formación	Educação ou formação	التعليم أو التدريب
+226	Agricultura o alimentación	Agricultura ou alimentação	الزراعة أو الغذاء
+227	Empleo o condiciones de vida	Emprego ou condições de vida	التشغيل أو ظروف المعيشة
+228	Medio ambiente, energía o infraestructuras	Ambiente, energia ou infraestruturas	البيئة أو الطاقة أو البنية التحتية
+229	Población, registro civil o territorio	População, registo civil ou território	السكان أو الحالة المدنية أو المجال الجغرافي
+230	Varios ámbitos sin uno principal	Vários domínios sem um principal	مجالات متعددة دون مجال رئيسي
+231	Otros ámbitos, opcional	Outros domínios, facultativo	مجالات أخرى، اختياري
+232	Función, sin nombre personal	Função, sem nome pessoal	الوظيفة، دون اسم شخصي
+233	Producción	Produção	الإنتاج
+234	Origen del enlace	Origem da ligação	مصدر الرابط
+235	Solo para productores externos a la ONE. Las unidades internas de la ONE usan QI. La simple transmisión de archivos administrativos sin tratamiento estadístico no basta. Si su organismo no produce estadísticas, use QU para su función de usuario o consulte al consultor. La participación no confiere carácter oficial a sus estadísticas.	Apenas para produtores externos ao INE. As unidades internas do INE usam QI. O simples envio de ficheiros administrativos sem tratamento estatístico não basta. Se o organismo não produz estatísticas, use QU para a função de utilizador ou consulte o consultor. A participação não confere caráter oficial às estatísticas do organismo.	للمنتجين خارج الجهاز الوطني للإحصاء فقط. تستخدم إدارات الجهاز الداخلية QI. لا يكفي مجرد إحالة ملفات إدارية دون معالجة إحصائية. إذا لم تنتج مؤسستكم إحصاءات، استخدموا QU لدور المستخدم أو استشيروا الاستشاري. المشاركة لا تمنح إحصاءات المؤسسة صفة رسمية.
+236	Solicitudes de apoyo recibidas durante el período de referencia	Pedidos de apoio recebidos no período de referência	طلبات الدعم المستلمة خلال الفترة المرجعية
+237	Por separado, ¿proporcionó su organismo estadísticas para una nota o decisión sin vínculo identificado con un discurso?	Separadamente, o seu organismo forneceu estatísticas para uma nota ou decisão sem ligação identificada a um discurso?	بشكل منفصل، هل قدمت مؤسستكم إحصاءات لمذكرة أو مفاضلة لاتخاذ قرار دون ارتباط محدد بخطاب؟
+238	Si respondió sí, indique tema o tipo de decisión en una frase, sin detalles confidenciales. No añada estos apoyos al número de solicitudes de discursos.	Se sim, indique tema ou tipo de decisão numa frase, sem pormenores confidenciais. Não acrescente estes apoios ao número de pedidos de discursos.	إذا كانت الإجابة نعم، اذكر الموضوع أو نوع القرار في جملة دون تفاصيل سرية. لا تضف هذا الدعم إلى عدد طلبات الخطابات.
+239	La solicitud se refiere a un discurso o intervención oral, recibida directamente o por la ONE. Cuente una sola vez los intercambios del mismo apoyo. Excluya solicitudes generales sin vínculo conocido con un discurso. Si QP02a = 0, pase a QP08 después de QP02d. Puede describirse un caso real aunque el volumen sea desconocido. Varios productores pueden intervenir en el mismo discurso : no sume sus solicitudes para obtener un total nacional.	O pedido refere-se a um discurso ou intervenção oral, recebido diretamente ou pelo INE. Conte uma só vez as trocas do mesmo apoio. Exclua pedidos gerais sem ligação conhecida a um discurso. Se QP02a = 0, avance para QP08 após QP02d. Pode descrever-se um caso real mesmo com volume desconhecido. Vários produtores podem apoiar o mesmo discurso : não some os pedidos num total nacional.	يتعلق الطلب بخطاب أو مداخلة شفهية، ويستلم مباشرة أو عبر الجهاز الوطني للإحصاء. احسب تبادلات الدعم الواحد مرة واحدة. استبعد الطلبات العامة غير المرتبطة بخطاب معروف. إذا كان QP02a = 0، انتقل إلى QP08 بعد QP02d. يمكن وصف حالة فعلية حتى إن جهل العدد. قد يدعم عدة منتجين الخطاب نفسه : لا تجمع طلباتهم لاستخراج مجموع وطني.
+240	Solicitante final conocido	Requerente final conhecido	الجهة الطالبة النهائية المعروفة
+241	Autoridad territorial	Autoridade territorial	سلطة إقليمية
+242	Dirección de su organismo	Direção do seu organismo	إدارة مؤسستكم
+243	Circuito principal de la solicitud	Circuito principal do pedido	المسار الرئيسي للطلب
+244	Solicitud recibida directamente del usuario	Pedido recebido diretamente do utilizador	طلب استلم مباشرة من المستخدم
+245	Solicitud transmitida por la ONE	Pedido transmitido pelo INE	طلب أحاله الجهاز الوطني للإحصاء
+246	Solicitud transmitida por otro productor o servicio	Pedido transmitido por outro produtor ou serviço	طلب أحاله منتج أو إدارة أخرى
+247	Seleccione la solicitud cerrada más recientemente durante el período, se hayan facilitado cifras o no. No elija solo un caso exitoso. Las situaciones 3 y 98 llevan a QP08. La situación 2 lleva a QP04 y después a QP08.	Selecione o pedido encerrado mais recentemente no período, tenham sido fornecidos números ou não. Não escolha apenas um caso bem-sucedido. As situações 3 e 98 levam a QP08. A situação 2 leva a QP04 e depois a QP08.	اختر أحدث طلب أغلق خلال الفترة، سواء قدمت أرقام أم لا. لا تختَر حالة ناجحة فقط. تؤدي الحالتان 3 و98 إلى QP08، وتؤدي الحالة 2 إلى QP04 ثم QP08.
+248	¿Cuánto tiempo se concedió a su organismo para responder desde la recepción de la solicitud?	Quanto tempo foi concedido ao seu organismo para responder a partir da receção do pedido?	ما المهلة التي أتيحت لمؤسستكم للإجابة منذ استلام الطلب؟
+249	¿Se envió la respuesta de su organismo antes del plazo solicitado?	A resposta do seu organismo foi enviada antes do prazo solicitado?	هل أرسلت إجابة مؤسستكم قبل الموعد المطلوب؟
+250	Control o validación incompletos	Controlo ou validação incompletos	المراجعة أو التحقق غير مكتملين
+251	Agente competente no disponible	Agente competente indisponível	عدم توفر الموظف المختص
+252	Restricciones de difusión o acceso	Restrições de divulgação ou acesso	قيود النشر أو الوصول
+253	Divergencia entre fuentes sin resolver	Divergência entre fontes não resolvida	اختلاف بين المصادر لم يحسم
+254	Los plazos son naturales e incluyen noches y fines de semana. QP03 distingue la imposibilidad de facilitar cifras del suministro efectivo. Cumplir un plazo no demuestra por sí solo que se haya satisfecho la necesidad estadística.	Os prazos são de calendário, incluindo noites e fins de semana. QP03 distingue a impossibilidade de fornecer números do fornecimento efetivo. Cumprir um prazo não demonstra, por si só, que a necessidade estatística foi satisfeita.	المهل تقويمية وتشمل الليالي وعطلات نهاية الأسبوع. يميز QP03 بين تعذر تقديم أرقام وتقديمها فعليا. لا يثبت احترام المهلة وحده تلبية الحاجة الإحصائية.
+255	Origen y documentación de la primera cifra facilitada	Origem e documentação do primeiro número fornecido	مصدر أول رقم مقدم وتوثيقه
+256	Encuesta o censo producido por su organismo	Inquérito ou recenseamento produzido pelo seu organismo	مسح أو تعداد أنتجته مؤسستكم
+257	Datos administrativos tratados por su organismo	Dados administrativos tratados pelo seu organismo	بيانات إدارية عالجتها مؤسستكم
+258	Otro resultado estadístico producido por su organismo	Outro resultado estatístico produzido pelo seu organismo	نتيجة إحصائية أخرى أنتجتها مؤسستكم
+259	Publicación de la ONE	Publicação do INE	منشور الجهاز الوطني للإحصاء
+260	Otra administración nacional	Outra administração nacional	إدارة وطنية أخرى
+261	Documento anterior sin consultar la fuente estadística	Documento anterior sem consultar a fonte estatística	وثيقة سابقة دون الرجوع إلى المصدر الإحصائي
+262	Para datos administrativos, ¿se especificó la unidad contada : personas distintas, actos, expedientes, establecimientos u otra unidad?	Para dados administrativos, foi indicada a unidade contada : pessoas distintas, atos, processos, estabelecimentos ou outra unidade?	بالنسبة للبيانات الإدارية، هل حددت وحدة العد صراحة : أشخاص متميزون أو معاملات أو ملفات أو منشآت أو وحدة أخرى؟
+263	Opcional : especifique la unidad y una limitación conocida de cobertura o duplicación, sin datos individuales	Facultativo : especifique a unidade e uma limitação conhecida de cobertura ou duplicação, sem dados individuais	اختياري : حدد الوحدة وقيدا معروفا للتغطية أو التكرار، دون بيانات فردية
+264	Agente de la ONE	Agente do INE	موظف الجهاز الوطني للإحصاء
+265	Otro productor externo	Outro produtor externo	منتج خارجي آخر
+266	Se trata del contenido estadístico, no de la aprobación política del discurso. La ausencia de intervención de la ONE no implica por sí sola ausencia de control.	Trata-se do conteúdo estatístico, não da aprovação política do discurso. A ausência de intervenção do INE não implica, por si só, ausência de controlo.	المقصود المحتوى الإحصائي، وليس الموافقة السياسية على الخطاب. عدم تدخل الجهاز الوطني للإحصاء لا يعني وحده غياب المراجعة.
+267	¿Se recibieron comentarios sobre el uso de las cifras?	Foi recebido retorno sobre a utilização dos números?	هل وردت ملاحظات حول استخدام الأرقام؟
+268	Texto o enlace al discurso	Texto ou ligação para o discurso	نص الخطاب أو رابطه
+269	Comentario sin texto ni enlace	Comentário sem texto nem ligação	تعليق دون نص أو رابط
+270	Ninguno	Nenhum	لا يوجد
+271	Los comentarios documentan el uso de las cifras, no el efecto de la decisión.	O retorno documenta a utilização dos números, não o efeito da decisão.	توثق الملاحظات استخدام الأرقام، لا أثر القرار.
+272	Información a la ONE o al intermediario correspondiente	Informação ao INE ou ao intermediário em causa	إبلاغ الجهاز الوطني للإحصاء أو الوسيط المعني
+273	Organización y coordinación con la ONE	Organização e coordenação com o INE	التنظيم والتنسيق مع الجهاز الوطني للإحصاء
+274	¿Qué intercambios con la ONE contribuyeron efectivamente a estos apoyos durante el período?	Que trocas com o INE contribuíram efetivamente para estes apoios durante o período?	ما التبادلات مع الجهاز الوطني للإحصاء التي أسهمت فعليا في هذا الدعم خلال الفترة؟
+275	Orientación o transmisión de solicitudes	Encaminhamento ou transmissão de pedidos	توجيه الطلبات أو إحالتها
+276	Transmisión de cifras y metadatos	Transmissão de números e metadados	إرسال الأرقام والبيانات الوصفية
+277	Armonización de definiciones o métodos	Harmonização de definições ou métodos	مواءمة التعريفات أو المنهجيات
+278	Comprobación de un valor o comparación	Verificação de um valor ou comparação	التحقق من قيمة أو مقارنة
+279	Coordinación de correcciones o versiones	Coordenação de correções ou versões	تنسيق التصحيحات أو النسخ
+280	Formación o preparación de modelos	Formação ou preparação de modelos	التدريب أو إعداد النماذج
+281	Ningún intercambio conocido	Nenhuma troca conhecida	لا أعرف أي تبادل
+282	Ningún apoyo pertinente	Nenhum apoio em causa	لا يوجد دعم معني
+283	¿Exigieron aclaración para un discurso divergencias entre sus cifras y las de otro productor?	Divergências entre os seus números e os de outro produtor exigiram esclarecimento para um discurso?	هل استلزمت اختلافات بين أرقامكم وأرقام منتج آخر توضيحا من أجل خطاب؟
+284	Ningún caso conocido	Nenhum caso conhecido	لا أعرف أي حالة
+285	Tipo de divergencia y tratamiento, en una frase sin información confidencial	Tipo de divergência e tratamento, numa frase sem informação confidencial	نوع الاختلاف وكيف عولج، في جملة دون معلومات سرية
+286	Mejorar la coordinación con la ONE y los demás productores	Melhorar a coordenação com o INE e os outros produtores	تحسين التنسيق مع الجهاز الوطني للإحصاء والمنتجين الآخرين
+287	Aclarar la calidad y las limitaciones de las fuentes administrativas	Clarificar a qualidade e as limitações das fontes administrativas	توضيح جودة المصادر الإدارية وقيودها
+288	Ejemplo compartible y vínculo con la decisión	Exemplo partilhável e ligação à decisão	مثال قابل للمشاركة وصلته بالقرار
+289	Uso ilustrado	Utilização ilustrada	الاستخدام الموضح
+290	Discurso	Discurso	خطاب
+291	Decisión sin discurso identificado	Decisão sem discurso identificado	قرار دون خطاب محدد
+292	Prueba de utilización	Prova de utilização	إثبات الاستخدام
+293	Documento accesible o extracto autorizado	Documento acessível ou excerto autorizado	وثيقة متاحة أو مقتطف مصرح به
+294	Uso conocido pero no documentado aquí	Utilização conhecida mas não documentada aqui	استخدام معروف لكنه غير موثق هنا
+295	Opcional : procedimiento, ficha de cifra, control, corrección, discurso público o nota de decisión autorizada. No comparta contenido confidencial. Un ejemplo antiguo conserva su fecha y no cuenta como actividad del período. Un uso propuesto o un efecto supuesto no prueba una utilización real.	Facultativo : procedimento, ficha de número, controlo, correção, discurso público ou nota de decisão autorizada. Não partilhe conteúdo confidencial. Um exemplo antigo conserva a data e não conta como atividade do período. Uma utilização proposta ou um efeito suposto não prova uma utilização real.	اختياري : إجراء أو بطاقة رقم أو مراجعة أو تصحيح أو خطاب عام أو مذكرة قرار مصرح بها. لا تشارك محتوى سريا. يحتفظ المثال القديم بتاريخه ولا يعد نشاطا خلال الفترة. الاستخدام المقترح أو الأثر المفترض لا يثبت استخداما فعليا.
+296	Autorizo a la ONE que me invitó a transmitir una solicitud de seguimiento, sin acceso a mi contribución	Autorizo o INE que me convidou a transmitir um pedido de seguimento, sem acesso à minha contribuição	أسمح للجهاز الوطني للإحصاء الداعي بإحالة طلب متابعة دون الاطلاع على مساهمتي
+297	Las opciones 1 y 2 exigen autorización. La contribución individual sin autorización permanece anonimizada. Sin elección explícita se aplica el código 0. El silencio nunca autoriza citas. La transmisión por la ONE no sustituye su autorización institucional.	As opções 1 e 2 exigem autorização. A contribuição individual sem autorização mantém-se anonimizada. Sem escolha explícita aplica-se o código 0. O silêncio nunca autoriza citações. O encaminhamento pelo INE não substitui a sua autorização institucional.	يتطلب الخياران 1 و2 التصريح المناسب. تبقى المساهمة الفردية دونه مجهولة الهوية. عند غياب اختيار صريح يطبق الرمز 0. الصمت لا يجيز الاقتباس. إحالة الجهاز الوطني للإحصاء لا تحل محل تصريح مؤسستكم.
+298	Equipos que preparan discursos	Equipas que preparam discursos	فرق إعداد الخطابات
+299	De 10 a 15 minutos	10 a 15 minutos	من 10 إلى 15 دقيقة
+300	Consentimiento de participación y perfil	Consentimento de participação e perfil	الموافقة على المشاركة والصفة
+301	Institución o tipo de institución	Instituição ou tipo de instituição	المؤسسة أو نوع المؤسسة
+302	Ámbito	Âmbito	النطاق
+303	Respuesta consolidada del equipo o servicio	Resposta consolidada da equipa ou serviço	إجابة موحدة للفريق أو الإدارة
+304	Contribución individual basada en mi propia práctica	Contribuição individual baseada na minha prática	مساهمة فردية تستند إلى ممارستي
+305	Redacción de discursos o asesoramiento	Redação de discursos ou assessoria	كتابة الخطابات أو الاستشارة
+306	Comunicación	Comunicação	الاتصال
+307	Apoyo técnico o estadístico	Apoio técnico ou estatístico	الدعم الفني أو الإحصائي
+308	Coordinación del equipo	Coordenação da equipa	تنسيق الفريق
+309	Si este envío complementa una respuesta anterior, indique su referencia o fecha	Se este envio complementa uma resposta anterior, indique a referência ou data	إذا كان هذا الإرسال يستكمل إجابة سابقة، فاذكر مرجعها أو تاريخها
+310	Responda por un equipo o servicio que prepara discursos, o describa su práctica si no tiene mandato para responder en su nombre. La información se refiere a las cifras, sin evaluación política de los discursos.	Responda por uma equipa ou serviço que prepara discursos, ou descreva a sua prática se não tiver mandato para responder em seu nome. A informação refere-se aos números, sem avaliação política dos discursos.	أجب باسم فريق أو إدارة تعد الخطابات، أو صف ممارستك إذا لم تكن مفوضا للإجابة باسم الفريق. تتعلق المعلومات بالأرقام، دون تقييم سياسي للخطابات.
+311	Actividad durante los doce meses de referencia	Atividade nos doze meses de referência	النشاط خلال الاثني عشر شهرا المرجعية
+312	¿En cuántos discursos con cifras participó su equipo o usted?	Em quantos discursos com números participou a sua equipa ou você?	كم خطابا يتضمن أرقاما أسهمتم أو أسهم فريقكم في إعداده؟
+313	¿Solicitó apoyo estadístico a la ONE para al menos uno de esos discursos?	Solicitou apoio estatístico ao INE para pelo menos um desses discursos?	هل طلبتم دعما إحصائيا من الجهاز الوطني للإحصاء لخطاب واحد على الأقل من هذه الخطابات؟
+314	No aplicable, ningún discurso pertinente	Não aplicável, nenhum discurso em causa	لا ينطبق، لا يوجد خطاب معني
+315	Base de la respuesta	Base da resposta	أساس الإجابة
+316	Cuente cada intervención una sola vez, aunque tenga varias versiones. Si no hubo discursos pertinentes, pase a QU07. Si desconoce el número, continúe cuando conozca un caso real.	Conte cada intervenção uma só vez, mesmo com várias versões. Se não houve discursos em causa, avance para QU07. Se desconhece o número, continue quando conhece um caso real.	احسب المداخلة مرة واحدة، حتى إن أعدت لها عدة نسخ. إذا لم توجد خطابات معنية، انتقل إلى QU07. وإذا جهل العدد، تابع عند معرفة حالة فعلية.
+317	Último discurso preparado que incluía cifras	Último discurso preparado com números	أحدث خطاب أعد ويتضمن أرقاما
+318	¿Puede describir un caso de este tipo?	Pode descrever um caso deste tipo?	هل يمكن وصف حالة من هذا النوع؟
+319	Mes y año de finalización de la preparación, MM/AAAA	Mês e ano do fim da preparação, MM/AAAA	شهر وسنة انتهاء الإعداد، MM/YYYY
+320	Tema general, sin nombre de persona	Tema geral, sem nome de pessoa	الموضوع العام، دون اسم شخص
+321	Público principal	Público principal	الجمهور الرئيسي
+322	Público general	Público em geral	الجمهور العام
+323	Parlamento o cargos electos	Parlamento ou eleitos	البرلمان أو المنتخبون
+324	Público técnico o profesional	Público técnico ou profissional	جمهور فني أو مهني
+325	Comunidad local	Comunidade local	مجتمع محلي
+326	Idioma o idiomas del discurso	Língua ou línguas do discurso	لغة الخطاب أو لغاته
+327	Origen de la primera cifra utilizada	Origem do primeiro número utilizado	مصدر أول رقم مستخدم
+328	Fuente publicada por la ONE consultada directamente	Fonte publicada pelo INE consultada diretamente	مصدر منشور للجهاز الوطني للإحصاء تمت مراجعته مباشرة
+329	Cifra transmitida directamente por la ONE	Número transmitido diretamente pelo INE	رقم قدمه الجهاز الوطني للإحصاء مباشرة
+330	Discurso o documento previo sin consultar la fuente estadística	Discurso ou documento anterior sem consultar a fonte estatística	خطاب أو وثيقة سابقة دون الرجوع إلى المصدر الإحصائي
+331	Si se solicitó apoyo a la ONE para este caso, plazo solicitado	Se foi solicitado apoio ao INE para este caso, prazo solicitado	إذا طلب دعم الجهاز الوطني للإحصاء لهذه الحالة، فما المهلة المطلوبة؟
+332	No se solicitó apoyo a la ONE para este caso	Não foi solicitado apoio ao INE para este caso	لم يطلب دعم الجهاز الوطني للإحصاء لهذه الحالة
+333	Si se solicitó apoyo, resultado obtenido	Se foi solicitado apoio, resultado obtido	إذا طلب دعم، فما النتيجة؟
+334	Cifras recibidas a tiempo	Números recebidos a tempo	استلمت الأرقام في الوقت المناسب
+335	Cifras recibidas después del plazo	Números recebidos após o prazo	استلمت الأرقام بعد المهلة
+336	No se recibieron cifras	Não foram recebidos números	لم تستلم أرقام
+337	Cifras recibidas sin plazo convenido	Números recebidos sem prazo acordado	استلمت الأرقام دون مهلة متفق عليها
+338	No se solicitó apoyo	Não foi solicitado apoio	لم يطلب دعم
+339	Caso compartible, opcional : enlace al discurso público o breve extracto autorizado no confidencial, con fecha	Caso partilhável, facultativo : ligação ao discurso público ou breve excerto autorizado não confidencial, com data	حالة قابلة للمشاركة، اختياري : رابط الخطاب العام أو مقتطف موجز غير سري ومصرح به، مع التاريخ
+340	Considere el discurso con cifras cuya preparación terminó más recientemente durante el período, no un caso elegido por su calidad. Si no puede describir un caso, pase a QU07. La falta de un enlace no invalida su respuesta.	Considere o discurso com números cuja preparação terminou mais recentemente no período, não um caso escolhido pela qualidade. Se não puder descrever um caso, avance para QU07. A falta de ligação não invalida a resposta.	اعتمد الخطاب المتضمن أرقاما الذي انتهى إعداده مؤخرا خلال الفترة، لا مثالا اختير لجودته. إذا تعذر وصف حالة، انتقل إلى QU07. لا يبطل غياب الرابط إجابتك.
+341	Información disponible para comprender esta cifra	Informações disponíveis para compreender este número	المعلومات المتاحة لفهم هذا الرقم
+342	Fuente que permite localizar el resultado	Fonte que permite localizar o resultado	مصدر يتيح العثور على النتيجة
+343	En el documento o mensaje utilizado	No documento ou mensagem utilizados	في الوثيقة أو الرسالة المستخدمة
+344	Accesible mediante un enlace o referencia precisa disponible	Acessível por uma ligação ou referência precisa disponível	متاحة عبر رابط أو مرجع دقيق
+345	Fecha de publicación o versión	Data de publicação ou versão	تاريخ النشر أو النسخة
+346	Período del valor	Período do valor	الفترة الخاصة بالقيمة
+347	Unidad y base de cálculo de la tasa, si procede	Unidade e base de cálculo da taxa, se aplicável	الوحدة وأساس حساب المعدل، عند الاقتضاء
+348	Limitaciones de comparación, incertidumbres o precauciones pertinentes	Limitações de comparação, incertezas ou precauções relevantes	قيود المقارنة أو أوجه عدم اليقين أو الاحتياطات المفيدة
+349	Para la primera cifra de QU03, ¿qué información tenía realmente disponible durante la preparación?	Para o primeiro número de QU03, que informações tinha efetivamente disponíveis durante a preparação?	بالنسبة لأول رقم في QU03، ما المعلومات التي كانت متاحة لديكم فعليا أثناء الإعداد؟
+350	Comprobaciones antes de difundir este discurso	Verificações antes da divulgação deste discurso	المراجعات قبل نشر هذا الخطاب
+351	¿Quién comprobó realmente las cifras y su interpretación? Varias respuestas posibles.	Quem verificou efetivamente os números e a sua interpretação? Várias respostas possíveis.	من راجع الأرقام وتفسيرها فعليا؟ يمكن اختيار عدة إجابات.
+352	Redactor o equipo de comunicación	Redator ou equipa de comunicação	كاتب الخطاب أو فريق الاتصال
+353	Asesor técnico o estadístico de la institución	Assessor técnico ou estatístico da instituição	مستشار فني أو إحصائي بالمؤسسة
+354	Otro organismo productor	Outro organismo produtor	جهة منتجة أخرى
+355	¿Revisó la ONE el pasaje con cifras del borrador del discurso?	O INE reviu o trecho com números no projeto de discurso?	هل راجع الجهاز الوطني للإحصاء المقطع المتضمن الأرقام في مشروع الخطاب؟
+356	No, no se le solicitó	Não, não foi solicitado	لا، لم يطلب منه ذلك
+357	No, se solicitó pero la revisión no se realizó a tiempo	Não, foi solicitado mas a revisão não ocorreu a tempo	لا، طلب منه ذلك لكن المراجعة لم تتم في الوقت المناسب
+358	No aplicable, esta etapa no tuvo lugar	Não aplicável, esta etapa não ocorreu	لا ينطبق، لم تتم هذه المرحلة
+359	¿Incluía la versión difundida una referencia a la fuente estadística?	A versão divulgada incluía uma referência à fonte estatística?	هل تضمنت النسخة المنشورة إشارة إلى المصدر الإحصائي؟
+360	Discurso no difundido o versión difundida desconocida	Discurso não divulgado ou versão divulgada desconhecida	الخطاب غير منشور أو النسخة المنشورة غير معروفة
+361	Correcciones y comentarios a la ONE	Correções e retorno ao INE	التصحيحات والتغذية الراجعة للجهاز الوطني للإحصاء
+362	Durante el período, ¿conoce alguna cifra o interpretación que debiera corregirse después de finalizar un discurso?	Durante o período, conhece algum número ou interpretação que exigisse correção após a finalização de um discurso?	هل تعرف رقما أو تفسيرا استلزم التصحيح بعد إنهاء إعداد خطاب خلال الفترة؟
+363	Sí, corrección antes de la difusión	Sim, correção antes da divulgação	نعم، تصحيح قبل النشر
+364	Sí, corrección después de la difusión	Sim, correção após a divulgação	نعم، تصحيح بعد النشر
+365	Ambas situaciones	Ambas as situações	كلتا الحالتين
+366	Ningún discurso pertinente	Nenhum discurso em causa	لا يوجد خطاب معني
+367	Consulta de la fuente o del productor	Consulta da fonte ou do produtor	الرجوع إلى المصدر أو المنتج
+368	Versión corregida enviada al equipo	Versão corrigida enviada à equipa	إرسال نسخة مصححة إلى الفريق
+369	Conservación del cambio y de su motivo	Conservação da alteração e do motivo	حفظ التغيير وسببه
+370	Rectificación difundida de un error ya público	Retificação divulgada de um erro já público	نشر تصحيح لخطأ أصبح علنيا
+371	Verificación de la incorporación de la corrección	Verificação da incorporação da correção	التحقق من إدراج التصحيح
+372	Para el último apoyo solicitado a la ONE durante el período, ¿le transmitió comentarios sobre el uso de las cifras?	Para o último apoio solicitado ao INE durante o período, transmitiu-lhe retorno sobre a utilização dos números?	بالنسبة لآخر دعم طلب من الجهاز الوطني للإحصاء خلال الفترة، هل قدمتم له ملاحظات عن استخدام الأرقام؟
+373	Sí, texto o enlace al discurso	Sim, texto ou ligação para o discurso	نعم، نص الخطاب أو رابطه
+374	Sí, comentario sobre el apoyo, sin texto ni enlace	Sim, comentário sobre o apoio, sem texto nem ligação	نعم، تعليق على الدعم دون نص أو رابط
+375	Apoyos más útiles	Apoios mais úteis	أكثر أوجه الدعم فائدة
+376	Contacto claramente identificado en la ONE	Contacto claramente identificado no INE	جهة اتصال محددة بوضوح في الجهاز الوطني للإحصاء
+377	Respuesta en un plazo convenido, también en urgencias	Resposta num prazo acordado, incluindo urgências	إجابة خلال مهلة متفق عليها، بما فيها الحالات العاجلة
+378	Ficha breve con cifra, fuente y período	Ficha breve com número, fonte e período	بطاقة موجزة تتضمن الرقم والمصدر والفترة
+379	Explicación de definiciones y limitaciones	Explicação de definições e limitações	شرح التعريفات والقيود
+380	Propuesta de frases comprensibles	Proposta de frases compreensíveis	اقتراح صياغات مفهومة
+381	Revisión rápida del pasaje estadístico	Revisão rápida do trecho estatístico	مراجعة سريعة للمقطع الإحصائي
+382	Aviso en caso de revisión o error	Alerta em caso de revisão ou erro	تنبيه عند التنقيح أو الخطأ
+383	Ejemplos y formación breve	Exemplos e formação breve	أمثلة وتدريب قصير
+384	Para la prioridad 1, describa una dificultad real en un máximo de 40 palabras. En su defecto, escriba « necesidad prevista ».	Para a prioridade 1, descreva uma dificuldade real em até 40 palavras. Caso contrário, escreva « necessidade prevista ».	بالنسبة للأولوية 1، صف صعوبة فعلية في حدود 40 كلمة، أو اكتب « احتياج متوقع ».
+385	Restricción relacionada con el público, el idioma o el contexto de comunicación, opcional; máximo 40 palabras, sin opinión política	Restrição ligada ao público, à língua ou ao contexto de comunicação, facultativa; máximo de 40 palavras, sem opinião política	قيد يتعلق بالجمهور أو اللغة أو سياق الاتصال، اختياري؛ حتى 40 كلمة دون رأي سياسي
+386	Práctica nueva después del 31 de octubre, opcional : cambio y fecha	Prática nova após 31 de outubro, facultativo : alteração e data	ممارسة جديدة بعد 31 أكتوبر، اختياري : التغيير وتاريخه
+387	Ordene hasta tres códigos distintos. Las opciones 0 y 98 excluyen las demás prioridades.	Ordene até três códigos distintos. As opções 0 e 98 excluem as restantes prioridades.	رتب ثلاثة رموز مختلفة كحد أقصى. يستبعد الخياران 0 و98 بقية الأولويات.
+388	Uso autorizado de la contribución y del caso compartido	Utilização autorizada da contribuição e do caso partilhado	الاستخدام المصرح به للمساهمة والحالة المشتركة
+389	¿Acepta una aclaración o una prueba?	Aceita um esclarecimento ou um teste?	هل توافق على استكمال أو اختبار؟
+390	CER y organizaciones internacionales	CER e organizações internacionais	الجماعات الاقتصادية الإقليمية والمنظمات الدولية
+391	Participación y ámbito de la contribución	Participação e âmbito da contribuição	المشاركة ونطاق المساهمة
+392	Organización	Organização	المنظمة
+393	Tipo de organización	Tipo de organização	نوع المنظمة
+394	Comunidad económica regional (CER)	Comunidade económica regional (CER)	جماعة اقتصادية إقليمية
+395	Organización internacional	Organização internacional	منظمة دولية
+396	Función del servicio que responde, sin nombre personal	Função do serviço que responde, sem nome pessoal	وظيفة الإدارة المجيبة، دون اسم شخصي
+397	Carácter de la contribución	Estatuto da contribuição	صفة المساهمة
+398	Territorios o instituciones cubiertos por su experiencia, sin presuponer todos los miembros	Territórios ou instituições abrangidos pela sua experiência, sem pressupor todos os membros	المناطق أو المؤسسات المشمولة بخبرتكم، دون افتراض شمول جميع الأعضاء
+399	Apoyos efectivamente realizados durante el período	Apoios efetivamente realizados durante o período	أوجه الدعم المنجزة فعليا خلال الفترة
+400	¿Ha realizado o seguido un apoyo relacionado con el uso de estadísticas en discursos?	Realizou ou acompanhou um apoio relacionado com a utilização de estatísticas em discursos?	هل قدمتم أو تابعتم دعما يتعلق باستخدام الإحصاءات في الخطابات؟
+401	Fuera de su ámbito de actividad	Fora do seu âmbito de atividade	خارج نطاق نشاطكم
+402	Si respondió sí, seleccione las actividades realmente conocidas	Se sim, selecione as atividades efetivamente conhecidas	إذا كانت الإجابة نعم، حدد الأنشطة المعروفة فعليا
+403	Guía o modelo	Guia ou modelo	دليل أو نموذج
+404	Formación o acompañamiento	Formação ou acompanhamento	تدريب أو مواكبة
+405	Suministro o comprobación de cifras	Fornecimento ou verificação de números	تقديم الأرقام أو التحقق منها
+406	Apoyo a un procedimiento nacional	Apoio a um procedimento nacional	دعم إجراء وطني
+407	Difusión o intercambio de experiencias	Divulgação ou partilha de experiências	النشر أو تبادل الخبرات
+408	Describa un caso en dos frases : período, tipo de institución beneficiaria y resultado observable. Añada una referencia pública si existe.	Descreva um caso em duas frases : período, tipo de instituição beneficiária e realização observável. Acrescente uma referência pública se disponível.	صف حالة في جملتين : الفترة ونوع المؤسسة المستفيدة والإنجاز القابل للملاحظة. أضف مرجعا عاما إن توفر.
+409	Participar en una formación no demuestra que se haya aplicado una reforma.	Participar numa formação não demonstra que uma reforma foi implementada.	المشاركة في تدريب لا تثبت تطبيق إصلاح.
+410	Prácticas transferibles y condiciones de adaptación	Práticas transferíveis e condições de adaptação	الممارسات القابلة للنقل وشروط تكييفها
+411	Si no propone una práctica, indique la situación; en caso contrario, deje este campo vacío	Se não propõe uma prática, indique a situação; caso contrário, deixe este campo vazio	إذا لم تقترح ممارسة، حدد الحالة؛ وإلا فاترك هذا الحقل فارغا
+412	Ninguna práctica documentada que proponer	Nenhuma prática documentada a propor	لا توجد ممارسة موثقة لاقتراحها
+413	Hasta dos prácticas : práctica; fuente o prueba; contexto en que funcionó; condición para adaptarla. Máximo de 80 palabras en total.	Até duas práticas : prática; fonte ou prova; contexto em que funcionou; condição para adaptação. Máximo de 80 palavras no total.	ممارستان كحد أقصى : الممارسة؛ المصدر أو الإثبات؛ السياق الذي نجحت فيه؛ شرط تكييفها. حتى 80 كلمة إجمالا.
+414	Cite solo prácticas realmente observadas o documentadas. Puede citar un ejemplo anterior con su fecha, sin presentarlo como apoyo realizado durante el período.	Cite apenas práticas realmente observadas ou documentadas. Pode citar um exemplo anterior com a data, sem o apresentar como apoio realizado no período.	اذكر فقط ممارسات شوهدت أو وثقت فعليا. يمكن ذكر مثال أقدم مع تاريخه، لكنه لا يعد دعما أنجز خلال الفترة.
+415	Normas y marcos internacionales	Normas e referenciais internacionais	المعايير والأطر المرجعية الدولية
+416	¿Qué textos internacionales o regionales utiliza o recomienda para la calidad y el buen uso de las estadísticas en discursos y decisiones?	Que textos internacionais ou regionais utiliza ou recomenda para a qualidade e boa utilização das estatísticas nos discursos e na decisão?	ما النصوص الدولية أو الإقليمية التي تستخدمونها أو توصي بها لضمان جودة الإحصاءات وحسن استخدامها في الخطابات واتخاذ القرار؟
+417	Una o varias referencias que citar	Uma ou várias referências a citar	مرجع أو مراجع يمكن ذكرها
+418	Ninguna referencia que proponer	Nenhuma referência a propor	لا يوجد مرجع لاقتراحه
+419	Fuera de mi ámbito	Fora do meu âmbito	خارج نطاق اختصاصي
+420	Referencia 1 : título exacto; organismo autor; año o versión; enlace público o referencia; principio útil; uso en discursos o decisiones; condición de adaptación a una ONE.	Referência 1 : título exato; organismo autor; ano ou versão; ligação pública ou referência; princípio útil; uso em discursos ou decisões; condição de adaptação a um INE.	المرجع 1 : العنوان الدقيق؛ الجهة المؤلفة؛ السنة أو النسخة؛ الرابط العام أو المرجع؛ المبدأ المفيد؛ استخدامه للخطاب أو القرار؛ شرط تكييفه لجهاز وطني للإحصاء.
+421	Situación de esta referencia	Situação desta referência	حالة هذا المرجع
+422	Utilizada durante el período	Utilizada durante o período	استخدم خلال الفترة
+423	Recomendada, sin uso observado	Recomendada, sem utilização observada	موصى به دون استخدام ملاحظ
+424	Utilizada y recomendada	Utilizada e recomendada	مستخدم وموصى به
+425	Tipo de referencia	Tipo de referência	نوع المرجع
+426	Texto normativo	Texto normativo	نص معياري
+427	Guía o manual	Guia ou manual	دليل أو كتيب
+428	Recomendación institucional	Recomendação institucional	توصية مؤسسية
+429	Referencia 2 (opcional) : título exacto; organismo autor; año o versión; enlace público o referencia; principio útil; uso en discursos o decisiones; condición de adaptación a una ONE.	Referência 2 (facultativa) : título exato; organismo autor; ano ou versão; ligação pública ou referência; princípio útil; uso em discursos ou decisões; condição de adaptação a um INE.	المرجع 2 (اختياري) : العنوان الدقيق؛ الجهة المؤلفة؛ السنة أو النسخة؛ الرابط العام أو المرجع؛ المبدأ المفيد؛ استخدامه للخطاب أو القرار؛ شرط تكييفه لجهاز وطني للإحصاء.
+430	Indique una aplicación concreta o una limitación conocida, máximo 60 palabras	Indique uma aplicação concreta ou uma limitação conhecida, máximo de 60 palavras	اذكر تطبيقا عمليا أو قيدا معروفا، حتى 60 كلمة
+431	Responda desde su experiencia, sin investigación adicional. Máximo dos referencias. Citar un texto no significa que se aplique jurídicamente en todos los países ni que se haya implementado.	Responda a partir da sua experiência, sem investigação adicional. Máximo de duas referências. Citar um texto não significa que se aplique juridicamente a todos os países nem que tenha sido implementado.	أجب انطلاقا من خبرتك، دون بحث إضافي. مرجعان كحد أقصى. ذكر نص لا يعني سريانه قانونيا على جميع البلدان أو تطبيقه فعليا.
+432	Necesidades prioritarias y posible contribución	Necessidades prioritárias e contribuição possível	الاحتياجات ذات الأولوية والمساهمة الممكنة
+433	Seleccione hasta tres necesidades	Selecione até três necessidades	اختر ثلاثة احتياجات كحد أقصى
+434	Procedimientos comunes adaptables	Procedimentos comuns adaptáveis	إجراءات مشتركة قابلة للتكييف
+435	Fuentes y fichas de cifras	Fontes e fichas de números	مصادر وبطاقات أرقام
+436	Control e interpretación	Controlo e interpretação	المراجعة والتفسير
+437	Comunicación y formulación	Comunicação e formulação	الاتصال والصياغة
+438	Formación	Formação	التدريب
+439	Intercambio de experiencias	Partilha de experiências	تبادل الخبرات
+440	Adaptación lingüística	Adaptação linguística	التكييف اللغوي
+441	Ninguna necesidad identificada	Nenhuma necessidade identificada	لم يحدد أي احتياج
+442	¿Qué contribución podría considerar su organización, previa decisión interna? Una opción.	Que contribuição poderia considerar a sua organização, mediante decisão interna? Uma opção.	ما المساهمة التي يمكن لمنظمتكم النظر فيها، رهنا بقرارها الداخلي؟ اختيار واحد.
+443	Transmitir la consulta	Encaminhar a consulta	إحالة الاستشارة
+444	Documentos públicos	Documentos públicos	وثائق عامة
+445	Comentarios técnicos	Comentários técnicos	ملاحظات فنية
+446	Contacto con usuarios voluntarios	Contacto com utilizadores voluntários	الربط بمستخدمين متطوعين
+447	Ninguna contribución prevista por ahora	Nenhuma contribuição prevista nesta fase	لا مساهمة متوقعة في هذه المرحلة
+448	Indique una restricción de recursos, mandato o idioma, si resulta útil	Indique uma restrição de recursos, mandato ou língua, se útil	اذكر قيدا يتعلق بالموارد أو الاختصاص أو اللغة، إن كان مفيدا
+449	Esta respuesta no supone un compromiso de financiación ni de personal.	Esta resposta não constitui compromisso de financiamento nem de pessoal.	لا تمثل هذه الإجابة التزاما بالتمويل أو بتوفير موظفين.
+450	Recomendaciones de organizaciones internacionales	Recomendações de organizações internacionais	توصيات المنظمات الدولية
+451	¿Qué recomendaciones de organizaciones internacionales deberían incorporarse al documento estratégico?	Que recomendações de organizações internacionais devem ser consideradas no documento estratégico?	ما توصيات المنظمات الدولية التي ينبغي أخذها في الاعتبار في الوثيقة الاستراتيجية؟
+452	Una o varias recomendaciones que proponer	Uma ou várias recomendações a propor	توصية أو توصيات يمكن اقتراحها
+453	Ninguna	Nenhuma	لا توجد
+454	Recomendación 1 : organización de origen; documento, fecha y enlace; acción; actor responsable; nivel nacional, regional o continental; dificultad; recursos y condiciones; prueba de realización.	Recomendação 1 : organização de origem; documento, data e ligação; ação; ator responsável; nível nacional, regional ou continental; dificuldade; recursos e condições; prova de realização.	التوصية 1 : المنظمة الأصلية؛ الوثيقة والتاريخ والرابط؛ الإجراء؛ الجهة المسؤولة؛ المستوى الوطني أو الإقليمي أو القاري؛ الصعوبة؛ الموارد والشروط؛ إثبات التنفيذ.
+455	Naturaleza de esta recomendación	Natureza desta recomendação	طبيعة هذه التوصية
+456	Recomendación institucional publicada	Recomendação institucional publicada	توصية مؤسسية منشورة
+457	Recomendación institucional no publicada, autorizada para compartir	Recomendação institucional não publicada, com partilha autorizada	توصية مؤسسية غير منشورة ومصرح بمشاركتها
+458	Propuesta profesional personal	Proposta profissional pessoal	اقتراح مهني شخصي
+459	Por aclarar	A esclarecer	بحاجة إلى توضيح
+460	Recomendación 2 (opcional) : organización de origen; documento, fecha y enlace; acción; actor responsable; nivel nacional, regional o continental; dificultad; recursos y condiciones; prueba de realización.	Recomendação 2 (facultativa) : organização de origem; documento, data e ligação; ação; ator responsável; nível nacional, regional ou continental; dificuldade; recursos e condições; prova de realização.	التوصية 2 (اختيارية) : المنظمة الأصلية؛ الوثيقة والتاريخ والرابط؛ الإجراء؛ الجهة المسؤولة؛ المستوى الوطني أو الإقليمي أو القاري؛ الصعوبة؛ الموارد والشروط؛ إثبات التنفيذ.
+461	¿Qué recomendación es prioritaria y por qué? Máximo 40 palabras.	Que recomendação é prioritária e porquê? Máximo de 40 palavras.	أي توصية لها الأولوية ولماذا؟ حتى 40 كلمة.
+462	Máximo dos recomendaciones. Distinga una recomendación institucional documentada de una propuesta personal. No constituyen compromisos de financiación ni decisiones de adopción.	Máximo de duas recomendações. Distinga uma recomendação institucional documentada de uma proposta pessoal. Não constituem compromissos de financiamento nem decisões de adoção.	توصيتان كحد أقصى. ميز التوصية المؤسسية الموثقة عن الاقتراح الشخصي. لا تشكل هذه المقترحات التزامات تمويل أو قرارات اعتماد.
+463	Atribución y posible seguimiento	Atribuição e possível seguimento	الإسناد والمتابعة المحتملة
+464	Reutilización autorizada	Reutilização autorizada	إعادة الاستخدام المصرح بها
+465	Práctica nueva después del 31 de octubre, opcional : descripción breve y fecha	Prática nova após 31 de outubro, facultativo : descrição breve e data	ممارسة جديدة بعد 31 أكتوبر، اختياري : وصف موجز وتاريخ
+466	Respuesta abreviada	Resposta abreviada	إجابة مختصرة
+467	De 5 a 10 minutos	5 a 10 minutos	من 5 إلى 10 دقائق
+468	Participación y ámbito	Participação e âmbito	المشاركة والنطاق
+469	Función	Função	الوظيفة
+470	Perfil de la contribución	Perfil da contribuição	فئة المساهمة
+471	Otro productor de estadísticas	Outro produtor de estatísticas	جهة أخرى منتجة للإحصاءات
+472	Equipo que prepara discursos	Equipa que prepara discursos	فريق إعداد الخطابات
+473	CER u organización internacional	CER ou organização internacional	جماعة اقتصادية إقليمية أو منظمة دولية
+474	Respuesta institucional, de servicio o individual	Resposta institucional, de serviço ou individual	إجابة مؤسسية أو من إدارة أو فردية
+475	Referencia de una contribución anterior, si se conoce	Referência de uma contribuição anterior, se conhecida	مرجع مساهمة سابقة، إن كان معروفا
+476	Última situación conocida	Última situação conhecida	أحدث حالة معروفة
+477	Describa una solicitud o preparación de discurso durante el período : mes, tema, plazo disponible y apoyo obtenido o no. Si no conoce un caso, indíquelo. Tres líneas.	Descreva um pedido ou preparação de discurso no período : mês, tema, prazo disponível e apoio obtido ou não. Se não conhece um caso, indique-o. Três linhas.	صف طلبا أو إعداد خطاب خلال الفترة : الشهر والموضوع والمهلة المتاحة والدعم المحصل عليه أو عدمه. إذا لم تعرف حالة فاذكر ذلك. ثلاثة أسطر.
+478	Fuente y control	Fonte e controlo	المصدر والمراجعة
+479	Para este caso, ¿se podía localizar la fuente de la cifra?	Para este caso, era possível localizar a fonte do número?	هل كان بالإمكان العثور على مصدر الرقم لهذه الحالة؟
+480	¿Quién comprobó el contenido antes de enviarlo? Indique la función o la ausencia de control conocido.	Quem verificou o conteúdo antes do envio? Indique a função ou a ausência de controlo conhecido.	من راجع المحتوى قبل إرساله؟ اذكر الوظيفة أو عدم وجود مراجعة معروفة.
+481	Primera mejora	Primeira melhoria	أول تحسين
+482	¿Qué dificultad debe resolverse primero? ¿Qué acción sería posible con los recursos existentes y qué función podría dirigirla? Tres líneas.	Que dificuldade deve ser resolvida primeiro? Que ação seria possível com os recursos existentes e que função poderia conduzi-la? Três linhas.	ما الصعوبة التي يجب حلها أولا؟ ما الإجراء الممكن بالموارد المتاحة وما الوظيفة التي يمكن أن تقوده؟ ثلاثة أسطر.
+483	Reutilización y seguimiento	Reutilização e seguimento	إعادة الاستخدام والمتابعة
+484	Presentación de resultados autorizada	Apresentação de resultados autorizada	عرض النتائج المصرح به
+485	Enlace público útil, opcional	Ligação pública útil, facultativa	رابط عام مفيد، اختياري
+486	Contacto institucional para aclaraciones : función o servicio, opcional	Contacto institucional para esclarecimentos : função ou serviço, facultativo	جهة اتصال مؤسسية للاستكمال : الوظيفة أو الإدارة، اختياري
+487	Contacto institucional para aclaraciones, opcional (correo electrónico)	Contacto institucional para esclarecimentos, facultativo (correio eletrónico)	جهة اتصال مؤسسية للاستكمال، اختياري (البريد الإلكتروني)
+488	STATAFRIC y el consultor Mamadou Niang preparan herramientas prácticas de apoyo estadístico a los discursos y la toma de decisiones. Período de referencia : del 1 de noviembre de 2025 al 31 de octubre de 2026; feche los cambios posteriores por separado. Recogida : del 19 al 26 de noviembre de 2026 inclusive. Las respuestas reales alimentarán L3, nunca L2, que es exclusivamente documental.\n\nLa participación es voluntaria. Se aceptan contribuciones institucionales, de servicios e individuales cuyo ámbito esté claro. Responda directamente al equipo de la misión, sin aprobación previa de la ONE que remitió la invitación. Los resultados se presentan agregados o anonimizados por defecto; la atribución o cita identificable sigue su elección en la última sección. Los documentos entregados al Cliente respetarán esas autorizaciones. Un caso singular puede seguir siendo reconocible. Los contactos opcionales se separan del análisis.\n\nNo proporcione opiniones políticas, datos individuales, información personal innecesaria ni documentos confidenciales. Use enlaces públicos o extractos no confidenciales autorizados. Una contribución individual no compromete a la institución.\n\nUna respuesta parcial es útil. Ninguna opción sustantiva está preseleccionada. Un blanco no es un no ni un cero. « Ninguno », « No sabe » y « No aplicable » excluyen otras respuestas cuando así lo indica el cuestionario.\n\nAntes del envío, los datos permanecen en la sesión, no en la base. Pueden perderse al cerrar : descargue un borrador para continuar. Un borrador no constituye un envío. Solo un acuse confirmado acredita el registro. Las respuestas originales están protegidas y solo son accesibles al consultor y a las personas autorizadas. Cambiar de idioma no crea otra contribución. Si es necesario, use el formulario alternativo en el mismo idioma y envíelo por correo al contacto de la misión.	O STATAFRIC e o consultor Mamadou Niang preparam ferramentas práticas de apoio estatístico aos discursos e à decisão. Período de referência : de 1 de novembro de 2025 a 31 de outubro de 2026; date separadamente as alterações posteriores. Recolha : de 19 a 26 de novembro de 2026, inclusive. As respostas reais alimentarão L3, nunca L2, que é exclusivamente documental.\n\nA participação é voluntária. Aceitam-se contribuições institucionais, de serviços e individuais com âmbito claro. Responda diretamente à equipa da missão, sem aprovação prévia do INE que encaminhou o convite. Os resultados são agregados ou anonimizados por defeito; a atribuição ou citação identificável segue a escolha na última secção. As peças entregues ao Cliente respeitam essas autorizações. Um caso singular pode continuar reconhecível. Os contactos facultativos são separados da análise.\n\nNão forneça opiniões políticas, dados individuais, dados pessoais desnecessários nem documentos confidenciais. Use ligações públicas ou excertos não confidenciais autorizados. Uma contribuição individual não compromete a instituição.\n\nUma resposta parcial é útil. Nenhuma opção substantiva está pré-selecionada. Um campo vazio não significa não nem zero. « Nenhum », « Não sabe » e « Não aplicável » excluem outras respostas quando o questionário o indica.\n\nAntes do envio, os dados permanecem na sessão, não na base. Podem perder-se ao fechar : descarregue um rascunho para retomar. Um rascunho não constitui envio. Apenas um recibo confirmado comprova o registo. As respostas originais são protegidas; só o consultor e pessoas autorizadas lhes acedem. Mudar de língua não cria nova contribuição. Se necessário, use o formulário alternativo na mesma língua e envie-o por correio ao contacto da missão.	يعد STATAFRIC والاستشاري مامادو نيانغ أدوات عملية للدعم الإحصائي للخطابات واتخاذ القرار. الفترة المرجعية للممارسات : من 1 نوفمبر 2025 إلى 31 أكتوبر 2026؛ تؤرخ التغييرات اللاحقة بشكل منفصل. الجمع : من 19 إلى 26 نوفمبر 2026 شاملين. تستخدم الإجابات الفعلية في L3، وليس في L2 الذي يظل وثائقيا حصرا.\n\nالمشاركة طوعية. تقبل المساهمات المؤسسية ومساهمات الإدارات والأفراد متى كان نطاقها واضحا. أجب مباشرة لفريق المهمة، دون موافقة مسبقة من الجهاز الوطني للإحصاء المحيل. تعرض النتائج مجمعة أو دون تحديد الهوية افتراضيا؛ ويخضع الإسناد أو الاقتباس الكاشف للهوية لاختيارك في القسم الأخير. تحترم الوثائق المسلمة للعميل هذه الأذونات. قد تظل حالة مميزة قابلة للتعرف عليها. تحفظ بيانات الاتصال الاختيارية منفصلة عن التحليل.\n\nلا تقدم آراء سياسية أو بيانات فردية أو بيانات شخصية غير ضرورية أو وثائق سرية. استخدم روابط عامة أو مقتطفات غير سرية مصرحا بها. المساهمة الفردية لا تلزم المؤسسة.\n\nالإجابة الجزئية مفيدة. لا يحدد أي خيار موضوعي مسبقا. الفراغ لا يعني لا أو صفرا. تستبعد خيارات « لا يوجد » و« لا أعرف » و« لا ينطبق » بقية الإجابات عندما ينص الاستبيان على ذلك.\n\nقبل الإرسال، تبقى البيانات في الجلسة لا في القاعدة، وقد تفقد عند الإغلاق : نزل مسودة للاستئناف. المسودة ليست إرسالا. وحده إشعار استلام مؤكد يثبت التسجيل. الإجابات الأصلية محمية ولا يطلع عليها إلا الاستشاري والمخولون. تغيير اللغة لا ينشئ مساهمة جديدة. عند الحاجة، استخدم الاستمارة البديلة باللغة نفسها وأرسلها بالبريد الإلكتروني إلى جهة اتصال المهمة.

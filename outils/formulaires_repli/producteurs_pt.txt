@@ -1,0 +1,627 @@
+﻿Outros produtores de estatísticas
+2026-11-15.web-2
+Referência : 01/11/2025–31/10/2026. Recolha : 19–26 de novembro de 2026 inclusive.
+O STATAFRIC e o consultor Mamadou Niang preparam ferramentas práticas de apoio estatístico aos discursos e à decisão. Período de referência : de 1 de novembro de 2025 a 31 de outubro de 2026; date separadamente as alterações posteriores. Recolha : de 19 a 26 de novembro de 2026, inclusive. As respostas reais alimentarão L3, nunca L2, que é exclusivamente documental.
+
+A participação é voluntária. Aceitam-se contribuições institucionais, de serviços e individuais com âmbito claro. Responda diretamente à equipa da missão, sem aprovação prévia do INE que encaminhou o convite. Os resultados são agregados ou anonimizados por defeito; a atribuição ou citação identificável segue a escolha na última secção. As peças entregues ao Cliente respeitam essas autorizações. Um caso singular pode continuar reconhecível. Os contactos facultativos são separados da análise.
+
+Não forneça opiniões políticas, dados individuais, dados pessoais desnecessários nem documentos confidenciais. Use ligações públicas ou excertos não confidenciais autorizados. Uma contribuição individual não compromete a instituição.
+
+Uma resposta parcial é útil. Nenhuma opção substantiva está pré-selecionada. Um campo vazio não significa não nem zero. « Nenhum », « Não sabe » e « Não aplicável » excluem outras respostas quando o questionário o indica.
+
+Antes do envio, os dados permanecem na sessão, não na base. Podem perder-se ao fechar : descarregue um rascunho para retomar. Um rascunho não constitui envio. Apenas um recibo confirmado comprova o registo. As respostas originais são protegidas; só o consultor e pessoas autorizadas lhes acedem. Mudar de língua não cria nova contribuição. Se necessário, use o formulário alternativo na mesma língua e envie-o por correio ao contacto da missão.
+Formulário alternativo: mantenha os códigos. As condições exprimem os filtros: ∈ significa «entre», ∉ «não entre» e ∩ ≠ ∅ «contém pelo menos um». Não responda se a condição não for cumprida. Aceitam-se respostas parciais. Se recusar participar, termine sem outras respostas.
+
+QP01 — Consentimento, perfil e âmbito da contribuição
+Apenas para produtores externos ao INE. As unidades internas do INE usam QI. O simples envio de ficheiros administrativos sem tratamento estatístico não basta. Se o organismo não produz estatísticas, use QU para a função de utilizador ou consulte o consultor. A participação não confere caráter oficial às estatísticas do organismo.
+QP01_Participation — Autoriza a utilização da sua contribuição conforme o aviso de participação?
+[ ] 1 Aceito
+[ ] 0 Não desejo participar — fim do questionário
+____________________________
+QP01_Produit — O seu organismo produz estatísticas ou indicadores utilizáveis na ação pública?
+Condição de apresentação : (QP01_Participation ∈ {1})
+[ ] 1 Sim
+[ ] 0 Não
+[ ] 98 Não sabe
+____________________________
+QP01_Pays — País
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+____________________________
+QP01_Institution — Instituição de tutela
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+____________________________
+QP01_Unite — Serviço ou unidade de produção
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+____________________________
+QP01_Type — Tipo principal de organismo
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Ministério ou serviço estatístico setorial
+[ ] 2 Banco central ou instituição monetária
+[ ] 3 Outra administração ou organismo de dados administrativos
+[ ] 4 Agência ou observatório público
+[ ] 5 Autarquia ou serviço territorial
+[ ] 6 Organismo de investigação
+[ ] 7 Produtor privado ou associativo
+[ ] 97 Outra
+____________________________
+QP01_Type_Autre — Outra : especifique
+Condição de apresentação : ((QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP01_Type ∈ {97})))
+____________________________
+QP01_Domaine — Domínio principal
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Economia, finanças ou moeda
+[ ] 2 Saúde ou proteção social
+[ ] 3 Educação ou formação
+[ ] 4 Agricultura ou alimentação
+[ ] 5 Emprego ou condições de vida
+[ ] 6 Ambiente, energia ou infraestruturas
+[ ] 7 População, registo civil ou território
+[ ] 8 Vários domínios sem um principal
+[ ] 97 Outra
+____________________________
+QP01_Domaine_Autre — Outra : especifique
+Condição de apresentação : ((QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP01_Domaine ∈ {97})))
+____________________________
+QP01_Domaines_autres — Outros domínios, facultativo
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+____________________________
+QP01_Statut — Estatuto da resposta
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Resposta institucional consolidada
+[ ] 2 Contribuição de um serviço, não consolidada ao nível da instituição
+[ ] 3 Contribuição individual baseada na minha prática profissional
+____________________________
+QP01_Fonction — Função, sem nome pessoal
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Produção
+[ ] 2 Métodos ou qualidade
+[ ] 3 Comunicação ou divulgação
+[ ] 4 Coordenação ou direção
+[ ] 97 Outra
+____________________________
+QP01_Fonction_Autre — Outra : especifique
+Condição de apresentação : ((QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP01_Fonction ∈ {97})))
+____________________________
+QP01_Envoi — Tipo de envio
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Primeira resposta
+[ ] 2 Complemento
+____________________________
+QP01_Reference_precedente — Referência ou data do envio anterior, se conhecida
+Condição de apresentação : ((QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP01_Envoi ∈ {2})))
+____________________________
+QP01_Origine_invitation — Origem da ligação
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 INE
+[ ] 2 STATAFRIC ou consultor
+[ ] 3 Outra entidade que encaminhou o convite
+[ ] 4 Acesso espontâneo
+[ ] 98 Não sabe
+____________________________
+QP01_INS_relais — INE ou entidade que encaminhou o convite, facultativo
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+____________________________
+QP01_Langue_texte — Língua principal das suas respostas abertas
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] fr Francês
+[ ] en Inglês
+[ ] ar Árabe
+[ ] pt Português
+[ ] es Espanhol
+____________________________
+
+QP02 — Pedidos de apoio recebidos no período de referência
+O pedido refere-se a um discurso ou intervenção oral, recebido diretamente ou pelo INE. Conte uma só vez as trocas do mesmo apoio. Exclua pedidos gerais sem ligação conhecida a um discurso. Se QP02a = 0, avance para QP08 após QP02d. Pode descrever-se um caso real mesmo com volume desconhecido. Vários produtores podem apoiar o mesmo discurso : não some os pedidos num total nacional.
+QP02a — Quantos pedidos distintos identificou no âmbito da sua resposta?
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 0 Nenhum
+[ ] 1 De 1 a 5
+[ ] 2 De 6 a 20
+[ ] 3 De 21 a 50
+[ ] 4 Mais de 50
+[ ] 98 Não sabe
+____________________________
+QP02b — Algum destes pedidos exigia resposta nas 24 horas seguintes à receção?
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Sim
+[ ] 0 Não
+[ ] 98 Não sabe
+[ ] 99 Não aplicável, nenhum pedido
+____________________________
+QP02c — Em que se baseia esta resposta?
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Registo ou inventário consultado
+[ ] 2 Estimativa baseada na prática conhecida
+[ ] 98 Não sabe
+____________________________
+QP02d — Separadamente, o seu organismo forneceu estatísticas para uma nota ou decisão sem ligação identificada a um discurso?
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Sim
+[ ] 0 Não
+[ ] 98 Não sabe
+____________________________
+QP02d_Theme — Se sim, indique tema ou tipo de decisão numa frase, sem pormenores confidenciais. Não acrescente estes apoios ao número de pedidos de discursos.
+Condição de apresentação : ((QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP02d ∈ {1})))
+____________________________
+
+QP03 — Último pedido encerrado conhecido
+Selecione o pedido encerrado mais recentemente no período, tenham sido fornecidos números ou não. Não escolha apenas um caso bem-sucedido. As situações 3 e 98 levam a QP08. A situação 2 leva a QP04 e depois a QP08.
+QP03_Situation — Situação
+Condição de apresentação : (QP02a ∉ {0} E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Foram fornecidos números
+[ ] 2 O pedido foi encerrado sem fornecimento de números
+[ ] 3 Nenhum pedido encerrado conhecido durante o período
+[ ] 98 Não disponho das informações necessárias
+____________________________
+QP03_Mois — Mês e ano do encerramento, MM/AAAA
+Condição de apresentação : (QP02a ∉ {0} E (QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP03_Situation ∈ {1, 2})))
+____________________________
+QP03_Theme — Tema geral, sem nome de pessoa nem título confidencial do discurso
+Condição de apresentação : (QP02a ∉ {0} E (QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP03_Situation ∈ {1, 2})))
+____________________________
+QP03_Demandeur — Requerente final conhecido
+Condição de apresentação : (QP02a ∉ {0} E (QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP03_Situation ∈ {1, 2})))
+[ ] 1 Gabinete ou equipa de um decisor nacional
+[ ] 2 Ministério ou administração setorial
+[ ] 3 Autoridade territorial
+[ ] 4 Direção do seu organismo
+[ ] 5 INE
+[ ] 6 Instituição regional ou internacional
+[ ] 97 Outra
+[ ] 98 Não sabe
+____________________________
+QP03_Demandeur_Autre — Outra : especifique
+Condição de apresentação : (QP02a ∉ {0} E (QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP03_Demandeur ∈ {97})))
+____________________________
+QP03_Circuit — Circuito principal do pedido
+Condição de apresentação : (QP02a ∉ {0} E (QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP03_Situation ∈ {1, 2})))
+[ ] 1 Pedido recebido diretamente do utilizador
+[ ] 2 Pedido transmitido pelo INE
+[ ] 3 Pedido transmitido por outro produtor ou serviço
+[ ] 97 Outra
+[ ] 98 Não sabe
+____________________________
+QP03_Circuit_Autre — Outra : especifique
+Condição de apresentação : (QP02a ∉ {0} E (QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP03_Circuit ∈ {97})))
+____________________________
+QP03_Canal — Principal canal de receção do pedido
+Condição de apresentação : (QP02a ∉ {0} E (QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP03_Situation ∈ {1, 2})))
+[ ] 1 Correio eletrónico
+[ ] 2 Carta ou nota oficial
+[ ] 3 Telefone ou troca oral
+[ ] 4 Mensagens instantâneas
+[ ] 5 Formulário ou plataforma
+[ ] 97 Outra
+[ ] 98 Não sabe
+____________________________
+QP03_Canal_Autre — Outra : especifique
+Condição de apresentação : (QP02a ∉ {0} E (QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP03_Canal ∈ {97})))
+____________________________
+
+QP04 — Prazo e tratamento deste último pedido
+Os prazos são de calendário, incluindo noites e fins de semana. QP03 distingue a impossibilidade de fornecer números do fornecimento efetivo. Cumprir um prazo não demonstra, por si só, que a necessidade estatística foi satisfeita.
+QP04a — Quanto tempo foi concedido ao seu organismo para responder a partir da receção do pedido?
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1, 2}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Menos de 6 horas
+[ ] 2 De 6 a 24 horas, inclusive
+[ ] 3 Mais de 24 horas até 3 dias, inclusive
+[ ] 4 Mais de 3 dias
+[ ] 5 Sem prazo indicado
+[ ] 98 Não sabe
+____________________________
+QP04b — A resposta do seu organismo foi enviada antes do prazo solicitado?
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1, 2}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Sim
+[ ] 0 Não
+[ ] 98 Não sabe
+[ ] 99 Não aplicável, sem prazo indicado
+____________________________
+QP04c — Se não foram fornecidos números ou se o prazo não foi cumprido, qual foi o principal obstáculo?
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1, 2}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Dados adequados indisponíveis
+[ ] 2 Necessidade insuficientemente especificada
+[ ] 3 Prazo demasiado curto
+[ ] 4 Controlo ou validação incompletos
+[ ] 5 Agente competente indisponível
+[ ] 6 Restrições de divulgação ou acesso
+[ ] 7 Divergência entre fontes não resolvida
+[ ] 97 Outra
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QP04c_Autre — Outra : especifique
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1, 2}) E (QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP04c ∈ {97})))
+____________________________
+
+QP05 — Origem e documentação do primeiro número fornecido
+Considere o primeiro número da última resposta enviada, não o mais bem documentado. Indique as informações que o acompanhavam efetivamente. Mencionar apenas o nome de uma entidade não basta para o código 2. Não copie um valor não público.
+QP05_Origine — Origem principal deste número
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Inquérito ou recenseamento produzido pelo seu organismo
+[ ] 2 Dados administrativos tratados pelo seu organismo
+[ ] 3 Outro resultado estatístico produzido pelo seu organismo
+[ ] 4 Publicação do INE
+[ ] 5 Outra administração nacional
+[ ] 6 Organização regional ou internacional
+[ ] 7 Investigação ou fonte privada identificada
+[ ] 8 Documento anterior sem consultar a fonte estatística
+[ ] 9 Fonte não identificada
+[ ] 97 Outra
+[ ] 98 Não sabe
+____________________________
+QP05_Origine_Autre — Outra : especifique
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP05_Origine ∈ {97})))
+____________________________
+QP05_S1 — Fonte precisa que permite localizar o resultado
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Presente na resposta
+[ ] 2 Acessível por uma ligação ou referência precisa enviada com a resposta
+[ ] 0 Ausente
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QP05_S2 — Data de publicação ou versão da fonte
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Presente na resposta
+[ ] 2 Acessível por uma ligação ou referência precisa enviada com a resposta
+[ ] 0 Ausente
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QP05_S3 — Período a que se refere o valor
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Presente na resposta
+[ ] 2 Acessível por uma ligação ou referência precisa enviada com a resposta
+[ ] 0 Ausente
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QP05_S4 — Definição do indicador
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Presente na resposta
+[ ] 2 Acessível por uma ligação ou referência precisa enviada com a resposta
+[ ] 0 Ausente
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QP05_S5 — Unidade e base de cálculo, nomeadamente o denominador de uma taxa
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Presente na resposta
+[ ] 2 Acessível por uma ligação ou referência precisa enviada com a resposta
+[ ] 0 Ausente
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QP05_S6 — População e território abrangidos
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Presente na resposta
+[ ] 2 Acessível por uma ligação ou referência precisa enviada com a resposta
+[ ] 0 Ausente
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QP05_S7 — Limitações relevantes para interpretar ou comparar
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Presente na resposta
+[ ] 2 Acessível por uma ligação ou referência precisa enviada com a resposta
+[ ] 0 Ausente
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QP05_S8 — Caráter provisório ou revisto, quando aplicável
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Presente na resposta
+[ ] 2 Acessível por uma ligação ou referência precisa enviada com a resposta
+[ ] 0 Ausente
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QP05c — Para dados administrativos, foi indicada a unidade contada : pessoas distintas, atos, processos, estabelecimentos ou outra unidade?
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP05_Origine ∈ {2})))
+[ ] 1 Sim
+[ ] 0 Não
+[ ] 98 Não sabe
+____________________________
+QP05c_Precision — Facultativo : especifique a unidade e uma limitação conhecida de cobertura ou duplicação, sem dados individuais
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP05_Origine ∈ {2})))
+____________________________
+
+QP06 — Verificação e validação efetivamente realizadas
+Trata-se do conteúdo estatístico, não da aprovação política do discurso. A ausência de intervenção do INE não implica, por si só, ausência de controlo.
+QP06a — Quem verificou o conteúdo estatístico antes do envio? São admitidas várias respostas.
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 O agente que o preparou
+[ ] 2 Outro agente produtor dos dados
+[ ] 3 Um responsável técnico ou de qualidade
+[ ] 4 O serviço de comunicação
+[ ] 5 A direção ou o seu delegado
+[ ] 0 Nenhum controlo conhecido
+[ ] 97 Outra função
+[ ] 98 Não sabe
+[ ] 6 Agente do INE
+[ ] 7 Outro produtor externo
+____________________________
+QP06a_Autre — Outra : especifique
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP06a ∩ ≠ ∅ {97})))
+____________________________
+QP06b — Que registo existe da validação estatística final deste envio?
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Registo escrito, correio, visto ou diário de validação
+[ ] 2 Apenas acordo oral
+[ ] 0 Nenhuma validação distinta conhecida
+[ ] 98 Não sabe
+____________________________
+
+QP07 — Formato fornecido e verificação do trecho do discurso
+O retorno documenta a utilização dos números, não o efeito da decisão.
+QP07a — Em que formato foi fornecido o apoio? Até três respostas.
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+Até 3 escolhas.
+[ ] 1 Tabela ou lista de números
+[ ] 2 Ficha com explicações
+[ ] 3 Proposta de frases ou parágrafos
+[ ] 4 Gráfico ou ilustração
+[ ] 5 Apenas explicação oral
+[ ] 97 Outra
+[ ] 98 Não sabe
+____________________________
+QP07a_Autre — Outra : especifique
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP07a ∩ ≠ ∅ {97})))
+____________________________
+QP07b — O seu organismo pôde verificar o trecho do discurso antes da divulgação?
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Sim
+[ ] 2 Não, o trecho não foi recebido
+[ ] 3 Não, o trecho foi recebido mas não foi verificado
+[ ] 4 O discurso não foi divulgado ou esta etapa não ocorreu
+[ ] 98 Não sabe
+____________________________
+QP07c — Foi recebido retorno sobre a utilização dos números?
+Condição de apresentação : ((QP02a ∉ {0} E QP03_Situation ∈ {1}) E (QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Texto ou ligação para o discurso
+[ ] 2 Comentário sem texto nem ligação
+[ ] 3 Ambos
+[ ] 0 Nenhum
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+
+QP08 — Correção ou atualização após o envio
+Pode incluir-se um apoio enviado antes do período se a correção ocorreu durante o mesmo. Esta pergunta mantém-se disponível mesmo sem novos pedidos.
+QP08_Situation — Durante o período de referência, conhece algum apoio já enviado que tenha exigido correção ou atualização?
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Sim, para corrigir um erro
+[ ] 2 Sim, para atualizar um dado
+[ ] 3 Ocorreram ambas as situações
+[ ] 0 Nenhum episódio conhecido
+[ ] 98 Não sabe
+[ ] 99 Não aplicável, nenhum apoio em causa
+____________________________
+QP08_Actions — No caso mais recente, que ações foram realizadas? São admitidas várias respostas.
+Condição de apresentação : ((QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP08_Situation ∈ {1, 2, 3})))
+[ ] 1 Alerta à equipa que prepara o discurso
+[ ] 2 Envio de uma versão corrigida com a fonte
+[ ] 3 Conservação das versões e do motivo da alteração
+[ ] 4 Pedido de correção de um trecho já divulgado
+[ ] 5 Verificação de que a correção foi incorporada
+[ ] 0 Nenhuma ação conhecida
+[ ] 97 Outra
+[ ] 98 Não sabe
+[ ] 6 Informação ao INE ou ao intermediário em causa
+____________________________
+QP08_Actions_Autre — Outra : especifique
+Condição de apresentação : ((QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP08_Actions ∩ ≠ ∅ {97})))
+____________________________
+
+QP09 — Organização e coordenação com o INE
+
+QP09_D1 — Ponto de contacto ou função identificada para receber pedidos
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Existe e foi utilizado para estes apoios durante o período
+[ ] 2 Existe mas não foi utilizado durante o período
+[ ] 0 Não existe
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QP09_D2 — Instruções escritas de tratamento, incluindo urgências
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Existe e foi utilizado para estes apoios durante o período
+[ ] 2 Existe mas não foi utilizado durante o período
+[ ] 0 Não existe
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QP09_D3 — Registo de pedidos com prazo, responsável e estado de tratamento
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Existe e foi utilizado para estes apoios durante o período
+[ ] 2 Existe mas não foi utilizado durante o período
+[ ] 0 Não existe
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QP09_D4 — Repositório de números com fontes e informações de interpretação
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Existe e foi utilizado para estes apoios durante o período
+[ ] 2 Existe mas não foi utilizado durante o período
+[ ] 0 Não existe
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QP09_D5 — Registo do controlo e da validação estatística
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Existe e foi utilizado para estes apoios durante o período
+[ ] 2 Existe mas não foi utilizado durante o período
+[ ] 0 Não existe
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QP09_D6 — Conservação de versões e correções
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Existe e foi utilizado para estes apoios durante o período
+[ ] 2 Existe mas não foi utilizado durante o período
+[ ] 0 Não existe
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QP09_D7 — Análise dos prazos, dificuldades e comentários dos utilizadores
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Existe e foi utilizado para estes apoios durante o período
+[ ] 2 Existe mas não foi utilizado durante o período
+[ ] 0 Não existe
+[ ] 98 Não sabe
+[ ] 99 Não aplicável
+____________________________
+QP09_Nouveaute — Prática nova após 31 de outubro, facultativo : dispositivo, data de implementação e uma frase
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+____________________________
+QP09b — Que trocas com o INE contribuíram efetivamente para estes apoios durante o período?
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Encaminhamento ou transmissão de pedidos
+[ ] 2 Transmissão de números e metadados
+[ ] 3 Harmonização de definições ou métodos
+[ ] 4 Verificação de um valor ou comparação
+[ ] 5 Coordenação de correções ou versões
+[ ] 6 Formação ou preparação de modelos
+[ ] 0 Nenhuma troca conhecida
+[ ] 97 Outra
+[ ] 98 Não sabe
+[ ] 99 Nenhum apoio em causa
+____________________________
+QP09b_Autre — Outra : especifique
+Condição de apresentação : ((QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP09b ∩ ≠ ∅ {97})))
+____________________________
+QP09c — Divergências entre os seus números e os de outro produtor exigiram esclarecimento para um discurso?
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Sim
+[ ] 0 Nenhum caso conhecido
+[ ] 98 Não sabe
+[ ] 99 Nenhum apoio em causa
+____________________________
+QP09c_Precision — Tipo de divergência e tratamento, numa frase sem informação confidencial
+Condição de apresentação : ((QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP09c ∈ {1})))
+____________________________
+
+QP10 — Necessidades prioritárias
+Ordene até três códigos distintos. Uma ou duas prioridades bastam. Os códigos 0 e 98 excluem as restantes prioridades. Escreva « a determinar » quando necessário para a ação, função responsável, recursos ou obstáculo.
+QP10_P1 — Prioridade 1
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Clarificar o ponto de contacto e as responsabilidades
+[ ] 2 Precisar e priorizar os pedidos urgentes
+[ ] 3 Dispor de um repositório de números documentados
+[ ] 4 Simplificar o controlo e a validação
+[ ] 5 Preparar mensagens e exemplos de trechos de discursos
+[ ] 6 Organizar as correções e as versões
+[ ] 7 Formar os agentes
+[ ] 8 Acompanhar os prazos e os comentários sobre a utilização
+[ ] 97 Outra
+[ ] 0 Nenhuma necessidade expressa
+[ ] 98 Não sabe
+[ ] 9 Melhorar a coordenação com o INE e os outros produtores
+[ ] 10 Clarificar a qualidade e as limitações das fontes administrativas
+____________________________
+QP10_P2 — Prioridade 2
+Condição de apresentação : ((QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP10_P1 ∈ {1, 2, 3, 4, 5, 6, 7, 8, 97, 9, 10})))
+[ ] 1 Clarificar o ponto de contacto e as responsabilidades
+[ ] 2 Precisar e priorizar os pedidos urgentes
+[ ] 3 Dispor de um repositório de números documentados
+[ ] 4 Simplificar o controlo e a validação
+[ ] 5 Preparar mensagens e exemplos de trechos de discursos
+[ ] 6 Organizar as correções e as versões
+[ ] 7 Formar os agentes
+[ ] 8 Acompanhar os prazos e os comentários sobre a utilização
+[ ] 97 Outra
+[ ] 9 Melhorar a coordenação com o INE e os outros produtores
+[ ] 10 Clarificar a qualidade e as limitações das fontes administrativas
+____________________________
+QP10_P3 — Prioridade 3
+Condição de apresentação : ((QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP10_P1 ∈ {1, 2, 3, 4, 5, 6, 7, 8, 97, 9, 10})))
+[ ] 1 Clarificar o ponto de contacto e as responsabilidades
+[ ] 2 Precisar e priorizar os pedidos urgentes
+[ ] 3 Dispor de um repositório de números documentados
+[ ] 4 Simplificar o controlo e a validação
+[ ] 5 Preparar mensagens e exemplos de trechos de discursos
+[ ] 6 Organizar as correções e as versões
+[ ] 7 Formar os agentes
+[ ] 8 Acompanhar os prazos e os comentários sobre a utilização
+[ ] 97 Outra
+[ ] 9 Melhorar a coordenação com o INE e os outros produtores
+[ ] 10 Clarificar a qualidade e as limitações das fontes administrativas
+____________________________
+QP10_Autre — Outra prioridade : especifique
+Condição de apresentação : ((QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E (QP10_P1 ∈ {97} OU QP10_P2 ∈ {97} OU QP10_P3 ∈ {97}))))
+____________________________
+QP10_Difficulte — Para a prioridade 1, que dificuldade real seria resolvida? Máximo de 40 palavras; caso contrário, escreva « necessidade prevista ».
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+Referência : até 40 palavras. O original é conservado.
+____________________________
+QP10_Action — Primeira ação possível com os recursos existentes
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+____________________________
+QP10_Responsable — Função que poderia conduzir a ação
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+____________________________
+QP10_Moyen — Recurso já disponível
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+____________________________
+QP10_Obstacle — Principal obstáculo
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+____________________________
+
+QP11 — Exemplo partilhável e ligação à decisão
+Facultativo : procedimento, ficha de número, controlo, correção, discurso público ou nota de decisão autorizada. Não partilhe conteúdo confidencial. Um exemplo antigo conserva a data e não conta como atividade do período. Uma utilização proposta ou um efeito suposto não prova uma utilização real.
+QP11_Type — Exemplo fornecido, facultativo
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Ligação pública
+[ ] 2 Excerto não confidencial cuja partilha está autorizada
+[ ] 0 Nenhum exemplo partilhado
+____________________________
+QP11_Reference — Título ou descrição, data e ligação pública se disponível; excerto autorizado, se aplicável
+Condição de apresentação : ((QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP11_Type ∈ {1, 2})))
+____________________________
+QP11_Apport — O que o exemplo demonstra e o que poderia ser adaptado noutro contexto, até 60 palavras
+Condição de apresentação : ((QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP11_Type ∈ {1, 2})))
+Referência : até 60 palavras. O original é conservado.
+____________________________
+QP11_Usage — Utilização ilustrada
+Condição de apresentação : ((QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP11_Type ∈ {1, 2})))
+[ ] 1 Discurso
+[ ] 2 Decisão sem discurso identificado
+[ ] 3 Ambos
+[ ] 98 Não sabe
+____________________________
+QP11_Preuve — Prova de utilização
+Condição de apresentação : ((QP01_Participation ∈ {1} E (QP01_Produit ∉ {0} E QP11_Type ∈ {1, 2})))
+[ ] 1 Documento acessível ou excerto autorizado
+[ ] 2 Utilização conhecida mas não documentada aqui
+[ ] 98 Não sabe
+____________________________
+
+QP12 — Atribuição e contacto facultativo
+As opções 1 e 2 exigem autorização. A contribuição individual sem autorização mantém-se anonimizada. Sem escolha explícita aplica-se o código 0. O silêncio nunca autoriza citações. O encaminhamento pelo INE não substitui a sua autorização institucional.
+QP12_Attribution — Utilização autorizada da contribuição e do exemplo partilhado
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 0 Apenas síntese anonimizada, sem atribuição identificável
+[ ] 1 Atribuição à instituição, sem citação textual identificável
+[ ] 2 Atribuição à instituição e citação textual
+[ ] 3 Enviar-me o trecho antes de qualquer atribuição ou citação identificável
+____________________________
+QP12_Suite — Aceitaria um breve esclarecimento ou um teste de ferramenta?
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Complemento
+[ ] 2 Teste de ferramenta
+[ ] 3 Ambos
+[ ] 0 Não
+[ ] 98 A determinar
+____________________________
+QP12_Contact_fonction — Contacto facultativo : função ou serviço a contactar
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+____________________________
+QP12_Contact_courriel — Correio institucional ou genérico, facultativo
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+____________________________
+QP12_Contact_relais — Preferir contacto através do STATAFRIC, facultativo
+Condição de apresentação : ((QP01_Participation ∈ {1} E QP01_Produit ∉ {0}))
+[ ] 1 Contacto através do STATAFRIC
+[ ] 2 Autorizo o INE que me convidou a transmitir um pedido de seguimento, sem acesso à minha contribuição
+____________________________
+A receção não valida o conteúdo nem constitui aprovação institucional.

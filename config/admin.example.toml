@@ -1,0 +1,17 @@
+# SEULE L'APPLICATION admin.py REÇOIT LA CLE SERVICE_ROLE.
+APP_MODE = "production"
+TEST_MODE = true
+CAMPAIGN_ID = "discours-2026-v2-test"
+SUPABASE_URL = "https://REMPLACER.supabase.co"
+SUPABASE_ADMIN_KEY = "REMPLACER_PAR_LA_CLE_SERVICE_ROLE"
+COLLECTION_URL = "https://REMPLACER.streamlit.app/"
+ADMIN_ALLOWED_EMAILS = ["REMPLACER_PAR_VOTRE_ADRESSE_GOOGLE_AUTORISEE"]
+[auth]
+redirect_uri = "https://REMPLACER_ADMIN.streamlit.app/oauth2callback"
+cookie_secret = "REMPLACER_PAR_SECRET_ALEATOIRE_32_CARACTERES_OU_PLUS"
+client_id = "REMPLACER_CLIENT_ID_GOOGLE"
+client_secret = "REMPLACER_CLIENT_SECRET_GOOGLE"
+server_metadata_url = "https://accounts.google.com/.well-known/openid-configuration"
+# TEST_MODE=false et CAMPAIGN_ID=discours-2026-v2 uniquement pour l'administration réelle.
+# Les lignes placées après [auth] appartiennent à cette section TOML : conserver
+# les paramètres généraux AU-DESSUS de [auth].
