@@ -1,4 +1,4 @@
-"""HISWACA 2.0.0 — fichier autonome, construit depuis src/. Aucun import diagnostic."""
+# HISWACA 2.1.0 — autonome ; aucun import diagnostic.
 from __future__ import annotations
 
 import json
@@ -17547,7 +17547,7 @@ SCHEMA=json.loads(r'''{
 
 
 # --- ui_catalog.py ---
-"""Five-language interface catalogue. Identifiers are never translated."""
+# Documentation interne non affichee.
 UI={}
 def add(key,fr,en,es,pt,ar): UI[key]=dict(zip(('fr','en','es','pt','ar'),(fr,en,es,pt,ar)))
 add('title','Appui statistique aux discours des décideurs','Statistical support for decision-makers’ speeches','Apoyo estadístico a los discursos de los decisores','Apoio estatístico aos discursos dos decisores','الدعم الإحصائي لخطابات صانعي القرار')
@@ -17643,16 +17643,38 @@ add('relay_resume','Reprendre le relevé CSV enregistré','Resume the saved CSV 
 add('relay_import','Importer le relevé','Import register','Importar registro','Importar registo','استيراد السجل')
 add('relay_count','Invitations préparées ou déclarées envoyées — producteurs : {p} ; équipes utilisatrices : {u}. Ce ne sont pas des réponses reçues.','Invitations prepared or reported as sent — producers: {p}; user teams: {u}. These are not received responses.','Invitaciones preparadas o declaradas enviadas — productores: {p}; equipos usuarios: {u}. No son respuestas recibidas.','Convites preparados ou declarados enviados — produtores: {p}; equipas utilizadoras: {u}. Não são respostas recebidas.','الدعوات المعدّة أو المصرّح بإرسالها — المنتجون: {p}؛ فرق المستخدمين: {u}. هذه ليست إجابات مستلمة.')
 
+# v2.1 : explicit submission checks and genuinely shrinking option lists.
+add('add_choice','Ajouter une réponse','Add an answer','Añadir una respuesta','Adicionar uma resposta','إضافة إجابة')
+add('choose_next','— Choisir une réponse à ajouter —','— Choose an answer to add —','— Elija una respuesta para añadir —','— Escolha uma resposta a adicionar —','— اختر إجابة لإضافتها —')
+add('remove_choice','Retirer','Remove','Retirar','Retirar','إزالة')
+add('multi_help','Choisissez les réponses une par une. Une réponse retenue disparaît de la liste disponible. « Retirer » la remet dans la liste.','Choose answers one at a time. A selected answer disappears from the available list. Remove restores it.','Elija las respuestas una a una. Una respuesta seleccionada desaparece de la lista disponible. Retirar la devuelve a la lista.','Escolha as respostas uma a uma. Uma resposta selecionada desaparece da lista disponível. Retirar repõe a opção.','اختر الإجابات واحدة تلو الأخرى. تختفي الإجابة المختارة من القائمة المتاحة، وتعيدها الإزالة إلى القائمة.')
+add('multi_complete','Aucun autre choix compatible disponible. Retirez une réponse pour modifier la sélection.','No further compatible choices are available. Remove an answer to change your selection.','No quedan opciones compatibles. Retire una respuesta para modificar la selección.','Não há mais opções compatíveis. Retire uma resposta para alterar a seleção.','لا تتوفر اختيارات متوافقة أخرى. أزل إجابة لتعديل الاختيار.')
+add('priority_help','Les choix des rangs précédents sont retirés de cette liste. Renseignez les priorités dans l’ordre ; une ou deux suffisent.','Choices at earlier ranks are removed from this list. Enter priorities in order; one or two are enough.','Las opciones de rangos anteriores se retiran de esta lista. Complete en orden; bastan una o dos prioridades.','As opções dos níveis anteriores são retiradas desta lista. Preencha por ordem; bastam uma ou duas prioridades.','تحذف اختيارات المراتب السابقة من هذه القائمة. أدخل الأولويات بالترتيب؛ تكفي أولوية أو أولويتان.')
+add('need_confirmation','Cochez la confirmation de transmission située au-dessus du bouton.','Tick the submission confirmation above the button.','Marque la confirmación de envío situada sobre el botón.','Assinale a confirmação de envio acima do botão.','حدد تأكيد الإرسال الموجود أعلى الزر.')
+add('need_authority','Confirmez l’autorisation institutionnelle, ou choisissez une restitution anonymisée dans la dernière rubrique.','Confirm institutional authorisation, or choose anonymised reporting in the last section.','Confirme la autorización institucional o elija una síntesis anonimizada en la última sección.','Confirme a autorização institucional ou escolha a síntese anonimizada na última secção.','أكد التصريح المؤسسي أو اختر عرضا دون تحديد الهوية في القسم الأخير.')
+add('preview_block','L’application est en prévisualisation : aucun stockage n’est configuré. Contactez l’équipe ; ne ressaisissez pas tout le questionnaire.','The app is in preview: no storage is configured. Contact the team; do not re-enter the entire questionnaire.','La aplicación está en vista previa: no hay almacenamiento configurado. Contacte al equipo; no repita todo el cuestionario.','A aplicação está em pré-visualização: o armazenamento não está configurado. Contacte a equipa; não repita todo o questionário.','التطبيق في وضع المعاينة ولا يوجد تخزين مهيأ. تواصل مع الفريق ولا تعد تعبئة الاستبيان كاملا.')
+add('need_access','Renseignez le code d’accès indiqué dans votre invitation.','Enter the access code provided in your invitation.','Introduzca el código de acceso de su invitación.','Introduza o código de acesso do convite.','أدخل رمز الوصول الوارد في الدعوة.')
+add('mode_mismatch','Le mode de la campagne et celui de l’application diffèrent. L’équipe doit vérifier la configuration avant tout envoi.','The campaign and app modes differ. The team must check the configuration before submission.','El modo de la campaña y el de la aplicación difieren. El equipo debe revisar la configuración.','Os modos da campanha e da aplicação diferem. A equipa deve verificar a configuração.','يختلف وضع الحملة عن وضع التطبيق. يجب على الفريق مراجعة الإعدادات قبل الإرسال.')
+add('checklist','Vérifications avant envoi','Checks before submission','Comprobaciones antes del envío','Verificações antes do envio','التحقق قبل الإرسال')
+add('ready','Les conditions d’envoi sont réunies. Cliquez sur « Envoyer ma contribution » une seule fois.','The submission conditions are met. Click Submit my contribution once.','Se cumplen las condiciones. Pulse Enviar mi contribución una sola vez.','As condições estão reunidas. Clique em Enviar a minha contribuição uma única vez.','شروط الإرسال مستوفاة. اضغط على إرسال مساهمتي مرة واحدة.')
+add('not_sent','La contribution n’a pas été envoyée. Corrigez les points indiqués ci-dessous.','The contribution was not sent. Address the points below.','La contribución no se ha enviado. Corrija los puntos siguientes.','A contribuição não foi enviada. Corrija os pontos abaixo.','لم ترسل المساهمة. صحح النقاط الموضحة أدناه.')
+add('refresh','Actualiser l’état de la collecte','Refresh collection status','Actualizar el estado de la recogida','Atualizar o estado da recolha','تحديث حالة الجمع')
+add('campaign_dates','Fenêtre configurée par l’équipe : {start} → {end} (UTC).','Collection window configured by the team: {start} → {end} (UTC).','Ventana configurada por el equipo: {start} → {end} (UTC).','Período configurado pela equipa: {start} → {end} (UTC).','الفترة التي حددها الفريق: {start} → {end} (UTC).')
+add('previous_review','Précédent','Previous','Anterior','Anterior','السابق')
+add('guide_fr','Guide détaillé de remplissage — français','Detailed completion guide — French','Guía detallada de cumplimentación — francés','Guia detalhado de preenchimento — francês','دليل التعبئة المفصل — بالفرنسية')
+add('quick_help','Aide au remplissage','Completion help','Ayuda para cumplimentar','Ajuda ao preenchimento','المساعدة في التعبئة')
+add('quick_help_text','1. Choisissez le questionnaire correspondant à votre fonction.\n2. Répondez sur les pratiques du 01/11/2025 au 31/10/2026.\n3. Utilisez Suivant et Précédent ; les choix déjà retenus ne sont pas proposés à nouveau.\n4. Téléchargez un brouillon avant de quitter. Le brouillon ne vaut pas envoi.\n5. Sur la page de relecture, confirmez la transmission puis cliquez sur Envoyer ma contribution. Seul un accusé confirme la réception.','1. Select the questionnaire matching your role.\n2. Describe practices from 1 Nov 2025 to 31 Oct 2026.\n3. Use Next and Previous; selected choices are not offered again.\n4. Download a draft before leaving. A draft is not a submission.\n5. On the review page, confirm and click Submit my contribution. Only a receipt confirms reception.','1. Elija el cuestionario correspondiente a su función.\n2. Describa prácticas del 01/11/2025 al 31/10/2026.\n3. Use Siguiente y Anterior; las opciones seleccionadas no se ofrecen de nuevo.\n4. Guarde un borrador antes de salir. No equivale al envío.\n5. En la revisión, confirme y pulse Enviar mi contribución. Solo un acuse confirma la recepción.','1. Escolha o questionário adequado à sua função.\n2. Descreva práticas de 01/11/2025 a 31/10/2026.\n3. Use Seguinte e Anterior; as escolhas selecionadas não voltam a ser propostas.\n4. Guarde um rascunho antes de sair. Não equivale ao envio.\n5. Na revisão, confirme e clique em Enviar a minha contribuição. Só o recibo confirma a receção.','1. اختر الاستبيان المناسب لوظيفتك.\n2. صف الممارسات من 01/11/2025 إلى 31/10/2026.\n3. استخدم التالي والسابق؛ لا تعرض الاختيارات المحددة مرة أخرى.\n4. نزل مسودة قبل المغادرة؛ المسودة ليست إرسالا.\n5. في صفحة المراجعة أكد الإرسال واضغط على إرسال مساهمتي. إشعار الاستلام وحده يؤكد الوصول.')
+add('rejected_back','Revenir à la relecture — envoi refusé','Return to review — submission rejected','Volver a la revisión — envío rechazado','Voltar à revisão — envio recusado','العودة إلى المراجعة — رفض الإرسال')
+add('error_code','Référence technique à communiquer à l’équipe : {code}. Ne communiquez aucun mot de passe.','Technical reference for the team: {code}. Do not share any password.','Referencia técnica para el equipo: {code}. No comparta contraseñas.','Referência técnica para a equipa: {code}. Não partilhe palavras-passe.','المرجع التقني للفريق: {code}. لا تشارك أي كلمة مرور.')
+
 
 # --- core.py ---
-"""Pure diagnostic engine. No network and no Streamlit dependency.
-SCHEMA and UI are embedded by scripts/build_standalone.py.
-"""
+# Documentation interne non affichee.
 import json,hashlib,re,csv,io,zipfile,html,unicodedata,copy
 from datetime import datetime,timezone
 from uuid import UUID,uuid4
 from collections import Counter
-APP_VERSION='2.0.0'
+APP_VERSION='2.1.0'
 SCHEMA_VERSION=SCHEMA['version']
 FORMS=SCHEMA['forms']
 LANGUAGES=SCHEMA['languages']
@@ -17902,13 +17924,62 @@ def fallback_text(form_id,lang):
     return '\n'.join(lines).encode('utf-8-sig')
 
 
-# --- storage.py ---
-"""Persistance : Supabase en production, SQLite explicitement local pour les tests.
+# Interface helpers — values remain the original instrument codes.
+def remaining_choices(field, selected):
+    selected = list(dict.fromkeys(selected or []))
+    codes = [o['code'] for o in field.get('options', [])]
+    if len(selected) >= field.get('max_choices', len(codes)):
+        return []
+    exclusive = field.get('exclusive', [])
+    if any(v in exclusive for v in selected):
+        return []
+    return [c for c in codes if c not in selected and (not selected or c not in exclusive)]
 
-Aucun repli silencieux vers un fichier local si le stockage distant échoue.
-L'application publique ne possède qu'une clé publique Supabase et un jeton
-serveur donnant accès à deux RPC limitées (état de campagne et soumission).
-"""
+
+def priority_choices(form_id, field, answers):
+    prefix = FORMS[form_id].get('priority_prefix')
+    fid = field['id']
+    codes = [o['code'] for o in field.get('options', [])]
+    if not prefix or fid not in [prefix + '_P' + str(i) for i in (1, 2, 3)]:
+        return codes
+    rank = int(fid[-1])
+    used = [answers.get(prefix + '_P' + str(i)) for i in range(1, rank)]
+    if rank > 1 and (any(blank(v) for v in used) or used[0] in (0, 98)):
+        return []
+    return [c for c in codes if c not in used]
+
+
+def submission_requirements(form_id, answers, lang, settings, info,
+                            confirmed, authority, access_code='', storage_error=''):
+    """Return explicit blocking reasons; never bypass campaign or consent rules."""
+    errors, _ = validation(form_id, answers, lang)
+    effective, _ = field_states(form_id, answers)
+    substantive = [f for _, f in iter_fields(form_id)
+                   if f['id'] != FORMS[form_id]['consent'] and not f.get('private')]
+    if not any(not blank(effective.get(f['id'])) for f in substantive):
+        errors.append(ui('content_required', lang))
+    if not confirmed:
+        errors.append(ui('need_confirmation', lang))
+    if effective.get(FORMS[form_id]['attribution']) in (1, 2) and not authority:
+        errors.append(ui('need_authority', lang))
+    if settings.mode == 'preview':
+        errors.append(ui('preview_block', lang))
+    elif storage_error or not isinstance(info, dict):
+        errors.append(ui('service_error', lang))
+    else:
+        if info.get('active') is not True:
+            errors.append(ui('closed', lang))
+        if info.get('requires_access_code') and not str(access_code).strip():
+            errors.append(ui('need_access', lang))
+        if type(info.get('test_mode')) is bool and info['test_mode'] != settings.test_mode:
+            errors.append(ui('mode_mismatch', lang))
+    if settings.mode == 'production' and not settings.test_mode and lang not in settings.approved_languages:
+        errors.append(ui('unreviewed', lang))
+    return list(dict.fromkeys(errors))
+
+
+# --- storage.py ---
+# Documentation interne non affichee.
 import hashlib
 import json
 import sqlite3
@@ -18192,9 +18263,7 @@ def make_store(settings: Settings,admin=False):
 
 
 # --- registers.py ---
-"""Diagnostic registers. All changes are append-only, with optimistic concurrency.
-Administrative schema is in French; original contributions retain their language.
-"""
+# Documentation interne non affichee.
 REGISTERS={
  'invitations':{'title':'Invitations et relais','columns':{
   'Pays':'text','INS relais':'text','ID relais':'text','ID invitation':'text','Institution':'text','Service':'text','Domaine':'text',
@@ -18306,7 +18375,7 @@ def coverage_rows(records):
         else:g['missing']+=1
     return [dict(zip(['Pays / zone déclaré','Parcours','Profil RA déclaré','Domaine déclaré','Langue interface','Version'],k),**{'Contributions réelles reçues':v['received'],'Contributions classées exploitables':v['usable'],'Institutions déclarées distinctes (à harmoniser)':len(v['institutions']),'Sans institution déclarée':v['missing']}) for k,v in sorted(groups.items())]
 
-"""Optional NSO relay tool. No database, no recipient-response access, no mail sending."""
+# Documentation interne non affichee.
 import streamlit as st
 from urllib.parse import urlencode,urlsplit,urlunsplit
 

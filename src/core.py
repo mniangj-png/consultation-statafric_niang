@@ -5,7 +5,7 @@ import json,hashlib,re,csv,io,zipfile,html,unicodedata,copy
 from datetime import datetime,timezone
 from uuid import UUID,uuid4
 from collections import Counter
-APP_VERSION='2.0.0'
+APP_VERSION='2.1.0'
 SCHEMA_VERSION=SCHEMA['version']
 FORMS=SCHEMA['forms']
 LANGUAGES=SCHEMA['languages']
@@ -253,3 +253,57 @@ def fallback_text(form_id,lang):
             lines.append('____________________________')
     lines.append(ui('not_validation',lang))
     return '\n'.join(lines).encode('utf-8-sig')
+
+
+# Interface helpers — values remain the original instrument codes.
+def remaining_choices(field, selected):
+    selected = list(dict.fromkeys(selected or []))
+    codes = [o['code'] for o in field.get('options', [])]
+    if len(selected) >= field.get('max_choices', len(codes)):
+        return []
+    exclusive = field.get('exclusive', [])
+    if any(v in exclusive for v in selected):
+        return []
+    return [c for c in codes if c not in selected and (not selected or c not in exclusive)]
+
+
+def priority_choices(form_id, field, answers):
+    prefix = FORMS[form_id].get('priority_prefix')
+    fid = field['id']
+    codes = [o['code'] for o in field.get('options', [])]
+    if not prefix or fid not in [prefix + '_P' + str(i) for i in (1, 2, 3)]:
+        return codes
+    rank = int(fid[-1])
+    used = [answers.get(prefix + '_P' + str(i)) for i in range(1, rank)]
+    if rank > 1 and (any(blank(v) for v in used) or used[0] in (0, 98)):
+        return []
+    return [c for c in codes if c not in used]
+
+
+def submission_requirements(form_id, answers, lang, settings, info,
+                            confirmed, authority, access_code='', storage_error=''):
+    """Return explicit blocking reasons; never bypass campaign or consent rules."""
+    errors, _ = validation(form_id, answers, lang)
+    effective, _ = field_states(form_id, answers)
+    substantive = [f for _, f in iter_fields(form_id)
+                   if f['id'] != FORMS[form_id]['consent'] and not f.get('private')]
+    if not any(not blank(effective.get(f['id'])) for f in substantive):
+        errors.append(ui('content_required', lang))
+    if not confirmed:
+        errors.append(ui('need_confirmation', lang))
+    if effective.get(FORMS[form_id]['attribution']) in (1, 2) and not authority:
+        errors.append(ui('need_authority', lang))
+    if settings.mode == 'preview':
+        errors.append(ui('preview_block', lang))
+    elif storage_error or not isinstance(info, dict):
+        errors.append(ui('service_error', lang))
+    else:
+        if info.get('active') is not True:
+            errors.append(ui('closed', lang))
+        if info.get('requires_access_code') and not str(access_code).strip():
+            errors.append(ui('need_access', lang))
+        if type(info.get('test_mode')) is bool and info['test_mode'] != settings.test_mode:
+            errors.append(ui('mode_mismatch', lang))
+    if settings.mode == 'production' and not settings.test_mode and lang not in settings.approved_languages:
+        errors.append(ui('unreviewed', lang))
+    return list(dict.fromkeys(errors))

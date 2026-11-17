@@ -1,0 +1,17 @@
+# Local technical tests only; fictitious data always marked is_test=true.
+services:
+  collecte_test:
+    build: .
+    image: hiswaca-diagnostic:2.1.0
+    restart: unless-stopped
+    init: true
+    environment:
+      APP_FILE: app.py
+      PORT: "8501"
+    ports:
+      - "127.0.0.1:8501:8501"
+    volumes:
+      - ./config/docker_test.toml:/app/.streamlit/secrets.toml:ro
+      - test_data:/app/.local
+volumes:
+  test_data:

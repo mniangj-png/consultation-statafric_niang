@@ -1,0 +1,46 @@
+HISWACA — Vérification du correctif 2.1.0
+Date : 17 novembre 2026
+
+1. Résultat de la suite exécutée
+Commande : python -m pytest -q -ra --junitxml=tests-report.xml
+Résultat : 220 tests réussis ; 1 module de tests ignoré.
+Le module tests/test_streamlit.py est ignoré car Streamlit n’est pas installé dans cet environnement et son installation réseau a échoué. Il contient les tests AppTest à exécuter avec les dépendances complètes, notamment par GitHub Actions. « Ignoré » ne signifie pas « réussi ».
+
+2. Portée des tests réussis
+- Validation des réponses, filtres et codes, consentement/refus, contacts séparés.
+- Brouillons, exports, réessais et concurrence SQLite.
+- Retrait des options déjà choisies, modalités exclusives, maxima et rangs de priorité.
+- Absence d’expression textuelle de module susceptible d’être affichée automatiquement dans les trois fichiers autonomes.
+- Titres de parcours et changement de formulaire dans une interface simulée.
+- Présence de « Précédent » en relecture et conservation des réponses.
+- Vingt-cinq scénarios parcours/langue jusqu’à un enregistrement SQLite, avec données fictives et interface simulée. Aucun appel à une campagne réelle.
+- Bouton actif en prévisualisation mais absence d’écriture ; motifs de blocage affichés.
+- Vérifications des conditions de production : dates/état, langue, confirmations, code et cohérence du mode test.
+- Contrat du point d’entrée Docker, ports et noms autorisés, protections et absence de copie de secrets.
+- Présence des 44 rubriques et 276 champs dans le guide.
+
+3. Concordance du schéma
+Comparaison du JSON intégré dans app(1).py avec src/schema.json : égalité intégrale.
+Schéma conservé : 2026-11-15.web-2.
+Version d’interface : 2.1.0.
+Empreintes dans docs/controle_concordance_v21.json.
+Les registres et le classeur v2.0 sont conservés ; ils n’ont pas été reconstruits ni modifiés pour cette correction d’interface.
+
+4. Documents
+Le guide Word a été rendu en 55 pages ; chacune a été inspectée visuellement. Les tableaux restent lisibles et leurs en-têtes se répètent en cas de continuation. La version HTML contient en complément les modalités françaises exactes, regroupées dans des blocs dépliables. La relecture linguistique indépendante des cinq questionnaires n’est pas certifiée par ces tests.
+
+5. Non exécuté ici
+- Lancement réel de Streamlit et interactions dans un navigateur.
+- Installation des fonctions SQL sur Supabase, essai réseau, enregistrement et export distants.
+- Authentification Google/OpenID Connect réelle.
+- Construction ou démarrage Docker : aucun moteur Docker disponible.
+- Émission d’un certificat HTTPS, réglage du DNS ou du pare-feu d’un serveur réel.
+- Mesure de disponibilité prolongée ou test mobile.
+
+6. Recette avant diffusion
+Dans une campagne de TEST DISTINCTE : vérifier les cinq parcours et cinq langues ; consentement/refus ; filtres ; ajout et retrait des options ; priorité modifiée ; conservation après changement de langue ; reprise de brouillon ; Précédent en relecture ; envoi partiel valide ; reçu ; ligne consultable dans l’administration ; export UTF-8.
+Tester les blocages sans enregistrer : consentement manquant, autorisation manquante, campagne fermée, langue non autorisée, code erroné et service indisponible.
+Le reçu ne doit apparaître qu’après confirmation du stockage. Les scénarios fictifs doivent rester exclus de l’analyse.
+
+7. Hébergement continu
+Le Dockerfile et Compose sont fournis pour un hôte qui reste allumé. unless-stopped relance un processus terminé mais ne réveille pas une machine éteinte. Le HEALTHCHECK surveille Streamlit, pas l’écriture dans Supabase ; il ne redémarre pas à lui seul un processus encore vivant mais bloqué. Vérifier aussi la disponibilité de la base et les sauvegardes.

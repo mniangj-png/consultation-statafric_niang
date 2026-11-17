@@ -1,0 +1,4 @@
+APP_MODE = "local"
+TEST_MODE = true
+LOCAL_DB_PATH = "/app/.local/recette.sqlite3"
+CONTACT_EMAIL = ""

@@ -1,0 +1,12 @@
+{
+    email {$ACME_EMAIL}
+}
+{$DOMAIN} {
+    encode zstd gzip
+    header {
+        X-Content-Type-Options nosniff
+        Referrer-Policy same-origin
+    }
+    # WebSocket upgrade is supported automatically by reverse_proxy.
+    reverse_proxy collecte:8501
+}

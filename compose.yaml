@@ -1,0 +1,57 @@
+# Production HTTPS on a continuously running Linux server.
+# Create .env and secrets/collecte.toml before starting. Never commit these files.
+services:
+  collecte:
+    build: .
+    image: hiswaca-diagnostic:2.1.0
+    restart: unless-stopped
+    init: true
+    environment:
+      PORT: "8501"
+      APP_FILE: app.py
+    expose:
+      - "8501"
+    volumes:
+      - type: bind
+        source: ./secrets/collecte.toml
+        target: /app/.streamlit/secrets.toml
+        read_only: true
+        bind:
+          create_host_path: false
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+      - /home/appuser/.cache:size=32m,uid=10001,gid=10001,mode=0700
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN:?Define DOMAIN in .env}
+      ACME_EMAIL: ${ACME_EMAIL:?Define ACME_EMAIL in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      collecte:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  caddy_data:
+  caddy_config:
