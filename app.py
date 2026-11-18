@@ -18382,7 +18382,7 @@ import logging
 from pathlib import Path
 from collections.abc import Mapping
 
-MAIN_TITLE = 'Appui statistique aux discours des décideurs'
+MAIN_TITLE = 'Statistical support for decision-makers’ speeches'
 SAFE_REJECTIONS = {'INVALID_ACCESS_CODE', 'COLLECTION_CLOSED', 'INVALID_WRITER',
                    'INVALID_SUBMISSION', 'QUOTA_REACHED', 'TEST_MODE_MISMATCH'}
 
